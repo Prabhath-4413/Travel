@@ -1,0 +1,28 @@
+# === Backend (.NET) ===
+bin/
+obj/
+.vs/
+*.user
+*.suo
+
+# === Frontend (React / Node) ===
+node_modules/
+dist/
+build/
+*.lock
+
+# === Environment Files ===
+.env
+.env.local
+.env.development
+.env.production
+
+# === Logs ===
+*.log
+
+# === System Files ===
+.DS_Store
+Thumbs.db
+
+# === Temporary ===
+/FixDb/

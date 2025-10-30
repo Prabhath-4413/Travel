@@ -1,0 +1,15 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#228B22"/>
+  <rect x="50" y="80" width="60" height="40" fill="#90EE90"/>
+  <rect x="130" y="100" width="60" height="40" fill="#90EE90"/>
+  <rect x="210" y="70" width="60" height="40" fill="#90EE90"/>
+  <rect x="290" y="90" width="60" height="40" fill="#90EE90"/>
+  <rect x="90" y="150" width="60" height="40" fill="#90EE90"/>
+  <rect x="170" y="130" width="60" height="40" fill="#90EE90"/>
+  <rect x="250" y="160" width="60" height="40" fill="#90EE90"/>
+  <polygon points="200,50 180,70 220,70" fill="#FFFFFF"/>
+  <polygon points="220,50 200,70 240,70" fill="#FFFFFF"/>
+  <text x="200" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#FFFFFF">MUNNAR</text>
+  <text x="200" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#FFFFFF">Tea Gardens & Hills</text>
+  <text x="200" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#FFFFFF">Misty Landscapes</text>
+</svg>

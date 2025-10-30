@@ -1,0 +1,10 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="200" fill="#87CEEB"/>
+  <rect width="400" height="100" y="200" fill="#4682B4"/>
+  <circle cx="100" cy="100" r="30" fill="#FFFFFF" opacity="0.8"/>
+  <circle cx="300" cy="80" r="20" fill="#FFFFFF" opacity="0.6"/>
+  <polygon points="200,120 180,150 220,150" fill="#228B22"/>
+  <polygon points="220,120 200,150 240,150" fill="#228B22"/>
+  <text x="200" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#FFFFFF">VIJAYAWADA</text>
+  <text x="200" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#FFFFFF">Krishna River City</text>
+</svg>

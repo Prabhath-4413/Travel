@@ -1,0 +1,11 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="150" fill="#87CEEB"/>
+  <rect width="400" height="150" y="150" fill="#FFE4B5"/>
+  <circle cx="80" cy="100" r="25" fill="#FFD700"/>
+  <circle cx="320" cy="90" r="20" fill="#FFD700" opacity="0.8"/>
+  <polygon points="50,150 30,180 70,180" fill="#228B22"/>
+  <polygon points="350,150 330,180 370,180" fill="#228B22"/>
+  <text x="200" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#FFFFFF">GOA</text>
+  <text x="200" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#8B4513">Beaches & Nightlife</text>
+  <text x="200" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#8B4513">Portuguese Charm</text>
+</svg>

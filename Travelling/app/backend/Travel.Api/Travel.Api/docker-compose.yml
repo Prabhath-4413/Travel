@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  travel-api:
+    build: .
+    ports:
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=travel
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=4413
+      - JWT_KEY=your-super-secret-jwt-key-change-in-production
+      - JWT_ISSUER=travel-api
+      - JWT_AUDIENCE=travel-client
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=587
+      - SMTP_USERNAME=your-email@gmail.com
+      - SMTP_PASSWORD=your-app-password
+      - SMTP_FROM=your-email@gmail.com
+    depends_on:
+      - postgres
+    networks:
+      - travel-network
+
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=travel
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=4413
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - travel-network
+
+volumes:
+  postgres_data:
+
+networks:
+  travel-network:
+    driver: bridge

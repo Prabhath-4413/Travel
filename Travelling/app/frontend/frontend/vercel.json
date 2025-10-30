@@ -1,0 +1,21 @@
+{
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "env": {
+    "VITE_GOOGLE_MAPS_API_KEY": "@google_maps_api_key",
+    "VITE_API_URL": "@api_url"
+  }
+}

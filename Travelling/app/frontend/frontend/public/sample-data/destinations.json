@@ -1,0 +1,125 @@
+[
+  {
+    "id": 1,
+    "name": "Visakhapatnam",
+    "state": "Andhra Pradesh",
+    "country": "India",
+    "description": "Seaside city known for pristine beaches, Araku Valley hills, and vibrant port culture.",
+    "imageUrl": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=1000&auto=format&fit=crop",
+    "pricePerNight": 4500,
+    "category": "Beach & Hills",
+    "highlights": ["RK Beach", "Araku Valley", "Kailasagiri", "Simhachalam Temple"],
+    "bestTime": "October to March"
+  },
+  {
+    "id": 2,
+    "name": "Tirupati",
+    "state": "Andhra Pradesh",
+    "country": "India",
+    "description": "Sacred spiritual destination home to the famous Tirumala Venkateswara Temple.",
+    "imageUrl": "https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=1000&auto=format&fit=crop",
+    "pricePerNight": 3800,
+    "category": "Temple & Spiritual",
+    "highlights": ["Tirumala Temple", "Sri Venkateswara National Park", "Kapila Theertham", "Chandragiri Fort"],
+    "bestTime": "September to March"
+  },
+  {
+    "id": 3,
+    "name": "Vijayawada",
+    "state": "Andhra Pradesh",
+    "country": "India",
+    "description": "Bustling city on the banks of Krishna river with rich cultural heritage.",
+    "imageUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1000&auto=format&fit=crop",
+    "pricePerNight": 3600,
+    "category": "Cultural & Heritage",
+    "highlights": ["Krishna River", "Kanaka Durga Temple", "Undavalli Caves", "Bhavani Island"],
+    "bestTime": "October to March"
+  },
+  {
+    "id": 4,
+    "name": "Goa",
+    "state": "Goa",
+    "country": "India",
+    "description": "Tropical paradise with pristine beaches, vibrant nightlife, and Portuguese colonial charm.",
+    "imageUrl": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=1000&auto=format&fit=crop",
+    "pricePerNight": 5200,
+    "category": "Beach & Nightlife",
+    "highlights": ["Calangute Beach", "Old Goa Churches", "Dudhsagar Falls", "Anjuna Flea Market"],
+    "bestTime": "November to March"
+  },
+  {
+    "id": 5,
+    "name": "Munnar",
+    "state": "Kerala",
+    "country": "India",
+    "description": "Hill station paradise with endless tea gardens, misty mountains, and cool climate.",
+    "imageUrl": "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=1000&auto=format&fit=crop",
+    "pricePerNight": 4000,
+    "category": "Hills & Nature",
+    "highlights": ["Tea Gardens", "Eravikulam National Park", "Mattupetty Dam", "Echo Point"],
+    "bestTime": "September to May"
+  },
+  {
+    "id": 6,
+    "name": "Jaipur",
+    "state": "Rajasthan",
+    "country": "India",
+    "description": "The Pink City with magnificent forts, palaces, and rich royal heritage.",
+    "imageUrl": "https://images.unsplash.com/photo-1564507592333-c60657eea523?q=80&w=1000&auto=format&fit=crop",
+    "pricePerNight": 4800,
+    "category": "Heritage & Royal",
+    "highlights": ["Amber Fort", "City Palace", "Hawa Mahal", "Jantar Mantar"],
+    "bestTime": "October to March"
+  },
+  {
+    "id": 7,
+    "name": "Varanasi",
+    "state": "Uttar Pradesh",
+    "country": "India",
+    "description": "Spiritual capital of India with ancient temples and sacred Ganges ghats.",
+    "imageUrl": "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=1000&auto=format&fit=crop",
+    "pricePerNight": 3500,
+    "category": "Spiritual & Ancient",
+    "highlights": ["Ganges Ghats", "Kashi Vishwanath Temple", "Sarnath", "Ganga Aarti"],
+    "bestTime": "October to March"
+  },
+  {
+    "id": 8,
+    "name": "Kerala Backwaters",
+    "state": "Kerala",
+    "country": "India",
+    "description": "Serene backwater experience with houseboats and lush green landscapes.",
+    "imageUrl": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=1000&auto=format&fit=crop",
+    "pricePerNight": 4200,
+    "category": "Backwaters & Nature",
+    "highlights": ["Alappuzha Backwaters", "Kumarakom", "Houseboat Stay", "Bird Sanctuaries"],
+    "bestTime": "September to March"
+  },
+  {
+    "id": 9,
+    "name": "Rishikesh",
+    "state": "Uttarakhand",
+    "country": "India",
+    "description": "Yoga capital and adventure hub on the banks of holy Ganges river.",
+    "imageUrl": "https://images.unsplash.com/photo-1559827260-dc66d52bef19?q=80&w=1000&auto=format&fit=crop",
+    "pricePerNight": 3800,
+    "category": "Adventure & Spiritual",
+    "highlights": ["Ganges River", "Yoga Ashrams", "River Rafting", "Laxman Jhula"],
+    "bestTime": "September to June"
+  },
+  {
+    "id": 10,
+    "name": "Puducherry",
+    "state": "Puducherry",
+    "country": "India",
+    "description": "French colonial charm with beautiful beaches and spiritual Auroville.",
+    "imageUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1000&auto=format&fit=crop",
+    "pricePerNight": 4100,
+    "category": "Beach & Colonial",
+    "highlights": ["French Quarter", "Paradise Beach", "Auroville", "Pondicherry Beach"],
+    "bestTime": "October to March"
+  }
+]
+
+
+

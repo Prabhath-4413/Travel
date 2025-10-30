@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.08);
+}
+
+/* subtle backdrop blur for cards */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+}
+
+/* smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* shimmer animation for loading states */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* glass morphism effect */
+.glass-morphism {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* dark theme select dropdown */
+select {
+  color-scheme: dark;
+}
+
+select option {
+  background-color: #0e1512;
+  color: white;
+}
+
+/* ensure dark theme for all form elements */
+input[type="date"], input[type="text"], input[type="email"], select {
+  color-scheme: dark;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+input[type="date"]::-webkit-datetime-edit-text {
+  color: white;
+}
+
+input[type="date"]::-webkit-datetime-edit-month-field {
+  color: white;
+}
+
+input[type="date"]::-webkit-datetime-edit-day-field {
+  color: white;
+}
+
+input[type="date"]::-webkit-datetime-edit-year-field {
+  color: white;
+}
+
+
+

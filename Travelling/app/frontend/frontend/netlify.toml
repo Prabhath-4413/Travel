@@ -1,0 +1,19 @@
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[context.production.environment]
+  VITE_GOOGLE_MAPS_API_KEY = "your_production_google_maps_api_key"
+  VITE_API_URL = "https://your-backend-url.com"
+
+[context.deploy-preview.environment]
+  VITE_GOOGLE_MAPS_API_KEY = "your_google_maps_api_key"
+  VITE_API_URL = "http://localhost:5000"
