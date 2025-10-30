@@ -291,7 +291,7 @@ public sealed class EmailConsumerServiceV2 : BackgroundService
 
     public override async Task StopAsync(CancellationToken cancellationToken)
     {
-        await CloseChannelAsync();
+        await CloseChannelAsync(); 
         await base.StopAsync(cancellationToken);
     }
 

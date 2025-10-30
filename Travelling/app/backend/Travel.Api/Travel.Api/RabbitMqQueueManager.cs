@@ -7,7 +7,7 @@ namespace Travel.Api;
 /// Run this as a one-time utility: dotnet run --queue-manager purge
 /// </summary>
 public class RabbitMqQueueManager
-{
+{ 
    public static async Task Main(string[] args)
     {
         if (args.Length == 0)
