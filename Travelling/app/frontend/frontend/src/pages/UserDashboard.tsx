@@ -1,9 +1,15 @@
-import React from 'react'
-import { useState, useEffect, useRef, useMemo } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { bookingsAPI, shortestPathAPI, tripCancellationAPI, type Destination, type Booking, type ShortestPathResponse, type TripCancellationStatus } from '../lib/api'
+import {
+  bookingsAPI,
+  shortestPathAPI,
+  tripCancellationAPI,
+  type Destination,
+  type Booking,
+  type ShortestPathResponse
+} from '../lib/api'
 import { useDestinations } from '../contexts/DestinationsContext'
 import BookingForm from '../components/booking/BookingForm'
 import EmailConfirmationModal from '../components/booking/EmailConfirmationModal'
@@ -11,23 +17,269 @@ import { CancellationBadge, CancellationDetails, CancellationCenter } from '../c
 import RouteMap from '../components/maps/RouteMap'
 import Feedback from '../components/Feedback'
 
-const cancellationStatusMap: Record<string, { label: string; color: string }> = {
-  None: { label: 'Active', color: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' },
-  Requested: { label: 'Cancellation Requested', color: 'bg-amber-500/20 text-amber-200 border border-amber-500/30' },
-  Approved: { label: 'Cancelled', color: 'bg-red-500/20 text-red-300 border border-red-500/30' },
-  Rejected: { label: 'Cancellation Rejected', color: 'bg-purple-500/20 text-purple-300 border border-purple-500/30' }
+const FALLBACK_HERO_IMAGES = [
+  'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80'
+]
+
+const NATURE_HERO_IMAGE = 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80'
+
+const SECTION_BACKGROUND_IMAGES = {
+  destinations: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80',
+  metrics: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80',
+  stories: 'https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1600&q=80',
+  planner: 'https://images.unsplash.com/photo-1523786040450-1efba3c496d8?auto=format&fit=crop&w=1600&q=80'
+} as const
+
+const FloatingParticle: React.FC<{ delay?: number; x?: number; y?: number; size?: number; color?: string }> = ({ delay = 0, x = 0, y = 0, size = 16, color = 'white/10' }) => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{
+      y: [y, y - 30, y],
+      x: [x, x + 15, x],
+      opacity: [0.3, 0.6, 0.3],
+      rotate: [0, 180, 360]
+    }}
+    transition={{
+      duration: 8 + delay * 2,
+      repeat: Infinity,
+      ease: 'easeInOut',
+      delay
+    }}
+    className="absolute rounded-full border border-[#2b5f49]/25"
+    style={{
+      left: `${x}%`,
+      top: `${y}%`,
+      width: size,
+      height: size,
+      backgroundColor: color
+    }}
+  />
+)
+
+const NAV_LINKS = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'destinations', label: 'Destinations' },
+  { id: 'metrics', label: 'Metrics' },
+  { id: 'stories', label: 'Stories' },
+  { id: 'planner', label: 'Planner' }
+]
+
+const DashboardNav: React.FC<{
+  activeSection: string
+  onScrollToSection: (id: string) => void
+  onOpenCancellations: () => void
+  onLogout: () => void
+  userName?: string | null
+}> = ({ activeSection, onScrollToSection, onOpenCancellations, onLogout, userName }) => (
+  <motion.nav
+    initial={{ y: -100 }}
+    animate={{ y: 0 }}
+    className="fixed top-0 left-0 right-0 z-50 bg-[#0e1512]/85 backdrop-blur-lg border-b border-white/10"
+  >
+    <div className="max-w-7xl mx-auto px-6">
+      <div className="flex items-center justify-between h-20">
+        <motion.div className="flex items-center gap-3 group">
+          <motion.div
+            className="w-10 h-10 rounded-full bg-gradient-to-br from-[#2f7a4b] to-[#145a4a] flex items-center justify-center text-xl font-bold transition-all group-hover:shadow-[0_0_25px_rgba(47,122,75,0.45)]"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            ✈
+          </motion.div>
+          <span className="text-xl font-bold bg-gradient-to-r from-[#2f6f4a] via-[#1d5e4a] to-[#0f4437] bg-clip-text text-transparent">SuiteSavvy</span>
+        </motion.div>
+
+        <div className="hidden md:flex items-center gap-8">
+          {NAV_LINKS.map((link) => (
+            <button
+              key={link.id}
+              onClick={() => onScrollToSection(link.id)}
+              className={`relative py-2 text-sm font-medium transition-colors ${
+                activeSection === link.id ? 'text-white' : 'text-white/70 hover:text-white'
+              }`}
+              type="button"
+            >
+              {link.label}
+              {activeSection === link.id && (
+                <motion.div
+                  layoutId="dashboardNavActive"
+                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
+                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                />
+              )}
+            </button>
+          ))}
+        </div>
+
+        <div className="hidden md:flex items-center gap-4">
+          {userName && <span className="text-sm text-[#274c3d]/80">Hi, {userName}</span>}
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onOpenCancellations}
+            className="px-4 py-2.5 rounded-lg border border-[#1f5b46]/30 text-[#1f5b46] hover:text-[#0f3a2c] hover:bg-[#cfe2d6]/40 transition-colors"
+            type="button"
+          >
+            Cancellations
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onLogout}
+            className="px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#2d7a54] to-[#145c4a] text-[#f2f5f1] font-semibold shadow-lg shadow-[#145c4a]/30"
+            type="button"
+          >
+            Logout
+          </motion.button>
+        </div>
+
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => onScrollToSection('menu')}
+          className="md:hidden p-2 text-[#1f5b46]/80 hover:text-[#0f3a2c] transition-colors"
+          aria-label="Toggle menu"
+          type="button"
+        >
+          ☰
+        </motion.button>
+      </div>
+    </div>
+  </motion.nav>
+)
+
+const SearchFilterBar: React.FC<{
+  query: string
+  setQuery: (q: string) => void
+  country: string
+  setCountry: (c: string) => void
+  priceMin: number | undefined
+  setPriceMin: (v?: number) => void
+  priceMax: number | undefined
+  setPriceMax: (v?: number) => void
+  clearFilters: () => void
+  countries: string[]
+  dark: boolean
+}> = ({ query, setQuery, country, setCountry, priceMin, setPriceMin, priceMax, setPriceMax, clearFilters, countries, dark }) => {
+  const inputClass = dark
+    ? 'bg-white/10 border-white/10 text-white placeholder-white/60'
+    : 'bg-[#f4f7f2] border-[#2b5f49]/25 text-[#103b2c] placeholder-[#2b5f49]/70'
+  const selectClass = dark ? 'bg-white/10 border-white/10 text-white' : 'bg-[#f4f7f2] border-[#2b5f49]/25 text-[#103b2c]'
+  const buttonClass = dark ? 'border-white/20 text-white hover:bg-white/10' : 'border-[#2b5f49]/25 text-[#1f5b46] hover:text-[#0f3a2c]'
+  return (
+    <div
+      className={`rounded-3xl border backdrop-blur-sm flex flex-col md:flex-row gap-3 items-center px-5 py-4 w-full ${
+        dark ? 'bg-white/5 border-white/10 text-white' : 'bg-[#f4f7f2]/90 border-[#2b5f49]/20 text-[#103b2c]'
+      }`}
+    >
+      <input
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Search wild escapes..."
+        className={`flex-1 min-w-[160px] rounded-2xl px-4 py-3 focus:outline-none transition ${inputClass}`}
+      />
+      <select value={country} onChange={(e) => setCountry(e.target.value)} className={`rounded-2xl px-4 py-3 focus:outline-none ${selectClass}`}>
+        <option value="">All lands</option>
+        {countries.map((c) => (
+          <option key={c} value={c}>
+            {c}
+          </option>
+        ))}
+      </select>
+      <input
+        type="number"
+        value={priceMin ?? ''}
+        onChange={(e) => setPriceMin(e.target.value === '' ? undefined : Number(e.target.value))}
+        placeholder="Min"
+        className={`w-24 rounded-2xl px-4 py-3 focus:outline-none ${inputClass}`}
+      />
+      <input
+        type="number"
+        value={priceMax ?? ''}
+        onChange={(e) => setPriceMax(e.target.value === '' ? undefined : Number(e.target.value))}
+        placeholder="Max"
+        className={`w-24 rounded-2xl px-4 py-3 focus:outline-none ${inputClass}`}
+      />
+      <button onClick={clearFilters} className={`px-4 py-3 rounded-2xl border transition ${buttonClass}`} type="button">
+        Clear
+      </button>
+    </div>
+  )
 }
 
-// Remove custom ImportMeta and ImportMetaEnv declarations, Vite provides these types automatically.
+const FAB: React.FC<{ onOpenBooking: () => void; onOpenCancellations: () => void; onOpenFeedback: () => void }> = ({
+  onOpenBooking,
+  onOpenCancellations,
+  onOpenFeedback
+}) => {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="fixed right-6 bottom-6 z-50">
+      <div className="flex flex-col items-end gap-3">
+        <AnimatePresence>
+          {open && (
+            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 16 }} className="flex flex-col gap-3">
+              <button
+                onClick={() => {
+                  onOpenFeedback()
+                  setOpen(false)
+                }}
+                className="px-4 py-2 rounded-xl bg-[#f5e9d4]/90 border border-[#d9b26f]/60 text-[#215040]"
+                type="button"
+                title="Send feedback"
+              >
+                💬 Feedback
+              </button>
+              <button
+                onClick={() => {
+                  onOpenCancellations()
+                  setOpen(false)
+                }}
+                className="px-4 py-2 rounded-xl bg-[#f5e9d4]/90 border border-[#d9b26f]/60 text-[#215040]"
+                type="button"
+                title="Cancellation center"
+              >
+                ❌ Cancellations
+              </button>
+              <button
+                onClick={() => {
+                  onOpenBooking()
+                  setOpen(false)
+                }}
+                className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#d9b26f] to-[#b87d4b] text-[#103b2c] font-semibold"
+                type="button"
+                title="Book adventure"
+              >
+                ✈️ Book Trip
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <button
+          onClick={() => setOpen((s) => !s)}
+          className="w-16 h-16 rounded-full bg-gradient-to-br from-[#d9b26f] to-[#9d7042] shadow-[0_18px_45px_rgba(54,34,16,0.45)] border border-[#f6ead8]/60 flex items-center justify-center text-[#103b2c] text-3xl"
+          type="button"
+          title="Quick actions"
+        >
+          {open ? '✕' : '+'}
+        </button>
+      </div>
+    </div>
+  )
+}
 
-export default function UserDashboard() {
+export default function UserDashboard(): JSX.Element {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
-  const { destinations, isLoading: destinationsLoading, refresh: refreshDestinations } = useDestinations()
+  const { destinations, refresh: refreshDestinations } = useDestinations()
+
   const [bookings, setBookings] = useState<Booking[]>([])
+  const [loading, setLoading] = useState(true)
   const [selectedDestinations, setSelectedDestinations] = useState<Destination[]>([])
   const [shortestPath, setShortestPath] = useState<ShortestPathResponse | null>(null)
-  const [loading, setLoading] = useState(true)
   const [showBookingForm, setShowBookingForm] = useState(false)
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [confirmationContext, setConfirmationContext] = useState<'booking' | 'cancellation' | null>(null)
@@ -36,130 +288,134 @@ export default function UserDashboard() {
   const [pendingBookingId, setPendingBookingId] = useState<number | null>(null)
   const [cancellationReason, setCancellationReason] = useState('')
   const [cancellationError, setCancellationError] = useState<string | null>(null)
-  const [cancellationSuccess, setCancellationSuccess] = useState<string | null>(null)
   const [showCancellationCenter, setShowCancellationCenter] = useState(false)
   const [selectedBookingForDestinations, setSelectedBookingForDestinations] = useState<Booking | null>(null)
   const [showDestinationDetailsModal, setShowDestinationDetailsModal] = useState(false)
   const [showLogoutSuccess, setShowLogoutSuccess] = useState(false)
-  const [activeTab, setActiveTab] = useState<'explore' | 'national' | 'international' | 'bookings'>('explore')
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [showTripSelector, setShowTripSelector] = useState(false)
-  const bookedDestinationNames = useMemo(() => {
-    return new Set(bookings.flatMap(b => b.destinations))
-  }, [bookings])
-  
-  const availableDestinations = useMemo(() => destinations, [destinations])
+  const [query, setQuery] = useState('')
+  const [countryFilter, setCountryFilter] = useState('')
+  const [priceMin, setPriceMin] = useState<number | undefined>(undefined)
+  const [priceMax, setPriceMax] = useState<number | undefined>(undefined)
+  const [heroIndex, setHeroIndex] = useState(0)
 
-  const nationalDestinations = useMemo(
-    () => destinations.filter((dest) => (dest.country || '').toLowerCase() === 'india'),
-    [destinations]
+  const floatingParticles = useMemo(
+    () =>
+      Array.from({ length: 12 }, (_, i) => ({
+        delay: i * 0.5,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        size: 12 + Math.random() * 20,
+        color: ['rgba(255,255,255,0.1)', 'rgba(96,165,250,0.2)', 'rgba(168,85,247,0.2)', 'rgba(236,72,153,0.2)'][Math.floor(Math.random() * 4)]
+      })),
+    []
   )
-  const internationalDestinations = useMemo(
-    () => destinations.filter((dest) => (dest.country || '').toLowerCase() !== 'india'),
-    [destinations]
+
+  const navLinks = useMemo(() => NAV_LINKS, [])
+  const [activeSection, setActiveSection] = useState('overview')
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  const routeSectionRef = useRef<HTMLDivElement | null>(null)
+
+  const isDark = true
+  const sectionBorderClass = isDark ? 'border-white/10' : 'border-[#1d4d39]/20'
+  const sectionOverlayClass = isDark ? 'bg-[#0e1512]/60' : 'bg-[#f5f1e8]/80'
+
+  const bookedDestinationNames = useMemo(() => new Set(bookings.flatMap((b) => b.destinations)), [bookings])
+
+  const availableDestinations = useMemo(
+    () => destinations.filter((d) => !bookedDestinationNames.has(d.name)),
+    [destinations, bookedDestinationNames]
   )
-  const tripOptions = useMemo(
+
+  const countriesList = useMemo(() => {
+    const set = new Set<string>()
+    destinations.forEach((d) => {
+      if (d.country) set.add(d.country)
+    })
+    return Array.from(set).sort()
+  }, [destinations])
+
+  const filteredAvailable = useMemo(() => {
+    const q = (query || '').trim().toLowerCase()
+    return availableDestinations.filter((d) => {
+      if (countryFilter && d.country !== countryFilter) return false
+      if (priceMin != null && d.price < priceMin) return false
+      if (priceMax != null && d.price > priceMax) return false
+      if (!q) return true
+      const inName = (d.name || '').toLowerCase().includes(q)
+      const inDesc = (d.description || '').toLowerCase().includes(q)
+      return inName || inDesc
+    })
+  }, [availableDestinations, query, countryFilter, priceMin, priceMax])
+
+  const highlightedDestinations = useMemo(() => filteredAvailable.slice(0, 9), [filteredAvailable])
+
+  const heroImages = useMemo(() => {
+    const destinationImages = destinations
+      .map((d) => d.imageUrl)
+      .filter((url): url is string => Boolean(url))
+    const unique = Array.from(new Set([NATURE_HERO_IMAGE, ...destinationImages, ...FALLBACK_HERO_IMAGES]))
+    return unique.slice(0, 8)
+  }, [destinations])
+
+  useEffect(() => {
+    if (!heroImages.length) return
+    const interval = window.setInterval(() => {
+      setHeroIndex((i) => (i + 1) % heroImages.length)
+    }, 6000)
+    return () => clearInterval(interval)
+  }, [heroImages])
+
+  const activeHeroImage = heroImages[heroIndex % heroImages.length] || NATURE_HERO_IMAGE
+
+  const travelStories = useMemo(() => {
+    return bookings.slice(0, 3).map((booking) => {
+      const primaryName = booking.destinations[0] ?? 'Hidden Haven'
+      const destination = destinations.find((d) => d.name === primaryName)
+      const storyImage = destination?.imageUrl || `https://images.unsplash.com/photo-${1500000000000 + booking.bookingId}?auto=format&fit=crop&w=1200&q=80`
+      const excerpt = `${booking.guests} explorer${booking.guests > 1 ? 's' : ''} • ${booking.nights} night${booking.nights > 1 ? 's' : ''} • booked ${new Date(booking.bookingDate).toLocaleDateString()}`
+      return {
+        id: booking.bookingId,
+        title: primaryName,
+        excerpt,
+        status: booking.cancellationStatus,
+        image: storyImage
+      }
+    })
+  }, [bookings, destinations])
+
+  const totalBookings = bookings.length
+  const activeTrips = bookings.filter((b) => b.cancellationStatus === 'None' || b.cancellationStatus === 'Requested').length
+  const cancellationCount = bookings.filter((b) => b.cancellationStatus === 'Approved').length
+  const pendingCancellations = bookings.filter((b) => b.cancellationStatus === 'Requested').length
+
+  const adventureMetrics = useMemo(
     () => [
       {
-        id: 'national' as const,
-        title: 'National escapes',
-        description: 'Curated journeys across India with cultural flair and boutique comfort.',
-        count: nationalDestinations.length,
-        accent: 'from-amber-500/20 via-orange-500/20 to-rose-500/20'
+        title: 'Journeys Planned',
+        value: totalBookings.toString(),
+        description: 'Bookings crafted for your profile'
       },
       {
-        id: 'international' as const,
-        title: 'International adventures',
-        description: 'Global experiences woven with cosmopolitan charm and exclusive stays.',
-        count: internationalDestinations.length,
-        accent: 'from-blue-500/20 via-indigo-500/20 to-purple-500/20'
+        title: 'Active Expeditions',
+        value: activeTrips.toString(),
+        description: 'Trips currently unfolding'
       },
       {
-        id: 'explore' as const,
-        title: 'All destinations',
-        description: 'Browse the full SuiteSavvy collection and craft your signature escape.',
-        count: availableDestinations.length,
-        accent: 'from-blue-500/20 via-purple-500/20 to-pink-500/20'
+        title: 'Destinations Curated',
+        value: destinations.length.toString(),
+        description: 'Nature escapes awaiting discovery'
+      },
+      {
+        title: 'Care & Cancellations',
+        value: `${cancellationCount}/${pendingCancellations || 0}`,
+        description: 'Approved vs pending requests'
       }
     ],
-    [nationalDestinations.length, internationalDestinations.length, availableDestinations.length]
-  )
-  const devotionalDestinations = useMemo(
-    () =>
-      nationalDestinations.filter((dest) => {
-        const name = (dest.name || '').toLowerCase()
-        const description = (dest.description || '').toLowerCase()
-        return ['temple', 'spiritual', 'pilgr', 'darshan', 'ashram', 'holy'].some(
-          (keyword) => name.includes(keyword) || description.includes(keyword)
-        )
-      }),
-    [nationalDestinations]
-  )
-  const otherNationalDestinations = useMemo(
-    () =>
-      nationalDestinations.filter(
-        (dest) => !devotionalDestinations.some((dev) => dev.destinationId === dest.destinationId)
-      ),
-    [nationalDestinations, devotionalDestinations]
-  )
-  const remainingNationalDestinations =
-    otherNationalDestinations.length > 0 ? otherNationalDestinations : nationalDestinations
-
-  const cancellationsCount = useMemo(
-    () => bookings.filter((booking) => booking.cancellationStatus && booking.cancellationStatus !== 'None').length,
-    [bookings]
-  )
-  const quickStats = useMemo(
-    () => [
-      {
-        label: 'Active bookings',
-        value: bookings.filter((booking) => booking.cancellationStatus !== 'Approved').length,
-        icon: '🧳',
-        accent: 'from-blue-500/20 via-indigo-500/20 to-purple-500/20'
-      },
-      {
-        label: 'Destinations discovered',
-        value: bookedDestinationNames.size,
-        icon: '🗺️',
-        accent: 'from-cyan-500/20 via-blue-500/20 to-emerald-500/20'
-      },
-      {
-        label: 'Cancellation requests',
-        value: cancellationsCount,
-        icon: '⚠️',
-        accent: 'from-amber-500/20 via-orange-500/20 to-rose-500/20'
-      }
-    ],
-    [bookings, bookedDestinationNames, cancellationsCount]
+    [totalBookings, activeTrips, destinations.length, cancellationCount, pendingCancellations]
   )
 
-  // Debug logging
-  useEffect(() => {
-    console.log('UserDashboard mounted, user:', user)
-    return () => {
-      console.log('UserDashboard unmounting')
-    }
-  }, [])
-
-  useEffect(() => {
-    console.log('UserDashboard user changed:', user)
-  }, [user])
-
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  useEffect(() => {
-    loadData()
-  }, [])
-
-  useEffect(() => {
-    if (!cancellationSuccess) return
-    const timer = window.setTimeout(() => setCancellationSuccess(null), 4000)
-    return () => window.clearTimeout(timer)
-  }, [cancellationSuccess])
+  const selectedPreview = selectedDestinations.map((d) => d.name).join(' • ')
 
   const loadData = async () => {
     try {
@@ -167,26 +423,79 @@ export default function UserDashboard() {
       const bookingsData = await bookingsAPI.getUserBookings(user!.userId)
       setBookings(bookingsData)
     } catch (error) {
-      console.error('Error loading data:', error)
+      console.error('Error loading bookings', error)
     } finally {
       setLoading(false)
     }
   }
 
+  useEffect(() => {
+    loadData()
+  }, [])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 160
+      let current = navLinks[0]?.id || 'overview'
+      navLinks.forEach((link) => {
+        const section = document.getElementById(link.id)
+        if (section && section.offsetTop <= scrollPosition) {
+          current = link.id
+        }
+      })
+      setActiveSection(current)
+    }
+    window.addEventListener('scroll', handleScroll)
+    handleScroll()
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [navLinks])
+
+  useEffect(() => {
+    if (!cancellationError) return
+    const t = window.setTimeout(() => setCancellationError(null), 4000)
+    return () => clearTimeout(t)
+  }, [cancellationError])
+
+  const handleScrollToSection = (id: string) => {
+    const section = document.getElementById(id)
+    if (section) {
+      const offsetTop = section.getBoundingClientRect().top + window.scrollY - 120
+      window.scrollTo({ top: offsetTop > 0 ? offsetTop : 0, behavior: 'smooth' })
+    }
+    setMobileMenuOpen(false)
+  }
+
   const handleLogout = () => {
     logout()
     setShowLogoutSuccess(true)
-    setTimeout(() => {
-      navigate('/landing', { replace: true })
-    }, 2000)
+    setTimeout(() => navigate('/landing', { replace: true }), 1200)
   }
 
+  const handleDestinationSelect = (destination: Destination) => {
+    setSelectedDestinations((prev) => {
+      const exists = prev.some((p) => p.destinationId === destination.destinationId)
+      return exists ? prev.filter((p) => p.destinationId !== destination.destinationId) : [...prev, destination]
+    })
+  }
 
+  const calculateShortestPath = async () => {
+    if (selectedDestinations.length < 2) return
+    try {
+      const points = selectedDestinations.map((d) => ({ latitude: d.latitude || 0, longitude: d.longitude || 0 }))
+      const result = await shortestPathAPI.calculate({ points })
+      setShortestPath(result)
+      setTimeout(() => routeSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120)
+    } catch (error) {
+      console.error('Error calculating shortest path', error)
+    }
+  }
 
-
-  const handleExploreDestinations = (booking: Booking) => {
-    setSelectedBookingForDestinations(booking)
-    setShowDestinationDetailsModal(true)
+  const handleBookingSuccess = async (result: any) => {
+    setConfirmationContext('booking')
+    setBookingResult(result)
+    setShowConfirmation(true)
+    setShowBookingForm(false)
+    await Promise.all([loadData(), refreshDestinations()])
   }
 
   const handleRequestCancellation = (bookingId: number) => {
@@ -202,9 +511,8 @@ export default function UserDashboard() {
       const response = await tripCancellationAPI.requestCancellation({
         bookingId: pendingBookingId,
         userId: user.userId,
-        reason: cancellationReason.trim() || undefined,
+        reason: cancellationReason.trim() || undefined
       })
-      setCancellationError(null)
       setShowCancellationModal(false)
       setPendingBookingId(null)
       setCancellationReason('')
@@ -212,1162 +520,656 @@ export default function UserDashboard() {
       setConfirmationContext('cancellation')
       setBookingResult({
         bookingId: pendingBookingId,
-        message: response?.message || 'Cancellation request submitted successfully.'
+        message: response?.message || 'Cancellation requested'
       })
       setShowConfirmation(true)
-    } catch (error: any) {
-      console.error('Error requesting cancellation:', error)
-      const message = error.response?.data?.message || 'Failed to request cancellation. Please try again later.'
+    } catch (err: any) {
+      console.error('Cancellation error', err)
+      const message = err?.response?.data?.message || 'Failed to request cancellation'
       setCancellationError(message)
     }
   }
 
-  const handleDestinationSelect = (destination: Destination) => {
-    setSelectedDestinations(prev => {
-      const isSelected = prev.some(d => d.destinationId === destination.destinationId)
-      if (isSelected) {
-        return prev.filter(d => d.destinationId !== destination.destinationId)
-      } else {
-        return [...prev, destination]
-      }
-    })
+  const handleExploreDestinations = (booking: Booking) => {
+    setSelectedBookingForDestinations(booking)
+    setShowDestinationDetailsModal(true)
   }
 
-  const routeSectionRef = useRef<HTMLDivElement>(null)
-
-  const calculateShortestPath = async () => {
-    if (selectedDestinations.length < 2) return
-
-    try {
-      const points = selectedDestinations.map(d => ({
-        latitude: d.latitude || 0,
-        longitude: d.longitude || 0
-      }))
-      
-      const result = await shortestPathAPI.calculate({ points })
-      setShortestPath(result)
-      // Scroll to route section
-      setTimeout(() => routeSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50)
-    } catch (error) {
-      console.error('Error calculating shortest path:', error)
-    }
+  const clearFilters = () => {
+    setQuery('')
+    setCountryFilter('')
+    setPriceMin(undefined)
+    setPriceMax(undefined)
   }
 
-  const handleBookingSuccess = async (result: any) => {
-    setConfirmationContext('booking')
-    setBookingResult(result)
-    setShowConfirmation(true)
-    setShowBookingForm(false)
-    await Promise.all([loadData(), refreshDestinations()])
-  }
-
-  const handlePlanTripOption = (tab: 'national' | 'international') => {
-    setActiveTab(tab)
-    setShowTripSelector(false)
-    setTimeout(() => {
-      document.getElementById(tab)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }, 150)
-  }
-
-  const handleShowAllDestinations = () => {
-    setActiveTab('explore')
-    setShowTripSelector(false)
-    setTimeout(() => {
-      document.getElementById('explore')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }, 150)
-  }
-
-  if (loading || destinationsLoading) {
+  if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#040718] via-[#0b1224] to-[#0f172a] text-white">
-        <div className="text-white/80">Loading...</div>
+      <div className={`min-h-screen flex items-center justify-center ${isDark ? 'bg-[#0e1512] text-white' : 'bg-[#f2f4f1] text-[#0f1a13]'}`}>
+        Loading...
       </div>
     )
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#040718] text-white">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#030712] via-[#080f1e] to-[#070b16]" />
-      <div className="absolute -left-1/2 top-[-20%] h-[120%] w-[80%] bg-gradient-to-br from-cyan-500/25 via-blue-500/20 to-indigo-500/20 blur-3xl opacity-70" />
-      <div className="absolute -right-1/3 bottom-[-25%] h-[130%] w-[70%] bg-gradient-to-br from-fuchsia-500/20 via-purple-500/20 to-rose-500/20 blur-3xl opacity-60" />
-      <div className="relative z-10 flex min-h-screen flex-col">
-        {/* Header */}
-        <motion.nav
-          initial={{ y: -60, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-          className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-            isScrolled
-              ? 'bg-[#0e1512]/95 backdrop-blur-xl border-b border-white/10 shadow-lg'
-              : 'bg-[#0e1512]/60 backdrop-blur-lg border-b border-white/5'
-          }`}
-        >
-          <div className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-6">
-            <motion.div whileHover={{ scale: 1.03 }} className="flex items-center gap-3">
+    <div className={`relative min-h-screen overflow-hidden ${isDark ? 'bg-[#0e1512] text-white' : 'bg-[#ecf3ee] text-[#133d2c]'}`}>
+      <div className="absolute inset-0 -z-20">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeHeroImage}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.2 }}
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${activeHeroImage})` }}
+          />
+        </AnimatePresence>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0e1512]/85 via-[#0e1512]/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/40 via-purple-900/35 to-transparent" />
+      </div>
+
+      <header
+        className={`fixed top-0 left-0 right-0 z-40 border-b backdrop-blur-2xl ${
+          isDark ? 'bg-[#0e1512]/85 border-white/10' : 'bg-[#ecf3ee]/80 border-[#1f3f31]/15'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex items-center justify-between h-20">
+            <motion.div className="flex items-center gap-3 group">
               <motion.div
-                whileHover={{ scale: 1.08 }}
-                transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-                className="relative flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 shadow-[0_0_35px_rgba(99,102,241,0.4)]"
+                className="w-10 h-10 rounded-full bg-gradient-to-br from-[#2f7a4b] to-[#145a4a] flex items-center justify-center text-xl font-bold transition-all group-hover:shadow-[0_0_25px_rgba(47,122,75,0.45)]"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <div className="absolute inset-0 rounded-full border border-white/30" />
-                <span className="text-xl">✈</span>
+                ✈
               </motion.div>
-              <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              <span className="text-xl font-bold bg-gradient-to-r from-[#2f6f4a] via-[#1d5e4a] to-[#0f4437] bg-clip-text text-transparent">
                 SuiteSavvy
               </span>
             </motion.div>
-            <div className="flex items-center gap-3">
-              <span className="hidden sm:inline text-sm text-white/70">Hi, {user?.name}</span>
-              <motion.button
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => setShowCancellationCenter(true)}
-                className="relative inline-flex items-center justify-center overflow-hidden rounded-lg border border-amber-400/40 px-5 py-2 text-sm font-medium text-amber-100 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/30"
-              >
-                <span className="absolute inset-0 bg-gradient-to-r from-amber-500/20 via-orange-500/20 to-rose-500/20 opacity-0 transition-opacity duration-300 hover:opacity-100" />
-                <span className="relative">Manage cancellations</span>
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={handleLogout}
-                className="relative inline-flex items-center justify-center overflow-hidden rounded-lg border border-rose-400/40 px-5 py-2 text-sm font-medium text-rose-100 transition-all duration-300 hover:shadow-lg hover:shadow-rose-500/30"
-              >
-                <span className="absolute inset-0 bg-gradient-to-r from-rose-500/20 via-pink-500/20 to-red-500/20 opacity-0 transition-opacity duration-300 hover:opacity-100" />
-                <span className="relative">Logout</span>
-              </motion.button>
-            </div>
-          </div>
-        </motion.nav>
-
-        {cancellationSuccess && (
-          <div className="fixed right-6 top-24 z-40">
-            <div className="rounded-2xl border border-emerald-400/50 bg-emerald-500/15 px-5 py-3 text-sm font-medium text-emerald-200 shadow-[0_20px_45px_rgba(16,185,129,0.35)]">
-              {cancellationSuccess}
-            </div>
-          </div>
-        )}
-
-        {/* Logout Success Popup */}
-        <AnimatePresence>
-          {showLogoutSuccess && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6 backdrop-blur-sm"
-            >
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                className="w-full max-w-md rounded-3xl border border-white/20 bg-white/[0.04] p-10 text-center backdrop-blur-xl shadow-[0_35px_120px_rgba(8,12,24,0.65)]"
-              >
-                <div className="mb-4 text-6xl drop-shadow-[0_10px_35px_rgba(59,130,246,0.35)]">👋</div>
-                <h3 className="mb-4 text-2xl font-semibold text-white">Logout Successful!</h3>
-                <p className="text-white/70">Thank you for using SuiteSavvy. See you soon!</p>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <main className="flex-1 pt-28">
-          <div className="mx-auto w-full max-w-7xl px-6 py-10">
-            <motion.section
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.35 }}
-              transition={{ duration: 0.7, ease: 'easeOut' }}
-              className="relative mb-14 overflow-hidden rounded-[36px] border border-white/10 bg-[#0e1512]/80 px-8 py-16 shadow-[0_45px_120px_rgba(8,12,24,0.65)] backdrop-blur-3xl"
-            >
-              <div className="absolute inset-0">
-                <div
-                  className="h-full w-full bg-cover bg-center"
-                  style={{
-                    backgroundImage:
-                      'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=2000&h=1200&fit=crop")'
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-br from-[#0e1512]/95 via-[#0e1512]/70 to-[#0e1512]/85" />
-                <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl" />
-                <div className="absolute bottom-0 right-0 h-80 w-80 rounded-full bg-purple-500/20 blur-3xl" />
-              </div>
-              <div className="relative z-10 grid gap-12 md:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] md:items-center">
-                <motion.div
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
-                  className="space-y-8"
-                >
-                  <motion.span
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                    className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-medium text-white/80"
-                  >
-                    ✨ Tailored journeys for modern explorers
-                  </motion.span>
-                  <motion.h1
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.7, delay: 0.3 }}
-                    className="text-5xl font-bold leading-tight md:text-6xl"
-                  >
-                    <span className="bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent">
-                      {user?.name ? `${user.name},` : 'Welcome,'}
-                    </span>
-                    <br />
-                    <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                      let&apos;s explore the world
-                    </span>
-                  </motion.h1>
-                  <motion.p
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                    className="max-w-2xl text-lg text-white/70"
-                  >
-                    Seamlessly manage bookings, unlock curated itineraries, and stay inspired with destinations that mirror the magic of our landing experience.
-                  </motion.p>
-                  <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.5 }}
-                    className="flex flex-wrap gap-4"
-                  >
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.97 }}
-                      onClick={() => setShowTripSelector(true)}
-                      type="button"
-                      className="flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition-all hover:shadow-blue-500/50"
-                    >
-                      Plan a trip
-                      <motion.span animate={{ x: [0, 6, 0] }} transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut' }}>
-                        ➜
-                      </motion.span>
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.97 }}
-                      type="button"
-                      onClick={() => {
-                        setActiveTab('explore')
-                        setTimeout(() => {
-                          document.getElementById('explore')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                        }, 150)
-                      }}
-                      className="rounded-lg border border-white/15 bg-white/10 px-8 py-3 text-sm font-semibold text-white/80 transition-all hover:bg-white/15"
-                    >
-                      Browse destinations
-                    </motion.button>
-                  </motion.div>
-                  <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.6 }}
-                    className="flex flex-wrap items-center gap-6 text-sm text-white/70"
-                  >
-                    <div className="flex items-center gap-2">
-                      <div className="h-2 w-2 rounded-full bg-emerald-400" />
-                      10,000+ happy travelers
-                    </div>
-                    <div className="hidden h-4 w-px bg-white/20 sm:block" />
-                    <div className="flex items-center gap-2">
-                      ⭐ 4.9/5 satisfaction score
-                    </div>
-                  </motion.div>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9, x: 40 }}
-                  whileInView={{ opacity: 1, scale: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: 0.4 }}
-                  className="relative w-full max-w-sm justify-self-center rounded-[32px] border border-white/15 bg-white/5 p-1 backdrop-blur-2xl"
-                >
-                  <div className="rounded-[28px] border border-white/10 bg-[#0b1224]/70 p-8">
-                    <div className="space-y-6">
-                      <div>
-                        <p className="text-sm text-white/60">This week&apos;s vibe</p>
-                        <p className="mt-2 text-3xl font-semibold text-white">Adventure ready</p>
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-center">
-                          <p className="text-2xl font-semibold text-blue-200">{bookings.length}</p>
-                          <p className="text-xs text-white/60">Active trips</p>
-                        </div>
-                        <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-center">
-                          <p className="text-2xl font-semibold text-purple-200">{bookedDestinationNames.size}</p>
-                          <p className="text-xs text-white/60">Destinations</p>
-                        </div>
-                      </div>
-                      <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 p-4 text-sm text-white/75">
-                        Keep discovering tailored escapes, curated to match the glow of our landing page experience.
-                      </div>
-                    </div>
-                  </div>
-                  <motion.div
-                    initial={{ opacity: 0.4, scale: 0.9 }}
-                    animate={{ opacity: 0.7, scale: 1 }}
-                    transition={{ duration: 6, repeat: Infinity, repeatType: 'mirror' }}
-                    className="pointer-events-none absolute -bottom-14 right-8 h-36 w-36 rounded-full bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 blur-3xl"
-                  />
-                </motion.div>
-              </div>
-            </motion.section>
-
-            <motion.section
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-              className="mb-12"
-            >
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-                {quickStats.map((stat, index) => (
-                  <motion.div
-                    key={stat.label}
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.5, ease: 'easeOut', delay: index * 0.08 }}
-                    whileHover={{ scale: 1.04 }}
-                    className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-white/8 p-6 shadow-[0_35px_120px_rgba(8,12,24,0.6)] backdrop-blur-2xl transition-transform duration-500"
-                  >
-                    <div className={`absolute inset-0 bg-gradient-to-br ${stat.accent} opacity-70 transition-opacity duration-500 group-hover:opacity-90`} />
-                    <div className="relative flex h-full flex-col justify-between gap-6">
-                      <div className="flex items-center justify-between">
-                        <span className="text-3xl">{stat.icon}</span>
-                        <span className="rounded-full border border-white/25 px-3 py-1 text-xs font-medium text-white/75">
-                          Overview
-                        </span>
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-white/80">{stat.label}</p>
-                        <p className="mt-3 text-4xl font-semibold text-white drop-shadow-[0_12px_35px_rgba(129,140,248,0.45)]">
-                          {stat.value}
-                        </p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.section>
-
-            <motion.nav
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
-              className="mb-12"
-            >
-              <div className="flex flex-wrap gap-3 rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-2xl">
-                {[
-                  { id: 'explore', label: 'Explore Destinations', icon: '🗺️' },
-                  { id: 'national', label: 'National Trips', icon: '🇮🇳' },
-                  { id: 'international', label: 'International Trips', icon: '🌍' },
-                  { id: 'bookings', label: 'My Bookings', icon: '🧳' }
-                ].map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id as any)}
-                    className={`relative flex items-center gap-2 rounded-full px-6 py-2 text-sm font-medium transition-all duration-300 ${
-                      activeTab === tab.id ? 'text-white' : 'text-white/70 hover:text-white'
-                    }`}
-                  >
-                    <span className="text-lg">{tab.icon}</span>
-                    <span>{tab.label}</span>
-                    {activeTab === tab.id && (
-                      <span className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-blue-500/40 via-purple-500/35 to-pink-500/35" />
-                    )}
-                  </button>
-                ))}
-              </div>
-            </motion.nav>
-
-            {/* Tab Content */}
-        {activeTab === 'explore' && (
-          <motion.section
-            id="explore"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-            className="mb-16 space-y-10"
-          >
-            <div className="flex flex-wrap items-center justify-between gap-6 rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-2xl">
-              <div>
-                <h2 className="text-3xl font-semibold leading-tight text-white drop-shadow-[0_10px_35px_rgba(59,130,246,0.35)]">
-                  Explore Destinations
-                </h2>
-                <p className="mt-2 text-sm text-white/70">
-                  Browse {availableDestinations.length} luminous escapes ready for your next adventure.
-                </p>
-              </div>
-              <div className="flex flex-wrap items-center gap-4">
-                <span className="rounded-full border border-white/20 px-4 py-2 text-xs font-medium text-white/70">
-                  {selectedDestinations.length} selected
-                </span>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.97 }}
+            <div className="hidden md:flex items-center gap-8">
+              {navLinks.map((link) => (
+                <button
+                  key={link.id}
+                  onClick={() => handleScrollToSection(link.id)}
+                  className={`relative py-2 text-sm font-medium transition-colors ${
+                    activeSection === link.id ? 'text-[#103b2c]' : 'text-[#1f5b46]/70 hover:text-[#1f5b46]'
+                  }`}
                   type="button"
-                  onClick={() => setShowTripSelector(true)}
-                  className="rounded-full border border-white/20 px-6 py-2 text-xs font-medium text-white/80 transition-all hover:bg-white/10"
                 >
-                  Choose trip type
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.97 }}
-                  type="button"
-                  onClick={handleShowAllDestinations}
-                  className="rounded-full border border-white/20 px-6 py-2 text-xs font-medium text-white/80 transition-all hover:bg-white/10"
-                >
-                  Show all
-                </motion.button>
-                {selectedDestinations.length >= 2 && (
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={calculateShortestPath}
-                    className="relative overflow-hidden rounded-full border border-cyan-300/60 px-6 py-2.5 text-sm font-semibold uppercase tracking-[0.3em] text-cyan-100 transition-all duration-300"
-                  >
-                    <span className="absolute inset-0 bg-gradient-to-r from-cyan-500/40 via-blue-500/30 to-indigo-500/40 opacity-0 transition-opacity duration-300 hover:opacity-100" />
-                    <span className="relative">Calculate Route</span>
-                  </motion.button>
-                )}
-                {selectedDestinations.length > 0 && (
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => setShowBookingForm(true)}
-                    className="relative overflow-hidden rounded-full border border-emerald-300/60 px-6 py-2.5 text-sm font-semibold uppercase tracking-[0.3em] text-emerald-100 transition-all duration-300"
-                  >
-                    <span className="absolute inset-0 bg-gradient-to-r from-emerald-500/40 via-green-500/30 to-teal-500/40 opacity-0 transition-opacity duration-300 hover:opacity-100" />
-                    <span className="relative">Book Selected</span>
-                  </motion.button>
-                )}
-              </div>
-            </div>
-
-            {availableDestinations.length === 0 ? (
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
-                className="flex flex-col items-center justify-center rounded-[32px] border border-white/10 bg-white/8 px-8 py-16 text-center text-white/80 backdrop-blur-2xl"
-              >
-                <div className="mb-4 text-5xl drop-shadow-[0_15px_45px_rgba(251,191,36,0.35)]">🎉</div>
-                <h3 className="text-2xl font-semibold text-white">All Destinations Booked!</h3>
-                <p className="mt-3 max-w-xl text-sm text-white/70">
-                  You have explored every getaway in our catalogue. Dive into your bookings to relive the magic or craft fresh adventures.
-                </p>
-              </motion.div>
-            ) : (
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {availableDestinations.map((destination, index) => {
-                  const isSelected = selectedDestinations.some((d) => d.destinationId === destination.destinationId)
-                  return (
+                  {link.label}
+                  {activeSection === link.id && (
                     <motion.div
-                      key={destination.destinationId}
-                      initial={{ opacity: 0, y: 40 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.2 }}
-                      transition={{ duration: 0.5, ease: 'easeOut', delay: index * 0.04 }}
-                      whileHover={{ y: -8, scale: 1.015 }}
-                      className={`group relative overflow-hidden rounded-[28px] border p-1 transition-all duration-500 ${
-                        isSelected
-                          ? 'border-blue-400/70 bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 shadow-[0_35px_90px_rgba(59,130,246,0.45)]'
-                          : 'border-white/10 bg-white/8 shadow-[0_25px_70px_rgba(8,12,24,0.55)] hover:border-white/20 hover:shadow-[0_40px_120px_rgba(59,130,246,0.35)]'
-                      }`}
-                      onClick={() => handleDestinationSelect(destination)}
-                    >
-                      <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                        <div className="absolute inset-0 bg-gradient-to-br from-white/25 via-transparent to-transparent" />
-                      </div>
-                      <div className="relative overflow-hidden rounded-[24px] border border-white/10 bg-[#0b1224]/65 backdrop-blur-2xl">
-                        <div className="aspect-[4/3] overflow-hidden">
-                          <img
-                            src={destination.imageUrl || `https://images.unsplash.com/photo-${1500000000000 + destination.destinationId}?q=80&w=800&auto=format&fit=crop`}
-                            alt={destination.name}
-                            className="h-full w-full object-cover transition-transform duration-[650ms] group-hover:scale-110"
-                            loading="lazy"
-                          />
-                          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent opacity-80" />
-                        </div>
-                        <div className="relative space-y-4 p-6">
-                          <div className="flex items-center justify-between text-xs font-medium text-white/70">
-                            <span>Signature escape</span>
-                            {isSelected && <span className="text-xs font-medium text-cyan-200">Selected</span>}
-                          </div>
-                          <h3 className="text-xl font-semibold text-white drop-shadow-[0_12px_35px_rgba(59,130,246,0.45)] group-hover:text-cyan-200">
-                            {destination.name}
-                          </h3>
-                          <p className="text-sm text-white/70 line-clamp-2">
-                            {destination.description || 'Beautiful destination waiting to be explored'}
-                          </p>
-                          <div className="flex items-center justify-between">
-                            <span className="text-2xl font-semibold bg-gradient-to-r from-cyan-200 via-blue-300 to-purple-300 bg-clip-text text-transparent">
-                              ₹{destination.price.toLocaleString()}
-                            </span>
-                            <span className="text-xs text-white/60">Per night</span>
-                          </div>
-                        </div>
-                      </div>
-                      {isSelected && (
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-                          className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-500 shadow-[0_0_45px_rgba(59,130,246,0.45)]"
-                        >
-                          <span className="text-lg font-bold text-white">✓</span>
-                        </motion.div>
-                      )}
-                    </motion.div>
-                  )
-                })}
-              </div>
-            )}
-          </motion.section>
-        )}
-
-        {/* National Trips Tab */}
-        {activeTab === 'national' && (
-          <motion.section
-            id="national"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-            className="mb-16 space-y-12"
-          >
-            <div className="flex flex-col gap-6 rounded-3xl border border-amber-400/20 bg-gradient-to-br from-amber-500/10 via-orange-500/10 to-rose-500/10 p-6 backdrop-blur-2xl md:flex-row md:items-center md:justify-between">
-              <div className="max-w-2xl space-y-3">
-                <h2 className="text-3xl font-semibold text-white drop-shadow-[0_12px_35px_rgba(251,191,36,0.35)]">
-                  National Trips
-                </h2>
-                <p className="text-white/70">
-                  Discover curated journeys across India with immersive cultural getaways and boutique stays infused with heritage charm.
-                </p>
-              </div>
-              <div className="flex flex-wrap items-center gap-4">
-                <span className="rounded-full border border-white/20 px-4 py-2 text-xs font-medium text-white/70">
-                  {selectedDestinations.length} selected
-                </span>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.97 }}
+                      layoutId="dashboardActiveSection"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#2f7a4b] via-[#1d5e4a] to-[#0f4437]"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </button>
+              ))}
+            </div>
+            <div className="hidden md:flex items-center gap-4">
+              <button
+                onClick={() => setShowCancellationCenter(true)}
+                className={`h-12 px-5 rounded-full border transition-colors ${
+                  isDark ? 'border-white/15 text-white hover:bg-white/10' : 'border-[#1f5b46]/30 text-[#1f5b46] hover:text-[#0f3a2c] hover:bg-[#cfe2d6]/40'
+                }`}
+                type="button"
+                title="Cancellation center"
+              >
+                Manage cancellations
+              </button>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <button
+                  onClick={handleLogout}
+                  className="px-6 py-2.5 bg-gradient-to-r from-[#2d7a54] to-[#145c4a] text-[#f2f5f1] font-semibold rounded-lg shadow-lg shadow-[#145c4a]/30"
                   type="button"
-                  onClick={() => setShowTripSelector(true)}
-                  className="rounded-full border border-white/20 px-6 py-2 text-xs font-medium text-white/80 transition-all hover:bg-white/10"
                 >
-                  Choose trip type
+                  Logout
+                </button>
+              </motion.div>
+            </div>
+            <motion.button
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setMobileMenuOpen((state) => !state)}
+              className="md:hidden p-2 text-[#1f5b46]/80 hover:text-[#0f3a2c]"
+              aria-label="Toggle menu"
+              type="button"
+            >
+              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {mobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </motion.button>
+          </div>
+          <AnimatePresence>
+            {mobileMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className={`md:hidden overflow-hidden border-t ${
+                  isDark ? 'border-[#2b5f49]/25 bg-[#0e1512]/95' : 'border-[#0e1512]/10 bg-white'
+                }`}
+              >
+                <div className="py-4 space-y-2">
+                  {navLinks.map((link) => (
+                    <motion.button
+                      key={link.id}
+                      onClick={() => handleScrollToSection(link.id)}
+                      whileHover={{ x: 4 }}
+                      className={`block w-full text-left px-4 py-3 rounded-lg transition ${
+                        activeSection === link.id
+                          ? isDark
+                            ? 'bg-[#132920]/80 text-[#f5e9d4]'
+                            : 'bg-[#0e1512]/10 text-[#0e1512]'
+                          : isDark
+                          ? 'text-[#d7e7da] hover:text-[#0f3a2c] hover:bg-[#f5f1e8]/75'
+                          : 'text-[#0e1512]/70 hover:text-[#0e1512] hover:bg-[#0e1512]/5'
+                      }`}
+                      type="button"
+                    >
+                      {link.label}
+                    </motion.button>
+                  ))}
+                </div>
+                <div
+                  className={`border-t px-4 py-4 flex flex-col gap-3 ${
+                    isDark ? 'border-[#2b5f49]/25' : 'border-[#0e1512]/10'
+                  }`}
+                >
+                  <button
+                    onClick={() => {
+                      setShowCancellationCenter(true)
+                      setMobileMenuOpen(false)
+                    }}
+                    className={`px-4 py-3 rounded-lg border text-sm font-medium ${
+                      isDark ? 'border-[#2b5f49]/30 text-[#f5e9d4] hover:bg-[#f5f1e8]/10' : 'border-[#0e1512]/15 text-[#0e1512] hover:bg-[#0e1512]/5'
+                    }`}
+                    type="button"
+                  >
+                    Manage cancellations
+                  </button>
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false)
+                      handleLogout()
+                    }}
+                    className="px-4 py-3 rounded-lg bg-gradient-to-r from-[#2d7a54] via-[#1f5b46] to-[#145c4a] text-[#f5e9d4] font-semibold"
+                    type="button"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </header>
+
+      <main className="relative z-10 pt-28 md:pt-36 pb-28 space-y-24">
+        <motion.section
+          id="overview"
+          initial={{ opacity: 0, y: 32 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="max-w-7xl mx-auto px-6"
+        >
+          <div className="grid gap-10 md:grid-cols-[1.2fr,0.8fr] items-end">
+            <div className="space-y-8">
+              <div
+                className={`inline-block px-4 py-2 rounded-full border text-sm font-medium backdrop-blur-sm ${
+                  isDark ? 'bg-[#132920]/80 border-[#2b5f49]/25 text-[#f5e9d4]' : 'bg-[#0e1512]/5 border-[#0e1512]/10 text-[#0e1512]'
+                }`}
+              >
+                Your SuiteSavvy Dashboard
+              </div>
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight">
+                <span className="bg-gradient-to-r from-[#f5e9d4] via-[#d9b26f] to-[#b87d4b] bg-clip-text text-transparent">
+                  Welcome back,
+                </span>
+                <br />
+                <span className="bg-gradient-to-r from-[#2f6f4a] via-[#1d5e4a] to-[#0f3a2c] bg-clip-text text-transparent">
+                  {user?.name || 'Explorer'}
+                </span>
+              </h1>
+              <p className={`text-lg md:text-xl ${isDark ? 'text-[#d7e7da]' : 'text-[#0e1512]/70'}`}>
+                Craft your next escape across {destinations.length} cinematic landscapes. Navigate bookings, cancellations, and curated routes with SuiteSavvy precision.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <motion.button
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => setShowBookingForm(true)}
+                  className="px-8 py-3 rounded-full bg-gradient-to-r from-[#2d7a54] via-[#1f5b46] to-[#145c4a] text-[#f5f1e8] font-semibold shadow-[0_20px_45px_rgba(16,58,44,0.45)]"
+                  type="button"
+                >
+                  Start booking
                 </motion.button>
-                {selectedDestinations.length >= 2 && (
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={calculateShortestPath}
-                    className="rounded-full border border-amber-300/50 px-6 py-2.5 text-sm font-semibold uppercase tracking-[0.3em] text-amber-100 transition-all duration-300 hover:shadow-[0_0_45px_rgba(251,191,36,0.35)]"
-                  >
-                    Calculate Route
-                  </motion.button>
-                )}
-                {selectedDestinations.length > 0 && (
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => setShowBookingForm(true)}
-                    className="rounded-full border border-white/25 px-6 py-2.5 text-sm font-semibold uppercase tracking-[0.3em] text-white/80 transition-all duration-300 hover:bg-white/10"
-                  >
-                    Book Selected
-                  </motion.button>
-                )}
+                <motion.button
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={calculateShortestPath}
+                  disabled={selectedDestinations.length < 2}
+                  className={`px-8 py-3 rounded-full border font-semibold transition-colors ${
+                    selectedDestinations.length < 2
+                      ? isDark
+                        ? 'border-[#2b5f49]/25 text-[#f5e9d4]/40 cursor-not-allowed'
+                        : 'border-[#0e1512]/20 text-[#0e1512]/40 cursor-not-allowed'
+                      : isDark
+                      ? 'border-[#2b5f49]/60 text-[#f5e9d4] hover:bg-[#1e3b30]/40'
+                      : 'border-[#0e1512]/30 text-[#0e1512] hover:bg-[#0e1512]/5'
+                  }`}
+                  type="button"
+                >
+                  Build route
+                </motion.button>
+              </div>
+              <div className={`rounded-2xl border px-5 py-4 max-w-xl ${isDark ? 'border-[#2b5f49]/25 bg-[#132920]/70 text-[#f5e9d4]' : 'border-[#0e1512]/10 bg-white/70'}`}>
+                <div className="flex items-center justify-between text-sm">
+                  <span className={isDark ? 'text-[#d7e7da]' : 'text-[#0e1512]/70'}>Selections</span>
+                  <span className="font-semibold text-transparent bg-gradient-to-r from-[#2f6f4a] via-[#1d5e4a] to-[#0f3a2c] bg-clip-text">
+                    {selectedDestinations.length}
+                  </span>
+                </div>
+                <div className="mt-2 text-sm line-clamp-2">{selectedPreview || 'Tap a destination below to begin curating your journey.'}</div>
               </div>
             </div>
+            <div className="space-y-6">
+              <div className={`rounded-3xl p-6 border ${isDark ? 'border-[#2b5f49]/25 bg-[#132920]/70 text-[#f5e9d4]' : 'border-[#0f1a13]/10 bg-white/70'}`}>
+                <div className="text-sm uppercase tracking-[0.3em] text-[#d9b26f]">Today</div>
+                <div className="mt-4 flex items-center justify-between">
+                  <div>
+                    <div className="text-4xl font-bold">{activeTrips}</div>
+                    <div className={isDark ? 'text-[#4d7a62]' : 'text-[#0f1a13]/60'}>Active expeditions</div>
+                  </div>
+                  <div>
+                    <div className="text-4xl font-bold">{cancellationCount}</div>
+                    <div className={isDark ? 'text-[#4d7a62]' : 'text-[#0f1a13]/60'}>Cancellations resolved</div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                {heroImages.map((_, index) => (
+                  <div key={index} className={`h-1 flex-1 rounded-full ${index === heroIndex ? 'bg-[#d9b26f]' : 'bg-white/20'}`} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </motion.section>
 
-            {devotionalDestinations.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
-                className="space-y-6"
-              >
-                <div className="space-y-2">
-                  <h3 className="text-2xl font-semibold text-amber-200 drop-shadow-[0_12px_35px_rgba(251,191,36,0.35)]">
-                    Devotional Retreats
-                  </h3>
-                  <p className="max-w-2xl text-white/70">
-                    Seek serene pilgrimages, temple circuits, and soulful escapes curated for spiritual rejuvenation.
+        <motion.section
+          id="destinations"
+          initial={{ opacity: 0, y: 48 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8 }}
+          className="relative max-w-7xl mx-auto px-6"
+        >
+          <div className={`relative overflow-hidden rounded-[40px] border ${sectionBorderClass} px-6 sm:px-10 py-10 backdrop-blur-sm`}>
+            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${SECTION_BACKGROUND_IMAGES.destinations})` }} />
+            <div className={`absolute inset-0 ${sectionOverlayClass}`} />
+            <div className="relative z-10 flex flex-col gap-8">
+              <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+                <div className="max-w-2xl space-y-4">
+                  <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#f5e9d4] via-[#d9b26f] to-[#b87d4b] bg-clip-text text-transparent">The Wonders of Nature</h2>
+                  <p className={`text-lg ${isDark ? 'text-[#d7e7da]' : 'text-[#0f1a13]/70'}`}>
+                    Immerse yourself in bioluminescent bays, alpine ridges, and rainforest canopies. Filter the catalog to sculpt your perfect expedition.
                   </p>
                 </div>
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                  {devotionalDestinations.map((destination, index) => {
-                    const isSelected = selectedDestinations.some((d) => d.destinationId === destination.destinationId)
+                <div className="w-full lg:w-[480px]">
+                  <SearchFilterBar
+                    query={query}
+                    setQuery={setQuery}
+                    country={countryFilter}
+                    setCountry={setCountryFilter}
+                    priceMin={priceMin}
+                    setPriceMin={setPriceMin}
+                    priceMax={priceMax}
+                    setPriceMax={setPriceMax}
+                    clearFilters={clearFilters}
+                    countries={countriesList}
+                    dark={isDark}
+                  />
+                </div>
+              </div>
+
+              {highlightedDestinations.length === 0 ? (
+                <div className={`rounded-3xl border px-8 py-16 text-center text-lg ${isDark ? 'border-[#2b5f49]/25 bg-[#f5f1e8]/75 text-[#f5e9d4]' : 'border-[#0f1a13]/10 bg-white/70 text-[#0f1a13]/70'}`}>
+                  No destinations match your filters. Reset to rediscover the wild.
+                </div>
+              ) : (
+                <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                  {highlightedDestinations.map((destination) => {
+                    const selected = selectedDestinations.some((d) => d.destinationId === destination.destinationId)
                     return (
-                      <motion.div
+                      <motion.button
                         key={destination.destinationId}
-                        initial={{ opacity: 0, y: 40 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.2 }}
-                        transition={{ duration: 0.5, ease: 'easeOut', delay: index * 0.05 }}
-                        whileHover={{ y: -8, scale: 1.015 }}
-                        className={`group relative overflow-hidden rounded-[28px] border p-1 transition-all duration-500 ${
-                          isSelected
-                            ? 'border-amber-300/70 bg-gradient-to-br from-amber-500/25 via-orange-500/20 to-rose-500/20 shadow-[0_35px_90px_rgba(251,191,36,0.4)]'
-                            : 'border-amber-200/20 bg-amber-500/10 shadow-[0_25px_70px_rgba(88,28,135,0.4)] hover:border-amber-200/40 hover:shadow-[0_40px_120px_rgba(251,191,36,0.35)]'
-                        }`}
                         onClick={() => handleDestinationSelect(destination)}
+                        whileHover={{ y: -8 }}
+                        className={`group relative overflow-hidden rounded-3xl border text-left transition-all ${
+                          selected
+                            ? 'border-[#d9b26f] shadow-[0_25px_45px_rgba(248,209,108,0.25)]'
+                            : isDark
+                            ? 'border-[#2b5f49]/25 hover:border-[#d9b26f]/40'
+                            : 'border-[#0f1a13]/15 hover:border-[#0f1a13]/40'
+                        }`}
+                        type="button"
                       >
-                        <div className="absolute left-5 top-5 rounded-full border border-amber-200/60 bg-amber-500/30 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-amber-100">
-                          Devotional
+                        <div className="relative h-64 overflow-hidden">
+                          <motion.img
+                            src={destination.imageUrl || `https://images.unsplash.com/photo-${1500000000000 + destination.destinationId}?auto=format&fit=crop&w=1200&q=80`}
+                            alt={destination.name}
+                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                          {selected && (
+                            <motion.div
+                              initial={{ scale: 0.6, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                              className="absolute top-4 right-4 w-12 h-12 rounded-full bg-[#d9b26f] text-[#0f1a13] font-bold flex items-center justify-center shadow-lg"
+                            >
+                              ✓
+                            </motion.div>
+                          )}
                         </div>
-                        <div className="relative overflow-hidden rounded-[24px] border border-white/10 bg-[#120807]/70 backdrop-blur-2xl">
-                          <div className="aspect-[4/3] overflow-hidden">
-                            <img
-                              src={destination.imageUrl || `https://images.unsplash.com/photo-${1500000000000 + destination.destinationId}?q=80&w=800&auto=format&fit=crop`}
-                              alt={destination.name}
-                              className="h-full w-full object-cover transition-transform duration-[650ms] group-hover:scale-110"
-                              loading="lazy"
-                            />
-                            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#120807]/85 via-[#120807]/20 to-transparent" />
+                        <div className="p-6 space-y-4">
+                          <div className="flex items-center justify-between">
+                            <h3 className="text-2xl font-semibold">{destination.name}</h3>
+                            <span className="text-sm uppercase tracking-[0.3em] text-[#d9b26f]">{destination.country}</span>
                           </div>
-                          <div className="relative space-y-4 p-6">
-                            <h3 className="text-xl font-semibold text-white drop-shadow-[0_12px_35px_rgba(251,191,36,0.45)] group-hover:text-amber-200">
-                              {destination.name}
-                            </h3>
-                            <p className="text-sm text-amber-100/80 line-clamp-2">
-                              {destination.description || 'Sacred experiences across India'}
-                            </p>
-                            <div className="flex items-center justify-between">
-                              <span className="text-2xl font-semibold bg-gradient-to-r from-amber-200 via-orange-200 to-rose-200 bg-clip-text text-transparent">
-                                ₹{destination.price.toLocaleString()}
-                              </span>
-                              <span className="text-xs uppercase tracking-[0.3em] text-white/60">Per Night</span>
-                            </div>
+                          <p className={`text-sm leading-relaxed ${isDark ? 'text-[#d7e7da]' : 'text-[#0f1a13]/70'}`}>
+                            {destination.description || 'Untamed landscapes and hidden stories.'}
+                          </p>
+                          <div className="flex items-center justify-between">
+                            <div className="text-3xl font-bold text-[#d9b26f]">₹{destination.price.toLocaleString()}</div>
+                            <div className={`text-xs uppercase tracking-[0.4em] ${isDark ? 'text-[#f5e9d4]/60' : 'text-[#0f1a13]/50'}`}>Per night</div>
                           </div>
                         </div>
-                        {isSelected && (
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-                            className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 shadow-[0_0_45px_rgba(251,191,36,0.45)]"
-                          >
-                            <span className="text-lg font-bold text-[#120807]">✓</span>
-                          </motion.div>
-                        )}
-                      </motion.div>
+                      </motion.button>
                     )
                   })}
                 </div>
-              </motion.div>
-            )}
-
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {remainingNationalDestinations.map((destination, index) => {
-                const isSelected = selectedDestinations.some((d) => d.destinationId === destination.destinationId)
-                return (
-                  <motion.div
-                    key={destination.destinationId}
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.2 }}
-                    transition={{ duration: 0.5, ease: 'easeOut', delay: index * 0.05 }}
-                    whileHover={{ y: -8, scale: 1.015 }}
-                    className={`group relative overflow-hidden rounded-[28px] border p-1 transition-all duration-500 ${
-                      isSelected
-                        ? 'border-cyan-300/70 bg-gradient-to-br from-cyan-500/20 via-blue-500/20 to-purple-500/20 shadow-[0_35px_90px_rgba(59,130,246,0.45)]'
-                        : 'border-white/10 bg-white/5 shadow-[0_25px_70px_rgba(8,12,24,0.55)] hover:border-white/20 hover:shadow-[0_40px_120px_rgba(59,130,246,0.35)]'
-                    }`}
-                    onClick={() => handleDestinationSelect(destination)}
-                  >
-                    <div className="relative overflow-hidden rounded-[24px] border border-white/10 bg-[#050b19]/60 backdrop-blur-2xl">
-                      <div className="aspect-[4/3] overflow-hidden">
-                        <img
-                          src={destination.imageUrl || `https://images.unsplash.com/photo-${1500000000000 + destination.destinationId}?q=80&w=800&auto=format&fit=crop`}
-                          alt={destination.name}
-                          className="h-full w-full object-cover transition-transform duration-[650ms] group-hover:scale-110"
-                          loading="lazy"
-                        />
-                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent opacity-80" />
-                      </div>
-                      <div className="relative space-y-4 p-6">
-                        <h3 className="text-xl font-semibold text-white drop-shadow-[0_12px_35px_rgba(59,130,246,0.45)] group-hover:text-cyan-200">
-                          {destination.name}
-                        </h3>
-                        <p className="text-sm text-white/70 line-clamp-2">
-                          {destination.description || 'Beautiful destination waiting to be explored'}
-                        </p>
-                        <div className="flex items-center justify-between">
-                          <span className="text-2xl font-semibold bg-gradient-to-r from-cyan-200 via-blue-300 to-purple-300 bg-clip-text text-transparent">
-                            ₹{destination.price.toLocaleString()}
-                          </span>
-                          <span className="text-xs uppercase tracking-[0.3em] text-white/60">Per Night</span>
-                        </div>
-                      </div>
-                    </div>
-                    {isSelected && (
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-                        className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-500 shadow-[0_0_45px_rgba(59,130,246,0.45)]"
-                      >
-                        <span className="text-lg font-bold text-white">✓</span>
-                      </motion.div>
-                    )}
-                  </motion.div>
-                )
-              })}
-            </div>
-          </motion.section>
-        )}
-
-        {/* International Trips Tab */}
-        {activeTab === 'international' && (
-          <motion.section
-            id="international"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-            className="mb-16 space-y-12"
-          >
-            <div className="flex flex-col gap-6 rounded-3xl border border-indigo-400/20 bg-gradient-to-br from-indigo-500/10 via-blue-600/10 to-purple-600/10 p-6 backdrop-blur-2xl md:flex-row md:items-center md:justify-between">
-              <div className="max-w-2xl space-y-3">
-                <h2 className="text-3xl font-semibold text-white drop-shadow-[0_12px_35px_rgba(129,140,248,0.35)]">
-                  International Trips
-                </h2>
-                <p className="text-white/70">
-                  Traverse global escapes crafted with cosmopolitan flair, exclusive stays, and once-in-a-lifetime experiences.
-                </p>
-              </div>
-              <div className="flex flex-wrap items-center gap-4">
-                <span className="rounded-full border border-white/20 px-4 py-2 text-xs font-medium text-white/70">
-                  {selectedDestinations.length} selected
-                </span>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => setShowTripSelector(true)}
-                  className="rounded-full border border-white/20 px-6 py-2 text-xs font-medium text-white/80 transition-all hover:bg-white/10"
-                >
-                  Choose trip type
-                </motion.button>
-                {selectedDestinations.length >= 2 && (
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={calculateShortestPath}
-                    className="rounded-full border border-cyan-300/60 px-6 py-2.5 text-sm font-semibold uppercase tracking-[0.3em] text-cyan-100 transition-all duration-300 hover:shadow-[0_0_45px_rgba(59,130,246,0.35)]"
-                  >
-                    Calculate Route
-                  </motion.button>
-                )}
-                {selectedDestinations.length > 0 && (
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => setShowBookingForm(true)}
-                    className="rounded-full border border-white/25 px-6 py-2.5 text-sm font-semibold uppercase tracking-[0.3em] text-white/80 transition-all duration-300 hover:bg-white/10"
-                  >
-                    Book Selected
-                  </motion.button>
-                )}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {internationalDestinations.map((destination, index) => {
-                  const isSelected = selectedDestinations.some((d) => d.destinationId === destination.destinationId)
-                  return (
-                    <motion.div
-                      key={destination.destinationId}
-                      initial={{ opacity: 0, y: 40 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.2 }}
-                      transition={{ duration: 0.5, ease: 'easeOut', delay: index * 0.05 }}
-                      whileHover={{ y: -8, scale: 1.015 }}
-                      className={`group relative overflow-hidden rounded-[28px] border p-1 transition-all duration-500 ${
-                        isSelected
-                          ? 'border-indigo-300/70 bg-gradient-to-br from-cyan-400/20 via-blue-500/20 to-purple-500/20 shadow-[0_35px_90px_rgba(79,70,229,0.45)]'
-                          : 'border-white/10 bg-white/5 shadow-[0_25px_70px_rgba(8,12,24,0.55)] hover:border-white/20 hover:shadow-[0_40px_120px_rgba(99,102,241,0.35)]'
-                      }`}
-                      onClick={() => handleDestinationSelect(destination)}
-                    >
-                      <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                        <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent" />
-                      </div>
-                      <div className="relative overflow-hidden rounded-[24px] border border-white/10 bg-[#050b19]/60 backdrop-blur-2xl">
-                        <div className="aspect-[4/3] overflow-hidden">
-                          <img
-                            src={destination.imageUrl || `https://images.unsplash.com/photo-${1500000000000 + destination.destinationId}?q=80&w=800&auto=format&fit=crop`}
-                            alt={destination.name}
-                            className="h-full w-full object-cover transition-transform duration-[650ms] group-hover:scale-110"
-                            loading="lazy"
-                          />
-                          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent opacity-80" />
-                        </div>
-                        <div className="relative space-y-4 p-6">
-                          <div className="flex items-center justify-between text-xs uppercase tracking-[0.3em] text-white/60">
-                            <span>Global Signature</span>
-                            {isSelected && <span className="text-cyan-200">Selected</span>}
-                          </div>
-                          <h3 className="text-xl font-semibold text-white drop-shadow-[0_12px_35px_rgba(79,70,229,0.45)] group-hover:text-cyan-200">
-                            {destination.name}
-                          </h3>
-                          <p className="text-sm text-white/70 line-clamp-2">
-                            {destination.description || 'Beautiful destination waiting to be explored'}
-                          </p>
-                          <div className="flex items-center justify-between">
-                            <span className="text-2xl font-semibold bg-gradient-to-r from-cyan-200 via-blue-300 to-purple-300 bg-clip-text text-transparent">
-                              ₹{destination.price.toLocaleString()}
-                            </span>
-                            <span className="text-xs text-white/60">Per night</span>
-                          </div>
-                        </div>
-                      </div>
-                      {isSelected && (
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-                          className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-500 shadow-[0_0_45px_rgba(99,102,241,0.45)]"
-                        >
-                          <span className="text-lg font-bold text-white">✓</span>
-                        </motion.div>
-                      )}
-                    </motion.div>
-                  )
-                })}
-            </div>
-          </motion.section>
-        )}
-
-        {/* My Bookings Tab */}
-        {activeTab === 'bookings' && (
-          <motion.section
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-            className="space-y-14"
-          >
-            <div className="space-y-3">
-              <h3 className="text-3xl font-semibold text-white drop-shadow-[0_12px_35px_rgba(59,130,246,0.45)]">
-                My Bookings
-              </h3>
-              <p className="text-sm text-white/70">
-                Review ongoing journeys, manage cancellations, and relive past escapes with luminous timelines.
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <h4 className="text-xl font-semibold text-white">Current Bookings</h4>
-                <span className="rounded-full border border-white/15 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-white/50">
-                  Active
-                </span>
-              </div>
-              {bookings.filter((b) => b.cancellationStatus === 'None' || b.cancellationStatus === 'Requested').length === 0 ? (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex flex-col items-center justify-center rounded-[28px] border border-white/10 bg-white/5 px-8 py-12 text-center text-white/70 backdrop-blur-2xl"
-                >
-                  <div className="mb-3 text-4xl">📅</div>
-                  <p>No current bookings</p>
-                </motion.div>
-              ) : (
-                <div className="space-y-6">
-                  {bookings
-                    .filter((b) => b.cancellationStatus === 'None' || b.cancellationStatus === 'Requested')
-                    .map((booking, index) => (
-                      <motion.div
-                        key={booking.bookingId}
-                        initial={{ opacity: 0, y: 40 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.3 }}
-                        transition={{ duration: 0.5, ease: 'easeOut', delay: index * 0.05 }}
-                        className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-white/5 p-8 backdrop-blur-2xl shadow-[0_35px_120px_rgba(8,12,24,0.65)]"
-                      >
-                        <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-blue-500/20 to-purple-500/20" />
-                        </div>
-                        <div className="relative space-y-6">
-                          <div className="flex flex-wrap items-center justify-between gap-4">
-                            <div className="space-y-2">
-                              <h4 className="text-xl font-semibold text-white drop-shadow-[0_12px_35px_rgba(59,130,246,0.45)]">
-                                Booking #{booking.bookingId}
-                              </h4>
-                              <div className="flex flex-wrap items-center gap-2">
-                                <CancellationBadge cancellationStatus={booking.cancellationStatus} />
-                                {booking.latestCancellation?.status === 'Pending' && (
-                                  <CancellationBadge cancellationStatus="Requested" emphasis />
-                                )}
-                              </div>
-                            </div>
-                            <span className="rounded-full border border-emerald-300/40 px-4 py-2 text-lg font-semibold text-emerald-200 shadow-[0_0_35px_rgba(34,197,94,0.35)]">
-                              ₹{booking.totalPrice.toLocaleString()}
-                            </span>
-                          </div>
-
-                          <div className="grid grid-cols-2 gap-5 text-sm md:grid-cols-4">
-                            <div className="space-y-1">
-                              <span className="text-white/60">Guests</span>
-                              <div className="text-white/90">{booking.guests}</div>
-                            </div>
-                            <div className="space-y-1">
-                              <span className="text-white/60">Nights</span>
-                              <div className="text-white/90">{booking.nights}</div>
-                            </div>
-                            <div className="space-y-1">
-                              <span className="text-white/60">Date</span>
-                              <div className="text-white/90">
-                                {new Date(booking.bookingDate).toLocaleDateString()}
-                              </div>
-                            </div>
-                            <div className="space-y-1">
-                              <span className="text-white/60">Destinations</span>
-                              <div className="text-white/90">{booking.destinations.join(', ')}</div>
-                            </div>
-                          </div>
-
-                          {booking.latestCancellation && (
-                            <div className="rounded-2xl border border-amber-300/30 bg-amber-500/10 p-4">
-                              <CancellationDetails latestCancellation={booking.latestCancellation} />
-                            </div>
-                          )}
-
-                          <div className="flex flex-col gap-3 pt-2 md:flex-row">
-                            <motion.button
-                              whileHover={{ scale: 1.02 }}
-                              whileTap={{ scale: 0.97 }}
-                              onClick={() => handleRequestCancellation(booking.bookingId)}
-                              className="relative flex-1 overflow-hidden rounded-full border border-rose-400/40 px-5 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-rose-200 transition-all duration-300"
-                            >
-                              <span className="absolute inset-0 bg-gradient-to-r from-rose-500/25 via-pink-500/25 to-red-500/25 opacity-0 transition-opacity duration-300 hover:opacity-100" />
-                              <span className="relative">Request Cancellation</span>
-                            </motion.button>
-                            <motion.button
-                              whileHover={{ scale: 1.02 }}
-                              whileTap={{ scale: 0.97 }}
-                              onClick={() => handleExploreDestinations(booking)}
-                              className="relative flex-1 overflow-hidden rounded-full border border-blue-400/40 px-5 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-blue-200 transition-all duration-300"
-                            >
-                              <span className="absolute inset-0 bg-gradient-to-r from-blue-500/25 via-indigo-500/25 to-purple-500/25 opacity-0 transition-opacity duration-300 hover:opacity-100" />
-                              <span className="relative flex items-center justify-center gap-2">
-                                🗺️ Explore Destinations
-                              </span>
-                            </motion.button>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                </div>
               )}
-            </div>
-
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <h4 className="text-xl font-semibold text-white">Cancelled Bookings</h4>
-                <span className="rounded-full border border-white/15 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-white/50">
-                  Archive
-                </span>
-              </div>
-              {bookings.filter((b) => b.cancellationStatus === 'Approved').length === 0 ? (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex flex-col items-center justify-center rounded-[28px] border border-white/10 bg-white/5 px-8 py-12 text-center text-white/70 backdrop-blur-2xl"
-                >
-                  <div className="mb-3 text-4xl">✅</div>
-                  <p>No cancelled bookings</p>
-                </motion.div>
-              ) : (
-                <div className="space-y-6">
-                  {bookings
-                    .filter((b) => b.cancellationStatus === 'Approved')
-                    .map((booking, index) => (
-                      <motion.div
-                        key={booking.bookingId}
-                        initial={{ opacity: 0, y: 40 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.3 }}
-                        transition={{ duration: 0.5, ease: 'easeOut', delay: index * 0.05 }}
-                        className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-white/5 p-8 opacity-80 backdrop-blur-2xl shadow-[0_35px_120px_rgba(8,12,24,0.45)]"
-                      >
-                        <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                          <div className="absolute inset-0 bg-gradient-to-br from-slate-500/20 via-slate-600/20 to-slate-700/20" />
-                        </div>
-                        <div className="relative space-y-6">
-                          <div className="flex flex-wrap items-center justify-between gap-4">
-                            <div className="space-y-2">
-                              <h4 className="text-xl font-semibold text-white">
-                                Booking #{booking.bookingId}
-                              </h4>
-                              <CancellationBadge cancellationStatus={booking.cancellationStatus} />
-                            </div>
-                            <span className="rounded-full border border-white/20 px-4 py-2 text-lg font-semibold text-white/60">
-                              ₹{booking.totalPrice.toLocaleString()}
-                            </span>
-                          </div>
-
-                          <div className="grid grid-cols-2 gap-5 text-sm md:grid-cols-4">
-                            <div className="space-y-1">
-                              <span className="text-white/60">Guests</span>
-                              <div className="text-white/90">{booking.guests}</div>
-                            </div>
-                            <div className="space-y-1">
-                              <span className="text-white/60">Nights</span>
-                              <div className="text-white/90">{booking.nights}</div>
-                            </div>
-                            <div className="space-y-1">
-                              <span className="text-white/60">Date</span>
-                              <div className="text-white/90">
-                                {new Date(booking.bookingDate).toLocaleDateString()}
-                              </div>
-                            </div>
-                            <div className="space-y-1">
-                              <span className="text-white/60">Destinations</span>
-                              <div className="text-white/90">{booking.destinations.join(', ')}</div>
-                            </div>
-                          </div>
-
-                          {booking.latestCancellation && (
-                            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                              <CancellationDetails latestCancellation={booking.latestCancellation} />
-                            </div>
-                          )}
-
-                          <motion.button
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.97 }}
-                            onClick={() => handleExploreDestinations(booking)}
-                            className="relative w-full overflow-hidden rounded-full border border-white/20 px-5 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white/70 transition-all duration-300"
-                          >
-                            <span className="absolute inset-0 bg-gradient-to-r from-slate-500/25 via-slate-600/25 to-slate-700/25 opacity-0 transition-opacity duration-300 hover:opacity-100" />
-                            <span className="relative flex items-center justify-center gap-2">
-                              🗺️ View Destinations
-                            </span>
-                          </motion.button>
-                        </div>
-                      </motion.div>
-                    ))}
-                </div>
-              )}
-            </div>
-          </motion.section>
-        )}
-
-        {/* Shortest Path Results */}
-        {shortestPath && (
-          <motion.section
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-            className="mb-16"
-            ref={routeSectionRef}
-          >
-            <div className="mb-8 space-y-2">
-              <h3 className="text-3xl font-semibold text-white drop-shadow-[0_12px_35px_rgba(59,130,246,0.45)]">
-                Optimal Route
-              </h3>
-              <p className="text-sm text-white/70">
-                We stitched your selections into the most efficient itinerary for a seamless adventure flow.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-              <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
-                className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-white/5 p-8 backdrop-blur-2xl shadow-[0_35px_120px_rgba(8,12,24,0.65)]"
-              >
-                <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-blue-500/20 to-purple-500/20" />
-                </div>
-                <div className="relative space-y-6">
-                  <div className="flex items-center justify-between">
-                    <span className="text-white/70">Total Distance</span>
-                    <span className="text-3xl font-semibold bg-gradient-to-r from-cyan-200 via-blue-300 to-purple-300 bg-clip-text text-transparent">
-                      {shortestPath.distanceKm.toFixed(1)} km
-                    </span>
-                  </div>
-                  <div className="space-y-3">
-                    <span className="text-sm uppercase tracking-[0.3em] text-white/60">Recommended Order</span>
-                    <div className="flex flex-wrap gap-3">
-                      {shortestPath.order.map((index, i) => (
-                        <motion.span
-                          key={i}
-                          initial={{ opacity: 0, scale: 0.85 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: i * 0.08 }}
-                          className="rounded-full border border-white/20 px-4 py-2 text-sm font-medium text-white/85 shadow-[0_0_35px_rgba(59,130,246,0.25)]"
-                        >
-                          {i + 1}. {selectedDestinations[index]?.name}
-                        </motion.span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
-                className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-white/5 p-8 backdrop-blur-2xl shadow-[0_35px_120px_rgba(8,12,24,0.65)]"
-              >
-                <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-indigo-500/20 to-blue-500/20" />
-                </div>
-                <div className="relative space-y-4">
-                  <h4 className="text-lg font-semibold text-white">Route Map</h4>
-                  <div className="overflow-hidden rounded-3xl border border-white/10 bg-black/40 p-2">
-                    <RouteMap
-                      destinations={selectedDestinations}
-                      routeOrder={shortestPath.order}
-                      apiKey={(import.meta as any).env?.VITE_GOOGLE_MAPS_API_KEY || 'YOUR_GOOGLE_MAPS_API_KEY'}
-                    />
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-          </motion.section>
-        )}
+          </div>
+        </div>
+        </motion.section>
 
         <motion.section
-          initial={{ opacity: 0, y: 40 }}
+          id="metrics"
+          initial={{ opacity: 0, y: 48 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="mb-16"
+          transition={{ duration: 0.8 }}
+          className="max-w-6xl mx-auto px-6"
         >
-          <Feedback />
+          <div className={`relative overflow-hidden rounded-[40px] border ${sectionBorderClass} p-10 md:p-16 ${!isDark ? 'shadow-2xl' : ''}`}>
+            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${SECTION_BACKGROUND_IMAGES.metrics})` }} />
+            <div className={`absolute inset-0 ${sectionOverlayClass}`} />
+            <div className="relative z-10">
+              <div className="flex flex-col gap-6 md:flex-row md:justify-between md:items-center">
+                <div className="space-y-4 max-w-xl">
+                  <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#f5e9d4] via-[#d9b26f] to-[#b87d4b] bg-clip-text text-transparent">SuiteSavvy Metrics</h2>
+                  <p className={`text-lg ${isDark ? 'text-[#d7e7da]' : 'text-[#0f1a13]/70'}`}>
+                    Your dashboard stays in sync with live bookings, cancellation care, and curated destinations. Every refresh keeps your expedition tailored.
+                  </p>
+                </div>
+                <div className="text-sm uppercase tracking-[0.4em] text-[#d9b26f]">Adventure fidelity</div>
+              </div>
+              <div className="mt-10 grid gap-6 sm:grid-cols-2">
+                {adventureMetrics.map((metric) => (
+                  <motion.div
+                    key={metric.title}
+                    whileHover={{ y: -6 }}
+                    className={`rounded-3xl border p-6 transition-colors ${
+                      isDark ? 'border-[#2b5f49]/25 bg-[#132920]/70 text-[#f5e9d4]' : 'border-[#0f1a13]/10 bg-white/85'
+                    }`}
+                  >
+                    <div className="text-sm uppercase tracking-[0.4em] text-[#d9b26f]">{metric.title}</div>
+                    <div className="mt-4 text-4xl font-bold">{metric.value}</div>
+                    <p className={`mt-3 text-sm leading-relaxed ${isDark ? 'text-[#4d7a62]' : 'text-[#0f1a13]/60'}`}>{metric.description}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
         </motion.section>
-      </div>
-    </main>
-  </div>
 
-      {/* Booking Form Modal */}
+        <motion.section
+          id="stories"
+          initial={{ opacity: 0, y: 48 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8 }}
+          className="relative max-w-6xl mx-auto px-6"
+        >
+          <div className={`relative overflow-hidden rounded-[36px] border ${sectionBorderClass} px-6 sm:px-10 py-10 backdrop-blur-sm`}>
+            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${SECTION_BACKGROUND_IMAGES.stories})` }} />
+            <div className={`absolute inset-0 ${sectionOverlayClass}`} />
+            <div className="relative z-10 space-y-8">
+              <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+                <div>
+                  <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#f5e9d4] via-[#d9b26f] to-[#b87d4b] bg-clip-text text-transparent">From Your Travel Journal</h2>
+                  <p className={`text-lg mt-3 ${isDark ? 'text-[#d7e7da]' : 'text-[#0f1a13]/70'}`}>
+                    Latest stories are woven from your confirmed bookings. Relive highlights or dive into the details for the next tale.
+                  </p>
+                </div>
+                <div className={`text-sm uppercase tracking-[0.3em] ${isDark ? 'text-[#4d7a62]' : 'text-[#0f1a13]/60'}`}>Inspired by bookings</div>
+              </div>
+              {travelStories.length === 0 ? (
+                <div className={`rounded-3xl border px-8 py-16 text-center text-lg ${isDark ? 'border-[#2b5f49]/25 bg-[#f5f1e8]/75 text-[#f5e9d4]' : 'border-[#0f1a13]/10 bg-white/70 text-[#0f1a13]/70'}`}>
+                  Start booking to unlock your travel journal.
+                </div>
+              ) : (
+                <div className="grid gap-6 sm:grid-cols-2">
+                  {travelStories.map((story) => (
+                    <motion.article
+                      key={story.id}
+                      whileHover={{ y: -6 }}
+                      className={`relative overflow-hidden rounded-3xl border ${isDark ? 'border-[#2b5f49]/25 bg-[#132920]/70 text-[#f5e9d4]' : 'border-[#0f1a13]/10 bg-white/85'}`}
+                    >
+                      <div className="relative h-56 overflow-hidden">
+                        <img src={story.image} alt={story.title} className="h-full w-full object-cover transition-transform duration-700 hover:scale-110" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
+                        <div className="absolute bottom-4 left-4">
+                          <div className="text-sm uppercase tracking-[0.4em] text-[#d9b26f]">{story.status}</div>
+                          <h3 className="text-2xl font-semibold mt-2">{story.title}</h3>
+                        </div>
+                      </div>
+                      <div className="p-6 space-y-4">
+                        <p className={`text-sm leading-relaxed ${isDark ? 'text-[#d7e7da]' : 'text-[#0f1a13]/70'}`}>{story.excerpt}</p>
+                        <button
+                          onClick={() => {
+                            const booking = bookings.find((b) => b.bookingId === story.id)
+                            if (booking) handleExploreDestinations(booking)
+                          }}
+                          className="text-sm font-semibold text-[#d9b26f] hover:text-[#f1a208]"
+                          type="button"
+                        >
+                          View itinerary →
+                        </button>
+                      </div>
+                    </motion.article>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </motion.section>
+
+        <motion.section
+          id="planner"
+          initial={{ opacity: 0, y: 48 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8 }}
+          className="relative max-w-7xl mx-auto px-6"
+        >
+          <div className={`relative overflow-hidden rounded-[40px] border ${sectionBorderClass} px-6 sm:px-10 py-10 backdrop-blur-sm`}>
+            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${SECTION_BACKGROUND_IMAGES.planner})` }} />
+            <div className={`absolute inset-0 ${sectionOverlayClass}`} />
+            <div className="relative z-10 flex flex-col gap-10 xl:flex-row">
+              <div className={`flex-1 rounded-3xl border p-8 ${isDark ? 'border-[#2b5f49]/25 bg-[#132920]/70 text-[#f5e9d4]' : 'border-[#0f1a13]/10 bg-white/85'}`}>
+                <div className="flex items-center justify-between">
+                  <h2 className="text-3xl font-bold text-[#d9b26f]">My Expeditions</h2>
+                  <div className={`text-sm uppercase tracking-[0.3em] ${isDark ? 'text-[#4d7a62]' : 'text-[#0f1a13]/60'}`}>{totalBookings} booked</div>
+                </div>
+                {bookings.length === 0 ? (
+                  <div className="mt-10 rounded-2xl border border-dashed border-[#2b5f49]/25 px-6 py-12 text-center text-[#d7e7da]">
+                    No bookings yet. Start your first adventure above.
+                  </div>
+                ) : (
+                  <div className="mt-8 space-y-6">
+                    {bookings.slice(0, 4).map((booking) => (
+                      <motion.div
+                        key={booking.bookingId}
+                        whileHover={{ y: -4 }}
+                        className={`rounded-2xl border p-6 transition-colors ${
+                          booking.cancellationStatus === 'Approved'
+                            ? 'border-[#d93654]/40 bg-[#d93654]/10'
+                            : isDark
+                            ? 'border-[#2b5f49]/25 bg-black/30'
+                            : 'border-[#0f1a13]/15 bg-white/80'
+                        }`}
+                      >
+                        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                          <div>
+                            <div className="text-sm uppercase tracking-[0.4em] text-[#d9b26f]">Booking #{booking.bookingId}</div>
+                            <div className="mt-2 text-xl font-semibold">{booking.destinations.join(', ')}</div>
+                            <div className={isDark ? 'text-[#4d7a62] text-sm' : 'text-[#0f1a13]/60 text-sm'}>
+                              {booking.guests} guests • {booking.nights} nights • {new Date(booking.bookingDate).toLocaleDateString()}
+                            </div>
+                          </div>
+                          <div className="flex flex-col gap-3 items-end">
+                            <CancellationBadge cancellationStatus={booking.cancellationStatus} />
+                            <div className="text-2xl font-bold text-[#d9b26f]">₹{booking.totalPrice.toLocaleString()}</div>
+                          </div>
+                        </div>
+                        {booking.latestCancellation && (
+                          <div className="mt-4">
+                            <CancellationDetails latestCancellation={booking.latestCancellation} />
+                          </div>
+                        )}
+                        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                          <button
+                            onClick={() => handleRequestCancellation(booking.bookingId)}
+                            className="px-4 py-3 rounded-xl border border-[#d93654]/40 text-[#d93654] hover:bg-[#d93654]/10"
+                            type="button"
+                          >
+                            Request cancellation
+                          </button>
+                          <button
+                            onClick={() => handleExploreDestinations(booking)}
+                            className="px-4 py-3 rounded-xl border border-[#d9b26f]/40 text-[#d9b26f] hover:bg-[#d9b26f]/10"
+                            type="button"
+                          >
+                            View itinerary
+                          </button>
+                        </div>
+                      </motion.div>
+                    ))}
+                    {bookings.length > 4 && (
+                      <button
+                        onClick={() => setShowCancellationCenter(true)}
+                        className="w-full px-4 py-3 rounded-xl border border-[#2b5f49]/25 text-[#1f5b46]/85 hover:text-[#0f3a2c]"
+                        type="button"
+                      >
+                        View all activity
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+              <div className={`flex-1 rounded-3xl border p-8 ${isDark ? 'border-[#2b5f49]/25 bg-[#132920]/70 text-[#f5e9d4]' : 'border-[#0f1a13]/10 bg-white/85'}`} ref={routeSectionRef}>
+                <div className="flex items-center justify-between">
+                  <h2 className="text-3xl font-bold text-[#d9b26f]">Route Planner</h2>
+                  <div className={`text-sm uppercase tracking-[0.3em] ${isDark ? 'text-[#4d7a62]' : 'text-[#0f1a13]/60'}`}>
+                    {selectedDestinations.length} selected
+                  </div>
+                </div>
+                {shortestPath ? (
+                  <div className="mt-6 space-y-6">
+                    <div className="flex items-center justify-between">
+                      <span className={isDark ? 'text-[#4d7a62]' : 'text-[#0f1a13]/60'}>Total distance</span>
+                      <span className="text-3xl font-bold">{shortestPath.distanceKm.toFixed(1)} km</span>
+                    </div>
+                    <div className="space-y-3">
+                      <span className={isDark ? 'text-[#4d7a62] text-sm' : 'text-[#0f1a13]/60 text-sm'}>Recommended order:</span>
+                      <div className="flex flex-wrap gap-2">
+                        {shortestPath.order.map((index, i) => (
+                          <motion.span
+                            key={i}
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: i * 0.05 }}
+                            className="px-3 py-2 rounded-full bg-[#d9b26f]/15 text-[#d9b26f] text-sm"
+                          >
+                            {i + 1}. {selectedDestinations[index]?.name}
+                          </motion.span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="rounded-2xl overflow-hidden border border-[#2b5f49]/25">
+                      <RouteMap
+                        destinations={selectedDestinations}
+                        routeOrder={shortestPath.order}
+                        apiKey={(import.meta as any).env?.VITE_GOOGLE_MAPS_API_KEY || 'YOUR_GOOGLE_MAPS_API_KEY'}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="mt-6 space-y-4">
+                    <p className={isDark ? 'text-[#d7e7da]' : 'text-[#0f1a13]/70'}>
+                      Select at least two destinations to visualize the optimal path and bring your journey to life on the cinematic map.
+                    </p>
+                    <button
+                      onClick={calculateShortestPath}
+                      disabled={selectedDestinations.length < 2}
+                      className={`px-4 py-3 rounded-xl border font-semibold ${
+                        selectedDestinations.length < 2
+                          ? 'border-[#2b5f49]/25 text-[#f5e9d4]/40 cursor-not-allowed'
+                          : 'border-[#d9b26f] text-[#d9b26f] hover:bg-[#d9b26f]/10'
+                      }`}
+                      type="button"
+                    >
+                      Generate route
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </motion.section>
+
+        <motion.section
+          initial={{ opacity: 0, y: 48 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8 }}
+          className="max-w-6xl mx-auto px-6"
+        >
+          <div className={`rounded-3xl border p-8 ${isDark ? 'border-[#2b5f49]/25 bg-[#132920]/70 text-[#f5e9d4]' : 'border-[#0f1a13]/10 bg-white/85'}`}>
+            <Feedback />
+          </div>
+        </motion.section>
+      </main>
+
+      <FAB
+        onOpenBooking={() => setShowBookingForm(true)}
+        onOpenCancellations={() => setShowCancellationCenter(true)}
+        onOpenFeedback={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}
+      />
+
       <AnimatePresence>
         {showBookingForm && (
-          <BookingForm
-            destinations={selectedDestinations}
-            onClose={() => setShowBookingForm(false)}
-            onSuccess={handleBookingSuccess}
-          />
+          <BookingForm destinations={selectedDestinations} onClose={() => setShowBookingForm(false)} onSuccess={handleBookingSuccess} />
         )}
       </AnimatePresence>
 
-      {/* Email Confirmation Modal */}
       <AnimatePresence>
         {showConfirmation && bookingResult && (
           <EmailConfirmationModal
@@ -1381,55 +1183,33 @@ export default function UserDashboard() {
         )}
       </AnimatePresence>
 
-      {/* Cancellation Request Modal */}
       <AnimatePresence>
         {showCancellationModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center px-6"
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-[#0e1512] rounded-2xl border border-white/20 p-6 max-w-md w-full"
-            >
-              <h3 className="text-2xl font-semibold text-white mb-4">Request Cancellation</h3>
-              <p className="text-white/70 text-sm mb-4">
-                Are you sure you want to request a cancellation for booking #{pendingBookingId}?
-              </p>
-              <label className="block text-sm font-medium text-white/70 mb-2">
-                Reason (optional)
-              </label>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-6">
+            <motion.div initial={{ scale: 0.95 }} animate={{ scale: 1 }} exit={{ scale: 0.95 }} className="bg-[#0e1512] rounded-2xl border border-[#2b5f49]/25 p-6 max-w-md w-full">
+              <h3 className="text-2xl font-semibold text-[#f5e9d4] mb-2">Request Cancellation</h3>
+              <p className="text-[#d7e7da] mb-3">Confirm cancellation for booking #{pendingBookingId}</p>
               <textarea
                 value={cancellationReason}
                 onChange={(e) => setCancellationReason(e.target.value)}
-                className="w-full min-h-[120px] rounded-lg bg-white/5 border border-white/10 text-white p-3 focus:outline-none focus:border-white/30"
-                placeholder="Let us know why you need to cancel..."
+                className="w-full min-h-[120px] rounded-lg bg-[#f5f1e8]/75 border border-[#2b5f49]/25 text-[#f5e9d4] p-3"
+                placeholder="Reason (optional)"
               />
-              {cancellationError && (
-                <div className="mt-3 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
-                  {cancellationError}
-                </div>
-              )}
-              <div className="mt-6 flex items-center justify-end gap-3">
+              {cancellationError && <div className="mt-3 text-sm text-red-300 bg-red-500/10 p-2 rounded">{cancellationError}</div>}
+              <div className="mt-4 flex justify-end gap-3">
                 <button
                   onClick={() => {
                     setShowCancellationModal(false)
                     setPendingBookingId(null)
                     setCancellationReason('')
                   }}
-                  className="px-4 py-2 rounded-lg border border-white/20 text-white/80 hover:bg-white/10 transition"
+                  className="px-4 py-2 rounded-lg border border-[#2b5f49]/25 text-[#1f5b46]/85 hover:text-[#0f3a2c]"
+                  type="button"
                 >
-                  Keep Booking
+                  Keep booking
                 </button>
-                <button
-                  onClick={handleSubmitCancellation}
-                  className="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg border border-red-500/30 transition"
-                >
-                  Confirm Cancellation
+                <button onClick={handleSubmitCancellation} className="px-4 py-2 rounded-lg bg-red-500/80 text-[#f5e9d4]" type="button">
+                  Confirm
                 </button>
               </div>
             </motion.div>
@@ -1437,7 +1217,6 @@ export default function UserDashboard() {
         )}
       </AnimatePresence>
 
-      {/* Cancellation Center Drawer */}
       <AnimatePresence>
         {showCancellationCenter && (
           <motion.div
@@ -1445,107 +1224,71 @@ export default function UserDashboard() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', stiffness: 260, damping: 30 }}
-            className="fixed inset-y-0 right-0 w-full sm:w-[420px] md:w-[480px] bg-[#0e1512] border-l border-white/10 z-50 shadow-2xl"
+            className="fixed inset-y-0 right-0 w-full sm:w-[420px] md:w-[480px] bg-[#0e1512] border-l border-[#2b5f49]/25 z-50"
           >
-            <CancellationCenter
-              bookings={bookings}
-              onClose={() => setShowCancellationCenter(false)}
-              onRequestCancellation={handleRequestCancellation}
-            />
+            <CancellationCenter bookings={bookings} onClose={() => setShowCancellationCenter(false)} onRequestCancellation={handleRequestCancellation} />
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Destination Details Modal */}
       <AnimatePresence>
         {showDestinationDetailsModal && selectedBookingForDestinations && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center px-6"
-            onClick={() => setShowDestinationDetailsModal(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, y: 20, opacity: 0 }}
-              animate={{ scale: 1, y: 0, opacity: 1 }}
-              exit={{ scale: 0.9, y: 20, opacity: 0 }}
-              className="bg-[#0e1512] rounded-2xl border border-white/20 p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto"
-              onClick={(e) => e.stopPropagation()}
-            >
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-6">
+            <motion.div initial={{ scale: 0.96 }} animate={{ scale: 1 }} exit={{ scale: 0.96 }} className="bg-[#0e1512] rounded-2xl border border-[#2b5f49]/25 p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  Your Destinations
-                </h3>
-                <button
-                  onClick={() => setShowDestinationDetailsModal(false)}
-                  className="text-white/70 hover:text-white transition-colors text-2xl"
-                >
+                <h3 className="text-3xl font-bold">Your Destinations</h3>
+                <button onClick={() => setShowDestinationDetailsModal(false)} className="text-[#d7e7da] text-2xl" type="button">
                   ✕
                 </button>
               </div>
-
-              <div className="mb-6 p-4 bg-white/5 rounded-lg border border-white/10">
+              <div className="mb-6 p-4 bg-[#f5f1e8]/75 rounded-lg border border-[#2b5f49]/25">
                 <h4 className="text-lg font-semibold mb-2">Booking Summary</h4>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                   <div>
-                    <span className="text-white/70">Booking ID:</span>
-                    <div className="text-white font-semibold">#{selectedBookingForDestinations.bookingId}</div>
+                    <span className="text-[#d7e7da]">Booking ID:</span>
+                    <div className="text-[#f5e9d4] font-semibold">#{selectedBookingForDestinations.bookingId}</div>
                   </div>
                   <div>
-                    <span className="text-white/70">Guests:</span>
-                    <div className="text-white">{selectedBookingForDestinations.guests}</div>
+                    <span className="text-[#d7e7da]">Guests:</span>
+                    <div className="text-[#f5e9d4]">{selectedBookingForDestinations.guests}</div>
                   </div>
                   <div>
-                    <span className="text-white/70">Nights:</span>
-                    <div className="text-white">{selectedBookingForDestinations.nights}</div>
+                    <span className="text-[#d7e7da]">Nights:</span>
+                    <div className="text-[#f5e9d4]">{selectedBookingForDestinations.nights}</div>
                   </div>
                   <div>
-                    <span className="text-white/70">Total:</span>
+                    <span className="text-[#d7e7da]">Total:</span>
                     <div className="text-green-400 font-bold">₹{selectedBookingForDestinations.totalPrice.toLocaleString()}</div>
                   </div>
                 </div>
               </div>
-
               <div className="space-y-4">
-                <h4 className="text-xl font-semibold">Destinations Included:</h4>
                 {selectedBookingForDestinations.destinations.map((destName, index) => {
-                  const destination = destinations.find(d => d.name === destName)
+                  const destination = destinations.find((d) => d.name === destName)
                   return (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6 hover:border-white/20 hover:shadow-xl hover:shadow-white/5 transition-all"
-                    >
-                      <div className="grid md:grid-cols-3 gap-6">
-                        <div className="md:col-span-1">
+                    <motion.div key={index} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} className="bg-[#f5f1e8]/75 p-4 rounded-xl border border-[#2b5f49]/25">
+                      <div className="md:flex gap-6">
+                        <div className="md:w-1/3">
                           <div className="aspect-[4/3] overflow-hidden rounded-lg">
                             <img
-                              src={destination?.imageUrl || `https://images.unsplash.com/photo-${1500000000000 + index}?q=80&w=800&auto=format&fit=crop`}
+                              src={destination?.imageUrl || `https://images.unsplash.com/photo-${1500000000000 + index}?auto=format&fit=crop&w=1200&q=80`}
                               alt={destName}
                               className="w-full h-full object-cover"
-                              loading="lazy"
                             />
                           </div>
                         </div>
-                        <div className="md:col-span-2">
-                          <h5 className="text-2xl font-bold text-white mb-3">{destName}</h5>
-                          <p className="text-white/70 mb-4">
-                            {destination?.description || 'A beautiful destination waiting for you to explore. Get ready for an amazing adventure!'}
-                          </p>
+                        <div className="md:w-2/3 mt-3 md:mt-0">
+                          <h5 className="text-2xl font-bold mb-2">{destName}</h5>
+                          <p className="text-[#d7e7da] mb-3">{destination?.description || 'A wonderful place to visit.'}</p>
                           <div className="flex items-center justify-between">
                             <div>
-                              <span className="text-white/60 text-sm">Price per night:</span>
-                              <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                                ₹{destination?.price.toLocaleString() || 'N/A'}
-                              </div>
+                              <span className="text-[#4d7a62] text-sm">Price per night:</span>
+                              <div className="text-2xl font-bold">₹{destination?.price?.toLocaleString() ?? 'N/A'}</div>
                             </div>
                             {destination?.latitude && destination?.longitude && (
                               <div className="text-right">
-                                <span className="text-white/60 text-sm">Coordinates:</span>
-                                <div className="text-white text-sm">
+                                <span className="text-[#4d7a62] text-sm">Coordinates</span>
+                                <div className="text-[#f5e9d4] text-sm">
                                   {destination.latitude.toFixed(4)}, {destination.longitude.toFixed(4)}
                                 </div>
                               </div>
@@ -1557,12 +1300,8 @@ export default function UserDashboard() {
                   )
                 })}
               </div>
-
-              <div className="mt-8 flex justify-end">
-                <button
-                  onClick={() => setShowDestinationDetailsModal(false)}
-                  className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium rounded-lg hover:shadow-lg hover:shadow-blue-500/50 transition-all transform hover:scale-105"
-                >
+              <div className="mt-6 flex justify-end">
+                <button onClick={() => setShowDestinationDetailsModal(false)} className="px-6 py-3 rounded-lg bg-blue-600/80 text-[#f5e9d4]" type="button">
                   Close
                 </button>
               </div>
@@ -1571,8 +1310,16 @@ export default function UserDashboard() {
         )}
       </AnimatePresence>
 
+      <AnimatePresence>
+        {showLogoutSuccess && (
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 12 }} className="fixed inset-0 z-50 flex items-center justify-center p-6">
+            <div className="bg-[#0e1512] rounded-2xl border border-[#2b5f49]/25 p-6">
+              <div className="text-4xl mb-2">👋</div>
+              <div className="text-[#f5e9d4] font-semibold">Logout successful — redirecting...</div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
-
-

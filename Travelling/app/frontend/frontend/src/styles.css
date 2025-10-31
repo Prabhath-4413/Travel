@@ -92,5 +92,64 @@ input[type="date"]::-webkit-datetime-edit-year-field {
   color: white;
 }
 
+.route-map {
+  background: radial-gradient(circle at 20% 20%, rgba(13, 148, 136, 0.25), transparent 55%),
+    radial-gradient(circle at 80% 30%, rgba(59, 130, 246, 0.18), transparent 60%),
+    linear-gradient(140deg, rgba(9, 12, 18, 0.92), rgba(9, 20, 24, 0.92));
+}
 
+.route-marker {
+  background: transparent;
+  border: none;
+}
 
+.route-marker .marker-glow {
+  width: 42px;
+  height: 42px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #f8fafc;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.9), rgba(14, 116, 144, 0.85));
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: 0 0 22px rgba(59, 130, 246, 0.65), 0 0 12px rgba(59, 130, 246, 0.9) inset;
+}
+
+.route-polyline {
+  filter: drop-shadow(0 0 14px rgba(59, 130, 246, 0.85));
+  stroke-dasharray: 14 10;
+  animation: route-flow 12s linear infinite;
+}
+
+@keyframes route-flow {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: 400;
+  }
+}
+
+.route-popup .leaflet-popup-content-wrapper {
+  background: rgba(15, 23, 42, 0.92);
+  color: #e0f2fe;
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: 0 20px 35px rgba(2, 6, 23, 0.35);
+}
+
+.route-popup .leaflet-popup-content {
+  margin: 0;
+}
+
+.route-popup .leaflet-popup-tip {
+  background: rgba(15, 23, 42, 0.92);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.route-popup .leaflet-popup-close-button {
+  color: #bae6fd;
+}

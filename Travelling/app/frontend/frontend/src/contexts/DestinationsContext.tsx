@@ -14,7 +14,7 @@ const fallbackDestinations: Destination[] = [
     city: 'Coast'
   },
   {
-    destinationId: -2,
+    destinationId: -2,   
     name: 'Sample Highlands Retreat',
     description: 'Breathe in crisp air and unwind in scenic highlands.',
     price: 4000,
