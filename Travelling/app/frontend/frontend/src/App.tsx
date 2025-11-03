@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { DestinationsProvider } from './contexts/DestinationsContext'
 import LandingPage from './pages/LandingPage'
@@ -10,10 +10,12 @@ import AdminDashboard from './pages/AdminDashboard'
 // ✅ Protected Route Component
 function ProtectedRoute({ children, requireAdmin = false }: { children: React.ReactNode, requireAdmin?: boolean }) {
   const { user } = useAuth()
+  const location = useLocation()
 
   if (!user) {
     console.log('ProtectedRoute: No user, redirecting to login')
-    return <Navigate to="/login" replace />
+    const redirectTo = `${location.pathname}${location.search}${location.hash}`
+    return <Navigate to="/login" replace state={{ redirectTo, redirectState: location.state }} />
   }
 
   // ✅ Check role-based access

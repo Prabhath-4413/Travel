@@ -3,7 +3,9 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion'
 import { Search, Calendar, Plane, MapPin, Star, Mail, Phone, Facebook, Twitter, Instagram, Linkedin, Section } from 'lucide-react'
 import { destinationsAPI, type Destination } from '../lib/api'
+import { useAuth } from '../contexts/AuthContext'
 import React from 'react'
+import PackageList from '../components/packages/PackageList'
 
 interface NavLink {
   id: string
@@ -575,7 +577,7 @@ const DestinationCard = ({ destination, onCardClick, index }: any) => {
   )
 }
 
-const FeaturedDestinationsPreview = () => {
+const FeaturedDestinationsPreview: React.FC<{ onViewAll: () => void }> = ({ onViewAll }) => {
   const navigate = useNavigate()
   const [destinations, setDestinations] = useState<Destination[]>([])
   const [loading, setLoading] = useState(true)
@@ -681,12 +683,15 @@ const FeaturedDestinationsPreview = () => {
           transition={{ duration: 0.6, delay: 0.5 }}
           className="text-center mt-12"
         >
-          <a
-            href="#featured-destinations"
-            className="inline-block px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg hover:shadow-2xl hover:shadow-blue-500/50 transition-all transform hover:scale-105"
+          <motion.button
+            onClick={onViewAll}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="inline-block px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg hover:shadow-2xl hover:shadow-blue-500/50 transition-all"
+            type="button"
           >
             View All Destinations →
-          </a>
+          </motion.button>
         </motion.div>
       </div>
     </section>
@@ -1315,6 +1320,7 @@ const FooterSection = () => {
 export default function LandingPage() {
   const location = useLocation<{ notification?: { type: 'user' | 'admin'; message: string } }>()
   const navigate = useNavigate()
+  const { user } = useAuth()
   const [activeSection, setActiveSection] = useState('home')
   const [notification, setNotification] = useState<{ type: 'user' | 'admin'; message: string } | null>(null)
 
@@ -1323,6 +1329,7 @@ export default function LandingPage() {
     { id: 'about', label: 'About Us' },
     { id: 'how-it-works', label: 'How It Works' },
     { id: 'featured-preview', label: 'Featured' },
+    { id: 'featured-packages', label: 'Packages' },
     { id: 'featured-destinations', label: 'Destinations' },
     { id: 'testimonials', label: 'Testimonials' },
     { id: 'cta', label: 'Get Started' },
@@ -1347,7 +1354,7 @@ export default function LandingPage() {
       if (ticking) return
       ticking = true
       window.requestAnimationFrame(() => {
-        const sections = ['home', 'about', 'how-it-works', 'featured-preview', 'featured-destinations', 'testimonials', 'cta']
+        const sections = ['home', 'about', 'how-it-works', 'featured-preview', 'featured-packages', 'featured-destinations', 'testimonials', 'cta']
         const scrollPosition = window.scrollY + 100
         for (const section of sections) {
           const element = document.getElementById(section)
@@ -1382,7 +1389,12 @@ export default function LandingPage() {
   }
 
   const handleExploreClick = () => {
-    scrollToSection('featured-destinations')
+    const targetState = { scrollTo: 'destinations' }
+    if (user) {
+      navigate('/dashboard', { state: targetState })
+    } else {
+      navigate('/login', { state: { redirectTo: '/dashboard', redirectState: targetState } })
+    }
   }
 
   return (
@@ -1412,7 +1424,57 @@ export default function LandingPage() {
 
         <StepsSection />
 
-        <FeaturedDestinationsPreview />
+        <FeaturedDestinationsPreview onViewAll={handleExploreClick} />
+
+        <section
+          id="featured-packages"
+          className="relative py-20 md:py-28 px-6"
+          style={{
+            backgroundImage:
+              'linear-gradient(rgba(14,21,18,0.7), rgba(14,21,18,0.7)), url("https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=2000&q=80")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'scroll',
+          }}
+        >
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12 space-y-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.6 }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/10 text-sm text-white/70"
+              >
+                ✨ Curated Experiences
+              </motion.div>
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="text-4xl md:text-5xl font-bold"
+              >
+                <span className="bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent">
+                  Travel Packages for Every Explorer
+                </span>
+              </motion.h2>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-lg text-white/70 max-w-2xl mx-auto"
+              >
+                Browse thoughtfully crafted journeys combining stunning destinations, effortless planning, and exclusive perks.
+              </motion.p>
+            </div>
+
+            <div className="relative z-10">
+              <PackageList readOnly />
+            </div>
+          </div>
+        </section>
 
         <DestinationsSection />
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Travel.Api.Models;
 
@@ -87,6 +88,12 @@ public class Destination
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public ICollection<BookingDestination> BookingDestinations { get; set; } = new List<BookingDestination>();
+
+    [JsonIgnore]
+    public ICollection<TravelPackage> TravelPackages { get; set; } = new List<TravelPackage>();
+
+    [JsonIgnore]
+    public ICollection<TravelPackageDestination> TravelPackageDestinations { get; set; } = new List<TravelPackageDestination>();
 }
 
 public class Booking

@@ -14,7 +14,7 @@ export default function Login() {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
   const [showLoginSuccess, setShowLoginSuccess] = useState(false)
   const navigate = useNavigate()
-  const location = useLocation()
+  const location = useLocation<{ redirectTo?: string; redirectState?: unknown }>()
   const { login, user } = useAuth()
 
   // Handle registration success state
@@ -53,8 +53,10 @@ export default function Login() {
         setShowLoginSuccess(false)
         setIsLoading(false)
         const storedUser = JSON.parse(localStorage.getItem('user') || '{}')
-        const redirectPath = storedUser?.role === 'admin' ? '/admin' : '/dashboard'
-        navigate(redirectPath)
+        const fallbackPath = storedUser?.role === 'admin' ? '/admin' : '/dashboard'
+        const redirectPath = location.state?.redirectTo ?? fallbackPath
+        const redirectState = location.state?.redirectState
+        navigate(redirectPath, { replace: true, state: redirectState })
       }, 2000)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed. Please try again.')

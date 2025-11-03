@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using Travel.Api.Models;
 
@@ -13,10 +14,14 @@ namespace Travel.Api.Data
         public DbSet<BookingDestination> BookingDestinations => Set<BookingDestination>();
         public DbSet<TripCancellation> TripCancellations => Set<TripCancellation>();
         public DbSet<Feedback> Feedbacks => Set<Feedback>();
+        public DbSet<TravelPackage> TravelPackages => Set<TravelPackage>();
+        public DbSet<TravelPackageDestination> TravelPackageDestinations => Set<TravelPackageDestination>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            var packageSeedTimestamp = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
             //
             // USERS
@@ -51,6 +56,80 @@ namespace Travel.Api.Data
                 b.Property(d => d.Longitude).HasColumnName("longitude");
                 b.Property(d => d.CreatedAt).HasColumnName("created_at").HasDefaultValueSql("NOW()");
             });
+
+            //
+            // TRAVEL PACKAGES
+            //
+            modelBuilder.Entity<TravelPackage>(b =>
+            {
+                b.ToTable("travel_packages");
+                b.HasKey(p => p.PackageId);
+                b.Property(p => p.PackageId).HasColumnName("package_id");
+                b.Property(p => p.Name).HasColumnName("name").HasMaxLength(150).IsRequired();
+                b.Property(p => p.Description).HasColumnName("description");
+                b.Property(p => p.Price).HasColumnName("price").HasColumnType("numeric(10,2)").HasDefaultValue(0);
+                b.Property(p => p.ImageUrl).HasColumnName("image_url").HasMaxLength(500);
+                b.Property(p => p.CreatedAt).HasColumnName("created_at").HasDefaultValueSql("NOW()");
+
+                b.HasMany(p => p.Destinations)
+                    .WithMany(d => d.TravelPackages)
+                    .UsingEntity<TravelPackageDestination>(
+                        j => j
+                            .HasOne(tpd => tpd.Destination)
+                            .WithMany(d => d.TravelPackageDestinations)
+                            .HasForeignKey(tpd => tpd.DestinationId)
+                            .OnDelete(DeleteBehavior.Cascade),
+                        j => j
+                            .HasOne(tpd => tpd.TravelPackage)
+                            .WithMany(p => p.TravelPackageDestinations)
+                            .HasForeignKey(tpd => tpd.TravelPackageId)
+                            .OnDelete(DeleteBehavior.Cascade),
+                        j =>
+                        {
+                            j.ToTable("travel_package_destinations");
+                            j.HasKey(t => new { t.TravelPackageId, t.DestinationId });
+                            j.Property(t => t.TravelPackageId).HasColumnName("package_id");
+                            j.Property(t => t.DestinationId).HasColumnName("destination_id");
+                        });
+
+                b.HasData(
+                    new TravelPackage
+                    {
+                        PackageId = 1,
+                        Name = "Beach Escape",
+                        Description = "Five-day coastal escape featuring sunrise yoga, local seafood tastings, and resort-style beach villas.",
+                        Price = 499.99m,
+                        ImageUrl = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+                        CreatedAt = packageSeedTimestamp
+                    },
+                    new TravelPackage
+                    {
+                        PackageId = 2,
+                        Name = "Mountain Adventure",
+                        Description = "Week-long alpine expedition with guided summit treks, riverside camping, and stargazing under clear skies.",
+                        Price = 899.99m,
+                        ImageUrl = "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
+                        CreatedAt = packageSeedTimestamp
+                    },
+                    new TravelPackage
+                    {
+                        PackageId = 3,
+                        Name = "Cultural Journey",
+                        Description = "Curated heritage trail showcasing palace walkthroughs, artisan workshops, and immersive food tours.",
+                        Price = 699.99m,
+                        ImageUrl = "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=1200&q=80",
+                        CreatedAt = packageSeedTimestamp
+                    });
+            });
+
+            modelBuilder.Entity<TravelPackageDestination>().HasData(
+                new TravelPackageDestination { TravelPackageId = 1, DestinationId = 1 },
+                new TravelPackageDestination { TravelPackageId = 1, DestinationId = 2 },
+                new TravelPackageDestination { TravelPackageId = 2, DestinationId = 3 },
+                new TravelPackageDestination { TravelPackageId = 2, DestinationId = 4 },
+                new TravelPackageDestination { TravelPackageId = 2, DestinationId = 5 },
+                new TravelPackageDestination { TravelPackageId = 3, DestinationId = 2 },
+                new TravelPackageDestination { TravelPackageId = 3, DestinationId = 6 });
 
             //
             // BOOKINGS
@@ -181,3 +260,4 @@ namespace Travel.Api.Data
         }
     }
 }
+ 

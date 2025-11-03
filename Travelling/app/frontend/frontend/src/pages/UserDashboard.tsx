@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 import { useAuth } from '../contexts/AuthContext'
 import {
   bookingsAPI,
@@ -16,6 +17,8 @@ import EmailConfirmationModal from '../components/booking/EmailConfirmationModal
 import { CancellationBadge, CancellationDetails, CancellationCenter } from '../components/cancellations'
 import RouteMap from '../components/maps/RouteMap'
 import Feedback from '../components/Feedback'
+import PackageList from '../components/packages/PackageList'
+import type { TravelPackage } from '../api/packages'
 
 const FALLBACK_HERO_IMAGES = [
   'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80',
@@ -30,8 +33,11 @@ const SECTION_BACKGROUND_IMAGES = {
   destinations: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80',
   metrics: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80',
   stories: 'https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1600&q=80',
+  packages: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=80',
   planner: 'https://images.unsplash.com/photo-1523786040450-1efba3c496d8?auto=format&fit=crop&w=1600&q=80'
 } as const
+
+const DASHBOARD_BACKGROUND_IMAGE = 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1920&q=80'
 
 const FloatingParticle: React.FC<{ delay?: number; x?: number; y?: number; size?: number; color?: string }> = ({ delay = 0, x = 0, y = 0, size = 16, color = 'white/10' }) => (
   <motion.div
@@ -48,7 +54,7 @@ const FloatingParticle: React.FC<{ delay?: number; x?: number; y?: number; size?
       ease: 'easeInOut',
       delay
     }}
-    className="absolute rounded-full border border-[#2b5f49]/25"
+    className="absolute rounded-full border border-white/20"
     style={{
       left: `${x}%`,
       top: `${y}%`,
@@ -64,6 +70,7 @@ const NAV_LINKS = [
   { id: 'destinations', label: 'Destinations' },
   { id: 'metrics', label: 'Metrics' },
   { id: 'stories', label: 'Stories' },
+  { id: 'packages', label: 'Packages' },
   { id: 'planner', label: 'Planner' }
 ]
 
@@ -83,13 +90,13 @@ const DashboardNav: React.FC<{
       <div className="flex items-center justify-between h-20">
         <motion.div className="flex items-center gap-3 group">
           <motion.div
-            className="w-10 h-10 rounded-full bg-gradient-to-br from-[#2f7a4b] to-[#145a4a] flex items-center justify-center text-xl font-bold transition-all group-hover:shadow-[0_0_25px_rgba(47,122,75,0.45)]"
+            className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-xl font-bold transition-all group-hover:shadow-[0_0_25px_rgba(59,130,246,0.45)]"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
           >
             ✈
           </motion.div>
-          <span className="text-xl font-bold bg-gradient-to-r from-[#2f6f4a] via-[#1d5e4a] to-[#0f4437] bg-clip-text text-transparent">SuiteSavvy</span>
+          <span className="text-xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">SuiteSavvy</span>
         </motion.div>
 
         <div className="hidden md:flex items-center gap-8">
@@ -115,12 +122,12 @@ const DashboardNav: React.FC<{
         </div>
 
         <div className="hidden md:flex items-center gap-4">
-          {userName && <span className="text-sm text-[#274c3d]/80">Hi, {userName}</span>}
+          {userName && <span className="text-sm text-white/70">Hi, {userName}</span>}
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={onOpenCancellations}
-            className="px-4 py-2.5 rounded-lg border border-[#1f5b46]/30 text-[#1f5b46] hover:text-[#0f3a2c] hover:bg-[#cfe2d6]/40 transition-colors"
+            className="px-4 py-2.5 rounded-lg border border-white/20 text-white/80 hover:text-white hover:bg-white/10 transition-colors"
             type="button"
           >
             Cancellations
@@ -129,7 +136,7 @@ const DashboardNav: React.FC<{
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={onLogout}
-            className="px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#2d7a54] to-[#145c4a] text-[#f2f5f1] font-semibold shadow-lg shadow-[#145c4a]/30"
+            className="px-4 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold shadow-lg shadow-blue-500/30"
             type="button"
           >
             Logout
@@ -140,7 +147,7 @@ const DashboardNav: React.FC<{
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => onScrollToSection('menu')}
-          className="md:hidden p-2 text-[#1f5b46]/80 hover:text-[#0f3a2c] transition-colors"
+          className="md:hidden p-2 text-white/80 hover:text-white transition-colors"
           aria-label="Toggle menu"
           type="button"
         >
@@ -227,7 +234,7 @@ const FAB: React.FC<{ onOpenBooking: () => void; onOpenCancellations: () => void
                   onOpenFeedback()
                   setOpen(false)
                 }}
-                className="px-4 py-2 rounded-xl bg-[#f5e9d4]/90 border border-[#d9b26f]/60 text-[#215040]"
+                className="px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-white/80 hover:bg-white/15 transition"
                 type="button"
                 title="Send feedback"
               >
@@ -238,7 +245,7 @@ const FAB: React.FC<{ onOpenBooking: () => void; onOpenCancellations: () => void
                   onOpenCancellations()
                   setOpen(false)
                 }}
-                className="px-4 py-2 rounded-xl bg-[#f5e9d4]/90 border border-[#d9b26f]/60 text-[#215040]"
+                className="px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-white/80 hover:bg-white/15 transition"
                 type="button"
                 title="Cancellation center"
               >
@@ -249,7 +256,7 @@ const FAB: React.FC<{ onOpenBooking: () => void; onOpenCancellations: () => void
                   onOpenBooking()
                   setOpen(false)
                 }}
-                className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#d9b26f] to-[#b87d4b] text-[#103b2c] font-semibold"
+                className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-semibold shadow-[0_15px_35px_rgba(59,130,246,0.35)]"
                 type="button"
                 title="Book adventure"
               >
@@ -260,7 +267,7 @@ const FAB: React.FC<{ onOpenBooking: () => void; onOpenCancellations: () => void
         </AnimatePresence>
         <button
           onClick={() => setOpen((s) => !s)}
-          className="w-16 h-16 rounded-full bg-gradient-to-br from-[#d9b26f] to-[#9d7042] shadow-[0_18px_45px_rgba(54,34,16,0.45)] border border-[#f6ead8]/60 flex items-center justify-center text-[#103b2c] text-3xl"
+          className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 shadow-[0_18px_45px_rgba(59,130,246,0.35)] border border-white/20 flex items-center justify-center text-white text-3xl"
           type="button"
           title="Quick actions"
         >
@@ -280,6 +287,7 @@ export default function UserDashboard(): JSX.Element {
   const [loading, setLoading] = useState(true)
   const [selectedDestinations, setSelectedDestinations] = useState<Destination[]>([])
   const [shortestPath, setShortestPath] = useState<ShortestPathResponse | null>(null)
+  const [optimizedDestinations, setOptimizedDestinations] = useState<Destination[]>([])
   const [showBookingForm, setShowBookingForm] = useState(false)
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [confirmationContext, setConfirmationContext] = useState<'booking' | 'cancellation' | null>(null)
@@ -313,6 +321,14 @@ export default function UserDashboard(): JSX.Element {
   const navLinks = useMemo(() => NAV_LINKS, [])
   const [activeSection, setActiveSection] = useState('overview')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 50)
+    handleScroll()
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const routeSectionRef = useRef<HTMLDivElement | null>(null)
 
@@ -326,6 +342,11 @@ export default function UserDashboard(): JSX.Element {
     () => destinations.filter((d) => !bookedDestinationNames.has(d.name)),
     [destinations, bookedDestinationNames]
   )
+
+  useEffect(() => {
+    setShortestPath(null)
+    setOptimizedDestinations([])
+  }, [selectedDestinations])
 
   const countriesList = useMemo(() => {
     const set = new Set<string>()
@@ -479,15 +500,55 @@ export default function UserDashboard(): JSX.Element {
   }
 
   const calculateShortestPath = async () => {
-    if (selectedDestinations.length < 2) return
+    const hasValidCoordinates = (destination: Destination) =>
+      typeof destination.latitude === 'number' &&
+      typeof destination.longitude === 'number' &&
+      !Number.isNaN(destination.latitude) &&
+      !Number.isNaN(destination.longitude)
+
+    const validDestinations = selectedDestinations.filter(hasValidCoordinates)
+
+    if (selectedDestinations.length < 2) {
+      toast.error('Select at least two destinations with location details')
+      return
+    }
+
+    if (validDestinations.length !== selectedDestinations.length) {
+      toast.error('Missing location details for one or more destinations')
+      return
+    }
+
+    if (validDestinations.length < 2) {
+      toast.error('Select at least two destinations with location details')
+      return
+    }
+
     try {
-      const points = selectedDestinations.map((d) => ({ latitude: d.latitude || 0, longitude: d.longitude || 0 }))
+      const points = validDestinations.map((destination) => ({
+        latitude: destination.latitude as number,
+        longitude: destination.longitude as number
+      }))
       const result = await shortestPathAPI.calculate({ points })
+      const orderedDestinations = result.order
+        .map((index) => validDestinations[index])
+        .filter((destination): destination is Destination => Boolean(destination))
+
       setShortestPath(result)
-      setTimeout(() => routeSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120)
+      setOptimizedDestinations(orderedDestinations)
+
+      requestAnimationFrame(() => {
+        routeSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
     } catch (error) {
       console.error('Error calculating shortest path', error)
+      toast.error('Failed to build route. Please try again later.')
     }
+  }
+
+  const handleBookPackage = (travelPackage: TravelPackage) => {
+    setSelectedDestinations(travelPackage.destinations)
+    setShortestPath(null)
+    setShowBookingForm(true)
   }
 
   const handleBookingSuccess = async (result: any) => {
@@ -551,39 +612,34 @@ export default function UserDashboard(): JSX.Element {
   }
 
   return (
-    <div className={`relative min-h-screen overflow-hidden ${isDark ? 'bg-[#0e1512] text-white' : 'bg-[#ecf3ee] text-[#133d2c]'}`}>
-      <div className="absolute inset-0 -z-20">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeHeroImage}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.2 }}
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${activeHeroImage})` }}
-          />
-        </AnimatePresence>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0e1512]/85 via-[#0e1512]/60 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/40 via-purple-900/35 to-transparent" />
-      </div>
+    <div
+      className={`relative isolate min-h-screen overflow-hidden bg-no-repeat bg-center bg-fixed bg-cover  ${
+        isDark ? 'text-white' : 'text-[#133d2c]'
+      } before:absolute before:inset-0 before:bg-black/45 before:content-[''] before:z-0 before:pointer-events-none`}
+      style={{ backgroundImage: `url(${activeHeroImage})` }}
+    >
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-blue-900/40 via-purple-900/30 to-transparent" />
 
-      <header
-        className={`fixed top-0 left-0 right-0 z-40 border-b backdrop-blur-2xl ${
-          isDark ? 'bg-[#0e1512]/85 border-white/10' : 'bg-[#ecf3ee]/80 border-[#1f3f31]/15'
+      <motion.header
+        initial={{ y: -80, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        className={`fixed top-0 left-0 right-0 z-40 border-b transition-all duration-300 ${
+          isScrolled
+            ? 'bg-[#0e1512]/95 backdrop-blur-xl border-white/10 shadow-lg shadow-blue-500/10'
+            : 'bg-[#0e1512]/40 backdrop-blur-md border-white/5'
         }`}
       >
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-20">
             <motion.div className="flex items-center gap-3 group">
               <motion.div
-                className="w-10 h-10 rounded-full bg-gradient-to-br from-[#2f7a4b] to-[#145a4a] flex items-center justify-center text-xl font-bold transition-all group-hover:shadow-[0_0_25px_rgba(47,122,75,0.45)]"
+                className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-xl font-bold text-white transition-all group-hover:shadow-[0_0_25px_rgba(59,130,246,0.45)]"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 ✈
               </motion.div>
-              <span className="text-xl font-bold bg-gradient-to-r from-[#2f6f4a] via-[#1d5e4a] to-[#0f4437] bg-clip-text text-transparent">
+              <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                 SuiteSavvy
               </span>
             </motion.div>
@@ -593,7 +649,7 @@ export default function UserDashboard(): JSX.Element {
                   key={link.id}
                   onClick={() => handleScrollToSection(link.id)}
                   className={`relative py-2 text-sm font-medium transition-colors ${
-                    activeSection === link.id ? 'text-[#103b2c]' : 'text-[#1f5b46]/70 hover:text-[#1f5b46]'
+                    activeSection === link.id ? 'text-white' : 'text-white/60 hover:text-white'
                   }`}
                   type="button"
                 >
@@ -601,7 +657,7 @@ export default function UserDashboard(): JSX.Element {
                   {activeSection === link.id && (
                     <motion.div
                       layoutId="dashboardActiveSection"
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#2f7a4b] via-[#1d5e4a] to-[#0f4437]"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-600"
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -611,9 +667,7 @@ export default function UserDashboard(): JSX.Element {
             <div className="hidden md:flex items-center gap-4">
               <button
                 onClick={() => setShowCancellationCenter(true)}
-                className={`h-12 px-5 rounded-full border transition-colors ${
-                  isDark ? 'border-white/15 text-white hover:bg-white/10' : 'border-[#1f5b46]/30 text-[#1f5b46] hover:text-[#0f3a2c] hover:bg-[#cfe2d6]/40'
-                }`}
+                className="h-12 px-5 rounded-full border border-white/20 text-white/80 hover:text-white hover:bg-white/10 transition-colors"
                 type="button"
                 title="Cancellation center"
               >
@@ -622,7 +676,7 @@ export default function UserDashboard(): JSX.Element {
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <button
                   onClick={handleLogout}
-                  className="px-6 py-2.5 bg-gradient-to-r from-[#2d7a54] to-[#145c4a] text-[#f2f5f1] font-semibold rounded-lg shadow-lg shadow-[#145c4a]/30"
+                  className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold shadow-lg shadow-blue-500/30"
                   type="button"
                 >
                   Logout
@@ -633,7 +687,7 @@ export default function UserDashboard(): JSX.Element {
               whileHover={{ scale: 1.08 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setMobileMenuOpen((state) => !state)}
-              className="md:hidden p-2 text-[#1f5b46]/80 hover:text-[#0f3a2c]"
+              className="md:hidden p-2 text-white/80 hover:text-white transition-colors"
               aria-label="Toggle menu"
               type="button"
             >
@@ -652,24 +706,19 @@ export default function UserDashboard(): JSX.Element {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className={`md:hidden overflow-hidden border-t ${
-                  isDark ? 'border-[#2b5f49]/25 bg-[#0e1512]/95' : 'border-[#0e1512]/10 bg-white'
-                }`}
+                className="md:hidden overflow-hidden border-t border-white/10 bg-[#0e1512]/95 backdrop-blur-xl"
               >
                 <div className="py-4 space-y-2">
                   {navLinks.map((link) => (
                     <motion.button
                       key={link.id}
-                      onClick={() => handleScrollToSection(link.id)}
+                      onClick={() => {
+                        handleScrollToSection(link.id)
+                        setMobileMenuOpen(false)
+                      }}
                       whileHover={{ x: 4 }}
                       className={`block w-full text-left px-4 py-3 rounded-lg transition ${
-                        activeSection === link.id
-                          ? isDark
-                            ? 'bg-[#132920]/80 text-[#f5e9d4]'
-                            : 'bg-[#0e1512]/10 text-[#0e1512]'
-                          : isDark
-                          ? 'text-[#d7e7da] hover:text-[#0f3a2c] hover:bg-[#f5f1e8]/75'
-                          : 'text-[#0e1512]/70 hover:text-[#0e1512] hover:bg-[#0e1512]/5'
+                        activeSection === link.id ? 'bg-white/10 text-white' : 'text-white/60 hover:text-white hover:bg-white/5'
                       }`}
                       type="button"
                     >
@@ -677,19 +726,13 @@ export default function UserDashboard(): JSX.Element {
                     </motion.button>
                   ))}
                 </div>
-                <div
-                  className={`border-t px-4 py-4 flex flex-col gap-3 ${
-                    isDark ? 'border-[#2b5f49]/25' : 'border-[#0e1512]/10'
-                  }`}
-                >
+                <div className="border-t border-white/10 px-4 py-4 flex flex-col gap-3">
                   <button
                     onClick={() => {
                       setShowCancellationCenter(true)
                       setMobileMenuOpen(false)
                     }}
-                    className={`px-4 py-3 rounded-lg border text-sm font-medium ${
-                      isDark ? 'border-[#2b5f49]/30 text-[#f5e9d4] hover:bg-[#f5f1e8]/10' : 'border-[#0e1512]/15 text-[#0e1512] hover:bg-[#0e1512]/5'
-                    }`}
+                    className="px-4 py-3 rounded-lg border border-white/20 text-white/80 hover:text-white hover:bg-white/10 transition-colors text-sm font-medium"
                     type="button"
                   >
                     Manage cancellations
@@ -699,7 +742,7 @@ export default function UserDashboard(): JSX.Element {
                       setMobileMenuOpen(false)
                       handleLogout()
                     }}
-                    className="px-4 py-3 rounded-lg bg-gradient-to-r from-[#2d7a54] via-[#1f5b46] to-[#145c4a] text-[#f5e9d4] font-semibold"
+                    className="px-4 py-3 rounded-lg bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-semibold"
                     type="button"
                   >
                     Logout
@@ -709,7 +752,7 @@ export default function UserDashboard(): JSX.Element {
             )}
           </AnimatePresence>
         </div>
-      </header>
+      </motion.header>
 
       <main className="relative z-10 pt-28 md:pt-36 pb-28 space-y-24">
         <motion.section
@@ -723,21 +766,21 @@ export default function UserDashboard(): JSX.Element {
             <div className="space-y-8">
               <div
                 className={`inline-block px-4 py-2 rounded-full border text-sm font-medium backdrop-blur-sm ${
-                  isDark ? 'bg-[#132920]/80 border-[#2b5f49]/25 text-[#f5e9d4]' : 'bg-[#0e1512]/5 border-[#0e1512]/10 text-[#0e1512]'
+                  isDark ? 'bg-white/10 border-white/10 text-white/90' : 'bg-[#0e1512]/5 border-[#0e1512]/10 text-[#0e1512]'
                 }`}
               >
                 Your SuiteSavvy Dashboard
               </div>
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight">
-                <span className="bg-gradient-to-r from-[#f5e9d4] via-[#d9b26f] to-[#b87d4b] bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent">
                   Welcome back,
                 </span>
                 <br />
-                <span className="bg-gradient-to-r from-[#2f6f4a] via-[#1d5e4a] to-[#0f3a2c] bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
                   {user?.name || 'Explorer'}
                 </span>
               </h1>
-              <p className={`text-lg md:text-xl ${isDark ? 'text-[#d7e7da]' : 'text-[#0e1512]/70'}`}>
+              <p className={`text-lg md:text-xl ${isDark ? 'text-white/70' : 'text-[#0e1512]/70'}`}>
                 Craft your next escape across {destinations.length} cinematic landscapes. Navigate bookings, cancellations, and curated routes with SuiteSavvy precision.
               </p>
               <div className="flex flex-wrap gap-3">
@@ -745,7 +788,7 @@ export default function UserDashboard(): JSX.Element {
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.97 }}
                   onClick={() => setShowBookingForm(true)}
-                  className="px-8 py-3 rounded-full bg-gradient-to-r from-[#2d7a54] via-[#1f5b46] to-[#145c4a] text-[#f5f1e8] font-semibold shadow-[0_20px_45px_rgba(16,58,44,0.45)]"
+                  className="px-8 py-3 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-semibold shadow-[0_20px_45px_rgba(59,130,246,0.35)]"
                   type="button"
                 >
                   Start booking
@@ -758,10 +801,10 @@ export default function UserDashboard(): JSX.Element {
                   className={`px-8 py-3 rounded-full border font-semibold transition-colors ${
                     selectedDestinations.length < 2
                       ? isDark
-                        ? 'border-[#2b5f49]/25 text-[#f5e9d4]/40 cursor-not-allowed'
+                        ? 'border-white/10 text-white/40 cursor-not-allowed'
                         : 'border-[#0e1512]/20 text-[#0e1512]/40 cursor-not-allowed'
                       : isDark
-                      ? 'border-[#2b5f49]/60 text-[#f5e9d4] hover:bg-[#1e3b30]/40'
+                      ? 'border-white/30 text-white hover:bg-white/10'
                       : 'border-[#0e1512]/30 text-[#0e1512] hover:bg-[#0e1512]/5'
                   }`}
                   type="button"
@@ -769,10 +812,10 @@ export default function UserDashboard(): JSX.Element {
                   Build route
                 </motion.button>
               </div>
-              <div className={`rounded-2xl border px-5 py-4 max-w-xl ${isDark ? 'border-[#2b5f49]/25 bg-[#132920]/70 text-[#f5e9d4]' : 'border-[#0e1512]/10 bg-white/70'}`}>
+              <div className={`rounded-2xl border px-5 py-4 max-w-xl ${isDark ? 'border-white/10 bg-white/5 text-white/90' : 'border-[#0e1512]/10 bg-white/70'}`}>
                 <div className="flex items-center justify-between text-sm">
-                  <span className={isDark ? 'text-[#d7e7da]' : 'text-[#0e1512]/70'}>Selections</span>
-                  <span className="font-semibold text-transparent bg-gradient-to-r from-[#2f6f4a] via-[#1d5e4a] to-[#0f3a2c] bg-clip-text">
+                  <span className={isDark ? 'text-white/70' : 'text-[#0e1512]/70'}>Selections</span>
+                  <span className="font-semibold text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text">
                     {selectedDestinations.length}
                   </span>
                 </div>
@@ -780,16 +823,16 @@ export default function UserDashboard(): JSX.Element {
               </div>
             </div>
             <div className="space-y-6">
-              <div className={`rounded-3xl p-6 border ${isDark ? 'border-[#2b5f49]/25 bg-[#132920]/70 text-[#f5e9d4]' : 'border-[#0f1a13]/10 bg-white/70'}`}>
-                <div className="text-sm uppercase tracking-[0.3em] text-[#d9b26f]">Today</div>
+              <div className={`rounded-3xl p-6 border ${isDark ? 'border-white/10 bg-white/5 text-white/90' : 'border-[#0e1512]/10 bg-white/70'}`}>
+                <div className="text-sm uppercase tracking-[0.3em] text-blue-300">Today</div>
                 <div className="mt-4 flex items-center justify-between">
                   <div>
                     <div className="text-4xl font-bold">{activeTrips}</div>
-                    <div className={isDark ? 'text-[#4d7a62]' : 'text-[#0f1a13]/60'}>Active expeditions</div>
+                    <div className={isDark ? 'text-white/60' : 'text-[#0f1a13]/60'}>Active expeditions</div>
                   </div>
                   <div>
                     <div className="text-4xl font-bold">{cancellationCount}</div>
-                    <div className={isDark ? 'text-[#4d7a62]' : 'text-[#0f1a13]/60'}>Cancellations resolved</div>
+                    <div className={isDark ? 'text-white/60' : 'text-[#0f1a13]/60'}>Cancellations resolved</div>
                   </div>
                 </div>
               </div>
@@ -816,7 +859,7 @@ export default function UserDashboard(): JSX.Element {
             <div className="relative z-10 flex flex-col gap-8">
               <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
                 <div className="max-w-2xl space-y-4">
-                  <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#f5e9d4] via-[#d9b26f] to-[#b87d4b] bg-clip-text text-transparent">The Wonders of Nature</h2>
+                  <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent">The Wonders of Nature</h2>
                   <p className={`text-lg ${isDark ? 'text-[#d7e7da]' : 'text-[#0f1a13]/70'}`}>
                     Immerse yourself in bioluminescent bays, alpine ridges, and rainforest canopies. Filter the catalog to sculpt your perfect expedition.
                   </p>
@@ -839,7 +882,7 @@ export default function UserDashboard(): JSX.Element {
               </div>
 
               {highlightedDestinations.length === 0 ? (
-                <div className={`rounded-3xl border px-8 py-16 text-center text-lg ${isDark ? 'border-[#2b5f49]/25 bg-[#f5f1e8]/75 text-[#f5e9d4]' : 'border-[#0f1a13]/10 bg-white/70 text-[#0f1a13]/70'}`}>
+                <div className={`rounded-3xl border px-8 py-16 text-center text-lg ${isDark ? 'border-[#2b5f49]/25 bg-[#f5f1e8]/75 text-[#f5e9d4]' : 'border-[#0e1512]/10 bg-white/70 text-[#0f1a13]/70'}`}>
                   No destinations match your filters. Reset to rediscover the wild.
                 </div>
               ) : (
@@ -880,13 +923,13 @@ export default function UserDashboard(): JSX.Element {
                         <div className="p-6 space-y-4">
                           <div className="flex items-center justify-between">
                             <h3 className="text-2xl font-semibold">{destination.name}</h3>
-                            <span className="text-sm uppercase tracking-[0.3em] text-[#d9b26f]">{destination.country}</span>
+                            <span className="text-sm uppercase tracking-[0.3em] text-blue-300">{destination.country}</span>
                           </div>
                           <p className={`text-sm leading-relaxed ${isDark ? 'text-[#d7e7da]' : 'text-[#0f1a13]/70'}`}>
                             {destination.description || 'Untamed landscapes and hidden stories.'}
                           </p>
                           <div className="flex items-center justify-between">
-                            <div className="text-3xl font-bold text-[#d9b26f]">₹{destination.price.toLocaleString()}</div>
+                            <div className="text-3xl font-bold text-blue-300">₹{destination.price.toLocaleString()}</div>
                             <div className={`text-xs uppercase tracking-[0.4em] ${isDark ? 'text-[#f5e9d4]/60' : 'text-[#0f1a13]/50'}`}>Per night</div>
                           </div>
                         </div>
@@ -913,12 +956,12 @@ export default function UserDashboard(): JSX.Element {
             <div className="relative z-10">
               <div className="flex flex-col gap-6 md:flex-row md:justify-between md:items-center">
                 <div className="space-y-4 max-w-xl">
-                  <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#f5e9d4] via-[#d9b26f] to-[#b87d4b] bg-clip-text text-transparent">SuiteSavvy Metrics</h2>
+                  <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent">SuiteSavvy Metrics</h2>
                   <p className={`text-lg ${isDark ? 'text-[#d7e7da]' : 'text-[#0f1a13]/70'}`}>
                     Your dashboard stays in sync with live bookings, cancellation care, and curated destinations. Every refresh keeps your expedition tailored.
                   </p>
                 </div>
-                <div className="text-sm uppercase tracking-[0.4em] text-[#d9b26f]">Adventure fidelity</div>
+                <div className="text-sm uppercase tracking-[0.4em] text-blue-300">Adventure fidelity</div>
               </div>
               <div className="mt-10 grid gap-6 sm:grid-cols-2">
                 {adventureMetrics.map((metric) => (
@@ -926,12 +969,12 @@ export default function UserDashboard(): JSX.Element {
                     key={metric.title}
                     whileHover={{ y: -6 }}
                     className={`rounded-3xl border p-6 transition-colors ${
-                      isDark ? 'border-[#2b5f49]/25 bg-[#132920]/70 text-[#f5e9d4]' : 'border-[#0f1a13]/10 bg-white/85'
+                      isDark ? 'border-white/10 bg-white/5 text-white/90' : 'border-[#0e1512]/10 bg-white/85'
                     }`}
                   >
-                    <div className="text-sm uppercase tracking-[0.4em] text-[#d9b26f]">{metric.title}</div>
+                    <div className="text-sm uppercase tracking-[0.4em] text-blue-300">{metric.title}</div>
                     <div className="mt-4 text-4xl font-bold">{metric.value}</div>
-                    <p className={`mt-3 text-sm leading-relaxed ${isDark ? 'text-[#4d7a62]' : 'text-[#0f1a13]/60'}`}>{metric.description}</p>
+                    <p className={`mt-3 text-sm leading-relaxed ${isDark ? 'text-white/60' : 'text-[#0f1a13]/60'}`}>{metric.description}</p>
                   </motion.div>
                 ))}
               </div>
@@ -953,15 +996,15 @@ export default function UserDashboard(): JSX.Element {
             <div className="relative z-10 space-y-8">
               <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
                 <div>
-                  <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#f5e9d4] via-[#d9b26f] to-[#b87d4b] bg-clip-text text-transparent">From Your Travel Journal</h2>
+                  <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent">From Your Travel Journal</h2>
                   <p className={`text-lg mt-3 ${isDark ? 'text-[#d7e7da]' : 'text-[#0f1a13]/70'}`}>
                     Latest stories are woven from your confirmed bookings. Relive highlights or dive into the details for the next tale.
                   </p>
                 </div>
-                <div className={`text-sm uppercase tracking-[0.3em] ${isDark ? 'text-[#4d7a62]' : 'text-[#0f1a13]/60'}`}>Inspired by bookings</div>
+                <div className={`text-sm uppercase tracking-[0.3em] ${isDark ? 'text-white/60' : 'text-[#0f1a13]/60'}`}>Inspired by bookings</div>
               </div>
               {travelStories.length === 0 ? (
-                <div className={`rounded-3xl border px-8 py-16 text-center text-lg ${isDark ? 'border-[#2b5f49]/25 bg-[#f5f1e8]/75 text-[#f5e9d4]' : 'border-[#0f1a13]/10 bg-white/70 text-[#0f1a13]/70'}`}>
+                <div className={`rounded-3xl border px-8 py-16 text-center text-lg ${isDark ? 'border-[#2b5f49]/25 bg-[#f5f1e8]/75 text-[#f5e9d4]' : 'border-[#0e1512]/10 bg-white/70 text-[#0f1a13]/70'}`}>
                   Start booking to unlock your travel journal.
                 </div>
               ) : (
@@ -970,13 +1013,13 @@ export default function UserDashboard(): JSX.Element {
                     <motion.article
                       key={story.id}
                       whileHover={{ y: -6 }}
-                      className={`relative overflow-hidden rounded-3xl border ${isDark ? 'border-[#2b5f49]/25 bg-[#132920]/70 text-[#f5e9d4]' : 'border-[#0f1a13]/10 bg-white/85'}`}
+                      className={`relative overflow-hidden rounded-3xl border ${isDark ? 'border-white/10 bg-white/5 text-white/90' : 'border-[#0e1512]/10 bg-white/85'}`}
                     >
                       <div className="relative h-56 overflow-hidden">
                         <img src={story.image} alt={story.title} className="h-full w-full object-cover transition-transform duration-700 hover:scale-110" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
                         <div className="absolute bottom-4 left-4">
-                          <div className="text-sm uppercase tracking-[0.4em] text-[#d9b26f]">{story.status}</div>
+                          <div className="text-sm uppercase tracking-[0.4em] text-blue-300">{story.status}</div>
                           <h3 className="text-2xl font-semibold mt-2">{story.title}</h3>
                         </div>
                       </div>
@@ -987,7 +1030,7 @@ export default function UserDashboard(): JSX.Element {
                             const booking = bookings.find((b) => b.bookingId === story.id)
                             if (booking) handleExploreDestinations(booking)
                           }}
-                          className="text-sm font-semibold text-[#d9b26f] hover:text-[#f1a208]"
+                          className="text-sm font-semibold text-blue-300 hover:text-[#f1a208]"
                           type="button"
                         >
                           View itinerary →
@@ -997,6 +1040,42 @@ export default function UserDashboard(): JSX.Element {
                   ))}
                 </div>
               )}
+            </div>
+          </div>
+        </motion.section>
+
+        <motion.section
+          id="packages"
+          initial={{ opacity: 0, y: 48 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8 }}
+          className="relative max-w-7xl mx-auto px-6"
+        >
+          <div className={`relative overflow-hidden rounded-[40px] border ${sectionBorderClass} px-6 sm:px-10 py-10 backdrop-blur-sm`}>
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{
+                backgroundImage: `linear-gradient(rgba(17,33,27,0.78), rgba(17,33,27,0.78)), url(${SECTION_BACKGROUND_IMAGES.packages})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            />
+            <div className={`absolute inset-0 ${sectionOverlayClass}`} />
+            <div className="relative z-10">
+              <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+                <div className="space-y-3">
+                  <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent">
+                    Curated Travel Packages
+                  </h2>
+                  <p className={`text-lg ${isDark ? 'text-[#d7e7da]' : 'text-[#0f1a13]/70'}`}>
+                    Explore ready-made adventures tailored for effortless planning and immersive experiences.
+                  </p>
+                </div>
+              </div>
+              <div className="mt-10">
+                <PackageList onBookPackage={handleBookPackage} />
+              </div>
             </div>
           </div>
         </motion.section>
@@ -1012,11 +1091,11 @@ export default function UserDashboard(): JSX.Element {
           <div className={`relative overflow-hidden rounded-[40px] border ${sectionBorderClass} px-6 sm:px-10 py-10 backdrop-blur-sm`}>
             <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${SECTION_BACKGROUND_IMAGES.planner})` }} />
             <div className={`absolute inset-0 ${sectionOverlayClass}`} />
-            <div className="relative z-10 flex flex-col gap-10 xl:flex-row">
-              <div className={`flex-1 rounded-3xl border p-8 ${isDark ? 'border-[#2b5f49]/25 bg-[#132920]/70 text-[#f5e9d4]' : 'border-[#0f1a13]/10 bg-white/85'}`}>
+            <div className="relative z-10 flex flex-col gap-10">
+              <div className={`flex-1 rounded-3xl border p-8 ${isDark ? 'border-white/10 bg-white/5 text-white/90' : 'border-[#0e1512]/10 bg-white/85'}`}>
                 <div className="flex items-center justify-between">
-                  <h2 className="text-3xl font-bold text-[#d9b26f]">My Expeditions</h2>
-                  <div className={`text-sm uppercase tracking-[0.3em] ${isDark ? 'text-[#4d7a62]' : 'text-[#0f1a13]/60'}`}>{totalBookings} booked</div>
+                  <h2 className="text-3xl font-bold text-blue-300">My Expeditions</h2>
+                  <div className={`text-sm uppercase tracking-[0.3em] ${isDark ? 'text-white/60' : 'text-[#0f1a13]/60'}`}>{totalBookings} booked</div>
                 </div>
                 {bookings.length === 0 ? (
                   <div className="mt-10 rounded-2xl border border-dashed border-[#2b5f49]/25 px-6 py-12 text-center text-[#d7e7da]">
@@ -1038,15 +1117,15 @@ export default function UserDashboard(): JSX.Element {
                       >
                         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                           <div>
-                            <div className="text-sm uppercase tracking-[0.4em] text-[#d9b26f]">Booking #{booking.bookingId}</div>
+                            <div className="text-sm uppercase tracking-[0.4em] text-blue-300">Booking #{booking.bookingId}</div>
                             <div className="mt-2 text-xl font-semibold">{booking.destinations.join(', ')}</div>
-                            <div className={isDark ? 'text-[#4d7a62] text-sm' : 'text-[#0f1a13]/60 text-sm'}>
+                            <div className={isDark ? 'text-white/60 text-sm' : 'text-[#0f1a13]/60 text-sm'}>
                               {booking.guests} guests • {booking.nights} nights • {new Date(booking.bookingDate).toLocaleDateString()}
                             </div>
                           </div>
                           <div className="flex flex-col gap-3 items-end">
                             <CancellationBadge cancellationStatus={booking.cancellationStatus} />
-                            <div className="text-2xl font-bold text-[#d9b26f]">₹{booking.totalPrice.toLocaleString()}</div>
+                            <div className="text-2xl font-bold text-blue-300">₹{booking.totalPrice.toLocaleString()}</div>
                           </div>
                         </div>
                         {booking.latestCancellation && (
@@ -1057,14 +1136,14 @@ export default function UserDashboard(): JSX.Element {
                         <div className="mt-4 grid gap-3 sm:grid-cols-2">
                           <button
                             onClick={() => handleRequestCancellation(booking.bookingId)}
-                            className="px-4 py-3 rounded-xl border border-[#d93654]/40 text-[#d93654] hover:bg-[#d93654]/10"
+                            className="px-4 py-3 rounded-xl border border-red-400/40 text-red-300 hover:bg-red-400/10"
                             type="button"
                           >
                             Request cancellation
                           </button>
                           <button
                             onClick={() => handleExploreDestinations(booking)}
-                            className="px-4 py-3 rounded-xl border border-[#d9b26f]/40 text-[#d9b26f] hover:bg-[#d9b26f]/10"
+                            className="px-4 py-3 rounded-xl border border-[#d9b26f]/40 text-blue-300 hover:bg-[#d9b26f]/10"
                             type="button"
                           >
                             View itinerary
@@ -1084,67 +1163,257 @@ export default function UserDashboard(): JSX.Element {
                   </div>
                 )}
               </div>
-              <div className={`flex-1 rounded-3xl border p-8 ${isDark ? 'border-[#2b5f49]/25 bg-[#132920]/70 text-[#f5e9d4]' : 'border-[#0f1a13]/10 bg-white/85'}`} ref={routeSectionRef}>
+              <div className={`flex-1 rounded-3xl border p-8 ${isDark ? 'border-white/10 bg-white/5 text-white/90' : 'border-[#0e1512]/10 bg-white/85'}`} ref={routeSectionRef}>
                 <div className="flex items-center justify-between">
-                  <h2 className="text-3xl font-bold text-[#d9b26f]">Route Planner</h2>
-                  <div className={`text-sm uppercase tracking-[0.3em] ${isDark ? 'text-[#4d7a62]' : 'text-[#0f1a13]/60'}`}>
+                  <h2 className="text-3xl font-bold text-blue-300">Route Planner</h2>
+                  <div className={`text-sm uppercase tracking-[0.3em] ${isDark ? 'text-white/60' : 'text-[#0f1a13]/60'}`}>
                     {selectedDestinations.length} selected
                   </div>
                 </div>
                 {shortestPath ? (
                   <div className="mt-6 space-y-6">
                     <div className="flex items-center justify-between">
-                      <span className={isDark ? 'text-[#4d7a62]' : 'text-[#0f1a13]/60'}>Total distance</span>
+                      <span className={isDark ? 'text-white/60' : 'text-[#0f1a13]/60'}>Total distance</span>
                       <span className="text-3xl font-bold">{shortestPath.distanceKm.toFixed(1)} km</span>
                     </div>
                     <div className="space-y-3">
-                      <span className={isDark ? 'text-[#4d7a62] text-sm' : 'text-[#0f1a13]/60 text-sm'}>Recommended order:</span>
+                      <span className={isDark ? 'text-white/60 text-sm' : 'text-[#0f1a13]/60 text-sm'}>Recommended order:</span>
                       <div className="flex flex-wrap gap-2">
-                        {shortestPath.order.map((index, i) => (
+                        {optimizedDestinations.map((destination, index) => (
                           <motion.span
-                            key={i}
+                            key={destination.destinationId ?? index}
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: i * 0.05 }}
-                            className="px-3 py-2 rounded-full bg-[#d9b26f]/15 text-[#d9b26f] text-sm"
+                            transition={{ delay: index * 0.05 }}
+                            className="px-3 py-2 rounded-full bg-[#d9b26f]/15 text-blue-300 text-sm"
                           >
-                            {i + 1}. {selectedDestinations[index]?.name}
+                            {index + 1}. {destination.name}
                           </motion.span>
                         ))}
                       </div>
                     </div>
                     <div className="rounded-2xl overflow-hidden border border-[#2b5f49]/25">
-                      <RouteMap
-                        destinations={selectedDestinations}
-                        routeOrder={shortestPath.order}
-                        apiKey={(import.meta as any).env?.VITE_GOOGLE_MAPS_API_KEY || 'YOUR_GOOGLE_MAPS_API_KEY'}
-                      />
+                      <RouteMap destinations={optimizedDestinations} />
                     </div>
                   </div>
                 ) : (
                   <div className="mt-6 space-y-4">
-                    <p className={isDark ? 'text-[#d7e7da]' : 'text-[#0f1a13]/70'}>
-                      Select at least two destinations to visualize the optimal path and bring your journey to life on the cinematic map.
-                    </p>
-                    <button
-                      onClick={calculateShortestPath}
-                      disabled={selectedDestinations.length < 2}
-                      className={`px-4 py-3 rounded-xl border font-semibold ${
-                        selectedDestinations.length < 2
-                          ? 'border-[#2b5f49]/25 text-[#f5e9d4]/40 cursor-not-allowed'
-                          : 'border-[#d9b26f] text-[#d9b26f] hover:bg-[#d9b26f]/10'
-                      }`}
-                      type="button"
-                    >
-                      Generate route
-                    </button>
-                  </div>
-                )}
-              </div>
+  <p className={isDark ? 'text-[#d7e7da]' : 'text-[#0f1a13]/70'}>
+    Select at least two destinations to visualize the optimal path and bring your journey to life on the cinematic map.
+  </p>
+  <button
+    onClick={calculateShortestPath}
+    disabled={selectedDestinations.length < 2}
+    className={`px-4 py-3 rounded-xl border font-semibold ${
+      selectedDestinations.length < 2
+        ? 'border-white/10 text-white/40 cursor-not-allowed'
+        : 'border-[#d9b26f] text-blue-300 hover:bg-[#d9b26f]/10'
+    }`}
+    type="button"
+  >
+    Generate route
+  </button>
+</div>
+)} {/* closing conditional rendering */}
+
+</div>
+</div>
+
+<motion.section
+  initial={{ opacity: 0, y: 48 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, amount: 0.3 }}
+  transition={{ duration: 0.8 }}
+  className="relative max-w-7xl mx-auto px-6"
+>
+  <main>
+    <div
+      className={`relative overflow-hidden rounded-[40px] border ${sectionBorderClass} px-6 sm:px-10 py-10 backdrop-blur-sm`}
+    >
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${SECTION_BACKGROUND_IMAGES.planner})` }}
+      />
+      <div className={`absolute inset-0 ${sectionOverlayClass}`} />
+      <div className="relative z-10 flex flex-col gap-10">
+        <div
+          className={`flex-1 rounded-3xl border p-8 ${
+            isDark
+              ? 'border-white/10 bg-white/5 text-white/90'
+              : 'border-[#0e1512]/10 bg-white/85'
+          }`}
+        >
+          <div className="flex items-center justify-between">
+            <h2 className="text-3xl font-bold text-blue-300">My Expeditions</h2>
+            <div
+              className={`text-sm uppercase tracking-[0.3em] ${
+                isDark ? 'text-white/60' : 'text-[#0f1a13]/60'
+              }`}
+            >
+              {totalBookings} booked
             </div>
           </div>
-        </motion.section>
 
+          {bookings.length === 0 ? (
+            <div className="mt-10 rounded-2xl border border-dashed border-[#2b5f49]/25 px-6 py-12 text-center text-[#d7e7da]">
+              No bookings yet. Start your first adventure above.
+            </div>
+          ) : (
+            /* your bookings list here */
+            <></>
+          )}
+        </div>
+      </div>
+    </div>
+  </main>
+</motion.section>
+
+                  <div className="mt-8 space-y-6">
+                    {bookings.slice(0, 4).map((booking) => (
+                      <motion.div
+                        key={booking.bookingId}
+                        whileHover={{ y: -4 }}
+                        className={`rounded-2xl border p-6 transition-colors ${
+                          booking.cancellationStatus === 'Approved'
+                            ? 'border-[#d93654]/40 bg-[#d93654]/10'
+                            : isDark
+                            ? 'border-[#2b5f49]/25 bg-black/30'
+                            : 'border-[#0f1a13]/15 bg-white/80'
+                        }`}
+                      >
+                        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                          <div>
+                            <div className="text-sm uppercase tracking-[0.4em] text-blue-300">Booking #{booking.bookingId}</div>
+                            <div className="mt-2 text-xl font-semibold">{booking.destinations.join(', ')}</div>
+                            <div className={isDark ? 'text-white/60 text-sm' : 'text-[#0f1a13]/60 text-sm'}>
+                              {booking.guests} guests • {booking.nights} nights • {new Date(booking.bookingDate).toLocaleDateString()}
+                            </div>
+                          </div>
+                          <div className="flex flex-col gap-3 items-end">
+                            <CancellationBadge cancellationStatus={booking.cancellationStatus} />
+                            <div className="text-2xl font-bold text-blue-300">₹{booking.totalPrice.toLocaleString()}</div>
+                          </div>
+                        </div>
+                        {booking.latestCancellation && (
+                          <div className="mt-4">
+                            <CancellationDetails latestCancellation={booking.latestCancellation} />
+                          </div>
+                        )}
+                        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                          <button
+                            onClick={() => handleRequestCancellation(booking.bookingId)}
+                            className="px-4 py-3 rounded-xl border border-red-400/40 text-red-300 hover:bg-red-400/10"
+                            type="button"
+                          >
+                            Request cancellation
+                          </button>
+                          <button
+                            onClick={() => handleExploreDestinations(booking)}
+                            className="px-4 py-3 rounded-xl border border-[#d9b26f]/40 text-blue-300 hover:bg-[#d9b26f]/10"
+                            type="button"
+                          >
+                            View itinerary
+                          </button>
+                        </div>
+                      </motion.div>
+                    ))}
+                    {bookings.length > 4 && (
+                      <button
+                        onClick={() => setShowCancellationCenter(true)}
+                        className="w-full px-4 py-3 rounded-xl border border-[#2b5f49]/25 text-[#1f5b46]/85 hover:text-[#0f3a2c]"
+                        type="button"
+                      >
+                        View all activity
+                      </button>
+                    )}
+                  </div>
+              </div>
+             <div
+  className={`flex-1 rounded-3xl border p-8 ${
+    isDark
+      ? 'border-white/10 bg-white/5 text-white/90'
+      : 'border-[#0e1512]/10 bg-white/85'
+  }`}
+  ref={routeSectionRef}
+>
+  <div className="flex items-center justify-between">
+    <h2 className="text-3xl font-bold text-blue-300">Route Planner</h2>
+    <div
+      className={`text-sm uppercase tracking-[0.3em] ${
+        isDark ? 'text-white/60' : 'text-[#0f1a13]/60'
+      }`}
+    >
+      {selectedDestinations.length} selected
+    </div>
+  </div>
+
+  {shortestPath ? (
+    <div className="mt-6 space-y-6">
+      <div className="flex items-center justify-between">
+        <span className={isDark ? 'text-white/60' : 'text-[#0f1a13]/60'}>
+          Total distance
+        </span>
+        <span className="text-3xl font-bold">
+          {shortestPath.distanceKm.toFixed(1)} km
+        </span>
+      </div>
+
+      <div className="space-y-3">
+        <span
+          className={
+            isDark
+              ? 'text-white/60 text-sm'
+              : 'text-[#0f1a13]/60 text-sm'
+          }
+        >
+          Recommended order:
+        </span>
+        <div className="flex flex-wrap gap-2">
+          {optimizedDestinations.map((destination, index) => (
+            <motion.span
+              key={destination.destinationId ?? index}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: index * 0.05 }}
+              className="px-3 py-2 rounded-full bg-[#d9b26f]/15 text-blue-300 text-sm"
+            >
+              {index + 1}. {destination.name}
+            </motion.span>
+          ))}
+        </div>
+      </div>
+
+      <div className="rounded-2xl overflow-hidden border border-[#2b5f49]/25">
+        <RouteMap destinations={optimizedDestinations} />
+      </div>
+    </div>
+  ) : (
+    <div className="mt-6 text-center space-y-6">
+      <p
+        className={
+          isDark ? 'text-white/60' : 'text-[#0f1a13]/60'
+        }
+      >
+        Select at least two destinations to generate your optimal route.
+      </p>
+      <button
+        onClick={calculateShortestPath}
+        disabled={selectedDestinations.length < 2}
+        className={`px-4 py-3 rounded-xl border font-semibold ${
+          selectedDestinations.length < 2
+            ? 'border-white/10 text-white/40 cursor-not-allowed'
+            : 'border-[#d9b26f] text-blue-300 hover:bg-[#d9b26f]/10'
+        }`}
+        type="button"
+      >
+        Generate route
+      </button>
+    </div>
+  )}
+</div>
+
+        </motion.section>
+        
         <motion.section
           initial={{ opacity: 0, y: 48 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1152,7 +1421,7 @@ export default function UserDashboard(): JSX.Element {
           transition={{ duration: 0.8 }}
           className="max-w-6xl mx-auto px-6"
         >
-          <div className={`rounded-3xl border p-8 ${isDark ? 'border-[#2b5f49]/25 bg-[#132920]/70 text-[#f5e9d4]' : 'border-[#0f1a13]/10 bg-white/85'}`}>
+          <div className={`rounded-3xl border p-8 ${isDark ? 'border-white/10 bg-white/5 text-white/90' : 'border-[#0e1512]/10 bg-white/85'}`}>
             <Feedback />
           </div>
         </motion.section>
@@ -1282,12 +1551,12 @@ export default function UserDashboard(): JSX.Element {
                           <p className="text-[#d7e7da] mb-3">{destination?.description || 'A wonderful place to visit.'}</p>
                           <div className="flex items-center justify-between">
                             <div>
-                              <span className="text-[#4d7a62] text-sm">Price per night:</span>
+                              <span className="text-white/60 text-sm">Price per night:</span>
                               <div className="text-2xl font-bold">₹{destination?.price?.toLocaleString() ?? 'N/A'}</div>
                             </div>
                             {destination?.latitude && destination?.longitude && (
                               <div className="text-right">
-                                <span className="text-[#4d7a62] text-sm">Coordinates</span>
+                                <span className="text-white/60 text-sm">Coordinates</span>
                                 <div className="text-[#f5e9d4] text-sm">
                                   {destination.latitude.toFixed(4)}, {destination.longitude.toFixed(4)}
                                 </div>

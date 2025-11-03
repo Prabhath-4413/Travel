@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useAuth } from '../../contexts/AuthContext'
 import { bookingsAPI, type Destination } from '../../lib/api'
@@ -16,6 +16,15 @@ export default function BookingForm({ destinations, onClose, onSuccess }: Bookin
     nights: 1,
     startDate: new Date().toISOString().slice(0, 10)
   })
+
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      guests: 1,
+      nights: 1,
+      startDate: new Date().toISOString().slice(0, 10)
+    }))
+  }, [destinations])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 

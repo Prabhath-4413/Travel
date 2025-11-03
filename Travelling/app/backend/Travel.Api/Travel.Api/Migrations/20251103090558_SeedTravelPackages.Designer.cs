@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Travel.Api.Data;
@@ -11,9 +12,11 @@ using Travel.Api.Data;
 namespace Travel.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251103090558_SeedTravelPackages")]
+    partial class SeedTravelPackages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -270,8 +273,8 @@ namespace Travel.Api.Migrations
                         {
                             PackageId = 1,
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Five-day coastal escape featuring sunrise yoga, local seafood tastings, and resort-style beach villas.",
-                            ImageUrl = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+                            Description = "Relax on stunning beaches and enjoy ocean views.",
+                            ImageUrl = "https://example.com/images/beach_escape.jpg",
                             Name = "Beach Escape",
                             Price = 499.99m
                         },
@@ -279,8 +282,8 @@ namespace Travel.Api.Migrations
                         {
                             PackageId = 2,
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Week-long alpine expedition with guided summit treks, riverside camping, and stargazing under clear skies.",
-                            ImageUrl = "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
+                            Description = "Hike across breathtaking mountain trails and valleys.",
+                            ImageUrl = "https://example.com/images/mountain_adventure.jpg",
                             Name = "Mountain Adventure",
                             Price = 899.99m
                         },
@@ -288,8 +291,8 @@ namespace Travel.Api.Migrations
                         {
                             PackageId = 3,
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Curated heritage trail showcasing palace walkthroughs, artisan workshops, and immersive food tours.",
-                            ImageUrl = "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=1200&q=80",
+                            Description = "Explore heritage sites and local traditions.",
+                            ImageUrl = "https://example.com/images/cultural_journey.jpg",
                             Name = "Cultural Journey",
                             Price = 699.99m
                         });
