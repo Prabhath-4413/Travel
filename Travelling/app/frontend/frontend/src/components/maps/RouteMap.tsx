@@ -27,7 +27,7 @@ interface RouteResult {
   message: string | null
 }
 
-// 🧍 User Marker Icon
+// 🧍 User marker
 const userIcon = L.icon({
   iconUrl: "https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-blue.png",
   iconSize: [30, 45],
@@ -36,32 +36,29 @@ const userIcon = L.icon({
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 })
 
-// 📍 Destination Numbered Markers
+// 📍 Destination marker (numbered)
 const createNumberedIcon = (number: number) =>
   L.divIcon({
-    html: `
-      <div style="
-        background-color: #dc2626;
-        color: white;
-        border-radius: 50%;
-        width: 32px;
-        height: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        border: 2px solid white;
-        box-shadow: 0 0 4px rgba(0,0,0,0.4);
-      ">${number}</div>
-    `,
+    html: `<div style="
+      background-color: #dc2626;
+      color: white;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      border: 2px solid white;
+      box-shadow: 0 0 4px rgba(0,0,0,0.4);
+    ">${number}</div>`,
     className: "",
     iconSize: [32, 32],
     iconAnchor: [16, 32],
   })
 
-// 🌍 Haversine fallback for distance
+// 🌍 Fallback Haversine distance
 const toRadians = (value: number) => (value * Math.PI) / 180
-
 const haversineDistanceKm = (from: LatLngTuple, to: LatLngTuple) => {
   const R = 6371
   const dLat = toRadians(to[0] - from[0])
@@ -93,82 +90,57 @@ const buildFallbackPolyline = (origin: LatLngTuple, points: Destination[]) => {
   return { path, summary }
 }
 
-// 🧭 OpenRouteService API (preferred)
-const fetchOpenRouteServiceRoute = async (
+// 🧭 Geoapify Directions API
+const fetchGeoapifyRoute = async (
   coords: [number, number][],
   destinations: Destination[]
 ): Promise<RouteResult | null> => {
-  const apiKey = import.meta.env.VITE_OPENROUTESERVICE_API_KEY;
-  if (!apiKey) return null
+  try {
+    const apiKey = "b0bee86f61e647569755c3983775cf3d" // ✅ your Geoapify key
+    console.log("Geoapify route coordinates:", coords)
+    const waypoints = coords.map((c) => `${c[0]},${c[1]}`).join("|")
 
-  const response = await fetch("https://api.openrouteservice.org/v2/directions/driving-car/geojson", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: apiKey,
-    },
-    body: JSON.stringify({ coordinates: coords }),
-  })
+    const url = `https://api.geoapify.com/v1/routing?waypoints=${waypoints}&mode=drive&apiKey=${apiKey}`
+    console.log("Geoapify request URL:", url)
 
-  if (!response.ok) return null
-  const data = await response.json()
-  const feature = data.features?.[0]
-  if (!feature?.geometry?.coordinates) return null
+    const response = await fetch(url)
+    if (!response.ok) {
+      console.error("Geoapify request failed:", response.status)
+      return null
+    }
 
-  const routeCoordinates: LatLngTuple[] = feature.geometry.coordinates.map(
-    ([lng, lat]: [number, number]) => [lat, lng]
-  )
+    const data = await response.json()
+    const feature = data.features?.[0]
+    if (!feature?.geometry?.coordinates) {
+      console.warn("Geoapify: No route found.")
+      return null
+    }
 
-  const summary: RouteSummary = feature.properties?.summary
-    ? {
-        distance: feature.properties.summary.distance / 1000,
-        duration: feature.properties.summary.duration / 60,
-        stops: destinations.length,
-      }
-    : { distance: 0, duration: 0, stops: destinations.length }
+    const routeCoordinates: LatLngTuple[] = feature.geometry.coordinates[0].map(
+      ([lng, lat]: [number, number]) => [lat, lng]
+    )
 
-  return {
-    coordinates: routeCoordinates,
-    orderedDestinations: [...destinations],
-    summary,
-    message: "Routing powered by OpenRouteService.",
+    const summary: RouteSummary = feature.properties?.distance
+      ? {
+          distance: feature.properties.distance / 1000,
+          duration: feature.properties.time / 60,
+          stops: destinations.length,
+        }
+      : { distance: 0, duration: 0, stops: destinations.length }
+
+    return {
+      coordinates: routeCoordinates,
+      orderedDestinations: [...destinations],
+      summary,
+      message: "Routing powered by Geoapify.",
+    }
+  } catch (err) {
+    console.error("Geoapify fetch failed:", err)
+    return null
   }
 }
 
-// 🗺️ OSRM Fallback
-const fetchOsrmRoute = async (
-  coords: [number, number][],
-  destinations: Destination[]
-): Promise<RouteResult | null> => {
-  const url = `https://router.project-osrm.org/trip/v1/driving/${coords
-    .map((c) => c.join(","))
-    .join(";")}?source=first&roundtrip=false&geometries=geojson&overview=full`
-  const response = await fetch(url)
-  if (!response.ok) return null
-
-  const data = await response.json()
-  if (!data.trips?.[0]) return null
-
-  const trip = data.trips[0]
-  const routeCoordinates: LatLngTuple[] = trip.geometry.coordinates.map(
-    ([lng, lat]: [number, number]) => [lat, lng]
-  )
-
-  const summary: RouteSummary = {
-    distance: trip.distance / 1000,
-    duration: trip.duration / 60,
-    stops: destinations.length,
-  }
-
-  return {
-    coordinates: routeCoordinates,
-    orderedDestinations: [...destinations],
-    summary,
-    message: "Routing powered by OSRM.",
-  }
-}
-
-// 📍 RouteLayer
+// 📍 Route Layer
 function RouteLayer({
   userLocation,
   destinations,
@@ -197,44 +169,33 @@ function RouteLayer({
 
     const run = async () => {
       const coords: [number, number][] = [
-        [userLocation[1], userLocation[0]], 
+        [userLocation[1], userLocation[0]],
         ...destinations.map((d) => [d.longitude, d.latitude]),
       ]
 
       try {
-        // 1️⃣ Try OpenRouteService first
-        const orsRoute = await fetchOpenRouteServiceRoute(coords, destinations)
-        if (orsRoute) {
+        const geoapifyRoute = await fetchGeoapifyRoute(coords, destinations)
+        if (geoapifyRoute) {
           if (cancelled) return
-          setRouteCoords(orsRoute.coordinates)
+          setRouteCoords(geoapifyRoute.coordinates)
           setOptimizedOrder([...destinations])
-          setSummary(orsRoute.summary)
-          setRoutingMessage(orsRoute.message)
-          map.fitBounds(L.latLngBounds(orsRoute.coordinates), { padding: [50, 50] })
+          setSummary(geoapifyRoute.summary)
+          setRoutingMessage(geoapifyRoute.message)
+          map.fitBounds(L.latLngBounds(geoapifyRoute.coordinates), { padding: [50, 50] })
           return
         }
 
-        // 2️⃣ Try OSRM next
-        const osrmRoute = await fetchOsrmRoute(coords, destinations)
-        if (osrmRoute) {
-          if (cancelled) return
-          setRouteCoords(osrmRoute.coordinates)
-          setOptimizedOrder([...destinations])
-          setSummary(osrmRoute.summary)
-          setRoutingMessage(osrmRoute.message)
-          map.fitBounds(L.latLngBounds(osrmRoute.coordinates), { padding: [50, 50] })
-          return
-        }
-
-        // 3️⃣ Fallback
         const fallback = buildFallbackPolyline(userLocation, destinations)
         setRouteCoords(fallback.path)
         setOptimizedOrder([...destinations])
         setSummary(fallback.summary)
-        setRoutingMessage("Routing service not available for this region.")
+        setRoutingMessage("No route found between these points.")
         map.fitBounds(L.latLngBounds(fallback.path), { padding: [50, 50] })
       } catch (err) {
         console.error("Route fetch failed:", err)
+        if (!cancelled) {
+          setRoutingMessage("No route found between these points.")
+        }
       }
     }
 

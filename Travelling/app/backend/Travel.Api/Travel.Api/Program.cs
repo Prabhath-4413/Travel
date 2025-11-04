@@ -801,3 +801,4 @@ public record CreateDestinationDto(string Name, string? Description, decimal Pri
 public record BookingRequestDto(int UserId, int[] DestinationIds, int Guests, int Nights, DateTime StartDate);
 public record ShortestPathRequestDto(Coordinate[] Points);
 public record Coordinate(decimal Latitude, decimal Longitude);
+

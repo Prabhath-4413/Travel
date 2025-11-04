@@ -1384,7 +1384,7 @@ export default function UserDashboard(): JSX.Element {
       </div>
 
       <div className="rounded-2xl overflow-hidden border border-[#2b5f49]/25">
-        <RouteMap destinations={optimizedDestinations} />
+        <RouteMap destinations ={optimizedDestinations} />
       </div>
     </div>
   ) : (

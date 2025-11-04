@@ -44,7 +44,9 @@ namespace Travel.Api.Controllers
                             Price = tpd.Destination.Price,
                             ImageUrl = tpd.Destination.ImageUrl,
                             Country = tpd.Destination.Country,
-                            City = tpd.Destination.City
+                            City = tpd.Destination.City,
+                            Latitude = tpd.Destination.Latitude,
+                            Longitude = tpd.Destination.Longitude
                         })
                         .ToList()
                 })
@@ -79,7 +81,9 @@ namespace Travel.Api.Controllers
                             Price = tpd.Destination.Price,
                             ImageUrl = tpd.Destination.ImageUrl,
                             Country = tpd.Destination.Country,
-                            City = tpd.Destination.City
+                            City = tpd.Destination.City,
+                            Latitude = tpd.Destination.Latitude,
+                            Longitude = tpd.Destination.Longitude
                         })
                         .ToList()
                 })
@@ -169,7 +173,9 @@ namespace Travel.Api.Controllers
                             Price = tpd.Destination.Price,
                             ImageUrl = tpd.Destination.ImageUrl,
                             Country = tpd.Destination.Country,
-                            City = tpd.Destination.City
+                            City = tpd.Destination.City,
+                            Latitude = tpd.Destination.Latitude,
+                            Longitude = tpd.Destination.Longitude
                         })
                         .ToList()
                 })
@@ -208,5 +214,7 @@ namespace Travel.Api.Controllers
         public string? ImageUrl { get; set; }
         public string? Country { get; set; }
         public string? City { get; set; }
+        public decimal? Latitude { get; set; }
+        public decimal? Longitude { get; set; }
     }
 }

@@ -180,3 +180,14 @@ public class TripCancellation
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }
 
+public class TravelPackageDestination
+{
+    [Column("package_id")]
+    public int TravelPackageId { get; set; }
+    public TravelPackage? TravelPackage { get; set; }
+
+    [Column("destination_id")]
+    public int DestinationId { get; set; }
+    public Destination? Destination { get; set; }
+}
+

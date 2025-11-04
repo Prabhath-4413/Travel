@@ -1318,7 +1318,9 @@ const FooterSection = () => {
 }
 
 export default function LandingPage() {
-  const location = useLocation<{ notification?: { type: 'user' | 'admin'; message: string } }>()
+const { state } = useLocation() as {
+  state?: { notification?: { type: "user" | "admin"; message: string } };
+};
   const navigate = useNavigate()
   const { user } = useAuth()
   const [activeSection, setActiveSection] = useState('home')
@@ -1336,11 +1338,12 @@ export default function LandingPage() {
   ]
 
   useEffect(() => {
-    if (location.state?.notification) {
-      setNotification(location.state.notification)
-      navigate(location.pathname, { replace: true })
-    }
-  }, [location.state, navigate, location.pathname])
+  if (state?.notification) {
+    setNotification(state.notification);
+    navigate(".", { replace: true });
+  }
+}, [state?.notification, navigate]);
+
 
   useEffect(() => {
     if (!notification) return

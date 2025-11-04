@@ -4,6 +4,33 @@ import PackageCard from './PackageCard'
 import PackageDetailsModal from './PackageDetailsModal'
 import RouteMap from '../maps/RouteMap'
 
+type RawDestination = TravelPackage['destinations'][number] & { Latitude?: unknown; Longitude?: unknown }
+
+const normalizeNumber = (value: unknown): number | undefined => {
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return value
+  }
+  if (typeof value === 'string') {
+    const parsed = Number(value)
+    if (Number.isFinite(parsed)) {
+      return parsed
+    }
+  }
+  return undefined
+}
+
+const normalizeDestinations = (destinations: TravelPackage['destinations']) =>
+  destinations.map((destination) => {
+    const source = destination as RawDestination
+    const latitude = normalizeNumber(source.latitude ?? source.Latitude)
+    const longitude = normalizeNumber(source.longitude ?? source.Longitude)
+    return {
+      ...destination,
+      latitude,
+      longitude,
+    }
+  })
+
 interface RouteDestination {
   destinationId: number
   name: string
@@ -32,7 +59,12 @@ export default function PackageList({ readOnly = false, onBookPackage }: Package
       try {
         const data = await getPackages()
         if (active) {
-          setPackages(data)
+          setPackages(
+            data.map((pkg) => ({
+              ...pkg,
+              destinations: normalizeDestinations(pkg.destinations),
+            }))
+          )
         }
       } catch (err) {
         if (active) {
@@ -59,7 +91,7 @@ export default function PackageList({ readOnly = false, onBookPackage }: Package
   }, [readOnly, routePackage])
 
   const routeDestinations: RouteDestination[] = !readOnly && routePackage
-    ? routePackage.destinations
+    ? normalizeDestinations(routePackage.destinations)
         .filter(
           (destination): destination is typeof destination & { latitude: number; longitude: number } =>
             typeof destination.latitude === 'number' && typeof destination.longitude === 'number'
@@ -105,18 +137,21 @@ export default function PackageList({ readOnly = false, onBookPackage }: Package
 
       {!loading && !error && packages.length > 0 && (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {packages.map((pkg) => (
-            <PackageCard
-              key={pkg.packageId}
-              name={pkg.name}
-              description={pkg.description}
-              price={pkg.price}
-              imageUrl={pkg.imageUrl}
-              onViewDetails={() => setSelectedPackage(pkg)}
-              onBuildRoute={!readOnly ? () => setRoutePackage(pkg) : undefined}
-              showBuildRouteButton={!readOnly}
-            />
-          ))}
+          {packages.map((pkg) => {
+            const normalizedDestinations = normalizeDestinations(pkg.destinations)
+            return (
+              <PackageCard
+                key={pkg.packageId}
+                name={pkg.name}
+                description={pkg.description}
+                price={pkg.price}
+                imageUrl={pkg.imageUrl}
+                onViewDetails={() => setSelectedPackage({ ...pkg, destinations: normalizedDestinations })}
+                onBuildRoute={!readOnly ? () => setRoutePackage({ ...pkg, destinations: normalizedDestinations }) : undefined}
+                showBuildRouteButton={!readOnly}
+              />
+            )
+          })}
         </div>
       )}
 

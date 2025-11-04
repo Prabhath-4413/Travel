@@ -60,7 +60,7 @@ public sealed class RabbitMqService : IMessageQueueService, IAsyncDisposable
         };
     }
 
-    public async Task PublishMessageAsync(string queueName, object message)
+        public async Task PublishMessageAsync(string queueName, object message)
     {
         if (message is not BaseMessage baseMessage)
         {
@@ -163,17 +163,17 @@ public sealed class RabbitMqService : IMessageQueueService, IAsyncDisposable
         {
             channel.ExchangeDeclare(_deadLetterExchange, ExchangeType.Direct, true);
         }
-        
+
         DeclareQueue(channel, _bookingQueue);
         DeclareQueue(channel, _emailQueue);
-        
+
         _logger.LogInformation("RabbitMQ topology configured successfully.");
     }
 
     private void DeclareQueue(RabbitMQ.Client.IModel channel, string queueName)
     {
         var deadLetterQueue = $"{queueName}.dlq";
-        
+
         // Check if DLQ exists, if not create it
         try
         {

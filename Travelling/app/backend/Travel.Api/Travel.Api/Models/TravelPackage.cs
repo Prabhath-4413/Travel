@@ -26,27 +26,14 @@ namespace Travel.Api.Models
         [MaxLength(500)]
         public string? ImageUrl { get; set; }
 
-        public ICollection<Destination> Destinations { get; set; } = new List<Destination>();
-
+        // ✅ Correct navigation property (link table)
         [JsonIgnore]
         public ICollection<TravelPackageDestination> TravelPackageDestinations { get; set; } = new List<TravelPackageDestination>();
 
+        [NotMapped]
+        public ICollection<Destination> Destinations { get; set; } = new List<Destination>();
+
         [Column("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    }
-
-    public class TravelPackageDestination
-    {
-        [Column("package_id")]
-        public int TravelPackageId { get; set; }
-
-        [JsonIgnore]
-        public TravelPackage? TravelPackage { get; set; }
-
-        [Column("destination_id")]
-        public int DestinationId { get; set; }
-
-        [JsonIgnore]
-        public Destination? Destination { get; set; }
     }
 }
