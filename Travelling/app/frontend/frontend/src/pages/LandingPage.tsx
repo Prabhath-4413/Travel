@@ -12,6 +12,39 @@ interface NavLink {
   label: string
 }
 
+interface HeroSectionProps {
+  onExploreClick: () => void
+}
+
+interface HeroDestination {
+  name: string
+  tagline: string
+  image: string
+  accent: string
+}
+
+// Destination rotation data for the hero section
+const HERO_DESTINATIONS: HeroDestination[] = [
+  {
+    name: 'Goa',
+    tagline: 'Sun-kissed beaches and vibrant nightlife await you.',
+    image: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=2000&h=1200&fit=crop',
+    accent: 'from-orange-300 via-pink-400 to-pink-600'
+  },
+  {
+    name: 'Kerala',
+    tagline: 'Serene backwaters and lush greenery to unwind.',
+    image:'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=2000&h=1200&fit=crop',
+    accent: 'from-teal-200 via-pink-300 to-pink-500'
+  },
+  {
+    name: 'Rajasthan',
+    tagline: 'Royal palaces and golden deserts full of heritage.',
+    image: 'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?w=2000&h=1200&fit=crop'  ,
+    accent: 'from-amber-300 via-rose-400 to-pink-600'
+  }
+]
+
 const FloatingParticle = ({ delay = 0, x = 0, y = 0, size = 16, color = 'white/10' }) => (
   <motion.div
     initial={{ opacity: 0 }}
@@ -165,30 +198,89 @@ const NavBar = ({ activeSection, onScrollToSection, navLinks }: any) => {
   )
 }
 
-const HeroSection = ({ onExploreClick }: any) => {
+const HeroSection = ({ onExploreClick }: HeroSectionProps) => {
+  // Parallax ref that feeds motion values for subtle depth
   const heroRef = useRef<HTMLDivElement>(null)
   const { scrollY } = useScroll()
   const heroOpacity = useTransform(scrollY, [0, 300], [1, 0])
-  const heroScale = useTransform(scrollY, [0, 300], [1, 1.1])
+  const heroScale = useTransform(scrollY, [0, 300], [1, 1.08])
+
+  // Time-based greeting that refreshes every minute
+  const [greeting, setGreeting] = useState('Welcome')
+
+  // User city resolved from IP lookup
+  const [city, setCity] = useState<string | null>(null)
+
+  // Index that drives the rotating destination carousel
+  const [currentDestinationIndex, setCurrentDestinationIndex] = useState(0)
+
+  const currentDestination = HERO_DESTINATIONS[currentDestinationIndex]
+
+  useEffect(() => {
+    const computeGreeting = () => {
+      const hour = new Date().getHours()
+      if (hour < 12) return 'Good Morning'
+      if (hour < 17) return 'Good Afternoon'
+      if (hour < 21) return 'Good Evening'
+      return 'Good Night'
+    }
+
+    setGreeting(computeGreeting())
+    const intervalId = window.setInterval(() => setGreeting(computeGreeting()), 60 * 1000)
+
+    return () => window.clearInterval(intervalId)
+  }, [])
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    const fetchCity = async () => {
+      try {
+        const response = await fetch('https://ipapi.co/json/', { signal: controller.signal })
+        if (!response.ok) return
+        const data = await response.json()
+        if (data?.city) setCity(data.city)
+      } catch (error) {
+        const isAbort = (error as Error).name === 'AbortError'
+        if (!isAbort) setCity(null)
+      }
+    }
+
+    fetchCity()
+
+    return () => controller.abort()
+  }, [])
+
+  useEffect(() => {
+    const rotationInterval = window.setInterval(() => {
+      setCurrentDestinationIndex(prev => (prev + 1) % HERO_DESTINATIONS.length)
+    }, 5000)
+
+    return () => window.clearInterval(rotationInterval)
+  }, [])
 
   return (
     <section id="home" ref={heroRef} className="relative overflow-hidden pt-20">
+      {/* Fixed scenic background with parallax scale */}
       <motion.div className="absolute inset-0" style={{ scale: heroScale }}>
-        <div 
+        <div
           className="w-full h-[100vh] bg-cover bg-center bg-no-repeat relative overflow-hidden"
           style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=2000&h=1200&fit=crop")'
+            backgroundImage:
+              'url("https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=2000&h=1200&fit=crop")',
+            backgroundAttachment: 'fixed'
           }}
         >
-          <div className="absolute inset-0 opacity-50 bg-gradient-to-br from-blue-900/60 via-purple-900/50 to-[#0e1512]/80" />
-          <div className="absolute inset-0 opacity-30">
-            <div className="absolute top-20 left-20 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl" />
-            <div className="absolute bottom-20 right-20 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl" />
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-950/70 via-slate-900/55 to-slate-950/75" />
+          <div className="absolute inset-0">
+            <div className="absolute top-24 left-16 w-80 h-80 bg-emerald-400/20 rounded-full blur-3xl" />
+            <div className="absolute bottom-24 right-16 w-80 h-80 bg-pink-400/20 rounded-full blur-3xl" />
           </div>
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0e1512] via-[#0e1512]/70 to-[#0e1512]/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-slate-900/45 to-slate-900/25" />
       </motion.div>
 
+      {/* Floating particles for subtle motion accents */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {[...Array(12)].map((_, i) => (
           <FloatingParticle
@@ -202,79 +294,114 @@ const HeroSection = ({ onExploreClick }: any) => {
         ))}
       </div>
 
-      <motion.div className="relative z-10 max-w-6xl mx-auto px-6 flex flex-col justify-center h-[100vh]" style={{ opacity: heroOpacity }}>
-        <motion.div
-          initial={{ y: 40, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          className="text-center"
-        >
+      {/* Hero copy and call-to-action stack */}
+      <motion.div
+        className="relative z-10 max-w-6xl mx-auto px-6 flex flex-col justify-center h-[100vh]"
+        style={{ opacity: heroOpacity }}
+      >
+        <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8 }} className="text-center">
+          {/* Greeting chip with city context */}
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
+            initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="inline-block px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium text-white border border-white/20 mb-6"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium text-slate-900 dark:text-white border border-white/40 dark:border-white/20 mb-6"
           >
-            ✨ Discover Amazing Destinations
+            <span className="inline-flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+            {greeting}
+            {city ? `, ${city}` : '!'}
           </motion.div>
 
+          {/* Headline with rotating destination focus */}
           <motion.h1
-            initial={{ y: 40, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight mb-6"
-          >
-            <span className="bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent">
-              Explore the World
-            </span>
-            <br />
-            <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              with Us 🌍
-            </span>
-          </motion.h1>
+  initial={{ y: 40, opacity: 0 }}
+  animate={{ y: 0, opacity: 1 }}
+  transition={{ duration: 0.8, delay: 0.3 }}
+  className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-4 text-center"
+>
+  <span className="block text-white drop-shadow-[0_12px_30px_rgba(30,41,59,0.55)]">
+    Explore the World
+  </span>
+  <span className="block bg-gradient-to-r from-fuchsia-400 via-pink-400 to-purple-500 bg-clip-text text-transparent">
+    with Us.
+  </span>
+</motion.h1>
 
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="text-xl md:text-2xl text-white/80 mb-8 max-w-3xl mx-auto leading-relaxed"
-          >
-            Discover breathtaking destinations, book amazing trips, and create unforgettable memories with seamless booking and instant confirmations.
-          </motion.p>
+{/* Destination name (removed background & shadow, clean text only) */}
+<AnimatePresence mode="wait">
+  <motion.span
+    key={currentDestination.name}
+    initial={{ y: 18, opacity: 0 }}
+    animate={{ y: 0, opacity: 1 }}
+    exit={{ y: -18, opacity: 0 }}
+    transition={{ duration: 0.45 }}
+    className="mt-6 inline-flex"
+  >
+    <span
+      className={`inline-flex items-center justify-center px-4 py-1 text-xl md:text-2xl lg:text-3xl font-semibold text-white`}
+    >
+      {currentDestination.name}
+    </span>
+  </motion.span>
+</AnimatePresence>
 
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.7 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-          >
-            <button
+{/* Destination tagline (removed background box & borders) */}
+<AnimatePresence mode="wait">
+  <motion.p
+    key={currentDestination.tagline}
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 0.92, y: 0 }}
+    exit={{ opacity: 0, y: -10 }}
+    transition={{ duration: 0.5 }}
+    className="text-lg md:text-2xl text-white/90 mb-9 max-w-3xl mx-auto leading-relaxed"
+  >
+    {currentDestination.tagline}
+  </motion.p>
+</AnimatePresence>
+
+{/* Action buttons */}
+<motion.div
+  initial={{ y: 20, opacity: 0 }}
+  animate={{ y: 0, opacity: 1 }}
+  transition={{ duration: 0.6, delay: 0.6 }}
+  className="flex flex-col sm:flex-row gap-4 justify-center"
+>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={onExploreClick}
-              className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg hover:shadow-2xl hover:shadow-blue-500/50 transition-all transform hover:scale-105"
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg px-8 py-4 font-semibold text-white ring-2 ring-white/40 hover:ring-pink-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-pink-300/70 transition-[transform,box-shadow]"
             >
-              Get Started
-            </button>
+              <span className="absolute inset-0 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 transition-transform duration-300 group-hover:scale-110" />
+              <span className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-white/20 transition-opacity duration-300" />
+              <span className="relative flex items-center gap-2">
+                Plan My Trip
+                <Plane className="w-5 h-5" />
+              </span>
+            </motion.button>
             <a
               href="#about"
-              className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-lg border border-white/20 hover:bg-white/20 transition-all"
+              className="inline-flex items-center justify-center px-8 py-4 bg-white/75 dark:bg-white/10 text-slate-900 dark:text-white font-semibold rounded-lg border border-white/40 dark:border-white/20 hover:bg-white/90 dark:hover:bg-white/15 ring-1 ring-white/40 hover:ring-pink-200/60 transition-colors"
             >
-              About Us
+              Explore Our Story
             </a>
           </motion.div>
 
+          {/* Social proof badges */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.9 }}
-            className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-white/60"
+            className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-white/80"
           >
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
               <span>10,000+ Happy Travelers</span>
             </div>
-            <div className="w-px h-4 bg-white/20 hidden sm:block" />
+            <div className="w-px h-4 bg-white/30 hidden sm:block" />
             <div className="flex items-center gap-2">
-              <span>⭐ 4.9/5 Rating</span>
+              <Star className="w-4 h-4" />
+              <span>Rated 4.9/5 by globe trotters</span>
             </div>
           </motion.div>
         </motion.div>
