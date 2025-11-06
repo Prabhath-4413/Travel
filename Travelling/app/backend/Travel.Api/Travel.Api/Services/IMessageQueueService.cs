@@ -23,6 +23,11 @@ namespace Travel.Api.Services
         Task PublishAdminNotificationAsync(AdminNotificationMessage message);
         
         /// <summary>
+        /// Publish a message to the cancellation queue
+        /// </summary>
+        Task PublishCancellationMessageAsync(CancellationMessage message);
+        
+        /// <summary>
         /// Check if the connection is healthy
         /// </summary>
         bool IsConnected { get; }

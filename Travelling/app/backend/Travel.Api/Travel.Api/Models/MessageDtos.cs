@@ -41,6 +41,8 @@ public class CancellationMessage : BaseMessage
 
     public required string UserEmail { get; init; }
 
+    public string? Email { get; init; }
+
     public string? Reason { get; init; }
 
     public DateTime RequestedAt { get; init; }

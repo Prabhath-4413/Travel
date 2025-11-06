@@ -12,18 +12,18 @@ namespace Travel.Api.Controllers
     public class TripCancellationController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly IMessageQueueService _messageQueue;
+        private readonly IMessageQueueService _rabbitMqService;
         private readonly IEmailTemplateBuilder _templateBuilder;
         private readonly ILogger<TripCancellationController> _logger;
 
         public TripCancellationController(
             ApplicationDbContext context, 
-            IMessageQueueService messageQueue, 
+            IMessageQueueService rabbitMqService, 
             IEmailTemplateBuilder templateBuilder,
             ILogger<TripCancellationController> logger)
         {
             _context = context;
-            _messageQueue = messageQueue;
+            _rabbitMqService = rabbitMqService;
             _templateBuilder = templateBuilder;
             _logger = logger;
         }
@@ -71,12 +71,13 @@ namespace Travel.Api.Controllers
             var cancellationMessage = new CancellationMessage
             {
                 MessageId = Guid.NewGuid().ToString(),
-                Type = MessageType.CancellationRequested,
+                Type = MessageType.CancellationRequest,
                 CancellationId = cancellation.TripCancellationId,
                 BookingId = booking.BookingId,
                 UserId = booking.UserId,
                 UserName = booking.User!.Name,
                 UserEmail = booking.User.Email,
+                Email = booking.User.Email,
                 Reason = requestDto.Reason,
                 RequestedAt = cancellation.RequestedAt,
                 Status = (int)cancellation.Status,
@@ -85,7 +86,7 @@ namespace Travel.Api.Controllers
                 Nights = booking.Nights
             };
 
-            await _messageQueue.PublishMessageAsync("travel.bookings", cancellationMessage);
+            await _rabbitMqService.PublishCancellationMessageAsync(cancellationMessage);
             _logger.LogInformation("📤 Cancellation request message published for booking #{BookingId}", booking.BookingId);
 
             // Send admin notification
@@ -100,7 +101,7 @@ namespace Travel.Api.Controllers
                 Body = adminBody
             };
 
-            await _messageQueue.PublishAdminNotificationAsync(adminNotification);
+            await _rabbitMqService.PublishAdminNotificationAsync(adminNotification);
             _logger.LogInformation("📤 Admin notification sent for cancellation request #{CancellationId}", cancellation.TripCancellationId);
 
             return Ok(new
@@ -186,6 +187,7 @@ namespace Travel.Api.Controllers
                 UserId = booking.UserId,
                 UserName = booking.User!.Name,
                 UserEmail = booking.User.Email,
+                Email = booking.User.Email,
                 Reason = cancellation.Reason,
                 RequestedAt = cancellation.RequestedAt,
                 ReviewedAt = cancellation.ReviewedAt,
@@ -197,7 +199,7 @@ namespace Travel.Api.Controllers
                 Approved = true
             };
 
-            await _messageQueue.PublishMessageAsync("travel.bookings", decisionMessage);
+            await _rabbitMqService.PublishCancellationMessageAsync(decisionMessage);
             _logger.LogInformation("📤 Cancellation approval message published for booking #{BookingId}", booking.BookingId);
 
             return Ok(new { message = "Cancellation approved." });
@@ -245,6 +247,7 @@ namespace Travel.Api.Controllers
                 UserId = booking.UserId,
                 UserName = booking.User!.Name,
                 UserEmail = booking.User.Email,
+                Email = booking.User.Email,
                 Reason = cancellation.Reason,
                 RequestedAt = cancellation.RequestedAt,
                 ReviewedAt = cancellation.ReviewedAt,
@@ -256,7 +259,7 @@ namespace Travel.Api.Controllers
                 Approved = false
             };
 
-            await _messageQueue.PublishMessageAsync("travel.bookings", rejectionMessage);
+            await _rabbitMqService.PublishCancellationMessageAsync(rejectionMessage);
             _logger.LogInformation("📤 Cancellation rejection message published for booking #{BookingId}", booking.BookingId);
 
             return Ok(new { message = "Cancellation rejected." });

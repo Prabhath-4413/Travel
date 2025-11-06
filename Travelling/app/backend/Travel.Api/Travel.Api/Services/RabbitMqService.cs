@@ -20,6 +20,8 @@ public sealed class RabbitMqService : IMessageQueueService, IAsyncDisposable
     private bool _disposed;
     private readonly string _bookingQueue;
     private readonly string _emailQueue;
+    private readonly string _cancellationQueue;
+
     private readonly string _deadLetterExchange;
     private readonly int _retryAttempts;
     private readonly int _retryDelaySeconds;
@@ -42,6 +44,7 @@ public sealed class RabbitMqService : IMessageQueueService, IAsyncDisposable
         var virtualHost = section.GetValue("VirtualHost", "/")!;
         _bookingQueue = section.GetValue("BookingQueue", "booking_queue")!;
         _emailQueue = section.GetValue("EmailQueue", "email_queue")!;
+        _cancellationQueue = section.GetValue("CancellationQueue", "cancellation_queue")!;
         _deadLetterExchange = section.GetValue("DeadLetterExchange", "travel.dlx")!;
         _retryAttempts = section.GetValue("RetryAttempts", 3);
         _retryDelaySeconds = section.GetValue("RetryDelaySeconds", 5);
@@ -98,6 +101,8 @@ public sealed class RabbitMqService : IMessageQueueService, IAsyncDisposable
     public Task PublishBookingMessageAsync(BookingMessage message) => PublishMessageAsync(_bookingQueue, message);
 
     public Task PublishAdminNotificationAsync(AdminNotificationMessage message) => PublishMessageAsync(_emailQueue, message);
+
+    public Task PublishCancellationMessageAsync(CancellationMessage message) => PublishMessageAsync(_cancellationQueue, message);
 
     public async ValueTask<RabbitMQ.Client.IModel> CreateConsumerChannelAsync(CancellationToken cancellationToken)
     {
@@ -166,6 +171,7 @@ public sealed class RabbitMqService : IMessageQueueService, IAsyncDisposable
 
         DeclareQueue(channel, _bookingQueue);
         DeclareQueue(channel, _emailQueue);
+        DeclareQueue(channel, _cancellationQueue);
 
         _logger.LogInformation("RabbitMQ topology configured successfully.");
     }

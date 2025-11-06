@@ -1,7 +1,9 @@
+using System;
 using System.Linq;
 using System.Net;
 using System.Text;
 using Travel.Api.Models;
+using System.Collections.Generic;
 
 namespace Travel.Api.Services
 {
@@ -16,272 +18,455 @@ namespace Travel.Api.Services
 
     public class EmailTemplateBuilder : IEmailTemplateBuilder
     {
+        // Color palette
+        // dark teal: #0b1412
+        // soft white: #f8fafc
+        // light gray: #e2e8f0
+        // accent: #68d391 (soft green)
+        // light gold (used as subtle accent): #D4AF37 (we will use sparingly via inline styling)
+
         public string BuildBookingConfirmationBody(string userName, Models.Booking booking, IEnumerable<string> destinationNames)
         {
-            var filteredDestinations = destinationNames
-                .Where(name => !string.IsNullOrWhiteSpace(name))
-                .ToList();
-
+            // Safe encoded values
+            var encodedUserName = WebUtility.HtmlEncode(userName ?? booking.User?.Name ?? "Guest");
+            var encodedBookingId = WebUtility.HtmlEncode(booking.BookingId.ToString() ?? string.Empty);
+            var filteredDestinations = (destinationNames ?? Enumerable.Empty<string>())
+                                        .Where(n => !string.IsNullOrWhiteSpace(n))
+                                        .ToList();
             var destinationText = filteredDestinations.Any()
                 ? string.Join(", ", filteredDestinations)
                 : "Not specified";
+            var encodedDestinationText = WebUtility.HtmlEncode(destinationText);
+            var encodedGuests = WebUtility.HtmlEncode(booking.Guests.ToString());
+            var encodedNights = WebUtility.HtmlEncode(booking.Nights.ToString());
+            var encodedTotalPrice = WebUtility.HtmlEncode((booking.TotalPrice).ToString("F2"));
+            var encodedStartDate = WebUtility.HtmlEncode(booking.BookingDate.ToString("yyyy-MM-dd"));
+            var encodedEndDate = WebUtility.HtmlEncode(booking.BookingDate.AddDays(booking.Nights).ToString("yyyy-MM-dd"));
 
-            var backgroundImage = "https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba?auto=format&fit=crop&w=1400&q=80";
+            // Background image (soft travel photo) — kept as a public image URL
+            var backgroundImage = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1400&q=80";
 
             return $@"<!DOCTYPE html>
 <html lang=""en"">
 <head>
-    <meta charset=""UTF-8"" />
-    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"" />
-    <title>Booking Confirmation</title>
+  <meta charset=""utf-8""/>
+  <meta name=""viewport"" content=""width=device-width, initial-scale=1.0""/>
+  <title>SuiteSavvy — Booking Confirmation</title>
 </head>
-<body style=""margin:0;padding:0;background-color:#0b1412;
-    font-family:'Segoe UI',Arial,sans-serif;color:#f8fafc;"">
-    <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%""
-        style=""background-image:url('{backgroundImage}');
-        background-size:cover;background-position:center;padding:48px 16px;"">
-        <tr>
-            <td align=""center"">
-                <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""560""
-                    style=""background-color:rgba(11,20,18,0.86);
-                    border-radius:24px;overflow:hidden;
-                    box-shadow:0 24px 60px rgba(0,0,0,0.35);"">
-                    <tr>
-                        <td style=""padding:40px 36px;"">
-                            <p style=""margin:0 0 12px;font-size:14px;
-                                letter-spacing:1.5px;text-transform:uppercase;
-                                color:#9ae6b4;"">Booking Confirmed</p>
-                            <h1 style=""margin:0 0 16px;font-size:28px;
-                                line-height:36px;font-weight:700;"">
-                                Thank you, {WebUtility.HtmlEncode(userName)}!
-                            </h1>
-                            <p style=""margin:0 0 28px;font-size:16px;
-                                line-height:26px;color:#e2e8f0;"">
-                                We’re thrilled to confirm your stay.
-                                Below are the details of your upcoming experience.
-                            </p>
-
-                            <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%""
-                                style=""border-collapse:separate;border-spacing:0 12px;"">
-                                <tr>
-                                    <td style=""padding:18px 20px;border-radius:18px;
-                                        background:rgba(15,27,24,0.82);"">
-                                        <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%""
-                                            style=""font-size:15px;line-height:24px;color:#f8fafc;"">
-                                            <tr>
-                                                <td style=""padding-bottom:12px;"">
-                                                    <span style=""display:block;color:#9ae6b4;
-                                                        font-size:13px;letter-spacing:1px;
-                                                        text-transform:uppercase;margin-bottom:6px;"">
-                                                        <strong>Booking ID</strong>
-                                                    </span>
-                                                    <span style=""font-weight:700;font-size:18px;
-                                                        letter-spacing:0.5px;"">
-                                                        <strong>#{booking.BookingId}</strong>
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style=""padding-bottom:12px;"">
-                                                    <span style=""display:block;color:#9ae6b4;
-                                                        font-size:13px;letter-spacing:1px;
-                                                        text-transform:uppercase;margin-bottom:6px;"">
-                                                        <strong>Destinations</strong>
-                                                    </span>
-                                                    <span style=""font-weight:700;"">
-                                                        <strong>{WebUtility.HtmlEncode(destinationText)}</strong>
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style=""padding-bottom:12px;"">
-                                                    <span style=""display:block;color:#9ae6b4;
-                                                        font-size:13px;letter-spacing:1px;
-                                                        text-transform:uppercase;margin-bottom:6px;"">
-                                                        <strong>Guests</strong>
-                                                    </span>
-                                                    <span style=""font-weight:700;"">
-                                                        <strong>{booking.Guests}</strong>
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style=""padding-bottom:12px;"">
-                                                    <span style=""display:block;color:#9ae6b4;
-                                                        font-size:13px;letter-spacing:1px;
-                                                        text-transform:uppercase;margin-bottom:6px;"">
-                                                        <strong>Nights</strong>
-                                                    </span>
-                                                    <span style=""font-weight:700;"">
-                                                        <strong>{booking.Nights}</strong>
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style=""padding-bottom:12px;"">
-                                                    <span style=""display:block;color:#9ae6b4;
-                                                        font-size:13px;letter-spacing:1px;
-                                                        text-transform:uppercase;margin-bottom:6px;"">
-                                                        <strong>Total Price</strong>
-                                                    </span>
-                                                    <span style=""font-weight:700;font-size:18px;
-                                                        color:#68d391;"">
-                                                        <strong>₹{booking.TotalPrice:F2}</strong>
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span style=""display:block;color:#9ae6b4;
-                                                        font-size:13px;letter-spacing:1px;
-                                                        text-transform:uppercase;margin-bottom:6px;"">
-                                                        <strong>Starting Date</strong>
-                                                    </span>
-                                                    <span style=""font-weight:700;"">
-                                                        <strong>{booking.BookingDate:yyyy-MM-dd}</strong>
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <p style=""margin:32px 0 0;font-size:15px;line-height:24px;color:#cbd5f5;"">
-                                Need to adjust anything? Our concierge team is ready to help—
-                                just reply to this email.
-                            </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style=""padding:0 36px 36px;text-align:center;
-                            color:#94a3b8;font-size:13px;"">
-                            Travel App · Luxury Suites Crafted for You
-                        </td>
-                    </tr>
-                </table>
+<body style=""margin:0;padding:0;background-color:#0b1412;font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;color:#0b1412;"">
+  <!-- Outer table for email clients -->
+  <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"" style=""background-color:#0b1412;background-image:linear-gradient(180deg, rgba(11,20,18,0.86), rgba(11,20,18,0.95)), url('{backgroundImage}');background-size:cover;background-position:center;padding:28px 12px;"">
+    <tr>
+      <td align=""center"">
+        <!-- Main container -->
+        <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""600"" style=""max-width:600px;width:100%;background:#f8fafc;border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(2,6,23,0.6);"">
+          <tr>
+            <td style=""padding:18px 20px;background:linear-gradient(90deg,#0b1412 0%, #07231f 100%);"">
+              <!-- Header: logo + preheader -->
+              <table role=""presentation"" width=""100%"" cellpadding=""0"" cellspacing=""0"">
+                <tr>
+                  <td align=""left"" style=""vertical-align:middle;"">
+                    <span style=""display:inline-block;font-weight:700;font-size:18px;color:#f8fafc;"">SuiteSavvy ✈️</span>
+                  </td>
+                  <td align=""right"" style=""vertical-align:middle;font-size:12px;color:#e2e8f0;"">
+                    <span style=""opacity:0.9;"">Booking Confirmed • {WebUtility.HtmlEncode(DateTime.UtcNow.ToString("yyyy-MM-dd"))}</span>
+                  </td>
+                </tr>
+              </table>
             </td>
-        </tr>
-    </table>
+          </tr>
+
+          <tr>
+            <td style=""padding:24px 28px 18px;background:#f8fafc;"">
+              <!-- Hero -->
+              <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"">
+                <tr>
+                  <td style=""padding:0 0 8px;font-size:13px;color:#68d391;text-transform:uppercase;letter-spacing:1px;"">✅ Booking Confirmation</td>
+                </tr>
+                <tr>
+                  <td style=""padding:0 0 12px;font-size:22px;color:#0b1412;font-weight:700;line-height:1.2;"">
+                    Thank you, {encodedUserName}! Your trip is confirmed.
+                  </td>
+                </tr>
+                <tr>
+                  <td style=""padding:0 0 16px;color:#475569;font-size:15px;line-height:1.5;"">
+                    We’ve reserved your booking. Below are the details — keep this email for reference.
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Details card -->
+              <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"" style=""border-collapse:separate;border-spacing:0 12px;margin-top:8px;"">
+                <tr>
+                  <td style=""background:#0b1412;padding:16px;border-radius:10px;color:#f8fafc;"">
+                    <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"">
+                      <tr>
+                        <td style=""vertical-align:top;padding-bottom:8px;width:50%;"">
+                          <div style=""font-size:12px;color:#e2e8f0;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;"">Booking ID</div>
+                          <div style=""font-weight:700;font-size:16px;color:#68d391;"">#{encodedBookingId}</div>
+                        </td>
+                        <td style=""vertical-align:top;padding-bottom:8px;width:50%;"">
+                          <div style=""font-size:12px;color:#e2e8f0;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;"">Dates</div>
+                          <div style=""font-weight:700;font-size:14px;color:#f8fafc;"">{encodedStartDate} — {encodedEndDate}</div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td style=""vertical-align:top;padding-bottom:8px;width:50%;"">
+                          <div style=""font-size:12px;color:#e2e8f0;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;"">Destinations</div>
+                          <div style=""font-weight:700;font-size:14px;color:#f8fafc;"">{encodedDestinationText}</div>
+                        </td>
+                        <td style=""vertical-align:top;padding-bottom:8px;width:50%;"">
+                          <div style=""font-size:12px;color:#e2e8f0;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;"">Guests / Nights</div>
+                          <div style=""font-weight:700;font-size:14px;color:#f8fafc;"">{encodedGuests} guest(s) • {encodedNights} night(s)</div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td colspan=""2"" style=""padding-top:6px;border-top:1px solid rgba(255,255,255,0.04);"">
+                          <div style=""font-size:12px;color:#e2e8f0;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;"">Total Price</div>
+                          <div style=""font-weight:800;font-size:20px;color:#68d391;"">₹{encodedTotalPrice}</div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- CTA / Note -->
+              <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"" style=""margin-top:18px;"">
+                <tr>
+                  <td style=""font-size:14px;color:#334155;line-height:1.5;"">
+                    Need to make changes? Reply to this email or visit your SuiteSavvy dashboard. Our concierge is ready to assist.
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style=""padding:16px 20px;background:#0b1412;color:#e2e8f0;text-align:center;font-size:13px;"">
+              <div style=""font-weight:700;margin-bottom:6px;color:#f8fafc;"">SuiteSavvy Travel App</div>
+              <div style=""font-size:12px;opacity:0.85;margin-bottom:6px;"">SuiteSavvy Travel App • All Rights Reserved</div>
+              <div style=""font-size:12px;opacity:0.85;"">support@suitesavvy.com</div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>";
+        }
+        public string BuildCancellationRequestedUserBody(Models.Booking booking, string? reason)
+        {
+            var encodedUserName = WebUtility.HtmlEncode(booking.User?.Name ?? "Guest");
+            var encodedBookingId = WebUtility.HtmlEncode(booking.BookingId.ToString() ?? string.Empty);
+            var encodedStartDate = WebUtility.HtmlEncode(booking.BookingDate.ToString("yyyy-MM-dd"));
+            var encodedEndDate = WebUtility.HtmlEncode(booking.BookingDate.AddDays(booking.Nights).ToString("yyyy-MM-dd"));
+            var encodedReason = WebUtility.HtmlEncode(reason ?? string.Empty);
+
+            return $@"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+  <meta charset=""utf-8"" />
+  <meta name=""viewport"" content=""width=device-width, initial-scale=1.0""/>
+  <title>Cancellation Request Received</title>
+</head>
+<body style=""margin:0;padding:0;background:#0b1412;font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;color:#0b1412;"">
+  <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"" style=""padding:28px 12px;background:linear-gradient(180deg, rgba(11,20,18,0.9), rgba(11,20,18,1));"">
+    <tr>
+      <td align=""center"">
+        <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""600"" style=""max-width:600px;width:100%;background:#f8fafc;border-radius:12px;overflow:hidden;"">
+          <tr>
+            <td style=""padding:18px 20px;background:#07231f;color:#f8fafc;"">
+              <div style=""font-weight:700;font-size:18px;"">SuiteSavvy ✈️</div>
+            </td>
+          </tr>
+          <tr>
+            <td style=""padding:22px 24px;background:#f8fafc;color:#0b1412;"">
+              <div style=""font-size:13px;color:#68d391;text-transform:uppercase;margin-bottom:8px;"">🕓 Cancellation Requested</div>
+              <h2 style=""margin:6px 0 10px;font-size:18px;"">Hello {encodedUserName}, we received your request</h2>
+              <p style=""margin:0 0 12px;color:#475569;font-size:14px;line-height:1.4;"">
+                Thanks — your cancellation request has been received and is under review by our team. Below are the details we have on file.
+              </p>
+
+              <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"" style=""margin-top:12px;border-collapse:separate;border-spacing:0 10px;"">
+                <tr>
+                  <td style=""background:#07231f;color:#f8fafc;padding:12px;border-radius:8px;"">
+                    <div style=""font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;"">Booking ID</div>
+                    <div style=""font-weight:700;font-size:15px;color:#68d391;"">#{encodedBookingId}</div>
+
+                    <div style=""margin-top:10px;font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;"">Trip Dates</div>
+                    <div style=""font-weight:700;font-size:14px;color:#f8fafc;"">{encodedStartDate} — {encodedEndDate}</div>
+
+                    {(string.IsNullOrWhiteSpace(encodedReason) ? "" : $@"""<div style=\""margin-top:10px;font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;\"">Reason Provided</div>
+                    <div style=\""font-size:14px;color:#f8fafc;line-height:1.4;\"">{encodedReason}</div>""")}
+                  </td>
+                </tr>
+              </table>
+
+              <p style=""margin:14px 0 0;color:#475569;font-size:14px;line-height:1.4;"">
+                Our team aims to review cancellation requests within 48 hours. You’ll receive a follow-up email once a decision is made.
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style=""padding:14px 20px;background:#0b1412;color:#e2e8f0;text-align:center;font-size:13px;"">
+              SuiteSavvy Travel App • All Rights Reserved • support@suitesavvy.com
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>";
         }
 
-        public string BuildCancellationRequestedUserBody(Models.Booking booking, string? reason)
-        {
-            var builder = new StringBuilder();
-            builder.AppendLine($"Hello {booking.User?.Name},");
-            builder.AppendLine();
-            builder.AppendLine("We have received your trip cancellation request.");
-            builder.AppendLine($"Booking ID: {booking.BookingId}");
-            builder.AppendLine($"Trip Dates: {booking.BookingDate:yyyy-MM-dd} to {booking.BookingDate.AddDays(booking.Nights):yyyy-MM-dd}");
-            builder.AppendLine();
-            if (!string.IsNullOrWhiteSpace(reason))
-            {
-                builder.AppendLine("Reason Provided:");
-                builder.AppendLine(reason);
-                builder.AppendLine();
-            }
-            builder.AppendLine("Our team will review your request soon. You will receive an email once a decision has been made.");
-            builder.AppendLine();
-            builder.AppendLine("Best regards,");
-            builder.AppendLine("Travel App Team");
-            return builder.ToString();
-        }
-
         public string BuildCancellationRequestedAdminBody(TripCancellation cancellation, Models.Booking booking)
         {
-            var builder = new StringBuilder();
-            builder.AppendLine("Hello Admin,");
-            builder.AppendLine();
-            builder.AppendLine("A traveler has requested to cancel their trip.");
-            builder.AppendLine($"Cancellation ID: {cancellation.TripCancellationId}");
-            builder.AppendLine($"Booking ID: {booking.BookingId}");
-            builder.AppendLine($"Traveler: {booking.User?.Name} ({booking.User?.Email})");
-            builder.AppendLine($"Requested On: {cancellation.RequestedAt:yyyy-MM-dd HH:mm} UTC");
-            builder.AppendLine($"Trip Dates: {booking.BookingDate:yyyy-MM-dd} to {booking.BookingDate.AddDays(booking.Nights):yyyy-MM-dd}");
+            var encodedCancellationId = WebUtility.HtmlEncode(cancellation.TripCancellationId.ToString() ?? string.Empty);
+            var encodedBookingId = WebUtility.HtmlEncode(booking.BookingId.ToString() ?? string.Empty);
+            var encodedUserName = WebUtility.HtmlEncode(booking.User?.Name ?? string.Empty);
+            var encodedUserEmail = WebUtility.HtmlEncode(booking.User?.Email ?? string.Empty);
+            var encodedRequestedAt = WebUtility.HtmlEncode(cancellation.RequestedAt.ToString("yyyy-MM-dd HH:mm"));
+            var encodedStartDate = WebUtility.HtmlEncode(booking.BookingDate.ToString("yyyy-MM-dd"));
+            var encodedEndDate = WebUtility.HtmlEncode(booking.BookingDate.AddDays(booking.Nights).ToString("yyyy-MM-dd"));
+            var encodedReason = WebUtility.HtmlEncode(cancellation.Reason ?? string.Empty);
 
-            var destinationNames = booking.BookingDestinations
-                .Select(bd => bd.Destination?.Name)
-                .Where(name => !string.IsNullOrWhiteSpace(name))
-                .ToList();
+            var destinationNames = booking.BookingDestinations?
+                                       .Select(bd => bd.Destination?.Name)
+                                       .Where(n => !string.IsNullOrWhiteSpace(n))
+                                       .ToList() ?? new List<string>();
 
-            if (destinationNames.Any())
-            {
-                builder.AppendLine();
-                builder.AppendLine("Destinations:");
-                foreach (var destination in destinationNames)
-                {
-                    builder.AppendLine($"- {destination}");
-                }
-            }
+            var encodedDestinations = destinationNames.Any()
+                ? WebUtility.HtmlEncode(string.Join(", ", destinationNames))
+                : "Not specified";
 
-            if (!string.IsNullOrWhiteSpace(cancellation.Reason))
-            {
-                builder.AppendLine();
-                builder.AppendLine("Traveler's Reason:");
-                builder.AppendLine(cancellation.Reason);
-            }
+            return $@"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+  <meta charset=""utf-8""/>
+  <meta name=""viewport"" content=""width=device-width, initial-scale=1.0""/>
+  <title>Admin — Cancellation Request</title>
+</head>
+<body style=""margin:0;padding:0;background:#0b1412;font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;color:#0b1412;"">
+  <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"" style=""padding:28px 12px;background:linear-gradient(180deg, rgba(11,20,18,0.9), rgba(11,20,18,1));"">
+    <tr>
+      <td align=""center"">
+        <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""640"" style=""max-width:640px;width:100%;background:#f8fafc;border-radius:12px;overflow:hidden;"">
+          <tr>
+            <td style=""padding:18px 20px;background:#07231f;color:#f8fafc;"">
+              <div style=""font-weight:700;font-size:18px;"">SuiteSavvy Admin</div>
+            </td>
+          </tr>
 
-            builder.AppendLine();
-            builder.AppendLine("Please review this request from the admin dashboard.");
-            builder.AppendLine();
-            builder.AppendLine("Best regards,");
-            builder.AppendLine("Travel App System");
-            return builder.ToString();
+          <tr>
+            <td style=""padding:22px 24px;background:#f8fafc;color:#0b1412;"">
+              <div style=""font-size:13px;color:#D4AF37;text-transform:uppercase;margin-bottom:8px;"">⚠️ Cancellation Request — Action Required</div>
+              <h2 style=""margin:6px 0 10px;font-size:18px;"">Cancellation ID: {encodedCancellationId}</h2>
+
+              <p style=""margin:0 0 12px;color:#334155;font-size:14px;line-height:1.4;"">
+                A traveler has requested a cancellation. Please review the details and act via the Admin dashboard.
+              </p>
+
+              <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"" style=""margin-top:12px;border-collapse:separate;border-spacing:0 10px;"">
+                <tr>
+                  <td style=""background:#0b1412;color:#f8fafc;padding:12px;border-radius:8px;"">
+                    <div style=""font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;"">Booking ID</div>
+                    <div style=""font-weight:700;font-size:15px;color:#68d391;"">#{encodedBookingId}</div>
+
+                    <div style=""margin-top:10px;font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;"">Traveler</div>
+                    <div style=""font-weight:700;font-size:14px;color:#f8fafc;"">{encodedUserName} • {encodedUserEmail}</div>
+
+                    <div style=""margin-top:10px;font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;"">Requested On</div>
+                    <div style=""font-size:14px;color:#f8fafc;"">{encodedRequestedAt} (UTC)</div>
+
+                    <div style=""margin-top:10px;font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;"">Trip Dates</div>
+                    <div style=""font-size:14px;color:#f8fafc;"">{encodedStartDate} — {encodedEndDate}</div>
+
+                    <div style=""margin-top:10px;font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;"">Destinations</div>
+                    <div style=""font-size:14px;color:#f8fafc;"">{WebUtility.HtmlEncode(encodedDestinations)}</div>
+
+                    {(string.IsNullOrWhiteSpace(encodedReason) ? "" : $@"""<div style=\""margin-top:10px;font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;\"">Traveler's Reason</div>
+                    <div style=\""font-size:14px;color:#f8fafc;line-height:1.4;\"">{encodedReason}</div>""")}
+                  </td>
+                </tr>
+              </table>
+
+              <p style=""margin:14px 0 0;color:#475569;font-size:14px;line-height:1.4;"">
+                Visit the Admin Dashboard to Approve or Reject this request. This message contains all data submitted by the traveler.
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style=""padding:14px 20px;background:#0b1412;color:#e2e8f0;text-align:center;font-size:13px;"">
+              SuiteSavvy Travel App • All Rights Reserved • support@suitesavvy.com
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>";
         }
 
         public string BuildCancellationDecisionUserBody(Models.Booking booking, bool approved, string? adminComment)
         {
-            var builder = new StringBuilder();
-            builder.AppendLine($"Hello {booking.User?.Name},");
-            builder.AppendLine();
-            builder.AppendLine(approved
-                ? "Good news! Your trip cancellation request has been approved."
-                : "We’re sorry to inform you that your trip cancellation request has been rejected.");
-            builder.AppendLine($"Booking ID: {booking.BookingId}");
-            builder.AppendLine($"Trip Dates: {booking.BookingDate:yyyy-MM-dd} to {booking.BookingDate.AddDays(booking.Nights):yyyy-MM-dd}");
-            builder.AppendLine();
-            if (!string.IsNullOrWhiteSpace(adminComment))
-            {
-                builder.AppendLine("Notes from our team:");
-                builder.AppendLine(adminComment);
-                builder.AppendLine();
-            }
-            builder.AppendLine("If you have any questions, please reply to this email.");
-            builder.AppendLine();
-            builder.AppendLine("Best regards,");
-            builder.AppendLine("Travel App Team");
-            return builder.ToString();
+            var encodedUserName = WebUtility.HtmlEncode(booking.User?.Name ?? "Guest");
+            var encodedBookingId = WebUtility.HtmlEncode(booking.BookingId.ToString() ?? string.Empty);
+            var encodedStartDate = WebUtility.HtmlEncode(booking.BookingDate.ToString("yyyy-MM-dd"));
+            var encodedEndDate = WebUtility.HtmlEncode(booking.BookingDate.AddDays(booking.Nights).ToString("yyyy-MM-dd"));
+            var encodedAdminComment = WebUtility.HtmlEncode(adminComment ?? string.Empty);
+
+            // Icon & message based on approval
+            var statusIcon = approved ? "✔️" : "🛑";
+            var statusTitle = approved ? "Cancellation Approved" : "Cancellation Rejected";
+            var statusMessage = approved
+                ? "Good news — your cancellation request has been approved. Any eligible refund will be processed according to our policy."
+                : "We’re sorry — your cancellation request has been reviewed and was not approved. Please see the note from our team below.";
+
+            return $@"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+  <meta charset=""utf-8""/>
+  <meta name=""viewport"" content=""width=device-width, initial-scale=1.0""/>
+  <title>Cancellation Decision</title>
+</head>
+<body style=""margin:0;padding:0;background:#0b1412;font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;color:#0b1412;"">
+  <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"" style=""padding:28px 12px;background:linear-gradient(180deg, rgba(11,20,18,0.9), rgba(11,20,18,1));"">
+    <tr>
+      <td align=""center"">
+        <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""600"" style=""max-width:600px;width:100%;background:#f8fafc;border-radius:12px;overflow:hidden;"">
+          <tr>
+            <td style=""padding:18px 20px;background:#07231f;color:#f8fafc;"">
+              <div style=""font-weight:700;font-size:18px;"">SuiteSavvy ✈️</div>
+            </td>
+          </tr>
+
+          <tr>
+            <td style=""padding:22px 24px;background:#f8fafc;color:#0b1412;"">
+              <div style=""font-size:13px;color:#68d391;text-transform:uppercase;margin-bottom:8px;"">{statusIcon} {statusTitle}</div>
+              <h2 style=""margin:6px 0 10px;font-size:18px;"">Hello {encodedUserName},</h2>
+
+              <p style=""margin:0 0 12px;color:#334155;font-size:14px;line-height:1.4;"">
+                {WebUtility.HtmlEncode(statusMessage)}
+              </p>
+
+              <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"" style=""margin-top:12px;border-collapse:separate;border-spacing:0 10px;"">
+                <tr>
+                  <td style=""background:#0b1412;color:#f8fafc;padding:12px;border-radius:8px;"">
+                    <div style=""font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;"">Booking ID</div>
+                    <div style=""font-weight:700;font-size:15px;color:#68d391;"">#{encodedBookingId}</div>
+
+                    <div style=""margin-top:10px;font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;"">Trip Dates</div>
+                    <div style=""font-size:14px;color:#f8fafc;"">{encodedStartDate} — {encodedEndDate}</div>
+
+                    {(string.IsNullOrWhiteSpace(encodedAdminComment) ? "" : $@"""<div style=\""margin-top:10px;font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;\"">Notes from our team</div>
+                    <div style=\""font-size:14px;color:#f8fafc;line-height:1.4;\"">{encodedAdminComment}</div>""")}
+                  </td>
+                </tr>
+              </table>
+
+              <p style=""margin:14px 0 0;color:#475569;font-size:14px;line-height:1.4;"">
+                If you have questions or need further assistance, reply to this email and our support team will help.
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style=""padding:14px 20px;background:#0b1412;color:#e2e8f0;text-align:center;font-size:13px;"">
+              SuiteSavvy Travel App • All Rights Reserved • support@suitesavvy.com
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>";
         }
 
         public string BuildCancellationDecisionAdminBody(TripCancellation cancellation, bool approved)
         {
-            var builder = new StringBuilder();
-            builder.AppendLine("Hello Admin,");
-            builder.AppendLine();
-            builder.AppendLine(approved
-                ? "A trip cancellation request has been approved."
-                : "A trip cancellation request has been rejected.");
-            builder.AppendLine($"Cancellation ID: {cancellation.TripCancellationId}");
-            builder.AppendLine($"Booking ID: {cancellation.BookingId}");
-            builder.AppendLine($"User ID: {cancellation.UserId}");
-            if (!string.IsNullOrWhiteSpace(cancellation.Reason))
-            {
-                builder.AppendLine();
-                builder.AppendLine("Original Reason:");
-                builder.AppendLine(cancellation.Reason);
-            }
-            if (!string.IsNullOrWhiteSpace(cancellation.AdminComment))
-            {
-                builder.AppendLine();
-                builder.AppendLine("Admin Comment:");
-                builder.AppendLine(cancellation.AdminComment);
-            }
-            builder.AppendLine();
-            builder.AppendLine("Best regards,");
-            builder.AppendLine("Travel App System");
-            return builder.ToString();
+            var encodedCancellationId = WebUtility.HtmlEncode(cancellation.TripCancellationId.ToString() ?? string.Empty);
+            var encodedBookingId = WebUtility.HtmlEncode(cancellation.BookingId.ToString() ?? string.Empty);
+            var encodedUserId = WebUtility.HtmlEncode(cancellation.UserId.ToString() ?? string.Empty);
+            var encodedReason = WebUtility.HtmlEncode(cancellation.Reason ?? string.Empty);
+            var encodedAdminComment = WebUtility.HtmlEncode(cancellation.AdminComment ?? string.Empty);
+
+            var statusIcon = approved ? "✔️" : "❌";
+            var statusText = approved ? "Approved" : "Rejected";
+
+            return $@"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+  <meta charset=""utf-8""/>
+  <meta name=""viewport"" content=""width=device-width, initial-scale=1.0""/>
+  <title>Admin — Cancellation Decision</title>
+</head>
+<body style=""margin:0;padding:0;background:#0b1412;font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;color:#0b1412;"">
+  <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"" style=""padding:28px 12px;background:linear-gradient(180deg, rgba(11,20,18,0.9), rgba(11,20,18,1));"">
+    <tr>
+      <td align=""center"">
+        <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""640"" style=""max-width:640px;width:100%;background:#f8fafc;border-radius:12px;overflow:hidden;"">
+          <tr>
+            <td style=""padding:18px 20px;background:#07231f;color:#f8fafc;"">
+              <div style=""font-weight:700;font-size:18px;"">SuiteSavvy Admin</div>
+            </td>
+          </tr>
+
+          <tr>
+            <td style=""padding:22px 24px;background:#f8fafc;color:#0b1412;"">
+              <div style=""font-size:13px;color:#D4AF37;text-transform:uppercase;margin-bottom:8px;"">{statusIcon} Cancellation {statusText}</div>
+
+              <p style=""margin:0 0 12px;color:#334155;font-size:14px;line-height:1.4;"">
+                A cancellation request has been {statusText.ToLower()} by an admin. Details below.
+              </p>
+
+              <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"" style=""margin-top:12px;border-collapse:separate;border-spacing:0 10px;"">
+                <tr>
+                  <td style=""background:#0b1412;color:#f8fafc;padding:12px;border-radius:8px;"">
+                    <div style=""font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;"">Cancellation ID</div>
+                    <div style=""font-weight:700;font-size:15px;color:#68d391;"">{encodedCancellationId}</div>
+
+                    <div style=""margin-top:10px;font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;"">Booking ID</div>
+                    <div style=""font-size:14px;color:#f8fafc;"">#{encodedBookingId}</div>
+
+                    <div style=""margin-top:10px;font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;"">User ID</div>
+                    <div style=""font-size:14px;color:#f8fafc;"">{encodedUserId}</div>
+
+                    {(string.IsNullOrWhiteSpace(encodedReason) ? "" : $@"""<div style=\""margin-top:10px;font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;\"">Original Reason</div>
+                    <div style=\""font-size:14px;color:#f8fafc;line-height:1.4;\"">{encodedReason}</div>""")}
+
+                    {(string.IsNullOrWhiteSpace(encodedAdminComment) ? "" : $@"""<div style=\""margin-top:10px;font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;\"">Admin Comment</div>
+                    <div style=\""font-size:14px;color:#f8fafc;line-height:1.4;\"">{encodedAdminComment}</div>""")}
+                  </td>
+                </tr>
+              </table>
+
+              <p style=""margin:14px 0 0;color:#475569;font-size:14px;line-height:1.4;"">
+                This message is for administrative purposes. Use the Admin dashboard to view full details and take additional actions if necessary.
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style=""padding:14px 20px;background:#0b1412;color:#e2e8f0;text-align:center;font-size:13px;"">
+              SuiteSavvy Travel App • All Rights Reserved • support@suitesavvy.com
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>";
         }
     }
 }

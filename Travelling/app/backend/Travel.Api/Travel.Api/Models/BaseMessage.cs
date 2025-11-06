@@ -7,6 +7,7 @@ public enum MessageType
     BookingConfirmation = 0,
     BookingCancelled = 1,
     CancellationRequested = 2,
+    CancellationRequest = CancellationRequested,
     CancellationDecision = 3,
     AdminNotification = 4
 }

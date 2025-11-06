@@ -102,6 +102,7 @@ builder.Services.AddSingleton<IMessageQueueService>(sp => sp.GetRequiredService<
 builder.Services.AddHostedService<BookingReminderService>();
 builder.Services.AddHostedService<EmailConsumerServiceV2>();
 builder.Services.AddHostedService<BookingQueueConsumerService>();
+builder.Services.AddHostedService<CancellationEmailConsumerService>();
 
 var app = builder.Build();
 
