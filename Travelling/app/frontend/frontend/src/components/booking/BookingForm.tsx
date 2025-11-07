@@ -1,64 +1,75 @@
-import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
-import { useAuth } from '../../contexts/AuthContext'
-import { bookingsAPI, type Destination } from '../../lib/api'
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { useAuth } from "../../contexts/AuthContext";
+import { bookingsAPI, type Destination } from "../../lib/api";
 
 interface BookingFormProps {
-  destinations: Destination[]
-  onClose: () => void
-  onSuccess: (result: any) => void
+  destinations: Destination[];
+  onClose: () => void;
+  onSuccess: (result: any) => void;
 }
 
-export default function BookingForm({ destinations, onClose, onSuccess }: BookingFormProps) {
-  const { user } = useAuth()
+export default function BookingForm({
+  destinations,
+  onClose,
+  onSuccess,
+}: BookingFormProps) {
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
     guests: 1,
     nights: 1,
-    startDate: new Date().toISOString().slice(0, 10)
-  })
+    startDate: new Date().toISOString().slice(0, 10),
+  });
 
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
       guests: 1,
       nights: 1,
-      startDate: new Date().toISOString().slice(0, 10)
-    }))
-  }, [destinations])
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
+      startDate: new Date().toISOString().slice(0, 10),
+    }));
+  }, [destinations]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const totalPrice = destinations.reduce((sum, dest) => sum + dest.price, 0) * formData.guests * formData.nights
+  const totalPrice =
+    destinations.reduce((sum, dest) => sum + dest.price, 0) *
+    formData.guests *
+    formData.nights;
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError('')
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
 
     try {
       const response = await bookingsAPI.create({
         userId: user!.userId,
-        destinationIds: destinations.map(d => d.destinationId),
+        destinationIds: destinations.map((d) => d.destinationId),
         guests: formData.guests,
         nights: formData.nights,
-        startDate: new Date(formData.startDate)
-      })
+        startDate: new Date(formData.startDate),
+      });
 
       onSuccess({
         bookingId: response.bookingId,
-        message: 'Booking confirmed successfully!',
+        message: "Booking confirmed successfully!",
         total: response.total,
         guests: response.guests,
         nights: response.nights,
         startDate: response.startDate,
-        destinations: response.destinations
-      })
+        destinations: response.destinations,
+      });
     } catch (err: any) {
-      setError(err.response?.data?.message || err.message || 'Failed to complete booking')
+      setError(
+        err.response?.data?.message ||
+          err.message ||
+          "Failed to complete booking",
+      );
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <motion.div
@@ -88,9 +99,14 @@ export default function BookingForm({ destinations, onClose, onSuccess }: Bookin
           <h4 className="text-lg font-semibold mb-3">Selected Destinations</h4>
           <div className="space-y-2">
             {destinations.map((destination) => (
-              <div key={destination.destinationId} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+              <div
+                key={destination.destinationId}
+                className="flex items-center justify-between p-3 bg-white/5 rounded-lg"
+              >
                 <span className="text-white">{destination.name}</span>
-                <span className="text-blue-400">₹{destination.price.toLocaleString()}/night</span>
+                <span className="text-blue-400">
+                  ₹{destination.price.toLocaleString()}/night
+                </span>
               </div>
             ))}
           </div>
@@ -112,7 +128,12 @@ export default function BookingForm({ destinations, onClose, onSuccess }: Bookin
                 type="date"
                 required
                 value={formData.startDate}
-                onChange={(e) => setFormData(prev => ({ ...prev, startDate: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    startDate: e.target.value,
+                  }))
+                }
                 className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
               />
             </div>
@@ -126,7 +147,12 @@ export default function BookingForm({ destinations, onClose, onSuccess }: Bookin
                 max="20"
                 required
                 value={formData.guests}
-                onChange={(e) => setFormData(prev => ({ ...prev, guests: parseInt(e.target.value) || 1 }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    guests: parseInt(e.target.value) || 1,
+                  }))
+                }
                 className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
               />
             </div>
@@ -140,7 +166,12 @@ export default function BookingForm({ destinations, onClose, onSuccess }: Bookin
                 max="30"
                 required
                 value={formData.nights}
-                onChange={(e) => setFormData(prev => ({ ...prev, nights: parseInt(e.target.value) || 1 }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    nights: parseInt(e.target.value) || 1,
+                  }))
+                }
                 className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
               />
             </div>
@@ -150,11 +181,18 @@ export default function BookingForm({ destinations, onClose, onSuccess }: Bookin
           <div className="bg-white/5 rounded-lg p-4 space-y-2">
             <div className="flex justify-between text-white/70">
               <span>Base price per night:</span>
-              <span>₹{destinations.reduce((sum, dest) => sum + dest.price, 0).toLocaleString()}</span>
+              <span>
+                ₹
+                {destinations
+                  .reduce((sum, dest) => sum + dest.price, 0)
+                  .toLocaleString()}
+              </span>
             </div>
             <div className="flex justify-between text-white/70">
               <span>Guests × Nights:</span>
-              <span>{formData.guests} × {formData.nights}</span>
+              <span>
+                {formData.guests} × {formData.nights}
+              </span>
             </div>
             <div className="border-t border-white/10 pt-2">
               <div className="flex justify-between text-xl font-bold text-green-400">
@@ -183,8 +221,20 @@ export default function BookingForm({ destinations, onClose, onSuccess }: Bookin
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
                   <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      fill="none"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
                   </svg>
                   Processing...
                 </span>
@@ -198,5 +248,5 @@ export default function BookingForm({ destinations, onClose, onSuccess }: Bookin
         </form>
       </motion.div>
     </motion.div>
-  )
+  );
 }

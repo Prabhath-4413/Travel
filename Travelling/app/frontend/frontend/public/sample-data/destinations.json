@@ -8,7 +8,12 @@
     "imageUrl": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=1000&auto=format&fit=crop",
     "pricePerNight": 4500,
     "category": "Beach & Hills",
-    "highlights": ["RK Beach", "Araku Valley", "Kailasagiri", "Simhachalam Temple"],
+    "highlights": [
+      "RK Beach",
+      "Araku Valley",
+      "Kailasagiri",
+      "Simhachalam Temple"
+    ],
     "bestTime": "October to March"
   },
   {
@@ -20,7 +25,12 @@
     "imageUrl": "https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=1000&auto=format&fit=crop",
     "pricePerNight": 3800,
     "category": "Temple & Spiritual",
-    "highlights": ["Tirumala Temple", "Sri Venkateswara National Park", "Kapila Theertham", "Chandragiri Fort"],
+    "highlights": [
+      "Tirumala Temple",
+      "Sri Venkateswara National Park",
+      "Kapila Theertham",
+      "Chandragiri Fort"
+    ],
     "bestTime": "September to March"
   },
   {
@@ -32,7 +42,12 @@
     "imageUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1000&auto=format&fit=crop",
     "pricePerNight": 3600,
     "category": "Cultural & Heritage",
-    "highlights": ["Krishna River", "Kanaka Durga Temple", "Undavalli Caves", "Bhavani Island"],
+    "highlights": [
+      "Krishna River",
+      "Kanaka Durga Temple",
+      "Undavalli Caves",
+      "Bhavani Island"
+    ],
     "bestTime": "October to March"
   },
   {
@@ -44,7 +59,12 @@
     "imageUrl": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=1000&auto=format&fit=crop",
     "pricePerNight": 5200,
     "category": "Beach & Nightlife",
-    "highlights": ["Calangute Beach", "Old Goa Churches", "Dudhsagar Falls", "Anjuna Flea Market"],
+    "highlights": [
+      "Calangute Beach",
+      "Old Goa Churches",
+      "Dudhsagar Falls",
+      "Anjuna Flea Market"
+    ],
     "bestTime": "November to March"
   },
   {
@@ -56,7 +76,12 @@
     "imageUrl": "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=1000&auto=format&fit=crop",
     "pricePerNight": 4000,
     "category": "Hills & Nature",
-    "highlights": ["Tea Gardens", "Eravikulam National Park", "Mattupetty Dam", "Echo Point"],
+    "highlights": [
+      "Tea Gardens",
+      "Eravikulam National Park",
+      "Mattupetty Dam",
+      "Echo Point"
+    ],
     "bestTime": "September to May"
   },
   {
@@ -80,7 +105,12 @@
     "imageUrl": "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=1000&auto=format&fit=crop",
     "pricePerNight": 3500,
     "category": "Spiritual & Ancient",
-    "highlights": ["Ganges Ghats", "Kashi Vishwanath Temple", "Sarnath", "Ganga Aarti"],
+    "highlights": [
+      "Ganges Ghats",
+      "Kashi Vishwanath Temple",
+      "Sarnath",
+      "Ganga Aarti"
+    ],
     "bestTime": "October to March"
   },
   {
@@ -92,7 +122,12 @@
     "imageUrl": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=1000&auto=format&fit=crop",
     "pricePerNight": 4200,
     "category": "Backwaters & Nature",
-    "highlights": ["Alappuzha Backwaters", "Kumarakom", "Houseboat Stay", "Bird Sanctuaries"],
+    "highlights": [
+      "Alappuzha Backwaters",
+      "Kumarakom",
+      "Houseboat Stay",
+      "Bird Sanctuaries"
+    ],
     "bestTime": "September to March"
   },
   {
@@ -104,7 +139,12 @@
     "imageUrl": "https://images.unsplash.com/photo-1559827260-dc66d52bef19?q=80&w=1000&auto=format&fit=crop",
     "pricePerNight": 3800,
     "category": "Adventure & Spiritual",
-    "highlights": ["Ganges River", "Yoga Ashrams", "River Rafting", "Laxman Jhula"],
+    "highlights": [
+      "Ganges River",
+      "Yoga Ashrams",
+      "River Rafting",
+      "Laxman Jhula"
+    ],
     "bestTime": "September to June"
   },
   {
@@ -116,10 +156,12 @@
     "imageUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1000&auto=format&fit=crop",
     "pricePerNight": 4100,
     "category": "Beach & Colonial",
-    "highlights": ["French Quarter", "Paradise Beach", "Auroville", "Pondicherry Beach"],
+    "highlights": [
+      "French Quarter",
+      "Paradise Beach",
+      "Auroville",
+      "Pondicherry Beach"
+    ],
     "bestTime": "October to March"
   }
 ]
-
-
-

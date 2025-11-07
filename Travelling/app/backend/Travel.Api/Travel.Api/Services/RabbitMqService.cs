@@ -102,7 +102,8 @@ public sealed class RabbitMqService : IMessageQueueService, IAsyncDisposable
 
     public Task PublishAdminNotificationAsync(AdminNotificationMessage message) => PublishMessageAsync(_emailQueue, message);
 
-    public Task PublishCancellationMessageAsync(CancellationMessage message) => PublishMessageAsync(_cancellationQueue, message);
+    public Task PublishCancellationMessageAsync(CancellationMessage message)
+       => PublishMessageAsync(_cancellationQueue, message);
 
     public async ValueTask<RabbitMQ.Client.IModel> CreateConsumerChannelAsync(CancellationToken cancellationToken)
     {

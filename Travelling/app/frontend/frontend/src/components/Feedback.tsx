@@ -1,93 +1,100 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import toast from 'react-hot-toast'
-import { feedbackAPI, type Feedback as FeedbackType } from '../lib/api'
-import { Star, Send } from 'lucide-react'
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import toast from "react-hot-toast";
+import { feedbackAPI, type Feedback as FeedbackType } from "../lib/api";
+import { Star, Send } from "lucide-react";
 
 export default function Feedback() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-    rating: 0
-  })
-  const [recentFeedbacks, setRecentFeedbacks] = useState<FeedbackType[]>([])
-  const [loading, setLoading] = useState(false)
-  const [fetchingFeedbacks, setFetchingFeedbacks] = useState(true)
-  const [hoverRating, setHoverRating] = useState(0)
+    name: "",
+    email: "",
+    message: "",
+    rating: 0,
+  });
+  const [recentFeedbacks, setRecentFeedbacks] = useState<FeedbackType[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [fetchingFeedbacks, setFetchingFeedbacks] = useState(true);
+  const [hoverRating, setHoverRating] = useState(0);
 
   useEffect(() => {
-    fetchRecentFeedbacks()
-  }, [])
+    fetchRecentFeedbacks();
+  }, []);
 
   const fetchRecentFeedbacks = async () => {
     try {
-      setFetchingFeedbacks(true)
-      const feedbacks = await feedbackAPI.getRecent(5)
-      setRecentFeedbacks(feedbacks)
+      setFetchingFeedbacks(true);
+      const feedbacks = await feedbackAPI.getRecent(5);
+      setRecentFeedbacks(feedbacks);
     } catch (error) {
-      console.error('Error fetching feedbacks:', error)
-      toast.error('Failed to load feedbacks')
+      console.error("Error fetching feedbacks:", error);
+      toast.error("Failed to load feedbacks");
     } finally {
-      setFetchingFeedbacks(false)
+      setFetchingFeedbacks(false);
     }
-  }
+  };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
-    }))
-  }
+      [name]: value,
+    }));
+  };
 
   const handleRatingClick = (rating: number) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      rating
-    }))
-  }
+      rating,
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!formData.message.trim()) {
-      toast.error('Please enter your feedback message')
-      return
+      toast.error("Please enter your feedback message");
+      return;
     }
 
     if (formData.rating === 0) {
-      toast.error('Please select a rating')
-      return
+      toast.error("Please select a rating");
+      return;
     }
 
     try {
-      setLoading(true)
+      setLoading(true);
       await feedbackAPI.submit({
         name: formData.name || undefined,
         email: formData.email || undefined,
         message: formData.message.trim(),
-        rating: formData.rating
-      })
+        rating: formData.rating,
+      });
 
-      toast.success('Thank you for your feedback!')
-      setFormData({ name: '', email: '', message: '', rating: 0 })
-      await fetchRecentFeedbacks()
+      toast.success("Thank you for your feedback!");
+      setFormData({ name: "", email: "", message: "", rating: 0 });
+      await fetchRecentFeedbacks();
     } catch (error: any) {
-      console.error('Error submitting feedback:', error)
-      const errorMessage = error?.response?.data?.message || 'Failed to submit feedback'
-      toast.error(errorMessage)
+      console.error("Error submitting feedback:", error);
+      const errorMessage =
+        error?.response?.data?.message || "Failed to submit feedback";
+      toast.error(errorMessage);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="w-full bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 md:p-8">
       {/* Header */}
       <div className="mb-8">
-        <h2 className="text-3xl font-bold text-white mb-2">Share Your Feedback</h2>
-        <p className="text-gray-300">Help us improve by sharing your experience</p>
+        <h2 className="text-3xl font-bold text-white mb-2">
+          Share Your Feedback
+        </h2>
+        <p className="text-gray-300">
+          Help us improve by sharing your experience
+        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -96,7 +103,10 @@ export default function Feedback() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Name Field */}
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-200 mb-2">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-200 mb-2"
+              >
                 Name (Optional)
               </label>
               <input
@@ -113,7 +123,10 @@ export default function Feedback() {
 
             {/* Email Field */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-200 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-200 mb-2"
+              >
                 Email (Optional)
               </label>
               <input
@@ -130,7 +143,10 @@ export default function Feedback() {
 
             {/* Message Field */}
             <div>
-              <label htmlFor="message" className="block text-sm font-medium text-gray-200 mb-2">
+              <label
+                htmlFor="message"
+                className="block text-sm font-medium text-gray-200 mb-2"
+              >
                 Message <span className="text-red-400">*</span>
               </label>
               <textarea
@@ -167,8 +183,8 @@ export default function Feedback() {
                       size={32}
                       className={`transition-colors ${
                         (hoverRating || formData.rating) >= star
-                          ? 'fill-yellow-400 text-yellow-400'
-                          : 'text-white/30'
+                          ? "fill-yellow-400 text-yellow-400"
+                          : "text-white/30"
                       }`}
                     />
                   </button>
@@ -176,7 +192,10 @@ export default function Feedback() {
               </div>
               {formData.rating > 0 && (
                 <p className="text-sm text-gray-300 mt-2">
-                  You rated: <span className="text-yellow-400 font-semibold">{formData.rating} out of 5 stars</span>
+                  You rated:{" "}
+                  <span className="text-yellow-400 font-semibold">
+                    {formData.rating} out of 5 stars
+                  </span>
                 </p>
               )}
             </div>
@@ -188,7 +207,7 @@ export default function Feedback() {
               className="w-full mt-6 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 disabled:from-gray-500 disabled:to-gray-600 text-white font-semibold py-3 rounded-lg transition flex items-center justify-center gap-2"
             >
               <Send size={18} />
-              {loading ? 'Submitting...' : 'Submit Feedback'}
+              {loading ? "Submitting..." : "Submit Feedback"}
             </button>
           </form>
         </div>
@@ -196,12 +215,17 @@ export default function Feedback() {
         {/* Recent Feedbacks */}
         <div className="lg:col-span-1">
           <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-            <h3 className="text-lg font-semibold text-white mb-4">Recent Feedback</h3>
-            
+            <h3 className="text-lg font-semibold text-white mb-4">
+              Recent Feedback
+            </h3>
+
             {fetchingFeedbacks ? (
               <div className="space-y-3">
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="bg-white/5 rounded-lg p-3 animate-pulse h-24" />
+                  <div
+                    key={i}
+                    className="bg-white/5 rounded-lg p-3 animate-pulse h-24"
+                  />
                 ))}
               </div>
             ) : recentFeedbacks.length > 0 ? (
@@ -217,14 +241,18 @@ export default function Feedback() {
                     >
                       <div className="flex items-center justify-between mb-2">
                         <p className="text-sm font-medium text-white">
-                          {feedback.name || 'Anonymous'}
+                          {feedback.name || "Anonymous"}
                         </p>
                         <div className="flex gap-0.5">
                           {[...Array(5)].map((_, i) => (
                             <Star
                               key={i}
                               size={14}
-                              className={i < feedback.rating ? 'fill-yellow-400 text-yellow-400' : 'text-white/20'}
+                              className={
+                                i < feedback.rating
+                                  ? "fill-yellow-400 text-yellow-400"
+                                  : "text-white/20"
+                              }
                             />
                           ))}
                         </div>
@@ -248,5 +276,5 @@ export default function Feedback() {
         </div>
       </div>
     </div>
-  )
+  );
 }

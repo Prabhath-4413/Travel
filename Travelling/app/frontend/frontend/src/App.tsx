@@ -1,64 +1,101 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom'
-import { AuthProvider, useAuth } from './contexts/AuthContext'
-import { DestinationsProvider } from './contexts/DestinationsContext'
-import LandingPage from './pages/LandingPage'
-import Login from './components/auth/Login'
-import Register from './components/auth/Register'
-import UserDashboard from './pages/UserDashboard'
-import AdminDashboard from './pages/AdminDashboard'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { DestinationsProvider } from "./contexts/DestinationsContext";
+import LandingPage from "./pages/LandingPage";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
+import UserDashboard from "./pages/UserDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 
 // ✅ Protected Route Component
-function ProtectedRoute({ children, requireAdmin = false }: { children: React.ReactNode, requireAdmin?: boolean }) {
-  const { user } = useAuth()
-  const location = useLocation()
+function ProtectedRoute({
+  children,
+  requireAdmin = false,
+}: {
+  children: React.ReactNode;
+  requireAdmin?: boolean;
+}) {
+  const { user } = useAuth();
+  const location = useLocation();
 
   if (!user) {
-    console.log('ProtectedRoute: No user, redirecting to login')
-    const redirectTo = `${location.pathname}${location.search}${location.hash}`
-    return <Navigate to="/login" replace state={{ redirectTo, redirectState: location.state }} />
+    console.log("ProtectedRoute: No user, redirecting to login");
+    const redirectTo = `${location.pathname}${location.search}${location.hash}`;
+    return (
+      <Navigate
+        to="/login"
+        replace
+        state={{ redirectTo, redirectState: location.state }}
+      />
+    );
   }
 
   // ✅ Check role-based access
   if (requireAdmin) {
-    if (user.role !== 'admin') {
-      console.log('ProtectedRoute: Access denied - User is not admin')
-      return <Navigate to="/dashboard" replace />
+    if (user.role !== "admin") {
+      console.log("ProtectedRoute: Access denied - User is not admin");
+      return <Navigate to="/dashboard" replace />;
     }
-    console.log('ProtectedRoute: Admin access granted for', user.name)
+    console.log("ProtectedRoute: Admin access granted for", user.name);
   } else {
-    if (user.role === 'admin') {
-      console.log('ProtectedRoute: Admin user accessing user route, redirecting to admin dashboard')
-      return <Navigate to="/admin" replace />
+    if (user.role === "admin") {
+      console.log(
+        "ProtectedRoute: Admin user accessing user route, redirecting to admin dashboard",
+      );
+      return <Navigate to="/admin" replace />;
     }
   }
 
-  return <>{children}</>
+  return <>{children}</>;
 }
 
 // ✅ Public Route Component
 function PublicRoute({ children }: { children: React.ReactNode }) {
-  const { user } = useAuth()
+  const { user } = useAuth();
 
   if (user) {
-    const redirectTo = user.role === 'admin' ? '/admin' : '/dashboard'
-    console.log('PublicRoute: User already logged in, redirecting to', redirectTo)
-    return <Navigate to={redirectTo} replace />
+    const redirectTo = user.role === "admin" ? "/admin" : "/dashboard";
+    console.log(
+      "PublicRoute: User already logged in, redirecting to",
+      redirectTo,
+    );
+    return <Navigate to={redirectTo} replace />;
   }
 
-  return <>{children}</>
+  return <>{children}</>;
 }
 
 function AppRoutes() {
-  const { user } = useAuth()
+  const { user } = useAuth();
 
   return (
     <Routes>
       {/* ✅ Public routes */}
       <Route path="/" element={<LandingPage />} />
-      <Route path="/landing" element={<LandingPage />} /> {/* Added landing route */}
-      <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
-      <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
-
+      <Route path="/landing" element={<LandingPage />} />{" "}
+      {/* Added landing route */}
+      <Route
+        path="/login"
+        element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <PublicRoute>
+            <Register />
+          </PublicRoute>
+        }
+      />
       {/* ✅ Protected routes */}
       <Route
         path="/dashboard"
@@ -76,20 +113,22 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       {/* ✅ Catch-all redirect */}
       <Route
         path="*"
         element={
           user ? (
-            <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} replace />
+            <Navigate
+              to={user.role === "admin" ? "/admin" : "/dashboard"}
+              replace
+            />
           ) : (
             <Navigate to="/landing" replace />
           )
         }
       />
     </Routes>
-  )
+  );
 }
 
 export default function App() {
@@ -103,5 +142,5 @@ export default function App() {
         </Router>
       </DestinationsProvider>
     </AuthProvider>
-  )
+  );
 }

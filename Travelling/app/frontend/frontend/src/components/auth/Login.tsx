@@ -1,77 +1,83 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { useAuth } from '../../contexts/AuthContext'
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Login() {
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  })
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
-  const [successMessage, setSuccessMessage] = useState('')
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false)
-  const [showLoginSuccess, setShowLoginSuccess] = useState(false)
-  const navigate = useNavigate()
-  const location = useLocation<{ redirectTo?: string; redirectState?: unknown }>()
-  const { login, user } = useAuth()
+    email: "",
+    password: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showLoginSuccess, setShowLoginSuccess] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation<{
+    redirectTo?: string;
+    redirectState?: unknown;
+  }>();
+  const { login, user } = useAuth();
 
   // Handle registration success state
   useEffect(() => {
     if (location.state?.email && location.state?.message) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        email: location.state.email
-      }))
-      setSuccessMessage(location.state.message)
-      setShowSuccessMessage(true)
-      
+        email: location.state.email,
+      }));
+      setSuccessMessage(location.state.message);
+      setShowSuccessMessage(true);
+
       // Clear the state after showing the message
       setTimeout(() => {
-        setShowSuccessMessage(false)
-      }, 5000)
+        setShowSuccessMessage(false);
+      }, 5000);
     }
-  }, [location.state])
+  }, [location.state]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError('')
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
 
     try {
-      await login(formData.email, formData.password)
-      setShowLoginSuccess(true)
+      await login(formData.email, formData.password);
+      setShowLoginSuccess(true);
       setTimeout(() => {
-        setShowLoginSuccess(false)
-        setIsLoading(false)
-        const storedUser = JSON.parse(localStorage.getItem('user') || '{}')
-        const fallbackPath = storedUser?.role === 'admin' ? '/admin' : '/dashboard'
-        const redirectPath = location.state?.redirectTo ?? fallbackPath
-        const redirectState = location.state?.redirectState
-        navigate(redirectPath, { replace: true, state: redirectState })
-      }, 2000)
+        setShowLoginSuccess(false);
+        setIsLoading(false);
+        const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+        const fallbackPath =
+          storedUser?.role === "admin" ? "/admin" : "/dashboard";
+        const redirectPath = location.state?.redirectTo ?? fallbackPath;
+        const redirectState = location.state?.redirectState;
+        navigate(redirectPath, { replace: true, state: redirectState });
+      }, 2000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed. Please try again.')
-      setIsLoading(false)
+      setError(
+        err instanceof Error ? err.message : "Login failed. Please try again.",
+      );
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen relative overflow-hidden flex items-center justify-center px-6">
       {/* Background Image */}
       <div className="absolute inset-0">
-        <img 
-          src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2070&auto=format&fit=crop" 
-          alt="Kerala Munnar Greenery" 
-          className="w-full h-full object-cover" 
+        <img
+          src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2070&auto=format&fit=crop"
+          alt="Kerala Munnar Greenery"
+          className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-br from-[#0e1512]/90 via-[#0e1512]/80 to-[#0e1512]/70" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0e1512]/60 via-transparent to-[#0e1512]/40" />
@@ -86,7 +92,9 @@ export default function Login() {
         {/* Header */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-3 mb-6">
-            <span className="w-8 h-8 rounded-full bg-white/10 grid place-items-center">✳</span>
+            <span className="w-8 h-8 rounded-full bg-white/10 grid place-items-center">
+              ✳
+            </span>
             <span className="font-semibold text-white text-xl">SuiteSavvy</span>
           </Link>
           <h1 className="text-3xl font-bold text-white mb-2">Welcome back</h1>
@@ -117,7 +125,12 @@ export default function Login() {
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
                   </motion.svg>
                   {successMessage}
                 </motion.div>
@@ -135,7 +148,10 @@ export default function Login() {
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-white/90 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-white/90 mb-2"
+              >
                 Email address
               </label>
               <input
@@ -151,7 +167,10 @@ export default function Login() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-white/90 mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-white/90 mb-2"
+              >
                 Password
               </label>
               <input
@@ -174,7 +193,10 @@ export default function Login() {
                 />
                 <span className="ml-2 text-sm text-white/70">Remember me</span>
               </label>
-              <Link to="#" className="text-sm text-blue-400 hover:text-blue-300 transition-colors">
+              <Link
+                to="#"
+                className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+              >
                 Forgot password?
               </Link>
             </div>
@@ -192,15 +214,18 @@ export default function Login() {
                   Signing in...
                 </div>
               ) : (
-                'Sign in'
+                "Sign in"
               )}
             </motion.button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-white/70">
-              Don't have an account?{' '}
-              <Link to="/register" className="text-blue-400 hover:text-blue-300 font-medium transition-colors">
+              Don't have an account?{" "}
+              <Link
+                to="/register"
+                className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
+              >
                 Sign up
               </Link>
             </p>
@@ -210,40 +235,40 @@ export default function Login() {
         {/* Floating Elements */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
           <motion.div
-            animate={{ 
+            animate={{
               y: [0, -20, 0],
-              rotate: [0, 5, 0]
+              rotate: [0, 5, 0],
             }}
-            transition={{ 
-              duration: 6, 
-              repeat: Infinity, 
-              ease: "easeInOut" 
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut",
             }}
             className="absolute top-20 left-10 w-16 h-16 bg-white/5 backdrop-blur-sm rounded-full border border-white/10"
           />
           <motion.div
-            animate={{ 
+            animate={{
               y: [0, 15, 0],
-              rotate: [0, -3, 0]
+              rotate: [0, -3, 0],
             }}
-            transition={{ 
-              duration: 8, 
-              repeat: Infinity, 
+            transition={{
+              duration: 8,
+              repeat: Infinity,
               ease: "easeInOut",
-              delay: 2
+              delay: 2,
             }}
             className="absolute bottom-20 right-10 w-12 h-12 bg-green-500/20 backdrop-blur-sm rounded-full border border-green-400/30"
           />
           <motion.div
-            animate={{ 
+            animate={{
               y: [0, -10, 0],
-              x: [0, 10, 0]
+              x: [0, 10, 0],
             }}
-            transition={{ 
-              duration: 7, 
-              repeat: Infinity, 
+            transition={{
+              duration: 7,
+              repeat: Infinity,
               ease: "easeInOut",
-              delay: 4
+              delay: 4,
             }}
             className="absolute top-1/2 left-1/4 w-8 h-8 bg-white/10 backdrop-blur-sm rounded-full border border-white/20"
           />
@@ -283,7 +308,12 @@ export default function Login() {
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
                   </motion.svg>
                 </motion.div>
 
@@ -302,8 +332,8 @@ export default function Login() {
                   transition={{ delay: 0.5 }}
                   className="text-white/80 mb-6"
                 >
-                  Welcome back! You are now signed in to your SuiteSavvy account.
-                  Redirecting you to the home page...
+                  Welcome back! You are now signed in to your SuiteSavvy
+                  account. Redirecting you to the home page...
                 </motion.p>
 
                 <motion.div
@@ -318,5 +348,5 @@ export default function Login() {
         )}
       </AnimatePresence>
     </div>
-  )
+  );
 }

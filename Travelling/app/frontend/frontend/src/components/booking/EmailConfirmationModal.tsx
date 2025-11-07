@@ -1,21 +1,25 @@
-import { motion } from 'framer-motion'
+import { motion } from "framer-motion";
 
 interface EmailConfirmationModalProps {
   booking: {
-    bookingId: number
-    total?: number
-    guests?: number
-    nights?: number
-    startDate?: string
-    endDate?: string
-    destinations?: string[]
-    message?: string
-  }
-  context?: 'booking' | 'cancellation'
-  onClose: () => void
+    bookingId: number;
+    total?: number;
+    guests?: number;
+    nights?: number;
+    startDate?: string;
+    endDate?: string;
+    destinations?: string[];
+    message?: string;
+  };
+  context?: "booking" | "cancellation";
+  onClose: () => void;
 }
 
-export default function EmailConfirmationModal({ booking, onClose, context = 'booking' }: EmailConfirmationModalProps) {
+export default function EmailConfirmationModal({
+  booking,
+  onClose,
+  context = "booking",
+}: EmailConfirmationModalProps) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -47,7 +51,12 @@ export default function EmailConfirmationModal({ booking, onClose, context = 'bo
               stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+              />
             </motion.svg>
           </motion.div>
 
@@ -57,7 +66,9 @@ export default function EmailConfirmationModal({ booking, onClose, context = 'bo
             transition={{ delay: 0.4 }}
             className="text-2xl font-bold text-white mb-4"
           >
-            {context === 'booking' ? 'Booking Confirmed!' : 'Cancellation Request Submitted'}
+            {context === "booking"
+              ? "Booking Confirmed!"
+              : "Cancellation Request Submitted"}
           </motion.h2>
 
           <motion.div
@@ -67,47 +78,63 @@ export default function EmailConfirmationModal({ booking, onClose, context = 'bo
             className="bg-white/5 rounded-lg p-4 mb-6"
           >
             <div className="text-white/70 text-sm mb-2">Reference</div>
-            <div className="text-xl font-bold text-blue-400 mb-4">#{booking.bookingId}</div>
-            {context === 'booking' && booking.total !== undefined && (
+            <div className="text-xl font-bold text-blue-400 mb-4">
+              #{booking.bookingId}
+            </div>
+            {context === "booking" && booking.total !== undefined && (
               <>
                 <div className="text-white/70 text-sm mb-2">Total Amount</div>
-                <div className="text-2xl font-bold text-green-400">₹{booking.total.toLocaleString()}</div>
+                <div className="text-2xl font-bold text-green-400">
+                  ₹{booking.total.toLocaleString()}
+                </div>
               </>
             )}
-            {context === 'booking' ? (
-              booking.startDate && booking.endDate && (
-                <div className="grid grid-cols-2 gap-4 mt-4 text-left">
-                  <div>
-                    <div className="text-white/70 text-sm">Start Date</div>
-                    <div className="text-white font-medium">{new Date(booking.startDate).toLocaleDateString()}</div>
-                  </div>
-                  <div>
-                    <div className="text-white/70 text-sm">End Date</div>
-                    <div className="text-white font-medium">{new Date(booking.endDate).toLocaleDateString()}</div>
-                  </div>
-                  <div>
-                    <div className="text-white/70 text-sm">Guests</div>
-                    <div className="text-white font-medium">{booking.guests}</div>
-                  </div>
-                  <div>
-                    <div className="text-white/70 text-sm">Nights</div>
-                    <div className="text-white font-medium">{booking.nights}</div>
-                  </div>
-                  {booking.destinations && booking.destinations.length > 0 && (
-                    <div className="col-span-2">
-                      <div className="text-white/70 text-sm">Destinations</div>
-                      <div className="text-white font-medium">{booking.destinations.join(', ')}</div>
+            {context === "booking"
+              ? booking.startDate &&
+                booking.endDate && (
+                  <div className="grid grid-cols-2 gap-4 mt-4 text-left">
+                    <div>
+                      <div className="text-white/70 text-sm">Start Date</div>
+                      <div className="text-white font-medium">
+                        {new Date(booking.startDate).toLocaleDateString()}
+                      </div>
                     </div>
-                  )}
-                </div>
-              )
-            ) : (
-              booking.message && (
-                <p className="text-white/70 text-sm leading-relaxed">
-                  {booking.message}
-                </p>
-              )
-            )}
+                    <div>
+                      <div className="text-white/70 text-sm">End Date</div>
+                      <div className="text-white font-medium">
+                        {new Date(booking.endDate).toLocaleDateString()}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-white/70 text-sm">Guests</div>
+                      <div className="text-white font-medium">
+                        {booking.guests}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-white/70 text-sm">Nights</div>
+                      <div className="text-white font-medium">
+                        {booking.nights}
+                      </div>
+                    </div>
+                    {booking.destinations &&
+                      booking.destinations.length > 0 && (
+                        <div className="col-span-2">
+                          <div className="text-white/70 text-sm">
+                            Destinations
+                          </div>
+                          <div className="text-white font-medium">
+                            {booking.destinations.join(", ")}
+                          </div>
+                        </div>
+                      )}
+                  </div>
+                )
+              : booking.message && (
+                  <p className="text-white/70 text-sm leading-relaxed">
+                    {booking.message}
+                  </p>
+                )}
           </motion.div>
 
           <motion.p
@@ -116,9 +143,9 @@ export default function EmailConfirmationModal({ booking, onClose, context = 'bo
             transition={{ delay: 0.6 }}
             className="text-white/80 mb-6"
           >
-            {context === 'booking'
-              ? 'Your booking has been confirmed! A confirmation email has been sent to your registered email address with all the details.'
-              : 'Your cancellation request has been submitted. Our team will review it and notify you via email once a decision is made.'}
+            {context === "booking"
+              ? "Your booking has been confirmed! A confirmation email has been sent to your registered email address with all the details."
+              : "Your cancellation request has been submitted. Our team will review it and notify you via email once a decision is made."}
           </motion.p>
 
           <motion.div
@@ -139,5 +166,5 @@ export default function EmailConfirmationModal({ booking, onClose, context = 'bo
         </div>
       </motion.div>
     </motion.div>
-  )
+  );
 }

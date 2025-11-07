@@ -1,276 +1,282 @@
-import axios from 'axios'
+import axios from "axios";
 
 // Provide minimal typing for Vite's import.meta.env so TS doesn't error when a global
 // declaration file (e.g. env.d.ts) is not present in the project.
 declare global {
   interface ImportMetaEnv {
-    readonly VITE_API_URL?: string
+    readonly VITE_API_URL?: string;
   }
 
   interface ImportMeta {
-    readonly env: ImportMetaEnv
+    readonly env: ImportMetaEnv;
   }
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 // Create axios instance with default config
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
   withCredentials: true, // Enable sending cookies with requests
-})
+});
 
 // Add auth token to requests
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem("token");
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`
+    config.headers.Authorization = `Bearer ${token}`;
   }
-  return config
-})
+  return config;
+});
 
 // Handle auth errors
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
-      window.location.href = '/login'
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "/login";
     }
-    return Promise.reject(error)
-  }
-)
+    return Promise.reject(error);
+  },
+);
 
 // Types
 export interface Destination {
-  destinationId: number
-  name: string
-  description?: string
-  price: number
-  imageUrl?: string
-  latitude?: number
-  longitude?: number
-  country?: string
-  city?: string
+  destinationId: number;
+  name: string;
+  description?: string;
+  price: number;
+  imageUrl?: string;
+  latitude?: number;
+  longitude?: number;
+  country?: string;
+  city?: string;
 }
 
-export type CancellationStatus = 'None' | 'Requested' | 'Approved' | 'Rejected'
+export type CancellationStatus = "None" | "Requested" | "Approved" | "Rejected";
 
 export interface Booking {
-  bookingId: number
-  totalPrice: number
-  guests: number
-  nights: number
-  bookingDate: string
-  destinations: string[]
-  cancellationStatus: CancellationStatus
-  latestCancellation?: TripCancellationDetail | null
+  bookingId: number;
+  totalPrice: number;
+  guests: number;
+  nights: number;
+  bookingDate: string;
+  destinations: string[];
+  cancellationStatus: CancellationStatus;
+  latestCancellation?: TripCancellationDetail | null;
 }
 
 export interface TripCancellationDetail {
-  tripCancellationId: number
-  status: TripCancellationStatus
-  requestedAt: string
-  reviewedAt?: string | null
-  adminComment?: string | null
-  reason?: string | null
+  tripCancellationId: number;
+  status: TripCancellationStatus;
+  requestedAt: string;
+  reviewedAt?: string | null;
+  adminComment?: string | null;
+  reason?: string | null;
 }
 
 export interface BookingRequest {
-  userId: number
-  destinationIds: number[]
-  guests: number
-  nights: number
-  startDate: Date
+  userId: number;
+  destinationIds: number[];
+  guests: number;
+  nights: number;
+  startDate: Date;
 }
 
-export type TripCancellationStatus = 'Pending' | 'Approved' | 'Rejected'
+export type TripCancellationStatus = "Pending" | "Approved" | "Rejected";
 
 export interface TripCancellationSummary {
-  tripCancellationId: number
-  bookingId: number
-  userId: number
-  userName: string
-  userEmail: string
-  status: TripCancellationStatus
-  bookingCancellationStatus: CancellationStatus
-  requestedAt: string
-  reviewedAt?: string | null
-  reason?: string | null
-  adminComment?: string | null
-  totalPrice: number
-  nights: number
-  startDate: string
-  destinations: string[]
+  tripCancellationId: number;
+  bookingId: number;
+  userId: number;
+  userName: string;
+  userEmail: string;
+  status: TripCancellationStatus;
+  bookingCancellationStatus: CancellationStatus;
+  requestedAt: string;
+  reviewedAt?: string | null;
+  reason?: string | null;
+  adminComment?: string | null;
+  totalPrice: number;
+  nights: number;
+  startDate: string;
+  destinations: string[];
 }
 
 export interface TripCancellationRequestPayload {
-  bookingId: number
-  userId: number
-  reason?: string
+  bookingId: number;
+  userId: number;
+  reason?: string;
 }
 
 export interface TripCancellationDecisionPayload {
-  tripCancellationId: number
-  adminComment?: string
+  tripCancellationId: number;
+  adminComment?: string;
 }
 
-
-
 export interface ShortestPathRequest {
-  points: Array<{ latitude: number; longitude: number }>
+  points: Array<{ latitude: number; longitude: number }>;
 }
 
 export interface ShortestPathResponse {
-  order: number[]
-  distanceKm: number
+  order: number[];
+  distanceKm: number;
 }
 
 // Feedback types
 export interface Feedback {
-  feedbackId: number
-  id: number
-  name?: string
-  email?: string
-  message: string
-  rating: number
-  createdAt: string
+  feedbackId: number;
+  id: number;
+  name?: string;
+  email?: string;
+  message: string;
+  rating: number;
+  createdAt: string;
 }
 
 export interface CreateFeedbackRequest {
-  name?: string
-  email?: string
-  message: string
-  rating: number
+  name?: string;
+  email?: string;
+  message: string;
+  rating: number;
 }
 
 // Auth API
 export const authAPI = {
   login: async (email: string, password: string) => {
-    const response = await api.post('/auth/login', { email, password })
-    return response.data
+    const response = await api.post("/auth/login", { email, password });
+    return response.data;
   },
-  
+
   register: async (name: string, email: string, password: string) => {
-    const response = await api.post('/auth/register', { name, email, password })
-    return response.data
-  }
-}
+    const response = await api.post("/auth/register", {
+      name,
+      email,
+      password,
+    });
+    return response.data;
+  },
+};
 
 // Destinations API
 export const destinationsAPI = {
   getAll: async (): Promise<Destination[]> => {
     try {
-      const response = await api.get<Destination[]>('/api/destinations')
-      console.log('Fetched destinations:', response.data?.length ?? 0)
-      return response.data
+      const response = await api.get<Destination[]>("/api/destinations");
+      console.log("Fetched destinations:", response.data?.length ?? 0);
+      return response.data;
     } catch (error) {
-      console.error('Failed to fetch destinations', error)
-      throw error
+      console.error("Failed to fetch destinations", error);
+      throw error;
     }
   },
   getById: async (id: number): Promise<Destination> => {
-    const response = await api.get<Destination>(`/api/destinations/${id}`)
-    return response.data
+    const response = await api.get<Destination>(`/api/destinations/${id}`);
+    return response.data;
   },
-  
-  create: async (destination: Omit<Destination, 'destinationId'>) => {
-    const response = await api.post('/admin/destinations', destination)
-    return response.data
+
+  create: async (destination: Omit<Destination, "destinationId">) => {
+    const response = await api.post("/admin/destinations", destination);
+    return response.data;
   },
-  
+
   delete: async (id: number) => {
-    await api.delete(`/admin/destinations/${id}`)
-  }
-}
+    await api.delete(`/admin/destinations/${id}`);
+  },
+};
 
 // Bookings API
 export const bookingsAPI = {
   create: async (booking: BookingRequest) => {
-    const response = await api.post('/bookings', booking)
-    return response.data
+    const response = await api.post("/bookings", booking);
+    return response.data;
   },
-  
+
   getUserBookings: async (userId: number): Promise<Booking[]> => {
-    const response = await api.get(`/bookings/${userId}`)
-    return response.data
+    const response = await api.get(`/bookings/${userId}`);
+    return response.data;
   },
-  
+
   getAll: async () => {
-    const response = await api.get('/admin/bookings')
-    return response.data
-  }
-}
+    const response = await api.get("/admin/bookings");
+    return response.data;
+  },
+};
 
 // Trip Cancellation API
 export const tripCancellationAPI = {
   requestCancellation: async (payload: TripCancellationRequestPayload) => {
-    const response = await api.post('/api/TripCancellation/request', payload)
-    return response.data
+    const response = await api.post("/api/TripCancellation/request", payload);
+    return response.data;
   },
   getPending: async (): Promise<TripCancellationSummary[]> => {
-    const response = await api.get('/api/TripCancellation/pending')
-    return response.data
+    const response = await api.get("/api/TripCancellation/pending");
+    return response.data;
   },
   approve: async (payload: TripCancellationDecisionPayload) => {
-    const response = await api.post('/api/TripCancellation/approve', payload)
-    return response.data
+    const response = await api.post("/api/TripCancellation/approve", payload);
+    return response.data;
   },
   reject: async (payload: TripCancellationDecisionPayload) => {
-    const response = await api.post('/api/TripCancellation/reject', payload)
-    return response.data
-  }
-}
+    const response = await api.post("/api/TripCancellation/reject", payload);
+    return response.data;
+  },
+};
 
 // Admin API
 export const adminAPI = {
-  testEmail: async (overrides?: Partial<{ to: string; subject: string; body: string }>) => {
+  testEmail: async (
+    overrides?: Partial<{ to: string; subject: string; body: string }>,
+  ) => {
     const defaultPayload = {
-      to: 'test@example.com',
-      subject: 'Test email',
-      body: 'This is a test email from the admin panel.',
-    }
+      to: "test@example.com",
+      subject: "Test email",
+      body: "This is a test email from the admin panel.",
+    };
 
-    const response = await api.post('/admin/test-email', {
+    const response = await api.post("/admin/test-email", {
       ...defaultPayload,
       ...overrides,
-    })
-    return response.data
-  }
-}
+    });
+    return response.data;
+  },
+};
 
 // Shortest path API
 export const shortestPathAPI = {
-  calculate: async (request: ShortestPathRequest): Promise<ShortestPathResponse> => {
-    const response = await api.post('/shortest-path', request)
-    return response.data
-  }
-}
+  calculate: async (
+    request: ShortestPathRequest,
+  ): Promise<ShortestPathResponse> => {
+    const response = await api.post("/shortest-path", request);
+    return response.data;
+  },
+};
 
 // Feedback API
 export const feedbackAPI = {
   submit: async (feedback: CreateFeedbackRequest) => {
-    const response = await api.post('/api/feedback', feedback)
-    return response.data
+    const response = await api.post("/api/feedback", feedback);
+    return response.data;
   },
-  
+
   getRecent: async (limit: number = 10): Promise<Feedback[]> => {
-    const response = await api.get('/api/feedback', { params: { limit } })
-    return response.data
+    const response = await api.get("/api/feedback", { params: { limit } });
+    return response.data;
   },
-  
+
   getStats: async () => {
-    const response = await api.get('/api/feedback/stats')
-    return response.data
-  }
-}
+    const response = await api.get("/api/feedback/stats");
+    return response.data;
+  },
+};
 
 // Legacy function for backward compatibility
-export const fetchDestinations = destinationsAPI.getAll
+export const fetchDestinations = destinationsAPI.getAll;
 
 // Export api instance for other modules
-export default api
+export default api;

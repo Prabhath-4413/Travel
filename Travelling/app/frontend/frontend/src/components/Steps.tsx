@@ -1,41 +1,45 @@
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
-import { Search, Calendar, Plane } from 'lucide-react'
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { Search, Calendar, Plane } from "lucide-react";
 
 export default function Steps() {
-  const containerRef = useRef(null)
-  const isInView = useInView(containerRef, { once: false, amount: 0.2 })
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { once: false, amount: 0.2 });
 
   const steps = [
     {
       icon: Search,
-      title: 'Choose Your Destination',
-      description: 'Browse through our curated collection of breathtaking destinations with real-time images and detailed information.',
-      color: 'from-blue-500 to-blue-600'
+      title: "Choose Your Destination",
+      description:
+        "Browse through our curated collection of breathtaking destinations with real-time images and detailed information.",
+      color: "from-blue-500 to-blue-600",
     },
     {
       icon: Calendar,
-      title: 'Book Your Trip',
-      description: 'Select your preferred dates and complete your booking with secure payment and instant confirmation.',
-      color: 'from-purple-500 to-purple-600'
+      title: "Book Your Trip",
+      description:
+        "Select your preferred dates and complete your booking with secure payment and instant confirmation.",
+      color: "from-purple-500 to-purple-600",
     },
     {
       icon: Plane,
-      title: 'Enjoy Your Journey',
-      description: 'Receive confirmation and travel support. Your adventure awaits with unforgettable experiences!',
-      color: 'from-pink-500 to-pink-600'
-    }
-  ]
+      title: "Enjoy Your Journey",
+      description:
+        "Receive confirmation and travel support. Your adventure awaits with unforgettable experiences!",
+      color: "from-pink-500 to-pink-600",
+    },
+  ];
 
   return (
-    <section 
+    <section
       id="how-it-works"
       className="relative py-20 md:py-32 px-6 overflow-hidden"
       style={{
-        backgroundImage: 'url("https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=2000&h=1200&fit=crop")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'scroll'
+        backgroundImage:
+          'url("https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=2000&h=1200&fit=crop")',
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "scroll",
       }}
     >
       <div className="absolute inset-0 bg-gradient-to-b from-[#0e1512]/70 via-[#0e1512]/80 to-[#0e1512]/70 pointer-events-none" />
@@ -57,18 +61,21 @@ export default function Steps() {
             </span>
           </motion.h2>
           <p className="text-lg text-white/70 max-w-2xl mx-auto">
-            Start your journey in three simple steps with our intuitive booking process
+            Start your journey in three simple steps with our intuitive booking
+            process
           </p>
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
           {steps.map((step, index) => {
-            const Icon = step.icon
+            const Icon = step.icon;
             return (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                animate={
+                  isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }
+                }
                 transition={{ duration: 0.6, delay: index * 0.15 }}
                 className="group relative"
               >
@@ -86,8 +93,12 @@ export default function Steps() {
                     {index + 1}
                   </div>
 
-                  <h3 className="text-2xl font-bold text-white mb-4">{step.title}</h3>
-                  <p className="text-white/70 leading-relaxed">{step.description}</p>
+                  <h3 className="text-2xl font-bold text-white mb-4">
+                    {step.title}
+                  </h3>
+                  <p className="text-white/70 leading-relaxed">
+                    {step.description}
+                  </p>
 
                   {index < steps.length - 1 && (
                     <motion.div
@@ -95,18 +106,27 @@ export default function Steps() {
                       animate={{ x: [0, 5, 0] }}
                       transition={{ duration: 1.5, repeat: Infinity }}
                     >
-                      <svg className="w-6 h-6 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      <svg
+                        className="w-6 h-6 text-white/30"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
                       </svg>
                     </motion.div>
                   )}
                 </div>
               </motion.div>
-            )
+            );
           })}
         </div>
       </div>
     </section>
-  )
+  );
 }
-

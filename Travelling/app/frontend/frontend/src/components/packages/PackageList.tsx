@@ -1,118 +1,139 @@
-import { useEffect, useState } from 'react'
-import { getPackages, TravelPackage } from '../../api/packages'
-import PackageCard from './PackageCard'
-import PackageDetailsModal from './PackageDetailsModal'
-import RouteMap from '../maps/RouteMap'
+import { useEffect, useState } from "react";
+import { getPackages, TravelPackage } from "../../api/packages";
+import PackageCard from "./PackageCard";
+import PackageDetailsModal from "./PackageDetailsModal";
+import RouteMap from "../maps/RouteMap";
 
-type RawDestination = TravelPackage['destinations'][number] & { Latitude?: unknown; Longitude?: unknown }
+type RawDestination = TravelPackage["destinations"][number] & {
+  Latitude?: unknown;
+  Longitude?: unknown;
+};
 
 const normalizeNumber = (value: unknown): number | undefined => {
-  if (typeof value === 'number' && Number.isFinite(value)) {
-    return value
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
   }
-  if (typeof value === 'string') {
-    const parsed = Number(value)
+  if (typeof value === "string") {
+    const parsed = Number(value);
     if (Number.isFinite(parsed)) {
-      return parsed
+      return parsed;
     }
   }
-  return undefined
-}
+  return undefined;
+};
 
-const normalizeDestinations = (destinations: TravelPackage['destinations']) =>
+const normalizeDestinations = (destinations: TravelPackage["destinations"]) =>
   destinations.map((destination) => {
-    const source = destination as RawDestination
-    const latitude = normalizeNumber(source.latitude ?? source.Latitude)
-    const longitude = normalizeNumber(source.longitude ?? source.Longitude)
+    const source = destination as RawDestination;
+    const latitude = normalizeNumber(source.latitude ?? source.Latitude);
+    const longitude = normalizeNumber(source.longitude ?? source.Longitude);
     return {
       ...destination,
       latitude,
       longitude,
-    }
-  })
+    };
+  });
 
 interface RouteDestination {
-  destinationId: number
-  name: string
-  latitude: number
-  longitude: number
+  destinationId: number;
+  name: string;
+  latitude: number;
+  longitude: number;
 }
 
 interface PackageListProps {
-  readOnly?: boolean
-  onBookPackage?: (travelPackage: TravelPackage) => void
+  readOnly?: boolean;
+  onBookPackage?: (travelPackage: TravelPackage) => void;
 }
 
-export default function PackageList({ readOnly = false, onBookPackage }: PackageListProps) {
-  const [packages, setPackages] = useState<TravelPackage[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [selectedPackage, setSelectedPackage] = useState<TravelPackage | null>(null)
-  const [routePackage, setRoutePackage] = useState<TravelPackage | null>(null)
+export default function PackageList({
+  readOnly = false,
+  onBookPackage,
+}: PackageListProps) {
+  const [packages, setPackages] = useState<TravelPackage[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedPackage, setSelectedPackage] = useState<TravelPackage | null>(
+    null,
+  );
+  const [routePackage, setRoutePackage] = useState<TravelPackage | null>(null);
 
   useEffect(() => {
-    let active = true
+    let active = true;
 
     const loadPackages = async () => {
-      setLoading(true)
-      setError(null)
+      setLoading(true);
+      setError(null);
       try {
-        const data = await getPackages()
+        const data = await getPackages();
         if (active) {
           setPackages(
             data.map((pkg) => ({
               ...pkg,
               destinations: normalizeDestinations(pkg.destinations),
-            }))
-          )
+            })),
+          );
         }
       } catch (err) {
         if (active) {
-          setError(err instanceof Error ? err.message : 'Unable to load travel packages.')
+          setError(
+            err instanceof Error
+              ? err.message
+              : "Unable to load travel packages.",
+          );
         }
       } finally {
         if (active) {
-          setLoading(false)
+          setLoading(false);
         }
       }
-    }
+    };
 
-    loadPackages()
+    loadPackages();
 
     return () => {
-      active = false
-    }
-  }, [])
+      active = false;
+    };
+  }, []);
 
   useEffect(() => {
     if (readOnly && routePackage) {
-      setRoutePackage(null)
+      setRoutePackage(null);
     }
-  }, [readOnly, routePackage])
+  }, [readOnly, routePackage]);
 
-  const routeDestinations: RouteDestination[] = !readOnly && routePackage
-    ? normalizeDestinations(routePackage.destinations)
-        .filter(
-          (destination): destination is typeof destination & { latitude: number; longitude: number } =>
-            typeof destination.latitude === 'number' && typeof destination.longitude === 'number'
-        )
-        .map((destination) => ({
-          destinationId: destination.destinationId,
-          name: destination.name,
-          latitude: destination.latitude,
-          longitude: destination.longitude,
-        }))
-    : []
+  const routeDestinations: RouteDestination[] =
+    !readOnly && routePackage
+      ? normalizeDestinations(routePackage.destinations)
+          .filter(
+            (
+              destination,
+            ): destination is typeof destination & {
+              latitude: number;
+              longitude: number;
+            } =>
+              typeof destination.latitude === "number" &&
+              typeof destination.longitude === "number",
+          )
+          .map((destination) => ({
+            destinationId: destination.destinationId,
+            name: destination.name,
+            latitude: destination.latitude,
+            longitude: destination.longitude,
+          }))
+      : [];
 
   return (
     <section className="space-y-12">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="space-y-2">
-          <h2 className="text-3xl font-semibold text-white">Curated Travel Packages</h2>
+          <h2 className="text-3xl font-semibold text-white">
+            Curated Travel Packages
+          </h2>
           <p className="text-white/60">
             {readOnly
-              ? 'Discover top experiences curated by our travel experts.'
-              : 'Discover hand-picked journeys with immersive itineraries and stunning destinations.'}
+              ? "Discover top experiences curated by our travel experts."
+              : "Discover hand-picked journeys with immersive itineraries and stunning destinations."}
           </p>
         </div>
       </div>
@@ -138,7 +159,9 @@ export default function PackageList({ readOnly = false, onBookPackage }: Package
       {!loading && !error && packages.length > 0 && (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
           {packages.map((pkg) => {
-            const normalizedDestinations = normalizeDestinations(pkg.destinations)
+            const normalizedDestinations = normalizeDestinations(
+              pkg.destinations,
+            );
             return (
               <PackageCard
                 key={pkg.packageId}
@@ -146,11 +169,24 @@ export default function PackageList({ readOnly = false, onBookPackage }: Package
                 description={pkg.description}
                 price={pkg.price}
                 imageUrl={pkg.imageUrl}
-                onViewDetails={() => setSelectedPackage({ ...pkg, destinations: normalizedDestinations })}
-                onBuildRoute={!readOnly ? () => setRoutePackage({ ...pkg, destinations: normalizedDestinations }) : undefined}
+                onViewDetails={() =>
+                  setSelectedPackage({
+                    ...pkg,
+                    destinations: normalizedDestinations,
+                  })
+                }
+                onBuildRoute={
+                  !readOnly
+                    ? () =>
+                        setRoutePackage({
+                          ...pkg,
+                          destinations: normalizedDestinations,
+                        })
+                    : undefined
+                }
                 showBuildRouteButton={!readOnly}
               />
-            )
+            );
           })}
         </div>
       )}
@@ -160,11 +196,13 @@ export default function PackageList({ readOnly = false, onBookPackage }: Package
           <div className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <h3 className="text-2xl font-semibold text-white">Route Planner: {routePackage.name}</h3>
+                <h3 className="text-2xl font-semibold text-white">
+                  Route Planner: {routePackage.name}
+                </h3>
                 <p className="text-sm text-white/60">
                   {routeDestinations.length > 0
-                    ? 'Optimized route preview for selected destinations.'
-                    : 'Destinations in this package need location details to build a route.'}
+                    ? "Optimized route preview for selected destinations."
+                    : "Destinations in this package need location details to build a route."}
                 </p>
               </div>
               <button
@@ -179,7 +217,8 @@ export default function PackageList({ readOnly = false, onBookPackage }: Package
               <RouteMap destinations={routeDestinations} />
             ) : (
               <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-6 text-yellow-100">
-                We couldn't find coordinates for these destinations. Update their location details to visualize the route.
+                We couldn't find coordinates for these destinations. Update
+                their location details to visualize the route.
               </div>
             )}
           </div>
@@ -194,11 +233,11 @@ export default function PackageList({ readOnly = false, onBookPackage }: Package
           destinations={selectedPackage.destinations}
           onClose={() => setSelectedPackage(null)}
           onBookNow={() => {
-            onBookPackage?.(selectedPackage)
-            setSelectedPackage(null)
+            onBookPackage?.(selectedPackage);
+            setSelectedPackage(null);
           }}
         />
       )}
     </section>
-  )
+  );
 }

@@ -282,7 +282,7 @@ export default function UserDashboard(): JSX.Element {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const { destinations, refresh: refreshDestinations } = useDestinations()
-
+  
   const [bookings, setBookings] = useState<Booking[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedDestinations, setSelectedDestinations] = useState<Destination[]>([])
@@ -1193,7 +1193,7 @@ export default function UserDashboard(): JSX.Element {
                       </div>
                     </div>
                     <div className="rounded-2xl overflow-hidden border border-[#2b5f49]/25">
-                      <RouteMap destinations={optimizedDestinations} />
+                      <RouteMap destinations = {optimizedDestinations} />
                     </div>
                   </div>
                 ) : (

@@ -1,13 +1,16 @@
-import { motion } from 'framer-motion'
-import type { Booking } from '../../lib/api'
-import CancellationBadge from './CancellationBadge'
+import { motion } from "framer-motion";
+import type { Booking } from "../../lib/api";
+import CancellationBadge from "./CancellationBadge";
 
 export interface CancellationDetailsProps {
-  latestCancellation: NonNullable<Booking['latestCancellation']>
+  latestCancellation: NonNullable<Booking["latestCancellation"]>;
 }
 
-export function CancellationDetails({ latestCancellation }: CancellationDetailsProps) {
-  const { status, requestedAt, reviewedAt, adminComment, reason } = latestCancellation
+export function CancellationDetails({
+  latestCancellation,
+}: CancellationDetailsProps) {
+  const { status, requestedAt, reviewedAt, adminComment, reason } =
+    latestCancellation;
 
   return (
     <motion.div
@@ -17,11 +20,13 @@ export function CancellationDetails({ latestCancellation }: CancellationDetailsP
     >
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <span className="text-white/60 text-xs uppercase tracking-wide">Latest Cancellation</span>
+          <span className="text-white/60 text-xs uppercase tracking-wide">
+            Latest Cancellation
+          </span>
           <CancellationBadge cancellationStatus={status} emphasis size="sm" />
         </div>
         <div className="text-xs text-white/50">
-          Requested on{' '}
+          Requested on{" "}
           <span className="text-white/80">
             {new Date(requestedAt).toLocaleString()}
           </span>
@@ -50,16 +55,26 @@ export function CancellationDetails({ latestCancellation }: CancellationDetailsP
         </div>
       )}
     </motion.div>
-  )
+  );
 }
 
-function DetailBlock({ label, children }: { label: string; children: React.ReactNode }) {
+function DetailBlock({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
     <div className="rounded-xl border border-white/10 bg-black/20 p-3">
-      <span className="text-xs font-semibold uppercase tracking-wide text-white/50">{label}</span>
-      <div className="mt-2 text-white/80 leading-relaxed text-sm">{children}</div>
+      <span className="text-xs font-semibold uppercase tracking-wide text-white/50">
+        {label}
+      </span>
+      <div className="mt-2 text-white/80 leading-relaxed text-sm">
+        {children}
+      </div>
     </div>
-  )
+  );
 }
 
-export default CancellationDetails
+export default CancellationDetails;

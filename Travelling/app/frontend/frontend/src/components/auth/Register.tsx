@@ -1,91 +1,95 @@
-import { useEffect, useRef, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../../contexts/AuthContext'
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Register() {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  })
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false)
-  const navigate = useNavigate()
-  const { register } = useAuth()
-  const redirectTimeoutRef = useRef<number | null>(null)
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const navigate = useNavigate();
+  const { register } = useAuth();
+  const redirectTimeoutRef = useRef<number | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError('')
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
 
     // Validation
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match')
-      setIsLoading(false)
-      return
+      setError("Passwords do not match");
+      setIsLoading(false);
+      return;
     }
 
     if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters long')
-      setIsLoading(false)
-      return
+      setError("Password must be at least 6 characters long");
+      setIsLoading(false);
+      return;
     }
 
     try {
       await register(
         `${formData.firstName} ${formData.lastName}`.trim(),
         formData.email,
-        formData.password
-      )
+        formData.password,
+      );
 
-      setShowSuccessPopup(true)
-      setIsLoading(false)
+      setShowSuccessPopup(true);
+      setIsLoading(false);
 
       // Trigger auto-redirect after popup animation
       redirectTimeoutRef.current = window.setTimeout(() => {
-        navigate('/login')
-      }, 3000)
+        navigate("/login");
+      }, 3000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Registration failed. Please try again.')
-      setIsLoading(false)
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Registration failed. Please try again.",
+      );
+      setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     return () => {
       if (redirectTimeoutRef.current) {
-        clearTimeout(redirectTimeoutRef.current)
-        redirectTimeoutRef.current = null
+        clearTimeout(redirectTimeoutRef.current);
+        redirectTimeoutRef.current = null;
       }
-    }
-  }, [])
+    };
+  }, []);
 
   useEffect(() => {
     if (showSuccessPopup) {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }, [showSuccessPopup])
+  }, [showSuccessPopup]);
 
   return (
     <div className="min-h-screen relative overflow-hidden flex items-center justify-center px-6 py-12">
       {/* Background Image */}
       <div className="absolute inset-0">
-        <img 
-          src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=2071&auto=format&fit=crop" 
-          alt="Kerala Munnar Tea Plantations" 
-          className="w-full h-full object-cover" 
+        <img
+          src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=2071&auto=format&fit=crop"
+          alt="Kerala Munnar Tea Plantations"
+          className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-br from-[#0e1512]/90 via-[#0e1512]/80 to-[#0e1512]/70" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0e1512]/60 via-transparent to-[#0e1512]/40" />
@@ -100,11 +104,17 @@ export default function Register() {
         {/* Header */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-3 mb-6">
-            <span className="w-8 h-8 rounded-full bg-white/10 grid place-items-center">✳</span>
+            <span className="w-8 h-8 rounded-full bg-white/10 grid place-items-center">
+              ✳
+            </span>
             <span className="font-semibold text-white text-xl">SuiteSavvy</span>
           </Link>
-          <h1 className="text-3xl font-bold text-white mb-2">Create your account</h1>
-          <p className="text-white/70">Join us and start exploring amazing destinations</p>
+          <h1 className="text-3xl font-bold text-white mb-2">
+            Create your account
+          </h1>
+          <p className="text-white/70">
+            Join us and start exploring amazing destinations
+          </p>
         </div>
 
         {/* Form */}
@@ -127,7 +137,10 @@ export default function Register() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label htmlFor="firstName" className="block text-sm font-medium text-white/90 mb-2">
+                <label
+                  htmlFor="firstName"
+                  className="block text-sm font-medium text-white/90 mb-2"
+                >
                   First name
                 </label>
                 <input
@@ -142,7 +155,10 @@ export default function Register() {
                 />
               </div>
               <div>
-                <label htmlFor="lastName" className="block text-sm font-medium text-white/90 mb-2">
+                <label
+                  htmlFor="lastName"
+                  className="block text-sm font-medium text-white/90 mb-2"
+                >
                   Last name
                 </label>
                 <input
@@ -159,7 +175,10 @@ export default function Register() {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-white/90 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-white/90 mb-2"
+              >
                 Email address
               </label>
               <input
@@ -175,7 +194,10 @@ export default function Register() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-white/90 mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-white/90 mb-2"
+              >
                 Password
               </label>
               <input
@@ -191,7 +213,10 @@ export default function Register() {
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-white/90 mb-2">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium text-white/90 mb-2"
+              >
                 Confirm password
               </label>
               <input
@@ -214,12 +239,18 @@ export default function Register() {
                 className="w-4 h-4 bg-white/5 border border-white/20 rounded text-blue-500 focus:ring-blue-500/50 focus:ring-2"
               />
               <label htmlFor="terms" className="ml-2 text-sm text-white/70">
-                I agree to the{' '}
-                <Link to="#" className="text-blue-400 hover:text-blue-300 transition-colors">
+                I agree to the{" "}
+                <Link
+                  to="#"
+                  className="text-blue-400 hover:text-blue-300 transition-colors"
+                >
                   Terms of Service
-                </Link>{' '}
-                and{' '}
-                <Link to="#" className="text-blue-400 hover:text-blue-300 transition-colors">
+                </Link>{" "}
+                and{" "}
+                <Link
+                  to="#"
+                  className="text-blue-400 hover:text-blue-300 transition-colors"
+                >
                   Privacy Policy
                 </Link>
               </label>
@@ -238,15 +269,18 @@ export default function Register() {
                   Creating account...
                 </div>
               ) : (
-                'Create account'
+                "Create account"
               )}
             </motion.button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-white/70">
-              Already have an account?{' '}
-              <Link to="/login" className="text-blue-400 hover:text-blue-300 font-medium transition-colors">
+              Already have an account?{" "}
+              <Link
+                to="/login"
+                className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
+              >
                 Sign in
               </Link>
             </p>
@@ -256,53 +290,53 @@ export default function Register() {
         {/* Floating Elements */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
           <motion.div
-            animate={{ 
+            animate={{
               y: [0, -20, 0],
-              rotate: [0, 5, 0]
+              rotate: [0, 5, 0],
             }}
-            transition={{ 
-              duration: 6, 
-              repeat: Infinity, 
-              ease: "easeInOut" 
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut",
             }}
             className="absolute top-20 left-10 w-16 h-16 bg-white/5 backdrop-blur-sm rounded-full border border-white/10"
           />
           <motion.div
-            animate={{ 
+            animate={{
               y: [0, 15, 0],
-              rotate: [0, -3, 0]
+              rotate: [0, -3, 0],
             }}
-            transition={{ 
-              duration: 8, 
-              repeat: Infinity, 
+            transition={{
+              duration: 8,
+              repeat: Infinity,
               ease: "easeInOut",
-              delay: 2
+              delay: 2,
             }}
             className="absolute bottom-20 right-10 w-12 h-12 bg-green-500/20 backdrop-blur-sm rounded-full border border-green-400/30"
           />
           <motion.div
-            animate={{ 
+            animate={{
               y: [0, -10, 0],
-              x: [0, 10, 0]
+              x: [0, 10, 0],
             }}
-            transition={{ 
-              duration: 7, 
-              repeat: Infinity, 
+            transition={{
+              duration: 7,
+              repeat: Infinity,
               ease: "easeInOut",
-              delay: 4
+              delay: 4,
             }}
             className="absolute top-1/2 left-1/4 w-8 h-8 bg-white/10 backdrop-blur-sm rounded-full border border-white/20"
           />
           <motion.div
-            animate={{ 
+            animate={{
               y: [0, 12, 0],
-              rotate: [0, 8, 0]
+              rotate: [0, 8, 0],
             }}
-            transition={{ 
-              duration: 9, 
-              repeat: Infinity, 
+            transition={{
+              duration: 9,
+              repeat: Infinity,
               ease: "easeInOut",
-              delay: 1
+              delay: 1,
             }}
             className="absolute top-1/3 right-1/4 w-6 h-6 bg-emerald-500/15 backdrop-blur-sm rounded-full border border-emerald-400/25"
           />
@@ -342,7 +376,12 @@ export default function Register() {
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
                   </motion.svg>
                 </motion.div>
 
@@ -361,8 +400,9 @@ export default function Register() {
                   transition={{ delay: 0.5 }}
                   className="text-white/80 mb-6"
                 >
-                  Welcome to SuiteSavvy! Your account has been created successfully. 
-                  You can now sign in with your email and password.
+                  Welcome to SuiteSavvy! Your account has been created
+                  successfully. You can now sign in with your email and
+                  password.
                 </motion.p>
 
                 <motion.div
@@ -376,10 +416,10 @@ export default function Register() {
                     whileTap={{ scale: 0.98 }}
                     onClick={() => {
                       if (redirectTimeoutRef.current) {
-                        clearTimeout(redirectTimeoutRef.current)
-                        redirectTimeoutRef.current = null
+                        clearTimeout(redirectTimeoutRef.current);
+                        redirectTimeoutRef.current = null;
                       }
-                      navigate('/login')
+                      navigate("/login");
                     }}
                     className="w-full py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-medium rounded-lg hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500/50 transition-all"
                   >
@@ -391,11 +431,11 @@ export default function Register() {
                     whileTap={{ scale: 0.98 }}
                     onClick={() => {
                       if (redirectTimeoutRef.current) {
-                        clearTimeout(redirectTimeoutRef.current)
-                        redirectTimeoutRef.current = null
+                        clearTimeout(redirectTimeoutRef.current);
+                        redirectTimeoutRef.current = null;
                       }
-                      setShowSuccessPopup(false)
-                      setIsLoading(false)
+                      setShowSuccessPopup(false);
+                      setIsLoading(false);
                     }}
                     className="w-full py-3 bg-white/10 hover:bg-white/20 text-white font-medium rounded-lg border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
                   >
@@ -408,5 +448,5 @@ export default function Register() {
         )}
       </AnimatePresence>
     </div>
-  )
+  );
 }

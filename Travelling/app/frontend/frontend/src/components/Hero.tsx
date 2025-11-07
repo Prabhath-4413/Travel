@@ -1,11 +1,17 @@
-import React, { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 interface HeroProps {
-  onExploreClick: () => void
+  onExploreClick: () => void;
 }
 
-const FloatingParticle = ({ delay = 0, x = 0, y = 0, size = 16, color = 'white/10' }: any) => (
+const FloatingParticle = ({
+  delay = 0,
+  x = 0,
+  y = 0,
+  size = 16,
+  color = "white/10",
+}: any) => (
   <motion.div
     initial={{ opacity: 0 }}
     animate={{
@@ -17,7 +23,7 @@ const FloatingParticle = ({ delay = 0, x = 0, y = 0, size = 16, color = 'white/1
     transition={{
       duration: 8 + delay * 2,
       repeat: Infinity,
-      ease: 'easeInOut',
+      ease: "easeInOut",
       delay: delay,
     }}
     className="absolute rounded-full border border-white/20"
@@ -29,13 +35,13 @@ const FloatingParticle = ({ delay = 0, x = 0, y = 0, size = 16, color = 'white/1
       backgroundColor: color,
     }}
   />
-)
+);
 
 export default function Hero({ onExploreClick }: HeroProps) {
-  const heroRef = useRef<HTMLDivElement>(null)
-  const { scrollY } = useScroll()
-  const heroOpacity = useTransform(scrollY, [0, 300], [1, 0])
-  const heroScale = useTransform(scrollY, [0, 300], [1, 1.1])
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollY } = useScroll();
+  const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
+  const heroScale = useTransform(scrollY, [0, 300], [1, 1.1]);
 
   return (
     <section id="home" ref={heroRef} className="relative overflow-hidden pt-20">
@@ -67,7 +73,9 @@ export default function Hero({ onExploreClick }: HeroProps) {
             y={Math.random() * 100}
             size={12 + Math.random() * 20}
             color={
-              ['white/10', 'blue-500/20', 'purple-500/20', 'pink-500/20'][Math.floor(Math.random() * 4)]
+              ["white/10", "blue-500/20", "purple-500/20", "pink-500/20"][
+                Math.floor(Math.random() * 4)
+              ]
             }
           />
         ))}
@@ -120,17 +128,18 @@ export default function Hero({ onExploreClick }: HeroProps) {
                 rotate: {
                   repeat: Infinity,
                   duration: 10,
-                  ease: 'linear',
+                  ease: "linear",
                 },
                 y: {
                   repeat: Infinity,
                   duration: 3,
-                  ease: 'easeInOut',
+                  ease: "easeInOut",
                 },
               }}
               style={{
-                fontFamily: 'system-ui, Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji',
-                filter: 'none',
+                fontFamily:
+                  "system-ui, Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji",
+                filter: "none",
               }}
             >
               🌍
@@ -139,12 +148,12 @@ export default function Hero({ onExploreClick }: HeroProps) {
                 className="absolute inset-0 rounded-full blur-md"
                 style={{
                   background:
-                    'radial-gradient(circle, rgba(80,180,255,0.6) 0%, rgba(160,100,255,0.3) 40%, transparent 80%)',
+                    "radial-gradient(circle, rgba(80,180,255,0.6) 0%, rgba(160,100,255,0.3) 40%, transparent 80%)",
                   zIndex: -1,
-                  width: '160%',
-                  height: '160%',
-                  top: '-30%',
-                  left: '-30%',
+                  width: "160%",
+                  height: "160%",
+                  top: "-30%",
+                  left: "-30%",
                 }}
                 animate={{
                   scale: [1, 1.1, 1],
@@ -153,7 +162,7 @@ export default function Hero({ onExploreClick }: HeroProps) {
                 transition={{
                   duration: 2,
                   repeat: Infinity,
-                  ease: 'easeInOut',
+                  ease: "easeInOut",
                 }}
               />
             </motion.span>
@@ -166,8 +175,9 @@ export default function Hero({ onExploreClick }: HeroProps) {
             transition={{ duration: 0.6, delay: 0.5 }}
             className="text-xl md:text-2xl text-white/80 mb-8 max-w-3xl mx-auto leading-relaxed"
           >
-            Discover breathtaking destinations, book amazing trips, and create unforgettable memories
-            with seamless booking and instant confirmations.
+            Discover breathtaking destinations, book amazing trips, and create
+            unforgettable memories with seamless booking and instant
+            confirmations.
           </motion.p>
 
           {/* Buttons */}
@@ -210,5 +220,5 @@ export default function Hero({ onExploreClick }: HeroProps) {
         </motion.div>
       </motion.div>
     </section>
-  )
+  );
 }

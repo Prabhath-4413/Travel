@@ -43,113 +43,52 @@ namespace Travel.Api.Services
             var encodedStartDate = WebUtility.HtmlEncode(booking.BookingDate.ToString("yyyy-MM-dd"));
             var encodedEndDate = WebUtility.HtmlEncode(booking.BookingDate.AddDays(booking.Nights).ToString("yyyy-MM-dd"));
 
-            // Background image (soft travel photo) — kept as a public image URL
-            var backgroundImage = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1400&q=80";
-
             return $@"<!DOCTYPE html>
 <html lang=""en"">
 <head>
-  <meta charset=""utf-8""/>
+  <meta charset=""utf-8"" />
   <meta name=""viewport"" content=""width=device-width, initial-scale=1.0""/>
-  <title>SuiteSavvy — Booking Confirmation</title>
+  <title>Booking Confirmation</title>
 </head>
-<body style=""margin:0;padding:0;background-color:#0b1412;font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;color:#0b1412;"">
-  <!-- Outer table for email clients -->
-  <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"" style=""background-color:#0b1412;background-image:linear-gradient(180deg, rgba(11,20,18,0.86), rgba(11,20,18,0.95)), url('{backgroundImage}');background-size:cover;background-position:center;padding:28px 12px;"">
+<body style=""margin:0;padding:0;background:#0b1412;font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;color:#0b1412;"">
+  <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"" style=""padding:28px 12px;background:linear-gradient(180deg, rgba(11,20,18,0.9), rgba(11,20,18,1));"">
     <tr>
       <td align=""center"">
-        <!-- Main container -->
-        <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""600"" style=""max-width:600px;width:100%;background:#f8fafc;border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(2,6,23,0.6);"">
+        <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""600"" style=""max-width:600px;width:100%;background:#f8fafc;border-radius:12px;overflow:hidden;"">
           <tr>
-            <td style=""padding:18px 20px;background:linear-gradient(90deg,#0b1412 0%, #07231f 100%);"">
-              <!-- Header: logo + preheader -->
-              <table role=""presentation"" width=""100%"" cellpadding=""0"" cellspacing=""0"">
+            <td style=""padding:18px 20px;background:#07231f;color:#f8fafc;"">
+              <div style=""font-weight:700;font-size:18px;"">SuiteSavvy ✈️</div>
+            </td>
+          </tr>
+          <tr>
+            <td style=""padding:22px 24px;background:#f8fafc;color:#0b1412;"">
+              <div style=""font-size:13px;color:#68d391;text-transform:uppercase;margin-bottom:8px;"">✅ Booking Confirmed</div>
+              <h2 style=""margin:6px 0 10px;font-size:18px;"">Hello {encodedUserName}, your trip is confirmed!</h2>
+              <p style=""margin:0 0 12px;color:#475569;font-size:14px;line-height:1.4;"">
+                Thanks — your booking has been confirmed and we're excited to help you create unforgettable memories. Below are the details we have on file.
+              </p>
+
+              <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"" style=""margin-top:12px;border-collapse:separate;border-spacing:0 10px;"">
                 <tr>
-                  <td align=""left"" style=""vertical-align:middle;"">
-                    <span style=""display:inline-block;font-weight:700;font-size:18px;color:#f8fafc;"">SuiteSavvy ✈️</span>
-                  </td>
-                  <td align=""right"" style=""vertical-align:middle;font-size:12px;color:#e2e8f0;"">
-                    <span style=""opacity:0.9;"">Booking Confirmed • {WebUtility.HtmlEncode(DateTime.UtcNow.ToString("yyyy-MM-dd"))}</span>
+                  <td style=""background:#07231f;color:#f8fafc;padding:12px;border-radius:8px;"">
+                    <div style=""font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;"">Booking ID</div>
+                    <div style=""font-weight:700;font-size:15px;color:#68d391;"">#{encodedBookingId}</div>
+
+                    <div style=""margin-top:10px;font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;"">Trip Dates</div>
+                    <div style=""font-weight:700;font-size:14px;color:#f8fafc;"">{encodedStartDate} — {encodedEndDate}</div>
                   </td>
                 </tr>
               </table>
+
+              <p style=""margin:14px 0 0;color:#475569;font-size:14px;line-height:1.4;"">
+                Your booking is now active. You can view details and manage your trip through your SuiteSavvy dashboard.
+              </p>
             </td>
           </tr>
 
           <tr>
-            <td style=""padding:24px 28px 18px;background:#f8fafc;"">
-              <!-- Hero -->
-              <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"">
-                <tr>
-                  <td style=""padding:0 0 8px;font-size:13px;color:#68d391;text-transform:uppercase;letter-spacing:1px;"">✅ Booking Confirmation</td>
-                </tr>
-                <tr>
-                  <td style=""padding:0 0 12px;font-size:22px;color:#0b1412;font-weight:700;line-height:1.2;"">
-                    Thank you, {encodedUserName}! Your trip is confirmed.
-                  </td>
-                </tr>
-                <tr>
-                  <td style=""padding:0 0 16px;color:#475569;font-size:15px;line-height:1.5;"">
-                    We’ve reserved your booking. Below are the details — keep this email for reference.
-                  </td>
-                </tr>
-              </table>
-
-              <!-- Details card -->
-              <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"" style=""border-collapse:separate;border-spacing:0 12px;margin-top:8px;"">
-                <tr>
-                  <td style=""background:#0b1412;padding:16px;border-radius:10px;color:#f8fafc;"">
-                    <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"">
-                      <tr>
-                        <td style=""vertical-align:top;padding-bottom:8px;width:50%;"">
-                          <div style=""font-size:12px;color:#e2e8f0;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;"">Booking ID</div>
-                          <div style=""font-weight:700;font-size:16px;color:#68d391;"">#{encodedBookingId}</div>
-                        </td>
-                        <td style=""vertical-align:top;padding-bottom:8px;width:50%;"">
-                          <div style=""font-size:12px;color:#e2e8f0;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;"">Dates</div>
-                          <div style=""font-weight:700;font-size:14px;color:#f8fafc;"">{encodedStartDate} — {encodedEndDate}</div>
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td style=""vertical-align:top;padding-bottom:8px;width:50%;"">
-                          <div style=""font-size:12px;color:#e2e8f0;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;"">Destinations</div>
-                          <div style=""font-weight:700;font-size:14px;color:#f8fafc;"">{encodedDestinationText}</div>
-                        </td>
-                        <td style=""vertical-align:top;padding-bottom:8px;width:50%;"">
-                          <div style=""font-size:12px;color:#e2e8f0;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;"">Guests / Nights</div>
-                          <div style=""font-weight:700;font-size:14px;color:#f8fafc;"">{encodedGuests} guest(s) • {encodedNights} night(s)</div>
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td colspan=""2"" style=""padding-top:6px;border-top:1px solid rgba(255,255,255,0.04);"">
-                          <div style=""font-size:12px;color:#e2e8f0;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;"">Total Price</div>
-                          <div style=""font-weight:800;font-size:20px;color:#68d391;"">₹{encodedTotalPrice}</div>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- CTA / Note -->
-              <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"" style=""margin-top:18px;"">
-                <tr>
-                  <td style=""font-size:14px;color:#334155;line-height:1.5;"">
-                    Need to make changes? Reply to this email or visit your SuiteSavvy dashboard. Our concierge is ready to assist.
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-          <!-- Footer -->
-          <tr>
-            <td style=""padding:16px 20px;background:#0b1412;color:#e2e8f0;text-align:center;font-size:13px;"">
-              <div style=""font-weight:700;margin-bottom:6px;color:#f8fafc;"">SuiteSavvy Travel App</div>
-              <div style=""font-size:12px;opacity:0.85;margin-bottom:6px;"">SuiteSavvy Travel App • All Rights Reserved</div>
-              <div style=""font-size:12px;opacity:0.85;"">support@suitesavvy.com</div>
+            <td style=""padding:14px 20px;background:#0b1412;color:#e2e8f0;text-align:center;font-size:13px;"">
+              SuiteSavvy Travel App • All Rights Reserved • support@suitesavvy.com
             </td>
           </tr>
         </table>
