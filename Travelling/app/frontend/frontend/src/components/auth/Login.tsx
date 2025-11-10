@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import GoogleLoginButton from "./GoogleLoginButton";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -218,6 +219,21 @@ export default function Login() {
               )}
             </motion.button>
           </form>
+
+          <div className="mt-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-white/20" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-transparent text-white/70">Or continue with</span>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <GoogleLoginButton />
+            </div>
+          </div>
 
           <div className="mt-6 text-center">
             <p className="text-white/70">

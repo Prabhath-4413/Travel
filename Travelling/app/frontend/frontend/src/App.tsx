@@ -5,6 +5,7 @@ import {
   Navigate,
   useLocation,
 } from "react-router-dom";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { DestinationsProvider } from "./contexts/DestinationsContext";
 import LandingPage from "./pages/LandingPage";
@@ -133,14 +134,16 @@ function AppRoutes() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <DestinationsProvider>
-        <Router>
-          <div className="min-h-screen bg-[#0e1512] text-white font-display">
-            <AppRoutes />
-          </div>
-        </Router>
-      </DestinationsProvider>
-    </AuthProvider>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+      <AuthProvider>
+        <DestinationsProvider>
+          <Router>
+            <div className="min-h-screen bg-[#0e1512] text-white font-display">
+              <AppRoutes />
+            </div>
+          </Router>
+        </DestinationsProvider>
+      </AuthProvider>
+    </GoogleOAuthProvider>
   );
 }

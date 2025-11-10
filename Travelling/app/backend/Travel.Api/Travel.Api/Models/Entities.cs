@@ -49,6 +49,12 @@ public class User
     [MaxLength(50)]
     public string Role { get; set; } = "user";
 
+    [MaxLength(255)]
+    public string? GoogleId { get; set; }
+
+    [MaxLength(500)]
+    public string? Picture { get; set; }
+
     [Column("created_at")]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

@@ -11,12 +11,14 @@ interface User {
   name: string;
   email: string;
   role: "user" | "admin";
+  picture?: string;
 }
 
 interface AuthContextType {
   user: User | null;
   token: string | null;
   login: (email: string, password: string) => Promise<void>;
+  googleLogin: (credential: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
   isLoading: boolean;
@@ -140,6 +142,58 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  const googleLogin = async (credential: string) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/auth/google`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ credential }),
+        },
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Google login failed");
+      }
+
+      const data = await response.json();
+
+      if (!data.token) {
+        throw new Error("Invalid response from server");
+      }
+
+      const userData: User = {
+        userId: data.userId,
+        name: data.name,
+        email: data.email,
+        role: data.role,
+        picture: data.picture,
+      };
+
+      console.log("Google login successful, user data:", userData);
+
+      setToken(data.token);
+      setUser(userData);
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      console.log("User data saved to localStorage");
+    } catch (error) {
+      console.error("Google login error:", error);
+      if (error instanceof TypeError && error.message.includes("fetch")) {
+        throw new Error(
+          "Cannot connect to server. Please make sure the backend is running.",
+        );
+      }
+      throw error;
+    }
+  };
+
   const register = async (name: string, email: string, password: string) => {
     try {
       const response = await fetch(
@@ -174,6 +228,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     user,
     token,
     login,
+    googleLogin,
     register,
     logout,
     isLoading,

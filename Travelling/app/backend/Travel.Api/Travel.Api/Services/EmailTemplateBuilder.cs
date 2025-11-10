@@ -179,6 +179,7 @@ namespace Travel.Api.Services
             var destinationNames = booking.BookingDestinations?
                                        .Select(bd => bd.Destination?.Name)
                                        .Where(n => !string.IsNullOrWhiteSpace(n))
+                                       .Select(n => n!)
                                        .ToList() ?? new List<string>();
 
             var encodedDestinations = destinationNames.Any()

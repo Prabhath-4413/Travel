@@ -189,21 +189,28 @@ app.MapPost("/auth/register", async (ApplicationDbContext db, RegisterDto dto) =
 
 app.MapPost("/auth/login", async (ApplicationDbContext db, LoginDto dto, HttpResponse http) =>
 {
-    var user = await db.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
-    if (user is null) return Results.Unauthorized();
-    if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.Password)) return Results.Unauthorized();
-    var token = CreateJwt(user);
-
-    var cookieOptions = new CookieOptions
+    try
     {
-        HttpOnly = true,
-        Secure = false, // set true in production (HTTPS)
-        SameSite = SameSiteMode.Lax,
-        Expires = DateTimeOffset.UtcNow.AddHours(12)
-    };
-    http.Cookies.Append("AuthToken", token, cookieOptions);
+        var user = await db.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+        if (user is null) return Results.Unauthorized();
+        if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.Password)) return Results.Unauthorized();
+        var token = CreateJwt(user);
 
-    return Results.Ok(new { role = user.Role, userId = user.UserId, name = user.Name, token = token });
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = false, // set true in production (HTTPS)
+            SameSite = SameSiteMode.Lax,
+            Expires = DateTimeOffset.UtcNow.AddHours(12)
+        };
+        http.Cookies.Append("AuthToken", token, cookieOptions);
+
+        return Results.Ok(new { role = user.Role, userId = user.UserId, name = user.Name, token = token });
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Login error: {ex.Message}", statusCode: 500);
+    }
 }).AllowAnonymous();
 
 // Extra Auth Endpoints (cookie session)

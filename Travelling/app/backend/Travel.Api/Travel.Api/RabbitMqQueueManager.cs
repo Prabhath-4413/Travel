@@ -8,7 +8,7 @@ namespace Travel.Api;
 /// </summary>
 public class RabbitMqQueueManager
 { 
-   public static async Task Main(string[] args)
+   public static void RunQueueManager(string[] args)
     {
         if (args.Length == 0)
         {
@@ -40,20 +40,20 @@ public class RabbitMqQueueManager
             switch (command)
             {
                 case "purge-all":
-                    await PurgeQueue(channel, "travel.bookings");
-                    await PurgeQueue(channel, "travel.admin");
+                    PurgeQueue(channel, "travel.bookings");
+                    PurgeQueue(channel, "travel.admin");
                     break;
 
                 case "purge-booking":
-                    await PurgeQueue(channel, "travel.bookings");
+                    PurgeQueue(channel, "travel.bookings");
                     break;
 
                 case "purge-email":
-                    await PurgeQueue(channel, "travel.admin");
+                    PurgeQueue(channel, "travel.admin");
                     break;
 
                 case "list-queues":
-                    await ListQueues(channel);
+                    ListQueues(channel);
                     break;
 
                 default:
@@ -68,13 +68,13 @@ public class RabbitMqQueueManager
         }
     }
 
-    private static async Task PurgeQueue(IModel channel, string queueName)
+    private static void PurgeQueue(IModel channel, string queueName)
     {
         try
         {
             var declareOk = channel.QueueDeclarePassive(queueName);
             uint messageCount = declareOk.MessageCount;
-            
+
             if (messageCount > 0)
             {
                 channel.QueuePurge(queueName);
@@ -91,7 +91,7 @@ public class RabbitMqQueueManager
         }
     }
 
-    private static async Task ListQueues(IModel channel)
+    private static void ListQueues(IModel channel)
     {
         string[] queues = { "travel.bookings", "travel.admin", "travel.bookings.dlq", "travel.admin.dlq" };
 

@@ -19,6 +19,7 @@ import RouteMap from '../components/maps/RouteMap'
 import Feedback from '../components/Feedback'
 import PackageList from '../components/packages/PackageList'
 import type { TravelPackage } from '../api/packages'
+import WeatherWidget from '../components/WeatherWidget'
 
 const FALLBACK_HERO_IMAGES = [
   'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80',
@@ -1565,6 +1566,15 @@ export default function UserDashboard(): JSX.Element {
                           </div>
                         </div>
                       </div>
+                      {destination?.latitude && destination?.longitude && destination?.city && (
+                        <div className="mt-4">
+                          <WeatherWidget
+                            latitude={destination.latitude}
+                            longitude={destination.longitude}
+                            cityName={destination.city}
+                          />
+                        </div>
+                      )}
                     </motion.div>
                   )
                 })}

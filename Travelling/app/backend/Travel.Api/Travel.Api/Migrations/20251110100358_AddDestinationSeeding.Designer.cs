@@ -12,8 +12,8 @@ using Travel.Api.Data;
 namespace Travel.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251103090558_SeedTravelPackages")]
-    partial class SeedTravelPackages
+    [Migration("20251110100358_AddDestinationSeeding")]
+    partial class AddDestinationSeeding
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -134,11 +134,13 @@ namespace Travel.Api.Migrations
 
                     b.Property<string>("City")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("city");
 
                     b.Property<string>("Country")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("country");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -180,6 +182,86 @@ namespace Travel.Api.Migrations
                         .IsUnique();
 
                     b.ToTable("destinations", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            DestinationId = 1,
+                            City = "Goa",
+                            Country = "India",
+                            CreatedAt = new DateTime(2025, 11, 10, 10, 3, 58, 92, DateTimeKind.Utc).AddTicks(7106),
+                            Description = "Golden beaches, vibrant shacks, and Portuguese heritage for a sun-soaked getaway.",
+                            ImageUrl = "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=1200&auto=format&fit=crop",
+                            Latitude = 15.2993m,
+                            Longitude = 74.1240m,
+                            Name = "Goa Coastline Escape",
+                            Price = 5200m
+                        },
+                        new
+                        {
+                            DestinationId = 2,
+                            City = "Munnar",
+                            Country = "India",
+                            CreatedAt = new DateTime(2025, 11, 10, 10, 3, 58, 92, DateTimeKind.Utc).AddTicks(7121),
+                            Description = "Mist-covered mountains, endless tea gardens, and cool breezes in Kerala's hill country.",
+                            ImageUrl = "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
+                            Latitude = 10.0889m,
+                            Longitude = 77.0595m,
+                            Name = "Munnar Tea Highlands",
+                            Price = 4000m
+                        },
+                        new
+                        {
+                            DestinationId = 3,
+                            City = "Jaipur",
+                            Country = "India",
+                            CreatedAt = new DateTime(2025, 11, 10, 10, 3, 58, 92, DateTimeKind.Utc).AddTicks(7123),
+                            Description = "The Pink City's palaces, royal bazaars, and forts wrapped in Rajasthan heritage.",
+                            ImageUrl = "https://images.unsplash.com/photo-1564507592333-c60657eea523?q=80&w=1200&auto=format&fit=crop",
+                            Latitude = 26.9124m,
+                            Longitude = 75.7873m,
+                            Name = "Jaipur Royal Circuit",
+                            Price = 4800m
+                        },
+                        new
+                        {
+                            DestinationId = 4,
+                            City = "Bali",
+                            Country = "Indonesia",
+                            CreatedAt = new DateTime(2025, 11, 10, 10, 3, 58, 92, DateTimeKind.Utc).AddTicks(7126),
+                            Description = "Balinese temples, terraced rice fields, and sunset beaches for an island escape.",
+                            ImageUrl = "https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=1200&auto=format&fit=crop",
+                            Latitude = -8.3405m,
+                            Longitude = 115.0920m,
+                            Name = "Bali Island Retreat",
+                            Price = 18500m
+                        },
+                        new
+                        {
+                            DestinationId = 5,
+                            City = "Paris",
+                            Country = "France",
+                            CreatedAt = new DateTime(2025, 11, 10, 10, 3, 58, 92, DateTimeKind.Utc).AddTicks(7128),
+                            Description = "Iconic boulevards, cafés, and museums in the heart of the City of Light.",
+                            ImageUrl = "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=1200&auto=format&fit=crop",
+                            Latitude = 48.8566m,
+                            Longitude = 2.3522m,
+                            Name = "Paris City Lights",
+                            Price = 45000m
+                        },
+                        new
+                        {
+                            DestinationId = 6,
+                            City = "Santorini",
+                            Country = "Greece",
+                            CreatedAt = new DateTime(2025, 11, 10, 10, 3, 58, 92, DateTimeKind.Utc).AddTicks(7131),
+                            Description = "Blue-domed churches, whitewashed cliffs, and legendary caldera sunsets.",
+                            ImageUrl = "https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?q=80&w=1200&auto=format&fit=crop",
+                            Latitude = 36.3932m,
+                            Longitude = 25.4615m,
+                            Name = "Santorini Sunset Escape",
+                            Price = 52000m
+                        });
                 });
 
             modelBuilder.Entity("Travel.Api.Models.Feedback", b =>
@@ -273,8 +355,8 @@ namespace Travel.Api.Migrations
                         {
                             PackageId = 1,
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Relax on stunning beaches and enjoy ocean views.",
-                            ImageUrl = "https://example.com/images/beach_escape.jpg",
+                            Description = "Five-day coastal escape featuring sunrise yoga, local seafood tastings, and resort-style beach villas.",
+                            ImageUrl = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
                             Name = "Beach Escape",
                             Price = 499.99m
                         },
@@ -282,8 +364,8 @@ namespace Travel.Api.Migrations
                         {
                             PackageId = 2,
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Hike across breathtaking mountain trails and valleys.",
-                            ImageUrl = "https://example.com/images/mountain_adventure.jpg",
+                            Description = "Week-long alpine expedition with guided summit treks, riverside camping, and stargazing under clear skies.",
+                            ImageUrl = "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
                             Name = "Mountain Adventure",
                             Price = 899.99m
                         },
@@ -291,8 +373,8 @@ namespace Travel.Api.Migrations
                         {
                             PackageId = 3,
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Explore heritage sites and local traditions.",
-                            ImageUrl = "https://example.com/images/cultural_journey.jpg",
+                            Description = "Curated heritage trail showcasing palace walkthroughs, artisan workshops, and immersive food tours.",
+                            ImageUrl = "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=1200&q=80",
                             Name = "Cultural Journey",
                             Price = 699.99m
                         });
@@ -431,6 +513,10 @@ namespace Travel.Api.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("email");
 
+                    b.Property<string>("GoogleId")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
@@ -444,6 +530,10 @@ namespace Travel.Api.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)")
                         .HasColumnName("password");
+
+                    b.Property<string>("Picture")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<string>("Role")
                         .IsRequired()

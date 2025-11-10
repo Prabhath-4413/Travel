@@ -54,7 +54,155 @@ namespace Travel.Api.Data
                 b.Property(d => d.ImageUrl).HasColumnName("image_url");
                 b.Property(d => d.Latitude).HasColumnName("latitude");
                 b.Property(d => d.Longitude).HasColumnName("longitude");
+                b.Property(d => d.Country).HasColumnName("country");
+                b.Property(d => d.City).HasColumnName("city");
                 b.Property(d => d.CreatedAt).HasColumnName("created_at").HasDefaultValueSql("NOW()");
+
+                b.HasData(
+                    new Destination
+                    {
+                        DestinationId = 1,
+                        Name = "Goa Coastline Escape",
+                        Description = "Golden beaches, vibrant shacks, and Portuguese heritage for a sun-soaked getaway.",
+                        ImageUrl = "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=1200&auto=format&fit=crop",
+                        Price = 5200m,
+                        Latitude = 15.2993m,
+                        Longitude = 74.1240m,
+                        Country = "India",
+                        City = "Goa"
+                    },
+                    new Destination
+                    {
+                        DestinationId = 2,
+                        Name = "Munnar Tea Highlands",
+                        Description = "Mist-covered mountains, endless tea gardens, and cool breezes in Kerala's hill country.",
+                        ImageUrl = "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
+                        Price = 4000m,
+                        Latitude = 10.0889m,
+                        Longitude = 77.0595m,
+                        Country = "India",
+                        City = "Munnar"
+                    },
+                    new Destination
+                    {
+                        DestinationId = 3,
+                        Name = "Jaipur Royal Circuit",
+                        Description = "The Pink City's palaces, royal bazaars, and forts wrapped in Rajasthan heritage.",
+                        ImageUrl = "https://images.unsplash.com/photo-1564507592333-c60657eea523?q=80&w=1200&auto=format&fit=crop",
+                        Price = 4800m,
+                        Latitude = 26.9124m,
+                        Longitude = 75.7873m,
+                        Country = "India",
+                        City = "Jaipur"
+                    },
+                    new Destination
+                    {
+                        DestinationId = 4,
+                        Name = "Bali Island Retreat",
+                        Description = "Balinese temples, terraced rice fields, and sunset beaches for an island escape.",
+                        ImageUrl = "https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=1200&auto=format&fit=crop",
+                        Price = 18500m,
+                        Latitude = -8.3405m,
+                        Longitude = 115.0920m,
+                        Country = "Indonesia",
+                        City = "Bali"
+                    },
+                    new Destination
+                    {
+                        DestinationId = 5,
+                        Name = "Paris City Lights",
+                        Description = "Iconic boulevards, cafés, and museums in the heart of the City of Light.",
+                        ImageUrl = "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=1200&auto=format&fit=crop",
+                        Price = 45000m,
+                        Latitude = 48.8566m,
+                        Longitude = 2.3522m,
+                        Country = "France",
+                        City = "Paris"
+                    },
+                    new Destination
+                    {
+                        DestinationId = 6,
+                        Name = "Santorini Sunset Escape",
+                        Description = "Blue-domed churches, whitewashed cliffs, and legendary caldera sunsets.",
+                        ImageUrl = "https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?q=80&w=1200&auto=format&fit=crop",
+                        Price = 52000m,
+                        Latitude = 36.3932m,
+                        Longitude = 25.4615m,
+                        Country = "Greece",
+                        City = "Santorini"
+                    },
+                    new Destination
+                    {
+                        DestinationId = 7,
+                        Name = "Tokyo Urban Explorer",
+                        Description = "Neon-lit streets, ancient temples, and cutting-edge technology in Japan's capital.",
+                        ImageUrl = "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=1200&auto=format&fit=crop",
+                        Price = 65000m,
+                        Latitude = 35.6762m,
+                        Longitude = 139.6503m,
+                        Country = "Japan",
+                        City = "Tokyo"
+                    },
+                    new Destination
+                    {
+                        DestinationId = 8,
+                        Name = "Swiss Alps Adventure",
+                        Description = "Snow-capped peaks, crystal-clear lakes, and charming alpine villages.",
+                        ImageUrl = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1200&auto=format&fit=crop",
+                        Price = 55000m,
+                        Latitude = 46.8182m,
+                        Longitude = 8.2275m,
+                        Country = "Switzerland",
+                        City = "Interlaken"
+                    },
+                    new Destination
+                    {
+                        DestinationId = 9,
+                        Name = "Dubai Luxury Experience",
+                        Description = "Iconic skyscrapers, desert safaris, and world-class shopping in the UAE.",
+                        ImageUrl = "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1200&auto=format&fit=crop",
+                        Price = 58000m,
+                        Latitude = 25.2048m,
+                        Longitude = 55.2708m,
+                        Country = "UAE",
+                        City = "Dubai"
+                    },
+                    new Destination
+                    {
+                        DestinationId = 10,
+                        Name = "Machu Picchu Trek",
+                        Description = "Ancient Incan citadel, Andean mountains, and mystical cloud forests.",
+                        ImageUrl = "https://images.unsplash.com/photo-1587595431973-160d0d94add1?q=80&w=1200&auto=format&fit=crop",
+                        Price = 42000m,
+                        Latitude = -13.1631m,
+                        Longitude = -72.5450m,
+                        Country = "Peru",
+                        City = "Cusco"
+                    },
+                    new Destination
+                    {
+                        DestinationId = 11,
+                        Name = "Sydney Harbour Escape",
+                        Description = "Iconic Opera House, Harbour Bridge, and pristine beaches in Australia's harbor city.",
+                        ImageUrl = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1200&auto=format&fit=crop",
+                        Price = 48000m,
+                        Latitude = -33.8688m,
+                        Longitude = 151.2093m,
+                        Country = "Australia",
+                        City = "Sydney"
+                    },
+                    new Destination
+                    {
+                        DestinationId = 12,
+                        Name = "Iceland Northern Lights",
+                        Description = "Glaciers, geysers, waterfalls, and the magical aurora borealis.",
+                        ImageUrl = "https://images.unsplash.com/photo-1539635278303-d4002c07eae3?q=80&w=1200&auto=format&fit=crop",
+                        Price = 62000m,
+                        Latitude = 64.9631m,
+                        Longitude = -19.0208m,
+                        Country = "Iceland",
+                        City = "Reykjavik"
+                    });
             });
 
             //
@@ -119,17 +267,44 @@ namespace Travel.Api.Data
                         Price = 699.99m,
                         ImageUrl = "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=1200&q=80",
                         CreatedAt = packageSeedTimestamp
+                    },
+                    new TravelPackage
+                    {
+                        PackageId = 4,
+                        Name = "Urban Explorer",
+                        Description = "Modern city vibes with cutting-edge technology, vibrant nightlife, and cultural landmarks.",
+                        Price = 799.99m,
+                        ImageUrl = "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=1200&auto=format&fit=crop",
+                        CreatedAt = packageSeedTimestamp
+                    },
+                    new TravelPackage
+                    {
+                        PackageId = 5,
+                        Name = "Luxury Worldwide",
+                        Description = "Premium destinations featuring world-class accommodations, exclusive experiences, and personalized service.",
+                        Price = 1499.99m,
+                        ImageUrl = "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1200&auto=format&fit=crop",
+                        CreatedAt = packageSeedTimestamp
+                    },
+                    new TravelPackage
+                    {
+                        PackageId = 6,
+                        Name = "Adventure Seeker",
+                        Description = "Thrilling outdoor activities, breathtaking landscapes, and unforgettable natural wonders.",
+                        Price = 1099.99m,
+                        ImageUrl = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1200&auto=format&fit=crop",
+                        CreatedAt = packageSeedTimestamp
+                    },
+                    new TravelPackage
+                    {
+                        PackageId = 7,
+                        Name = "European Heritage Tour",
+                        Description = "Rich history, architectural marvels, and culinary traditions across Europe's most iconic cities.",
+                        Price = 1199.99m,
+                        ImageUrl = "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=1200&auto=format&fit=crop",
+                        CreatedAt = packageSeedTimestamp
                     });
             });
-
-            modelBuilder.Entity<TravelPackageDestination>().HasData(
-                new TravelPackageDestination { TravelPackageId = 1, DestinationId = 1 },
-                new TravelPackageDestination { TravelPackageId = 1, DestinationId = 2 },
-                new TravelPackageDestination { TravelPackageId = 2, DestinationId = 3 },
-                new TravelPackageDestination { TravelPackageId = 2, DestinationId = 4 },
-                new TravelPackageDestination { TravelPackageId = 2, DestinationId = 5 },
-                new TravelPackageDestination { TravelPackageId = 3, DestinationId = 2 },
-                new TravelPackageDestination { TravelPackageId = 3, DestinationId = 6 });
 
             //
             // BOOKINGS

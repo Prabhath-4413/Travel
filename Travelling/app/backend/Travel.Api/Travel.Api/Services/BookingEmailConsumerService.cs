@@ -183,6 +183,7 @@ public sealed class BookingEmailConsumerService : BackgroundService
         var destinationNames = booking.BookingDestinations?
             .Select(bd => bd.Destination?.Name)
             .Where(n => !string.IsNullOrWhiteSpace(n))
+            .Select(n => n!)
             .ToList() ?? new List<string>();
 
         var subject = $"Booking Confirmed - Booking #{message.BookingId}";
