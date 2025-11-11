@@ -94,6 +94,13 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<IEmailService, SmtpEmailService>();
 builder.Services.AddSingleton<IEmailTemplateBuilder, EmailTemplateBuilder>();
 
+// Payment services
+builder.Services.AddScoped<IRazorpayService, RazorpayService>();
+builder.Services.AddScoped<JwtHelper>();
+
+// Review services
+builder.Services.AddScoped<ReviewService>();
+
 // RabbitMQ services
 builder.Services.AddSingleton<RabbitMqService>();
 builder.Services.AddSingleton<IMessageQueueService>(sp => sp.GetRequiredService<RabbitMqService>());

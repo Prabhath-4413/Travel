@@ -3,6 +3,7 @@ using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MimeKit;
+using QRCoder;
 
 namespace Travel.Api.Services
 {
@@ -134,6 +135,32 @@ namespace Travel.Api.Services
                     await Task.Delay(RetryDelayMs, cancellationToken);
                 }
             }
+        }
+
+        public async Task SendEmailAsync(string toEmail, string subject, string body)
+        {
+            var message = new EmailMessage
+            {
+                ToEmail = toEmail,
+                Subject = subject,
+                Body = body,
+                IsHtml = true
+            };
+
+            await SendAsync(message);
+        }
+
+        public string GenerateQrCode(string data)
+        {
+            // Note: Requires QRCoder NuGet package
+            // Install-Package QRCoder
+
+            using var qrGenerator = new QRCoder.QRCodeGenerator();
+            using var qrCodeData = qrGenerator.CreateQrCode(data, QRCoder.QRCodeGenerator.ECCLevel.Q);
+            using var qrCode = new QRCoder.PngByteQRCode(qrCodeData);
+            var qrCodeBytes = qrCode.GetGraphic(20);
+
+            return Convert.ToBase64String(qrCodeBytes);
         }
     }
 }

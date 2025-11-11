@@ -3,6 +3,8 @@ namespace Travel.Api.Services
     public interface IEmailService
     {
         Task SendAsync(EmailMessage message, CancellationToken cancellationToken = default);
+        Task SendEmailAsync(string toEmail, string subject, string body);
+        string GenerateQrCode(string data);
     }
 
     public class EmailMessage

@@ -26,7 +26,25 @@ public enum BookingStatus
     Active = 0,
     Cancelled = 1,
     Confirmed = 2,
-    Completed = 3
+    Completed = 3,
+    PendingPayment = 4,
+    Paid = 5,
+    RefundPending = 6
+}
+
+public enum PaymentStatus
+{
+    Pending = 0,
+    Captured = 1,
+    Failed = 2,
+    Refunded = 3
+}
+
+public enum RefundStatus
+{
+    Pending = 0,
+    Processed = 1,
+    Failed = 2
 }
 
 public class User
@@ -143,6 +161,8 @@ public class Booking
     public ICollection<BookingDestination> BookingDestinations { get; set; } = new List<BookingDestination>();
 
     public ICollection<TripCancellation> TripCancellations { get; set; } = new List<TripCancellation>();
+
+    public Payment? Payment { get; set; }
 }
 
 public class BookingDestination
@@ -154,6 +174,68 @@ public class BookingDestination
     [Column("destination_id")]
     public int DestinationId { get; set; }
     public Destination? Destination { get; set; }
+}
+
+public class Payment
+{
+    [Key]
+    [Column("payment_id")]
+    public int PaymentId { get; set; }
+
+    [Required]
+    [MaxLength(100)]
+    public string RazorpayOrderId { get; set; } = string.Empty;
+
+    [MaxLength(100)]
+    public string? RazorpayPaymentId { get; set; }
+
+    [Column(TypeName = "decimal(10,2)")]
+    public decimal Amount { get; set; }
+
+    public PaymentStatus Status { get; set; } = PaymentStatus.Pending;
+
+    [ForeignKey(nameof(Booking))]
+    [Column("booking_id")]
+    public int BookingId { get; set; }
+    public Booking? Booking { get; set; }
+
+    [Column("created_at")]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    [Column("updated_at")]
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+    public ICollection<Refund> Refunds { get; set; } = new List<Refund>();
+}
+
+public class Refund
+{
+    [Key]
+    [Column("refund_id")]
+    public int RefundId { get; set; }
+
+    [Required]
+    [MaxLength(100)]
+    public string RazorpayRefundId { get; set; } = string.Empty;
+
+    [ForeignKey(nameof(Payment))]
+    [Column("payment_id")]
+    public int PaymentId { get; set; }
+    public Payment? Payment { get; set; }
+
+    [Column(TypeName = "decimal(10,2)")]
+    public decimal Amount { get; set; }
+
+    public RefundStatus Status { get; set; } = RefundStatus.Pending;
+
+    [MaxLength(500)]
+    public string? Reason { get; set; }
+
+    [Column("created_at")]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    [Column("processed_at")]
+    public DateTime? ProcessedAt { get; set; }
 }
 
 public class TripCancellation
@@ -195,5 +277,32 @@ public class TravelPackageDestination
     [Column("destination_id")]
     public int DestinationId { get; set; }
     public Destination? Destination { get; set; }
+}
+
+public class Review
+{
+    [Key]
+    [Column("review_id")]
+    public int ReviewId { get; set; }
+
+    [ForeignKey(nameof(User))]
+    [Column("user_id")]
+    public int UserId { get; set; }
+    public User? User { get; set; }
+
+    [ForeignKey(nameof(Destination))]
+    [Column("destination_id")]
+    public int DestinationId { get; set; }
+    public Destination? Destination { get; set; }
+
+    [Required]
+    [Range(1, 5)]
+    public int Rating { get; set; }  // 1–5
+
+    [MaxLength(1000)]
+    public string? Comment { get; set; }
+
+    [Column("created_at")]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }
 

@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, PieChart, Pie, Cell, LineChart, Line, ResponsiveContainer } from "recharts";
 import {
   destinationsAPI,
   bookingsAPI,
@@ -10,6 +11,7 @@ import {
   type Destination,
   type TripCancellationSummary,
   type TripCancellationDecisionPayload,
+  type AdminStats,
 } from "../lib/api";
 import { useDestinations } from "../contexts/DestinationsContext";
 import UserDashboard from "./UserDashboard";
@@ -48,6 +50,8 @@ export default function AdminDashboard() {
   >([]);
   const [selectedCancellation, setSelectedCancellation] =
     useState<TripCancellationSummary | null>(null);
+  const [adminStats, setAdminStats] = useState<AdminStats | null>(null);
+  const [statsLoading, setStatsLoading] = useState(false);
   const [decisionComment, setDecisionComment] = useState("");
   const [decisionLoading, setDecisionLoading] = useState(false);
   const [decisionError, setDecisionError] = useState<string | null>(null);
@@ -115,18 +119,30 @@ export default function AdminDashboard() {
     }
   }, []);
 
+  const loadAdminStats = useCallback(async () => {
+    try {
+      setStatsLoading(true);
+      const stats = await adminAPI.getStats();
+      setAdminStats(stats);
+    } catch (err) {
+      console.error("Failed to load admin stats", err);
+    } finally {
+      setStatsLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        await Promise.all([loadBookings(), loadPendingCancellations()]);
+        await Promise.all([loadBookings(), loadPendingCancellations(), loadAdminStats()]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [loadBookings, loadPendingCancellations]);
+  }, [loadBookings, loadPendingCancellations, loadAdminStats]);
 
   useEffect(() => {
     if (!moderationResult) return;
@@ -410,6 +426,157 @@ export default function AdminDashboard() {
             </div>
           </div>
         )}
+
+        {/* Analytics Dashboard */}
+        <section className="mb-12">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              Analytics Dashboard
+            </h2>
+            <button
+              onClick={loadAdminStats}
+              disabled={statsLoading}
+              className="px-4 py-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 hover:from-blue-500/30 hover:to-cyan-500/30 text-blue-400 rounded-lg border border-blue-500/30 transition-all disabled:opacity-50"
+            >
+              {statsLoading ? "Loading..." : "Refresh"}
+            </button>
+          </div>
+
+          {adminStats ? (
+            <>
+              {/* Summary Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <SummaryCard
+                  label="Total Users"
+                  value={adminStats.totalUsers}
+                  color="text-blue-400"
+                />
+                <SummaryCard
+                  label="Total Bookings"
+                  value={adminStats.totalBookings}
+                  color="text-green-400"
+                />
+                <SummaryCard
+                  label="Paid Bookings"
+                  value={adminStats.paidBookings}
+                  color="text-purple-400"
+                />
+                <SummaryCard
+                  label="Average Rating"
+                  value={adminStats.averageRating.toFixed(1)}
+                  color="text-yellow-400"
+                />
+              </div>
+
+              {/* Charts */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                {/* Top Destinations Bar Chart */}
+                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
+                  <h3 className="text-xl font-semibold text-white mb-4">Top 5 Destinations by Bookings</h3>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={adminStats.topDestinations}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                      <XAxis
+                        dataKey="name"
+                        stroke="#9CA3AF"
+                        fontSize={12}
+                        angle={-45}
+                        textAnchor="end"
+                        height={80}
+                      />
+                      <YAxis stroke="#9CA3AF" />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: '#1F2937',
+                          border: '1px solid #374151',
+                          borderRadius: '8px',
+                          color: '#F9FAFB'
+                        }}
+                      />
+                      <Bar dataKey="bookings" fill="#3B82F6" radius={[4, 4, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+
+                {/* Paid vs Unpaid Pie Chart */}
+                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
+                  <h3 className="text-xl font-semibold text-white mb-4">Booking Payment Status</h3>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie
+                        data={[
+                          { name: 'Paid', value: adminStats.paidBookings, color: '#10B981' },
+                          { name: 'Unpaid', value: adminStats.totalBookings - adminStats.paidBookings, color: '#EF4444' }
+                        ]}
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={80}
+                        dataKey="value"
+                        label={({ name, percent }) => percent !== undefined ? `${name} ${(percent * 100).toFixed(0)}%` : name}
+                      >
+                        {[
+                          { name: 'Paid', value: adminStats.paidBookings, color: '#10B981' },
+                          { name: 'Unpaid', value: adminStats.totalBookings - adminStats.paidBookings, color: '#EF4444' }
+                        ].map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: '#1F2937',
+                          border: '1px solid #374151',
+                          borderRadius: '8px',
+                          color: '#F9FAFB'
+                        }}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              {/* Mock Line Chart for Bookings per Month */}
+              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
+                <h3 className="text-xl font-semibold text-white mb-4">Bookings Trend (Last 6 Months)</h3>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={[
+                    { month: 'Jun', bookings: 45 },
+                    { month: 'Jul', bookings: 52 },
+                    { month: 'Aug', bookings: 38 },
+                    { month: 'Sep', bookings: 61 },
+                    { month: 'Oct', bookings: 55 },
+                    { month: 'Nov', bookings: 67 }
+                  ]}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                    <XAxis dataKey="month" stroke="#9CA3AF" />
+                    <YAxis stroke="#9CA3AF" />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: '#1F2937',
+                        border: '1px solid #374151',
+                        borderRadius: '8px',
+                        color: '#F9FAFB'
+                      }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="bookings"
+                      stroke="#8B5CF6"
+                      strokeWidth={3}
+                      dot={{ fill: '#8B5CF6', strokeWidth: 2, r: 4 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+                <p className="text-sm text-white/60 mt-2">* Sample data - integrate with real monthly booking data</p>
+              </div>
+            </>
+          ) : (
+            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-12 text-center text-white/70">
+              <div className="text-4xl mb-4">📊</div>
+              <p className="text-xl font-semibold mb-2 text-white">Loading Analytics...</p>
+              <p>Fetching dashboard statistics</p>
+            </div>
+          )}
+        </section>
 
         {/* Bookings Summary */}
         {bookings?.summary && (

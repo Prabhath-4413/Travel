@@ -226,7 +226,9 @@ export default function Login() {
                 <div className="w-full border-t border-white/20" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-transparent text-white/70">Or continue with</span>
+                <span className="px-2 bg-transparent text-white/70">
+                  Or continue with
+                </span>
               </div>
             </div>
 

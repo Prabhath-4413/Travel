@@ -20,6 +20,7 @@
 		</PackageReference>
 		<PackageReference Include="MimeKit" Version="4.14.0" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
+		<PackageReference Include="QRCoder" Version="1.7.0" />
 		<PackageReference Include="RabbitMQ.Client" Version="6.5.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
 		<PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />

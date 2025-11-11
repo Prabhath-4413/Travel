@@ -1,16 +1,19 @@
-import { useGoogleLogin } from '@react-oauth/google';
-import { motion } from 'framer-motion';
-import { useAuth } from '../../contexts/AuthContext';
-import { useState } from 'react';
-import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { useGoogleLogin } from "@react-oauth/google";
+import { motion } from "framer-motion";
+import { useAuth } from "../../contexts/AuthContext";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 interface GoogleLoginButtonProps {
   onSuccess?: () => void;
   className?: string;
 }
 
-export default function GoogleLoginButton({ onSuccess, className = "" }: GoogleLoginButtonProps) {
+export default function GoogleLoginButton({
+  onSuccess,
+  className = "",
+}: GoogleLoginButtonProps) {
   const { googleLogin } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -20,19 +23,21 @@ export default function GoogleLoginButton({ onSuccess, className = "" }: GoogleL
       setIsLoading(true);
       try {
         await googleLogin(tokenResponse.access_token);
-        toast.success('Successfully signed in with Google!');
+        toast.success("Successfully signed in with Google!");
         onSuccess?.();
         // Navigate to dashboard
-        navigate('/dashboard');
+        navigate("/dashboard");
       } catch (error) {
-        console.error('Google login error:', error);
-        toast.error(error instanceof Error ? error.message : 'Google login failed');
+        console.error("Google login error:", error);
+        toast.error(
+          error instanceof Error ? error.message : "Google login failed",
+        );
       } finally {
         setIsLoading(false);
       }
     },
     onError: () => {
-      toast.error('Google login failed');
+      toast.error("Google login failed");
       setIsLoading(false);
     },
   });

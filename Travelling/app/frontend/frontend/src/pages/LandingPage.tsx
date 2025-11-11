@@ -25,6 +25,8 @@ import { destinationsAPI, type Destination } from "../lib/api";
 import { useAuth } from "../contexts/AuthContext";
 import React from "react";
 import PackageList from "../components/packages/PackageList";
+import WeatherWidget from "../components/WeatherWidget";
+import { useLocation as useUserLocation } from "../hooks/useLocation";
 
 interface NavLink {
   id: string;
@@ -250,6 +252,9 @@ const HeroSection = ({ onExploreClick }: HeroSectionProps) => {
   const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
   const heroScale = useTransform(scrollY, [0, 300], [1, 1.08]);
 
+  // User location for weather widget
+  const { location: userLocation } = useUserLocation();
+
   // Time-based greeting that refreshes every minute
   const [greeting, setGreeting] = useState("Welcome");
 
@@ -464,6 +469,16 @@ const HeroSection = ({ onExploreClick }: HeroSectionProps) => {
               <Star className="w-4 h-4" />
               <span>Rated 4.9/5 by globe trotters</span>
             </div>
+          </motion.div>
+
+          {/* Weather Widget */}
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 1.0 }}
+            className="mt-12"
+          >
+            <WeatherWidget location={userLocation} className="w-full max-w-md mx-auto" />
           </motion.div>
         </motion.div>
       </motion.div>
@@ -1700,6 +1715,7 @@ export default function LandingPage() {
   };
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { location: userLocation } = useUserLocation();
   const [activeSection, setActiveSection] = useState("home");
   const [notification, setNotification] = useState<{
     type: "user" | "admin";

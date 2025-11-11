@@ -13,6 +13,7 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import UserDashboard from "./pages/UserDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import PaymentPage from "./pages/PaymentPage";
 
 // ✅ Protected Route Component
 function ProtectedRoute({
@@ -114,6 +115,8 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      {/* ✅ Payment routes */}
+      <Route path="/payment" element={<PaymentPage />} />
       {/* ✅ Catch-all redirect */}
       <Route
         path="*"

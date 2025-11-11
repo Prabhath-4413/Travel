@@ -1,60 +1,84 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Cloud, Sun, CloudRain, Wind, Thermometer, Loader2 } from 'lucide-react';
-import { weatherService, WeatherData } from '../api/weather';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import {
+  Cloud,
+  Sun,
+  CloudRain,
+  Wind,
+  Thermometer,
+  Loader2,
+} from "lucide-react";
+import { weatherService, WeatherData } from "../api/weather";
+import { LocationData } from "../lib/location";
 
 interface WeatherWidgetProps {
-  latitude: number;
-  longitude: number;
-  cityName: string;
+  location?: LocationData | null;
+  latitude?: number; // Keep for backward compatibility
+  longitude?: number; // Keep for backward compatibility
+  cityName?: string; // Keep for backward compatibility
   className?: string;
 }
 
-export default function WeatherWidget({ latitude, longitude, cityName, className = "" }: WeatherWidgetProps) {
+export default function WeatherWidget({
+  location,
+  latitude,
+  longitude,
+  cityName,
+  className = "",
+}: WeatherWidgetProps) {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchWeather = async () => {
-      if (!latitude || !longitude || !cityName) return;
+      // Use location prop if provided, otherwise fall back to individual props
+      const lat = location?.latitude || latitude;
+      const lon = location?.longitude || longitude;
+      const city = location?.city || cityName;
+
+      if (!lat || !lon || !city) return;
 
       setLoading(true);
       setError(null);
 
       try {
-        const weatherData = await weatherService.getWeatherByCoordinates(latitude, longitude, cityName);
+        const weatherData = await weatherService.getWeatherByCoordinates(
+          lat,
+          lon,
+          city,
+        );
         setWeather(weatherData);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load weather');
+        setError(err instanceof Error ? err.message : "Failed to load weather");
       } finally {
         setLoading(false);
       }
     };
 
     fetchWeather();
-  }, [latitude, longitude, cityName]);
+  }, [location, latitude, longitude, cityName]);
 
   const getWeatherIcon = (iconCode: string) => {
     const iconMap: { [key: string]: React.ReactNode } = {
-      '01d': <Sun className="w-8 h-8 text-yellow-400" />, // Clear sky day
-      '01n': <Sun className="w-8 h-8 text-yellow-300" />, // Clear sky night
-      '02d': <Cloud className="w-8 h-8 text-gray-400" />, // Few clouds day
-      '02n': <Cloud className="w-8 h-8 text-gray-400" />, // Few clouds night
-      '03d': <Cloud className="w-8 h-8 text-gray-500" />, // Scattered clouds
-      '03n': <Cloud className="w-8 h-8 text-gray-500" />, // Scattered clouds
-      '04d': <Cloud className="w-8 h-8 text-gray-600" />, // Broken clouds
-      '04n': <Cloud className="w-8 h-8 text-gray-600" />, // Broken clouds
-      '09d': <CloudRain className="w-8 h-8 text-blue-400" />, // Shower rain
-      '09n': <CloudRain className="w-8 h-8 text-blue-400" />, // Shower rain
-      '10d': <CloudRain className="w-8 h-8 text-blue-500" />, // Rain
-      '10n': <CloudRain className="w-8 h-8 text-blue-500" />, // Rain
-      '11d': <CloudRain className="w-8 h-8 text-purple-500" />, // Thunderstorm
-      '11n': <CloudRain className="w-8 h-8 text-purple-500" />, // Thunderstorm
-      '13d': <Cloud className="w-8 h-8 text-blue-200" />, // Snow
-      '13n': <Cloud className="w-8 h-8 text-blue-200" />, // Snow
-      '50d': <Cloud className="w-8 h-8 text-gray-300" />, // Mist
-      '50n': <Cloud className="w-8 h-8 text-gray-300" />, // Mist
+      "01d": <Sun className="w-8 h-8 text-yellow-400" />, // Clear sky day
+      "01n": <Sun className="w-8 h-8 text-yellow-300" />, // Clear sky night
+      "02d": <Cloud className="w-8 h-8 text-gray-400" />, // Few clouds day
+      "02n": <Cloud className="w-8 h-8 text-gray-400" />, // Few clouds night
+      "03d": <Cloud className="w-8 h-8 text-gray-500" />, // Scattered clouds
+      "03n": <Cloud className="w-8 h-8 text-gray-500" />, // Scattered clouds
+      "04d": <Cloud className="w-8 h-8 text-gray-600" />, // Broken clouds
+      "04n": <Cloud className="w-8 h-8 text-gray-600" />, // Broken clouds
+      "09d": <CloudRain className="w-8 h-8 text-blue-400" />, // Shower rain
+      "09n": <CloudRain className="w-8 h-8 text-blue-400" />, // Shower rain
+      "10d": <CloudRain className="w-8 h-8 text-blue-500" />, // Rain
+      "10n": <CloudRain className="w-8 h-8 text-blue-500" />, // Rain
+      "11d": <CloudRain className="w-8 h-8 text-purple-500" />, // Thunderstorm
+      "11n": <CloudRain className="w-8 h-8 text-purple-500" />, // Thunderstorm
+      "13d": <Cloud className="w-8 h-8 text-blue-200" />, // Snow
+      "13n": <Cloud className="w-8 h-8 text-blue-200" />, // Snow
+      "50d": <Cloud className="w-8 h-8 text-gray-300" />, // Mist
+      "50n": <Cloud className="w-8 h-8 text-gray-300" />, // Mist
     };
 
     return iconMap[iconCode] || <Cloud className="w-8 h-8 text-gray-400" />;

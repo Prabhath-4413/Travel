@@ -146,6 +146,44 @@ export interface CreateFeedbackRequest {
   rating: number;
 }
 
+// Review types
+export interface Review {
+  reviewId: number;
+  userId: number;
+  userName: string;
+  destinationId: number;
+  rating: number;
+  comment?: string;
+  createdAt: string;
+}
+
+export interface ReviewRequest {
+  userId: number;
+  destinationId: number;
+  rating: number;
+  comment?: string;
+}
+
+export interface ReviewAverage {
+  destinationId: number;
+  averageRating: number;
+  totalReviews: number;
+}
+
+// Admin stats types
+export interface AdminStats {
+  totalUsers: number;
+  totalBookings: number;
+  paidBookings: number;
+  averageRating: number;
+  topDestinations: TopDestination[];
+}
+
+export interface TopDestination {
+  name: string;
+  bookings: number;
+}
+
 // Auth API
 export const authAPI = {
   login: async (email: string, password: string) => {
@@ -228,24 +266,7 @@ export const tripCancellationAPI = {
   },
 };
 
-// Admin API
-export const adminAPI = {
-  testEmail: async (
-    overrides?: Partial<{ to: string; subject: string; body: string }>,
-  ) => {
-    const defaultPayload = {
-      to: "test@example.com",
-      subject: "Test email",
-      body: "This is a test email from the admin panel.",
-    };
 
-    const response = await api.post("/admin/test-email", {
-      ...defaultPayload,
-      ...overrides,
-    });
-    return response.data;
-  },
-};
 
 // Shortest path API
 export const shortestPathAPI = {
@@ -271,6 +292,48 @@ export const feedbackAPI = {
 
   getStats: async () => {
     const response = await api.get("/api/feedback/stats");
+    return response.data;
+  },
+};
+
+// Review API
+export const reviewAPI = {
+  add: async (review: ReviewRequest) => {
+    const response = await api.post("/api/reviews", review);
+    return response.data;
+  },
+
+  getForDestination: async (destinationId: number): Promise<Review[]> => {
+    const response = await api.get(`/api/reviews/${destinationId}`);
+    return response.data;
+  },
+
+  getAverage: async (destinationId: number): Promise<ReviewAverage> => {
+    const response = await api.get(`/api/reviews/average/${destinationId}`);
+    return response.data;
+  },
+};
+
+// Admin API
+export const adminAPI = {
+  getStats: async (): Promise<AdminStats> => {
+    const response = await api.get("/api/admin/stats");
+    return response.data;
+  },
+
+  testEmail: async (
+    overrides?: Partial<{ to: string; subject: string; body: string }>,
+  ) => {
+    const defaultPayload = {
+      to: "test@example.com",
+      subject: "Test email",
+      body: "This is a test email from the admin panel.",
+    };
+
+    const response = await api.post("/admin/test-email", {
+      ...defaultPayload,
+      ...overrides,
+    });
     return response.data;
   },
 };
