@@ -383,7 +383,8 @@ export default function UserDashboard(): JSX.Element {
     useState<Booking | null>(null);
   const [showDestinationDetailsModal, setShowDestinationDetailsModal] =
     useState(false);
-  const [selectedDestinationForDetails, setSelectedDestinationForDetails] = useState<Destination | null>(null);
+  const [selectedDestinationForDetails, setSelectedDestinationForDetails] =
+    useState<Destination | null>(null);
   const [showDestinationDetails, setShowDestinationDetails] = useState(false);
   const [showLogoutSuccess, setShowLogoutSuccess] = useState(false);
   const [query, setQuery] = useState("");
@@ -999,7 +1000,7 @@ export default function UserDashboard(): JSX.Element {
               </div>
             </div>
             <div className="space-y-6">
-              <WeatherWidget location={userLocation} className="w-full" />
+              <WeatherWidget location={userLocation} className="max-w-sm" />
               <div
                 className={`rounded-3xl p-6 border ${isDark ? "border-white/10 bg-white/5 text-white/90" : "border-[#0e1512]/10 bg-white/70"}`}
               >
@@ -1102,18 +1103,17 @@ export default function UserDashboard(): JSX.Element {
                       (d) => d.destinationId === destination.destinationId,
                     );
                     return (
-                      <motion.button
+                      <motion.div
                         key={destination.destinationId}
                         onClick={() => handleDestinationSelect(destination)}
                         whileHover={{ y: -8 }}
-                        className={`group relative overflow-hidden rounded-3xl border text-left transition-all ${
+                        className={`group relative overflow-hidden rounded-3xl border text-left transition-all cursor-pointer ${
                           selected
                             ? "border-[#d9b26f] shadow-[0_25px_45px_rgba(248,209,108,0.25)]"
                             : isDark
                               ? "border-[#2b5f49]/25 hover:border-[#d9b26f]/40"
                               : "border-[#0f1a13]/15 hover:border-[#0f1a13]/40"
                         }`}
-                        type="button"
                       >
                         <div className="relative h-64 overflow-hidden">
                           <motion.img
@@ -1125,6 +1125,12 @@ export default function UserDashboard(): JSX.Element {
                             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                          <div className="absolute top-1 right-1 z-10">
+                            <WeatherWidget
+                              city={destination.city || destination.name}
+                              className="scale-30 origin-top-right"
+                            />
+                          </div>
                           {selected && (
                             <motion.div
                               initial={{ scale: 0.6, opacity: 0 }}
@@ -1173,7 +1179,7 @@ export default function UserDashboard(): JSX.Element {
                             </button>
                           </div>
                         </div>
-                      </motion.button>
+                      </motion.div>
                     );
                   })}
                 </div>
@@ -1556,7 +1562,16 @@ export default function UserDashboard(): JSX.Element {
                       </div>
                     </div>
                     <div className="rounded-2xl overflow-hidden border border-[#2b5f49]/25">
-                      <RouteMap destinations={optimizedDestinations as { destinationId: number; name: string; latitude: number; longitude: number }[]} />
+                      <RouteMap
+                        destinations={
+                          optimizedDestinations as {
+                            destinationId: number;
+                            name: string;
+                            latitude: number;
+                            longitude: number;
+                          }[]
+                        }
+                      />
                     </div>
                   </div>
                 ) : (
@@ -1779,7 +1794,16 @@ export default function UserDashboard(): JSX.Element {
                 </div>
 
                 <div className="rounded-2xl overflow-hidden border border-[#2b5f49]/25">
-                  <RouteMap destinations={optimizedDestinations as { destinationId: number; name: string; latitude: number; longitude: number }[]} />
+                  <RouteMap
+                    destinations={
+                      optimizedDestinations as {
+                        destinationId: number;
+                        name: string;
+                        latitude: number;
+                        longitude: number;
+                      }[]
+                    }
+                  />
                 </div>
               </div>
             ) : (
@@ -1996,7 +2020,7 @@ export default function UserDashboard(): JSX.Element {
                         className="bg-[#f5f1e8]/75 p-4 rounded-xl border border-[#2b5f49]/25"
                       >
                         <div className="md:flex gap-6">
-                          <div className="md:w-1/3">
+                          <div className="md:w-1/3 relative">
                             <div className="aspect-[4/3] overflow-hidden rounded-lg">
                               <img
                                 src={
@@ -2005,6 +2029,12 @@ export default function UserDashboard(): JSX.Element {
                                 }
                                 alt={destName}
                                 className="w-full h-full object-cover"
+                              />
+                            </div>
+                            <div className="absolute top-1 right-1 z-10">
+                              <WeatherWidget
+                                city={destination?.city || destName}
+                                className="scale-40 origin-top-right"
                               />
                             </div>
                           </div>

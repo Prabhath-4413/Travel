@@ -478,7 +478,10 @@ const HeroSection = ({ onExploreClick }: HeroSectionProps) => {
             transition={{ duration: 0.6, delay: 1.0 }}
             className="mt-12"
           >
-            <WeatherWidget location={userLocation} className="w-full max-w-md mx-auto" />
+            <WeatherWidget
+              location={userLocation}
+              className="w-full max-w-sm mx-auto"
+            />
           </motion.div>
         </motion.div>
       </motion.div>

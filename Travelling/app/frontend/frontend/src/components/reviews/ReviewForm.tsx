@@ -59,7 +59,8 @@ export default function ReviewForm({
       onReviewAdded?.();
     } catch (error: any) {
       console.error("Error submitting review:", error);
-      const message = error.response?.data?.message || "Failed to submit review";
+      const message =
+        error.response?.data?.message || "Failed to submit review";
       toast.error(message);
     } finally {
       setIsSubmitting(false);

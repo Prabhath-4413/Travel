@@ -60,9 +60,11 @@ namespace Travel.Api.Controllers
         [HttpGet("{destinationId}")]
         public async Task<IActionResult> GetReviews(int destinationId)
         {
+            _logger.LogInformation($"GetReviews called for destination {destinationId}");
             try
             {
                 var reviews = await _reviewService.GetReviewsForDestinationAsync(destinationId);
+                _logger.LogInformation($"Found {reviews.Count} reviews for destination {destinationId}");
                 return Ok(reviews);
             }
             catch (Exception ex)
@@ -78,9 +80,11 @@ namespace Travel.Api.Controllers
         [HttpGet("average/{destinationId}")]
         public async Task<IActionResult> GetAverageRating(int destinationId)
         {
+            _logger.LogInformation($"GetAverageRating called for destination {destinationId}");
             try
             {
                 var average = await _reviewService.GetAverageRatingAsync(destinationId);
+                _logger.LogInformation($"Average rating for destination {destinationId}: {average.AverageRating}");
                 return Ok(average);
             }
             catch (Exception ex)

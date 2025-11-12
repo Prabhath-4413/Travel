@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { PaymentApi, loadRazorpayScript } from "../api/paymentApi";
-import { CreateOrderResponse, RazorpayOptions, RazorpaySuccessResponse } from "../types/payment";
+import {
+  CreateOrderResponse,
+  RazorpayOptions,
+  RazorpaySuccessResponse,
+} from "../types/payment";
 import { Loader2, CreditCard, AlertCircle } from "lucide-react";
 
 const PaymentPage: React.FC = () => {
@@ -45,7 +49,8 @@ const PaymentPage: React.FC = () => {
       initializeRazorpayCheckout(orderResponse);
     } catch (err) {
       console.error("Payment initialization failed:", err);
-      const errorMessage = err instanceof Error ? err.message : "Failed to initialize payment";
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to initialize payment";
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {
@@ -97,21 +102,23 @@ const PaymentPage: React.FC = () => {
         razorpay_signature: response.razorpay_signature,
       });
 
-      toast.success("Payment successful! Redirecting...", { id: "payment-verification" });
+      toast.success("Payment successful! Redirecting...", {
+        id: "payment-verification",
+      });
 
       // Redirect to success page or dashboard
       setTimeout(() => {
         navigate("/dashboard", {
           state: {
             paymentSuccess: true,
-            bookingId: bookingId
-          }
+            bookingId: bookingId,
+          },
         });
       }, 2000);
-
     } catch (err) {
       console.error("Payment verification failed:", err);
-      const errorMessage = err instanceof Error ? err.message : "Payment verification failed";
+      const errorMessage =
+        err instanceof Error ? err.message : "Payment verification failed";
       toast.error(errorMessage, { id: "payment-verification" });
       setError("Payment verification failed. Please contact support.");
     } finally {
@@ -134,8 +141,12 @@ const PaymentPage: React.FC = () => {
       <div className="min-h-screen bg-[#0e1512] flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-12 h-12 animate-spin text-blue-500 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-white mb-2">Initializing Payment</h2>
-          <p className="text-gray-400">Please wait while we set up your payment...</p>
+          <h2 className="text-xl font-semibold text-white mb-2">
+            Initializing Payment
+          </h2>
+          <p className="text-gray-400">
+            Please wait while we set up your payment...
+          </p>
         </div>
       </div>
     );
@@ -146,7 +157,9 @@ const PaymentPage: React.FC = () => {
       <div className="min-h-screen bg-[#0e1512] flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-gray-800 rounded-lg p-6 text-center">
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-white mb-2">Payment Error</h2>
+          <h2 className="text-xl font-semibold text-white mb-2">
+            Payment Error
+          </h2>
           <p className="text-gray-400 mb-6">{error}</p>
           <button
             onClick={handleRetry}
@@ -164,8 +177,12 @@ const PaymentPage: React.FC = () => {
       <div className="min-h-screen bg-[#0e1512] flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-12 h-12 animate-spin text-green-500 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-white mb-2">Processing Payment</h2>
-          <p className="text-gray-400">Please wait while we verify your payment...</p>
+          <h2 className="text-xl font-semibold text-white mb-2">
+            Processing Payment
+          </h2>
+          <p className="text-gray-400">
+            Please wait while we verify your payment...
+          </p>
         </div>
       </div>
     );
@@ -176,9 +193,12 @@ const PaymentPage: React.FC = () => {
     <div className="min-h-screen bg-[#0e1512] flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-gray-800 rounded-lg p-6 text-center">
         <CreditCard className="w-12 h-12 text-blue-500 mx-auto mb-4" />
-        <h2 className="text-xl font-semibold text-white mb-2">Complete Your Payment</h2>
+        <h2 className="text-xl font-semibold text-white mb-2">
+          Complete Your Payment
+        </h2>
         <p className="text-gray-400 mb-4">
-          The payment window should open automatically. If it doesn't, please check if popups are blocked.
+          The payment window should open automatically. If it doesn't, please
+          check if popups are blocked.
         </p>
         {orderData && (
           <div className="bg-gray-700 rounded-lg p-4 mb-4">

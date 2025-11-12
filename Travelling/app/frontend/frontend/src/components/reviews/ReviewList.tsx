@@ -10,7 +10,10 @@ interface ReviewListProps {
   className?: string;
 }
 
-export default function ReviewList({ destinationId, className = "" }: ReviewListProps) {
+export default function ReviewList({
+  destinationId,
+  className = "",
+}: ReviewListProps) {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -105,7 +108,9 @@ export default function ReviewList({ destinationId, className = "" }: ReviewList
                 </div>
                 <div>
                   <p className="font-medium text-gray-900">{review.userName}</p>
-                  <p className="text-sm text-gray-500">{formatDate(review.createdAt)}</p>
+                  <p className="text-sm text-gray-500">
+                    {formatDate(review.createdAt)}
+                  </p>
                 </div>
               </div>
               <StarRating rating={review.rating} readonly size={16} />

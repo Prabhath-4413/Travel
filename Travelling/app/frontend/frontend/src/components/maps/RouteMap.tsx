@@ -7,7 +7,7 @@ import {
   useMap,
 } from "react-leaflet";
 import L, { LatLngTuple } from "leaflet";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "leaflet/dist/leaflet.css";
 
 interface Destination {
@@ -120,7 +120,7 @@ const fetchGeoapifyRoute = async (
     const data = await response.json();
     const feature = data.features?.[0];
     if (!feature?.geometry?.coordinates) {
-      console.warn("Geoapify: No route found.");
+      console.log("Geoapify: No driving route found for these locations (likely intercontinental). Using fallback routing.");
       return null;
     }
 
@@ -163,6 +163,12 @@ function RouteLayer({
   const [routeCoords, setRouteCoords] = useState<LatLngTuple[]>([]);
   const [optimizedOrder, setOptimizedOrder] = useState<Destination[]>([]);
   const map = useMap();
+  const mapRef = useRef(map);
+
+  // Update map ref when map changes
+  useEffect(() => {
+    mapRef.current = map;
+  }, [map]);
 
   useEffect(() => {
     if (destinations.length < 2) {
@@ -189,7 +195,7 @@ function RouteLayer({
           setOptimizedOrder([...destinations]);
           setSummary(geoapifyRoute.summary);
           setRoutingMessage(geoapifyRoute.message);
-          map.fitBounds(L.latLngBounds(geoapifyRoute.coordinates), {
+          mapRef.current.fitBounds(L.latLngBounds(geoapifyRoute.coordinates), {
             padding: [50, 50],
           });
           return;
@@ -199,12 +205,12 @@ function RouteLayer({
         setRouteCoords(fallback.path);
         setOptimizedOrder([...destinations]);
         setSummary(fallback.summary);
-        setRoutingMessage("No route found between these points.");
-        map.fitBounds(L.latLngBounds(fallback.path), { padding: [50, 50] });
+        setRoutingMessage("Using direct routing (no driving route available between these locations).");
+        mapRef.current.fitBounds(L.latLngBounds(fallback.path), { padding: [50, 50] });
       } catch (err) {
         console.error("Route fetch failed:", err);
         if (!cancelled) {
-          setRoutingMessage("No route found between these points.");
+          setRoutingMessage("Using direct routing (routing service unavailable).");
         }
       }
     };
@@ -213,7 +219,7 @@ function RouteLayer({
     return () => {
       cancelled = true;
     };
-  }, [userLocation, destinations, map, setSummary, setRoutingMessage]);
+  }, [userLocation, destinations, setSummary, setRoutingMessage]);
 
   return (
     <>

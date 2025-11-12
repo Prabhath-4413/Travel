@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { type Destination } from "../lib/api";
+import WeatherWidget from "./WeatherWidget";
 
 interface DestinationsGridProps {
   destinations: Destination[];
@@ -21,7 +22,7 @@ export default function DestinationsGrid({
           className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm hover:border-white/20 hover:shadow-xl hover:shadow-white/5 cursor-pointer"
           onClick={() => onDestinationClick?.(destination)}
         >
-          <div className="aspect-[4/3] overflow-hidden">
+          <div className="aspect-[4/3] overflow-hidden relative">
             <img
               src={
                 destination.imageUrl ||
@@ -31,6 +32,12 @@ export default function DestinationsGrid({
               className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
               loading="lazy"
             />
+            <div className="absolute top-1 right-1 z-10">
+              <WeatherWidget
+                city={destination.city || destination.name}
+                className="scale-30 origin-top-right"
+              />
+            </div>
           </div>
           <div className="p-5">
             <div className="flex items-center justify-between mb-2">

@@ -266,8 +266,6 @@ export const tripCancellationAPI = {
   },
 };
 
-
-
 // Shortest path API
 export const shortestPathAPI = {
   calculate: async (

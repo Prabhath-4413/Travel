@@ -24,7 +24,9 @@ export default function DestinationDetailsModal({
   userName,
 }: DestinationDetailsModalProps) {
   const [reviews, setReviews] = useState<Review[]>([]);
-  const [averageRating, setAverageRating] = useState<ReviewAverage | null>(null);
+  const [averageRating, setAverageRating] = useState<ReviewAverage | null>(
+    null,
+  );
   const [loading, setLoading] = useState(false);
   const [showReviewForm, setShowReviewForm] = useState(false);
 
@@ -86,7 +88,10 @@ export default function DestinationDetailsModal({
               {/* Hero Image */}
               <div className="relative h-64 md:h-80 overflow-hidden rounded-t-lg">
                 <img
-                  src={destination.imageUrl || `https://via.placeholder.com/800x400?text=${destination.name}`}
+                  src={
+                    destination.imageUrl ||
+                    `https://via.placeholder.com/800x400?text=${destination.name}`
+                  }
                   alt={destination.name}
                   className="w-full h-full object-cover"
                 />
@@ -112,7 +117,9 @@ export default function DestinationDetailsModal({
                         {destination.country && destination.city && (
                           <div className="flex items-center gap-1">
                             <MapPin size={16} />
-                            <span>{destination.city}, {destination.country}</span>
+                            <span>
+                              {destination.city}, {destination.country}
+                            </span>
                           </div>
                         )}
                         <div className="flex items-center gap-1">
@@ -133,7 +140,8 @@ export default function DestinationDetailsModal({
                           />
                         </div>
                         <p className="text-sm text-gray-600">
-                          {averageRating.averageRating.toFixed(1)} ({averageRating.totalReviews} reviews)
+                          {averageRating.averageRating.toFixed(1)} (
+                          {averageRating.totalReviews} reviews)
                         </p>
                       </div>
                     )}

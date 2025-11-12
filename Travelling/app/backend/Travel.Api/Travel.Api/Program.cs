@@ -496,6 +496,61 @@ decimal Haversine(Coordinate a, Coordinate b)
 decimal DegToRad(decimal deg) => deg * (decimal)Math.PI / 180m;
 
 // ---------------------------
+// Review API
+// ---------------------------
+app.MapPost("/api/reviews", async (ReviewRequestDto dto, ApplicationDbContext db, ReviewService reviewService) =>
+{
+    try
+    {
+        if (dto.Rating < 1 || dto.Rating > 5)
+        {
+            return Results.BadRequest(new { message = "Rating must be between 1 and 5." });
+        }
+
+        var review = await reviewService.AddReviewAsync(dto);
+        return Results.Ok(new
+        {
+            message = "Thank you for your review!",
+            review = review
+        });
+    }
+    catch (InvalidOperationException ex)
+    {
+        return Results.BadRequest(new { message = ex.Message });
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Error adding review: {ex.Message}", statusCode: 500);
+    }
+}).AllowAnonymous();
+
+app.MapGet("/api/reviews/{destinationId:int}", async (int destinationId, ReviewService reviewService) =>
+{
+    try
+    {
+        var reviews = await reviewService.GetReviewsForDestinationAsync(destinationId);
+        return Results.Ok(reviews);
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Error retrieving reviews: {ex.Message}", statusCode: 500);
+    }
+}).AllowAnonymous();
+
+app.MapGet("/api/reviews/average/{destinationId:int}", async (int destinationId, ReviewService reviewService) =>
+{
+    try
+    {
+        var average = await reviewService.GetAverageRatingAsync(destinationId);
+        return Results.Ok(average);
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Error retrieving average rating: {ex.Message}", statusCode: 500);
+    }
+}).AllowAnonymous();
+
+// ---------------------------
 // Email notifications
 // ---------------------------
 
@@ -817,4 +872,5 @@ public record CreateDestinationDto(string Name, string? Description, decimal Pri
 public record BookingRequestDto(int UserId, int[] DestinationIds, int Guests, int Nights, DateTime StartDate);
 public record ShortestPathRequestDto(Coordinate[] Points);
 public record Coordinate(decimal Latitude, decimal Longitude);
+public record ReviewRequestDto(int UserId, int DestinationId, int Rating, string? Comment);
 
