@@ -14,6 +14,8 @@ import Register from "./components/auth/Register";
 import UserDashboard from "./pages/UserDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import PaymentPage from "./pages/PaymentPage";
+import StartBookingPage from "./pages/StartBookingPage";
+import MultiDestinationSelector from "./components/booking/MultiDestinationSelector";
 
 // ✅ Protected Route Component
 function ProtectedRoute({
@@ -104,6 +106,22 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <UserDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/start-booking"
+        element={
+          <ProtectedRoute>
+            <StartBookingPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/destinations"
+        element={
+          <ProtectedRoute>
+            <MultiDestinationSelector />
           </ProtectedRoute>
         }
       />

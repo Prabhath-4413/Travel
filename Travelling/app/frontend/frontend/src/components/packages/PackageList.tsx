@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getPackages, TravelPackage } from "../../api/packages";
 import PackageCard from "./PackageCard";
 import PackageDetailsModal from "./PackageDetailsModal";
-import RouteMap from "../maps/RouteMap";
+import RouteModal from "../booking/RouteModal";
 
 type RawDestination = TravelPackage["destinations"][number] & {
   Latitude?: unknown;
@@ -57,6 +57,7 @@ export default function PackageList({
     null,
   );
   const [routePackage, setRoutePackage] = useState<TravelPackage | null>(null);
+  const [showRouteModal, setShowRouteModal] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -177,51 +178,19 @@ export default function PackageList({
                 }
                 onBuildRoute={
                   !readOnly
-                    ? () =>
+                    ? () => {
                         setRoutePackage({
                           ...pkg,
                           destinations: normalizedDestinations,
-                        })
+                        });
+                        setShowRouteModal(true);
+                      }
                     : undefined
                 }
                 showBuildRouteButton={!readOnly}
               />
             );
           })}
-        </div>
-      )}
-
-      {!readOnly && routePackage && (
-        <div className="space-y-6">
-          <div className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <h3 className="text-2xl font-semibold text-white">
-                  Route Planner: {routePackage.name}
-                </h3>
-                <p className="text-sm text-white/60">
-                  {routeDestinations.length > 0
-                    ? "Optimized route preview for selected destinations."
-                    : "Destinations in this package need location details to build a route."}
-                </p>
-              </div>
-              <button
-                onClick={() => setRoutePackage(null)}
-                className="self-start rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/20"
-              >
-                Close
-              </button>
-            </div>
-
-            {routeDestinations.length > 0 ? (
-              <RouteMap destinations={routeDestinations} />
-            ) : (
-              <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-6 text-yellow-100">
-                We couldn't find coordinates for these destinations. Update
-                their location details to visualize the route.
-              </div>
-            )}
-          </div>
         </div>
       )}
 
@@ -238,6 +207,20 @@ export default function PackageList({
           }}
         />
       )}
+
+      {/* Route Modal */}
+      <RouteModal
+        isOpen={showRouteModal}
+        onClose={() => {
+          setShowRouteModal(false);
+          setRoutePackage(null);
+        }}
+        destinations={routeDestinations.map((d) => ({
+          name: d.name,
+          lat: d.latitude,
+          lon: d.longitude,
+        }))}
+      />
     </section>
   );
 }

@@ -51,6 +51,11 @@ export default function BookingForm({
         startDate: new Date(formData.startDate),
       });
 
+      // Calculate end date
+      const startDate = new Date(formData.startDate);
+      const endDate = new Date(startDate);
+      endDate.setDate(startDate.getDate() + formData.nights);
+
       onSuccess({
         bookingId: response.bookingId,
         message: "Booking confirmed successfully!",
@@ -58,6 +63,7 @@ export default function BookingForm({
         guests: response.guests,
         nights: response.nights,
         startDate: response.startDate,
+        endDate: endDate.toISOString(),
         destinations: response.destinations,
       });
     } catch (err: any) {

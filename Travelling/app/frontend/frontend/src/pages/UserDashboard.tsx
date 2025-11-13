@@ -3,7 +3,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuth } from "../contexts/AuthContext";
-import DestinationDetailsModal from "../components/DestinationDetailsModal";
+import DestinationModal from "../components/DestinationModal";
+import DestinationList from "../components/DestinationList";
+import RouteModal from "../components/booking/RouteModal";
 import {
   bookingsAPI,
   shortestPathAPI,
@@ -386,6 +388,10 @@ export default function UserDashboard(): JSX.Element {
   const [selectedDestinationForDetails, setSelectedDestinationForDetails] =
     useState<Destination | null>(null);
   const [showDestinationDetails, setShowDestinationDetails] = useState(false);
+  const [showRouteModal, setShowRouteModal] = useState(false);
+  const [routeDestinations, setRouteDestinations] = useState<Destination[]>([]);
+  const [multiSelectMode, setMultiSelectMode] = useState(false);
+  const [selectedForRoute, setSelectedForRoute] = useState<Destination[]>([]);
   const [showLogoutSuccess, setShowLogoutSuccess] = useState(false);
   const [query, setQuery] = useState("");
   const [countryFilter, setCountryFilter] = useState("");
@@ -1089,6 +1095,39 @@ export default function UserDashboard(): JSX.Element {
                 </div>
               </div>
 
+              {/* Multi-select controls */}
+              {highlightedDestinations.length > 0 && (
+                <div className="flex items-center justify-between mb-4">
+                  <button
+                    onClick={() => {
+                      setMultiSelectMode(!multiSelectMode);
+                      setSelectedForRoute([]);
+                    }}
+                    className={`px-4 py-2 rounded-lg border transition-colors ${
+                      multiSelectMode
+                        ? "bg-blue-500/20 border-blue-500/50 text-blue-400"
+                        : "border-white/20 text-white/70 hover:bg-white/10"
+                    }`}
+                  >
+                    {multiSelectMode
+                      ? "✖ Exit Multi-Select"
+                      : "☑ Multi-Select"}
+                  </button>
+
+                  {multiSelectMode && selectedForRoute.length >= 2 && (
+                    <button
+                      onClick={() => {
+                        setRouteDestinations(selectedForRoute);
+                        setShowRouteModal(true);
+                      }}
+                      className="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-blue-500/50 transition-all"
+                    >
+                      🗺️ Build Route ({selectedForRoute.length})
+                    </button>
+                  )}
+                </div>
+              )}
+
               {highlightedDestinations.length === 0 ? (
                 <div
                   className={`rounded-3xl border px-8 py-16 text-center text-lg ${isDark ? "border-[#2b5f49]/25 bg-[#f5f1e8]/75 text-[#f5e9d4]" : "border-[#0e1512]/10 bg-white/70 text-[#0f1a13]/70"}`}
@@ -1096,93 +1135,93 @@ export default function UserDashboard(): JSX.Element {
                   No destinations match your filters. Reset to rediscover the
                   wild.
                 </div>
-              ) : (
-                <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                  {highlightedDestinations.map((destination) => {
-                    const selected = selectedDestinations.some(
+              ) : multiSelectMode ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {highlightedDestinations.map((destination, index) => {
+                    const isSelected = selectedForRoute.some(
                       (d) => d.destinationId === destination.destinationId,
                     );
                     return (
-                      <motion.div
+                      <div
                         key={destination.destinationId}
-                        onClick={() => handleDestinationSelect(destination)}
-                        whileHover={{ y: -8 }}
-                        className={`group relative overflow-hidden rounded-3xl border text-left transition-all cursor-pointer ${
-                          selected
-                            ? "border-[#d9b26f] shadow-[0_25px_45px_rgba(248,209,108,0.25)]"
-                            : isDark
-                              ? "border-[#2b5f49]/25 hover:border-[#d9b26f]/40"
-                              : "border-[#0f1a13]/15 hover:border-[#0f1a13]/40"
+                        className={`relative overflow-hidden rounded-2xl border cursor-pointer transition-all ${
+                          isSelected
+                            ? "border-blue-500/50 bg-blue-500/10 shadow-lg shadow-blue-500/20"
+                            : "border-white/10 bg-white/5 hover:border-white/20"
                         }`}
+                        onClick={() => {
+                          setSelectedForRoute((prev) =>
+                            isSelected
+                              ? prev.filter(
+                                  (d) =>
+                                    d.destinationId !==
+                                    destination.destinationId,
+                                )
+                              : [...prev, destination],
+                          );
+                        }}
                       >
-                        <div className="relative h-64 overflow-hidden">
-                          <motion.img
+                        {/* Selection checkbox */}
+                        <div className="absolute top-3 right-3 z-10">
+                          <div
+                            className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-colors ${
+                              isSelected
+                                ? "border-blue-400 bg-blue-400"
+                                : "border-white/50 bg-black/20"
+                            }`}
+                          >
+                            {isSelected && (
+                              <svg
+                                className="w-4 h-4 text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="aspect-[4/3] overflow-hidden relative">
+                          <img
                             src={
                               destination.imageUrl ||
-                              `https://images.unsplash.com/photo-${1500000000000 + destination.destinationId}?auto=format&fit=crop&w=1200&q=80`
+                              `https://via.placeholder.com/400x300?text=Destination`
                             }
                             alt={destination.name}
-                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            className="w-full h-full object-cover"
+                            loading="lazy"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-                          <div className="absolute top-1 right-1 z-10">
-                            <WeatherWidget
-                              city={destination.city || destination.name}
-                              className="scale-30 origin-top-right"
-                            />
-                          </div>
-                          {selected && (
-                            <motion.div
-                              initial={{ scale: 0.6, opacity: 0 }}
-                              animate={{ scale: 1, opacity: 1 }}
-                              className="absolute top-4 right-4 w-12 h-12 rounded-full bg-[#d9b26f] text-[#0f1a13] font-bold flex items-center justify-center shadow-lg"
-                            >
-                              ✓
-                            </motion.div>
-                          )}
                         </div>
-                        <div className="p-6 space-y-4">
-                          <div className="flex items-center justify-between">
-                            <h3 className="text-2xl font-semibold">
-                              {destination.name}
-                            </h3>
-                            <span className="text-sm uppercase tracking-[0.3em] text-blue-300">
+                        <div className="p-5">
+                          <h3 className="text-lg font-semibold text-white mb-2">
+                            {destination.name}
+                          </h3>
+                          {destination.country && (
+                            <p className="text-sm text-white/60 mb-2">
                               {destination.country}
-                            </span>
-                          </div>
-                          <p
-                            className={`text-sm leading-relaxed ${isDark ? "text-[#d7e7da]" : "text-[#0f1a13]/70"}`}
-                          >
-                            {destination.description ||
-                              "Untamed landscapes and hidden stories."}
+                            </p>
+                          )}
+                          <p className="text-white/70 text-sm">
+                            ₹{destination.price.toLocaleString()}
                           </p>
-                          <div className="flex items-center justify-between">
-                            <div className="text-3xl font-bold text-blue-300">
-                              ₹{destination.price.toLocaleString()}
-                            </div>
-                            <div
-                              className={`text-xs uppercase tracking-[0.4em] ${isDark ? "text-[#f5e9d4]/60" : "text-[#0f1a13]/50"}`}
-                            >
-                              Per night
-                            </div>
-                          </div>
-                          <div className="flex gap-2 pt-2">
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setSelectedDestinationForDetails(destination);
-                                setShowDestinationDetails(true);
-                              }}
-                              className="flex-1 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors text-sm font-medium"
-                            >
-                              View Details
-                            </button>
-                          </div>
                         </div>
-                      </motion.div>
+                      </div>
                     );
                   })}
                 </div>
+              ) : (
+                <DestinationList
+                  destinations={highlightedDestinations}
+                  onViewDetails={(destination) => {
+                    setSelectedDestinationForDetails(destination);
+                    setShowDestinationDetails(true);
+                  }}
+                />
               )}
             </div>
           </div>
@@ -1564,12 +1603,12 @@ export default function UserDashboard(): JSX.Element {
                     <div className="rounded-2xl overflow-hidden border border-[#2b5f49]/25">
                       <RouteMap
                         destinations={
-                          optimizedDestinations as {
-                            destinationId: number;
-                            name: string;
-                            latitude: number;
-                            longitude: number;
-                          }[]
+                          optimizedDestinations.map((d) => ({
+                            destinationId: d.destinationId,
+                            name: d.name,
+                            lat: d.latitude || 0,
+                            lon: d.longitude || 0,
+                          }))
                         }
                       />
                     </div>
@@ -2120,15 +2159,26 @@ export default function UserDashboard(): JSX.Element {
         )}
       </AnimatePresence>
 
-      <DestinationDetailsModal
+      <DestinationModal
         destination={selectedDestinationForDetails}
         isOpen={showDestinationDetails}
         onClose={() => {
           setShowDestinationDetails(false);
           setSelectedDestinationForDetails(null);
         }}
-        userId={user?.userId}
-        userName={user?.name}
+      />
+
+      <RouteModal
+        isOpen={showRouteModal}
+        onClose={() => {
+          setShowRouteModal(false);
+          setRouteDestinations([]);
+        }}
+        destinations={routeDestinations.map((d) => ({
+          name: d.name,
+          lat: d.latitude || 0,
+          lon: d.longitude || 0,
+        }))}
       />
     </div>
   );

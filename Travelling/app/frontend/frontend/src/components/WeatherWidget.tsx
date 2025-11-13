@@ -25,6 +25,7 @@ const extractCityName = (destinationName: string): string => {
     "santorini sunset escape": "Santorini",
     "swiss alps adventure": "Zermatt",
     "gandipet mandal": "Hyderabad",
+    "Gandipet mandal": "Hyderabad",
     "tokyo nightlife": "Tokyo",
     "bali beach paradise": "Denpasar",
     "new york city": "New York",
@@ -107,33 +108,33 @@ const extractCityName = (destinationName: string): string => {
     "mizoram hills": "Aizawl",
     "arunachal pradesh": "Itanagar",
     "andhra pradesh": "Visakhapatnam",
-    "telangana": "Hyderabad",
-    "karnataka": "Bangalore",
+    telangana: "Hyderabad",
+    karnataka: "Bangalore",
     "tamil nadu": "Chennai",
-    "kerala": "Thiruvananthapuram",
-    "goa": "Panaji",
-    "maharashtra": "Mumbai",
-    "gujarat": "Ahmedabad",
-    "rajasthan": "Jaipur",
+    kerala: "Thiruvananthapuram",
+    goa: "Panaji",
+    maharashtra: "Mumbai",
+    gujarat: "Ahmedabad",
+    rajasthan: "Jaipur",
     "madhya pradesh": "Bhopal",
     "uttar pradesh": "Lucknow",
-    "bihar": "Patna",
+    bihar: "Patna",
     "west bengal": "Kolkata",
-    "odisha": "Bhubaneswar",
-    "chhattisgarh": "Raipur",
-    "jharkhand": "Ranchi",
-    "uttarakhand": "Dehradun",
+    odisha: "Bhubaneswar",
+    chhattisgarh: "Raipur",
+    jharkhand: "Ranchi",
+    uttarakhand: "Dehradun",
     "himachal pradesh": "Shimla",
-    "punjab": "Chandigarh",
-    "haryana": "Chandigarh",
-    "delhi": "Delhi",
+    punjab: "Chandigarh",
+    haryana: "Chandigarh",
+    delhi: "Delhi",
     "jammu kashmir": "Srinagar",
-    "ladakh": "Leh",
-    "puducherry": "Puducherry",
-    "chandigarh": "Chandigarh",
+    ladakh: "Leh",
+    puducherry: "Puducherry",
+    chandigarh: "Chandigarh",
     "daman diu": "Daman",
     "dadra nagar haveli": "Silvassa",
-    "lakshadweep": "Kavaratti",
+    lakshadweep: "Kavaratti",
     "andaman nicobar": "Port Blair",
   };
 
@@ -156,14 +157,22 @@ const extractCityName = (destinationName: string): string => {
   }
 
   // Pattern 2: Split by spaces and take first 1-2 words that look like city names
-  const words = destinationName.split(' ');
+  const words = destinationName.split(" ");
   if (words.length >= 1) {
     // If first word ends with common city suffixes or is capitalized
-    if (words[0].match(/^(?:[A-Z][a-z]+|Delhi|Mumbai|Bangalore|Chennai|Hyderabad|Pune|Ahmedabad|Jaipur|Kolkata|Surat|Kanpur|Nagpur|Indore|Thane|Bhubaneswar|Visakhapatnam|Vijayawada|Guntur|Nellore|Rajahmundry|Kakinada|Tirupati|Anantapur|Kadapa|Chittoor|Eluru|Ongole|Nandyal|Machilipatnam|Adoni|Tenali|Proddatur|Chirala|Bapatla|Jaggayyapeta|Pedana|Tadepalligudem|Mangalagiri|Sattenapalle|Vinukonda|Narasaraopet|Siddipet|Miryalaguda|Suryapet|Jangaon|Bhuvanagiri|Warangal|Nizamabad|Karimnagar|Ramagundam|Khammam|Mahbubnagar|Nalgonda|Wanaparthy|Gadwal|Sadasivpet|Sangareddy|Medak|Siddipet|Nizamabad|Adilabad|Nirmal|Mancherial|Bellampalli|Bhainsa|Mandamarri|Asifabad|Kagaznagar|Sircilla|Jagtial|Koratla|Metpalli|Dharmapuri|Warangal|Hanamkonda|Kothagudem|Bhadrachalam|Palwancha|Sathupalli|Dammapeta|Manuguru|Yellandu|Khammam|Kothagudem|Sattupalli|Bhadrachalam|Palwancha|Dammapeta|Manuguru|Yellandu|Khammam|Kothagudem|Sattupalli|Bhadrachalam|Palwancha|Dammapeta|Manuguru|Yellandu)$/)) {
+    if (
+      words[0].match(
+        /^(?:[A-Z][a-z]+|Delhi|Mumbai|Bangalore|Chennai|Hyderabad|Pune|Ahmedabad|Jaipur|Kolkata|Surat|Kanpur|Nagpur|Indore|Thane|Bhubaneswar|Visakhapatnam|Vijayawada|Guntur|Nellore|Rajahmundry|Kakinada|Tirupati|Anantapur|Kadapa|Chittoor|Eluru|Ongole|Nandyal|Machilipatnam|Adoni|Tenali|Proddatur|Chirala|Bapatla|Jaggayyapeta|Pedana|Tadepalligudem|Mangalagiri|Sattenapalle|Vinukonda|Narasaraopet|Siddipet|Miryalaguda|Suryapet|Jangaon|Bhuvanagiri|Warangal|Nizamabad|Karimnagar|Ramagundam|Khammam|Mahbubnagar|Nalgonda|Wanaparthy|Gadwal|Sadasivpet|Sangareddy|Medak|Siddipet|Nizamabad|Adilabad|Nirmal|Mancherial|Bellampalli|Bhainsa|Mandamarri|Asifabad|Kagaznagar|Sircilla|Jagtial|Koratla|Metpalli|Dharmapuri|Warangal|Hanamkonda|Kothagudem|Bhadrachalam|Palwancha|Sathupalli|Dammapeta|Manuguru|Yellandu|Khammam|Kothagudem|Sattupalli|Bhadrachalam|Palwancha|Dammapeta|Manuguru|Yellandu|Khammam|Kothagudem|Sattupalli|Bhadrachalam|Palwancha|Dammapeta|Manuguru|Yellandu)$/,
+      )
+    ) {
       return words[0];
     }
     // If first two words together look like a city
-    if (words.length >= 2 && words[0].match(/^[A-Z][a-z]+$/) && words[1].match(/^[A-Z][a-z]+$/)) {
+    if (
+      words.length >= 2 &&
+      words[0].match(/^[A-Z][a-z]+$/) &&
+      words[1].match(/^[A-Z][a-z]+$/)
+    ) {
       return `${words[0]} ${words[1]}`;
     }
   }
@@ -210,7 +219,7 @@ export default function WeatherWidget({
         cityToUse = extractCityName(cityName);
       } else if (location?.city) {
         // Use location city as fallback, cleaned
-        cityToUse = location.city.split(',')[0].trim();
+        cityToUse = location.city.split(",")[0].trim();
       }
 
       if (!cityToUse && (!lat || !lon)) return;
@@ -226,7 +235,10 @@ export default function WeatherWidget({
           weatherData = await weatherService.getWeatherByCity(cityToUse);
         } else {
           // Fallback to coordinates
-          weatherData = await weatherService.getWeatherByCoordinates(lat!, lon!);
+          weatherData = await weatherService.getWeatherByCoordinates(
+            lat!,
+            lon!,
+          );
         }
 
         setWeather(weatherData);

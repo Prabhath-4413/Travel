@@ -10,6 +10,14 @@ import L, { LatLngTuple } from "leaflet";
 import { useEffect, useMemo, useRef, useState } from "react";
 import "leaflet/dist/leaflet.css";
 
+// Simplified destination interface as requested
+export interface SimpleDestination {
+  name: string;
+  lat: number;
+  lon: number;
+}
+
+// Legacy interface for backward compatibility
 interface Destination {
   destinationId: number;
   name: string;
@@ -18,7 +26,7 @@ interface Destination {
 }
 
 interface RouteMapProps {
-  destinations?: Destination[];
+  destinations?: SimpleDestination[];
 }
 
 interface RouteSummary {
@@ -29,7 +37,7 @@ interface RouteSummary {
 
 interface RouteResult {
   coordinates: LatLngTuple[];
-  orderedDestinations: Destination[];
+  orderedDestinations: SimpleDestination[];
   summary: RouteSummary;
   message: string | null;
 }
@@ -80,12 +88,15 @@ const haversineDistanceKm = (from: LatLngTuple, to: LatLngTuple) => {
   return R * c;
 };
 
-const buildFallbackPolyline = (origin: LatLngTuple, points: Destination[]) => {
+const buildFallbackPolyline = (
+  origin: LatLngTuple,
+  points: SimpleDestination[],
+) => {
   const path: LatLngTuple[] = [origin];
   let previous = origin;
   let totalDistance = 0;
   points.forEach((p) => {
-    const next: LatLngTuple = [p.latitude, p.longitude];
+    const next: LatLngTuple = [p.lat, p.lon];
     path.push(next);
     totalDistance += haversineDistanceKm(previous, next);
     previous = next;
@@ -101,7 +112,7 @@ const buildFallbackPolyline = (origin: LatLngTuple, points: Destination[]) => {
 // 🧭 Geoapify Directions API
 const fetchGeoapifyRoute = async (
   coords: [number, number][],
-  destinations: Destination[],
+  destinations: SimpleDestination[],
 ): Promise<RouteResult | null> => {
   try {
     const apiKey = "b0bee86f61e647569755c3983775cf3d"; // ✅ your Geoapify key
@@ -120,7 +131,9 @@ const fetchGeoapifyRoute = async (
     const data = await response.json();
     const feature = data.features?.[0];
     if (!feature?.geometry?.coordinates) {
-      console.log("Geoapify: No driving route found for these locations (likely intercontinental). Using fallback routing.");
+      console.log(
+        "Geoapify: No driving route found for these locations (likely intercontinental). Using fallback routing.",
+      );
       return null;
     }
 
@@ -156,12 +169,12 @@ function RouteLayer({
   setRoutingMessage,
 }: {
   userLocation: LatLngTuple;
-  destinations: Destination[];
+  destinations: SimpleDestination[];
   setSummary: (v: RouteSummary) => void;
   setRoutingMessage: (v: string | null) => void;
 }) {
   const [routeCoords, setRouteCoords] = useState<LatLngTuple[]>([]);
-  const [optimizedOrder, setOptimizedOrder] = useState<Destination[]>([]);
+  const [optimizedOrder, setOptimizedOrder] = useState<SimpleDestination[]>([]);
   const map = useMap();
   const mapRef = useRef(map);
 
@@ -184,7 +197,7 @@ function RouteLayer({
     const run = async () => {
       const coords: [number, number][] = [
         [userLocation[1], userLocation[0]],
-        ...destinations.map((d) => [d.longitude, d.latitude]),
+        ...destinations.map((d) => [d.lon, d.lat]),
       ];
 
       try {
@@ -205,12 +218,18 @@ function RouteLayer({
         setRouteCoords(fallback.path);
         setOptimizedOrder([...destinations]);
         setSummary(fallback.summary);
-        setRoutingMessage("Using direct routing (no driving route available between these locations).");
-        mapRef.current.fitBounds(L.latLngBounds(fallback.path), { padding: [50, 50] });
+        setRoutingMessage(
+          "Using direct routing (no driving route available between these locations).",
+        );
+        mapRef.current.fitBounds(L.latLngBounds(fallback.path), {
+          padding: [50, 50],
+        });
       } catch (err) {
         console.error("Route fetch failed:", err);
         if (!cancelled) {
-          setRoutingMessage("Using direct routing (routing service unavailable).");
+          setRoutingMessage(
+            "Using direct routing (routing service unavailable).",
+          );
         }
       }
     };
@@ -234,8 +253,8 @@ function RouteLayer({
 
       {optimizedOrder.map((d, i) => (
         <Marker
-          key={d.destinationId}
-          position={[d.latitude, d.longitude]}
+          key={`${d.name}-${i}`}
+          position={[d.lat, d.lon]}
           icon={createNumberedIcon(i + 1)}
         >
           <Popup>
