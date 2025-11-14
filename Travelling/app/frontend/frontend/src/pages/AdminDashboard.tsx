@@ -26,6 +26,7 @@ import {
   type TripCancellationDecisionPayload,
   type AdminStats,
 } from "../lib/api";
+import { calculateDynamicPrice } from "../lib/pricing";
 import { useDestinations } from "../contexts/DestinationsContext";
 import UserDashboard from "./UserDashboard";
 
@@ -105,6 +106,18 @@ export default function AdminDashboard() {
     imageUrl: "",
     latitude: "",
     longitude: "",
+  });
+
+  const [priceEditModal, setPriceEditModal] = useState<{
+    isOpen: boolean;
+    destination: Destination | null;
+    suggestedPrice: number;
+    reasons: string[];
+  }>({
+    isOpen: false,
+    destination: null,
+    suggestedPrice: 0,
+    reasons: [],
   });
 
   // Fetch bookings
@@ -295,6 +308,59 @@ export default function AdminDashboard() {
       console.error("Error deleting destination:", err);
       alert("Failed to delete destination.");
     }
+  };
+
+  const handlePriceDown = async (destination: Destination) => {
+    try {
+      // Calculate current pricing to get weather and weekend adjustments
+      const pricingResult = await calculateDynamicPrice(destination, new Date(), 1, 1);
+
+      // Calculate the reduction amount (negative adjustments for weather and weekend)
+      const weatherReduction = pricingResult.adjustments.weather < 0 ? Math.abs(pricingResult.adjustments.weather) : 0;
+      const weekendReduction = pricingResult.adjustments.weekend > 0 ? pricingResult.adjustments.weekend : 0;
+
+      // Apply additional reduction if weather is bad or it's weekend
+      const totalReductionPercent = weatherReduction + weekendReduction;
+
+      if (totalReductionPercent === 0) {
+        alert("No price reduction applicable - weather is good and it's not a weekend.");
+        return;
+      }
+
+      const suggestedPrice = Math.round(destination.price * (1 - totalReductionPercent / 100));
+
+      if (suggestedPrice >= destination.price) {
+        alert("No price reduction needed.");
+        return;
+      }
+
+      // Collect reasons
+      const reasons = [];
+      if (pricingResult.adjustments.weather < 0) reasons.push('Bad weather conditions');
+      if (pricingResult.adjustments.weekend > 0) reasons.push('Weekend pricing');
+
+      // Open the price edit modal
+      setPriceEditModal({
+        isOpen: true,
+        destination,
+        suggestedPrice,
+        reasons,
+      });
+    } catch (err) {
+      console.error("Error calculating price reduction:", err);
+      alert("Failed to calculate price suggestion. Check weather API connection.");
+    }
+  };
+
+  const handleSavePrice = (newPrice: number) => {
+    // Since backend doesn't support updates, just show success message
+    alert(`Price suggestion saved for reference!\n\nNew price: ₹${newPrice.toLocaleString()}\n\nPlease manually update this price in your database.`);
+    setPriceEditModal({
+      isOpen: false,
+      destination: null,
+      suggestedPrice: 0,
+      reasons: [],
+    });
   };
 
   const handleTestEmail = async () => {
@@ -831,14 +897,22 @@ export default function AdminDashboard() {
                     </span>
                     <span className="text-white/60 text-sm">per night</span>
                   </div>
-                  <button
-                    onClick={() =>
-                      handleDeleteDestination(destination.destinationId)
-                    }
-                    className="w-full px-4 py-2.5 bg-gradient-to-r from-red-500/20 to-pink-500/20 hover:from-red-500/30 hover:to-pink-500/30 text-red-400 rounded-lg border border-red-500/30 transition-all font-medium hover:shadow-lg hover:shadow-red-500/20"
-                  >
-                    Delete
-                  </button>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handlePriceDown(destination)}
+                      className="flex-1 px-4 py-2.5 bg-gradient-to-r from-orange-500/20 to-yellow-500/20 hover:from-orange-500/30 hover:to-yellow-500/30 text-orange-400 rounded-lg border border-orange-500/30 transition-all font-medium hover:shadow-lg hover:shadow-orange-500/20"
+                    >
+                      💰 Suggest Price
+                    </button>
+                    <button
+                      onClick={() =>
+                        handleDeleteDestination(destination.destinationId)
+                      }
+                      className="flex-1 px-4 py-2.5 bg-gradient-to-r from-red-500/20 to-pink-500/20 hover:from-red-500/30 hover:to-pink-500/30 text-red-400 rounded-lg border border-red-500/30 transition-all font-medium hover:shadow-lg hover:shadow-red-500/20"
+                    >
+                      Delete
+                    </button>
+                  </div>
                   <p className="mt-3 text-xs text-white/60 italic text-center">
                     Admins cannot make bookings.
                   </p>
@@ -884,6 +958,25 @@ export default function AdminDashboard() {
             setNewDestination={setNewDestination}
             onClose={() => setShowAddForm(false)}
             onSubmit={handleAddDestination}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Price Edit Modal */}
+      <AnimatePresence>
+        {priceEditModal.isOpen && (
+          <PriceEditModal
+            isOpen={priceEditModal.isOpen}
+            destination={priceEditModal.destination}
+            suggestedPrice={priceEditModal.suggestedPrice}
+            reasons={priceEditModal.reasons}
+            onClose={() => setPriceEditModal({
+              isOpen: false,
+              destination: null,
+              suggestedPrice: 0,
+              reasons: [],
+            })}
+            onSave={handleSavePrice}
           />
         )}
       </AnimatePresence>
@@ -1227,6 +1320,153 @@ function AddDestinationModal({
             </button>
           </div>
         </form>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function PriceEditModal({
+  isOpen,
+  destination,
+  suggestedPrice,
+  reasons,
+  onClose,
+  onSave,
+}: {
+  isOpen: boolean;
+  destination: Destination | null;
+  suggestedPrice: number;
+  reasons: string[];
+  onClose: () => void;
+  onSave: (newPrice: number) => void;
+}) {
+  const [customPrice, setCustomPrice] = useState(suggestedPrice.toString());
+
+  // Update custom price when suggested price changes
+  useEffect(() => {
+    setCustomPrice(suggestedPrice.toString());
+  }, [suggestedPrice]);
+
+  if (!isOpen || !destination) return null;
+
+  const handleSave = () => {
+    const price = parseFloat(customPrice);
+    if (isNaN(price) || price <= 0) {
+      alert("Please enter a valid price.");
+      return;
+    }
+    onSave(price);
+  };
+
+  const reductionPercent = Math.round(((destination.price - suggestedPrice) / destination.price) * 100);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center px-6"
+    >
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.8, opacity: 0, y: 20 }}
+        className="bg-[#0e1512] backdrop-blur-xl rounded-2xl border border-white/20 p-8 max-w-md w-full shadow-2xl"
+      >
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-2xl font-bold bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">
+            💰 Price Suggestion
+          </h3>
+          <button
+            onClick={onClose}
+            className="text-white/70 hover:text-white transition-colors"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div className="space-y-6">
+          <div>
+            <h4 className="text-lg font-semibold text-white mb-2">
+              {destination.name}
+            </h4>
+            <p className="text-white/70 text-sm">
+              {destination.description || "No description"}
+            </p>
+          </div>
+
+          <div className="bg-white/5 rounded-lg p-4 space-y-3">
+            <div className="flex justify-between items-center">
+              <span className="text-white/70">Current Price:</span>
+              <span className="text-xl font-bold text-white">
+                ₹{destination.price.toLocaleString()}
+              </span>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <span className="text-white/70">Suggested Price:</span>
+              <span className="text-xl font-bold text-green-400">
+                ₹{suggestedPrice.toLocaleString()}
+              </span>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <span className="text-white/70">Reduction:</span>
+              <span className="text-lg font-semibold text-red-400">
+                -{reductionPercent}%
+              </span>
+            </div>
+          </div>
+
+          <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+            <h5 className="text-blue-300 font-medium mb-2">Reason for Suggestion:</h5>
+            <ul className="text-blue-200 text-sm space-y-1">
+              {reasons.map((reason, index) => (
+                <li key={index} className="flex items-center">
+                  <span className="mr-2">•</span>
+                  {reason}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-white/90 mb-2">
+              Custom Price (₹)
+            </label>
+            <input
+              type="number"
+              min="1"
+              step="1"
+              value={customPrice}
+              onChange={(e) => setCustomPrice(e.target.value)}
+              className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-orange-500/50"
+              placeholder="Enter custom price"
+            />
+          </div>
+
+          <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
+            <p className="text-yellow-200 text-sm">
+              <strong>Note:</strong> Backend doesn't support automatic price updates.
+              The new price will be displayed for reference only. Please manually update the price in your database.
+            </p>
+          </div>
+
+          <div className="flex gap-4 pt-4">
+            <button
+              onClick={onClose}
+              className="flex-1 px-4 py-3 bg-gradient-to-r from-gray-500/20 to-gray-600/20 hover:from-gray-500/30 hover:to-gray-600/30 text-gray-300 rounded-lg border border-gray-500/30 transition-all font-medium hover:shadow-lg hover:shadow-gray-500/20"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleSave}
+              className="flex-1 px-4 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-lg border border-orange-500/30 transition-all font-medium hover:shadow-lg hover:shadow-orange-500/50 transform hover:scale-105"
+            >
+              Save Price
+            </button>
+          </div>
+        </div>
       </motion.div>
     </motion.div>
   );

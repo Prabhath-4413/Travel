@@ -30,10 +30,10 @@ const PaymentPage: React.FC = () => {
     }
 
     // Load Razorpay script and create order
-    initializePayment();
+    initializePayment(token);
   }, [bookingId, token]);
 
-  const initializePayment = async () => {
+  const initializePayment = async (tokenParam: string) => {
     try {
       setLoading(true);
       setError(null);
@@ -42,7 +42,7 @@ const PaymentPage: React.FC = () => {
       await loadRazorpayScript();
 
       // Create order from backend
-      const orderResponse = await PaymentApi.createOrder({ token });
+      const orderResponse = await PaymentApi.createOrder({ token: tokenParam });
       setOrderData(orderResponse);
 
       // Initialize Razorpay checkout
@@ -133,7 +133,11 @@ const PaymentPage: React.FC = () => {
   };
 
   const handleRetry = () => {
-    initializePayment();
+    if (!token) {
+      setError("Invalid payment link. Missing booking ID or token.");
+      return;
+    }
+    initializePayment(token);
   };
 
   if (loading) {

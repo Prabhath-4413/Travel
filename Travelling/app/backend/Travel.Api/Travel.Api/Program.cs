@@ -299,6 +299,24 @@ app.MapDelete("/admin/destinations/{id:int}", async (ApplicationDbContext db, in
     return Results.NoContent();
 }).RequireAuthorization(policy => policy.RequireRole("admin"));
 
+app.MapPatch("/admin/destinations/{id:int}", async (ApplicationDbContext db, int id, UpdateDestinationDto dto) =>
+{
+    var d = await db.Destinations.FindAsync(id);
+    if (d is null) return Results.NotFound();
+
+    if (dto.Name is not null) d.Name = dto.Name;
+    if (dto.Description is not null) d.Description = dto.Description;
+    if (dto.Price is not null) d.Price = dto.Price.Value;
+    if (dto.ImageUrl is not null) d.ImageUrl = dto.ImageUrl;
+    if (dto.Latitude is not null) d.Latitude = dto.Latitude;
+    if (dto.Longitude is not null) d.Longitude = dto.Longitude;
+    if (dto.Country is not null) d.Country = dto.Country;
+    if (dto.City is not null) d.City = dto.City;
+
+    await db.SaveChangesAsync();
+    return Results.Ok(d);
+}).RequireAuthorization(policy => policy.RequireRole("admin"));
+
 app.MapPost("/bookings", async (ApplicationDbContext db, IMessageQueueService messageQueue, BookingRequestDto dto) =>
 {
     if (dto.DestinationIds.Length == 0)
@@ -869,6 +887,7 @@ app.Run();
 public record RegisterDto(string Name, string Email, string Password);
 public record LoginDto(string Email, string Password);
 public record CreateDestinationDto(string Name, string? Description, decimal Price, string? ImageUrl, decimal? Latitude, decimal? Longitude);
+public record UpdateDestinationDto(string? Name, string? Description, decimal? Price, string? ImageUrl, decimal? Latitude, decimal? Longitude, string? Country, string? City);
 public record BookingRequestDto(int UserId, int[] DestinationIds, int Guests, int Nights, DateTime StartDate);
 public record ShortestPathRequestDto(Coordinate[] Points);
 public record Coordinate(decimal Latitude, decimal Longitude);

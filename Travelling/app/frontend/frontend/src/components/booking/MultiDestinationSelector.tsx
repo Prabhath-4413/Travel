@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { useDestinations } from "../../contexts/DestinationsContext";
 import { type Destination } from "../../lib/api";
+import { calculateDynamicPrice, type PricingResult } from "../../lib/pricing";
 import RouteModal from "./RouteModal";
 
 export default function MultiDestinationSelector() {
@@ -14,6 +15,42 @@ export default function MultiDestinationSelector() {
     Destination[]
   >([]);
   const [showRouteModal, setShowRouteModal] = useState(false);
+  const [destinationPricings, setDestinationPricings] = useState<Map<number, PricingResult>>(new Map());
+
+  // Calculate pricing for all destinations
+  useEffect(() => {
+    const calculateAllPricings = async () => {
+      if (destinations.length === 0) return;
+
+      const pricingPromises = destinations.map(async (dest) => {
+        try {
+          const pricing = await calculateDynamicPrice(dest, new Date(), 1, 1);
+          return { destinationId: dest.destinationId, pricing };
+        } catch (error) {
+          console.error(`Failed to calculate pricing for ${dest.name}:`, error);
+          // Fallback to base price
+          return {
+            destinationId: dest.destinationId,
+            pricing: {
+              basePrice: dest.price,
+              finalPrice: dest.price,
+              adjustments: { season: 0, weather: 0, demand: 0, weekend: 0, lastMinute: 0 },
+              pricingReason: 'Base price'
+            }
+          };
+        }
+      });
+
+      const results = await Promise.all(pricingPromises);
+      const pricingMap = new Map<number, PricingResult>();
+      results.forEach(({ destinationId, pricing }) => {
+        pricingMap.set(destinationId, pricing);
+      });
+      setDestinationPricings(pricingMap);
+    };
+
+    calculateAllPricings();
+  }, [destinations]);
 
   const toggleDestination = (destination: Destination) => {
     setSelectedDestinations((prev) =>
@@ -44,7 +81,10 @@ export default function MultiDestinationSelector() {
   };
 
   const totalPrice = selectedDestinations.reduce(
-    (sum, dest) => sum + dest.price,
+    (sum, dest) => {
+      const pricing = destinationPricings.get(dest.destinationId);
+      return sum + (pricing?.finalPrice || dest.price);
+    },
     0,
   );
 
@@ -202,7 +242,7 @@ export default function MultiDestinationSelector() {
                       )}
                     </div>
                     <span className="text-sm text-white/70">
-                      ₹{destination.price.toLocaleString()}
+                      ₹{destinationPricings.get(destination.destinationId)?.finalPrice?.toLocaleString() || destination.price.toLocaleString()}
                     </span>
                   </div>
 

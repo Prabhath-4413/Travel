@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "../../contexts/AuthContext";
 import { bookingsAPI, type Destination } from "../../lib/api";
+import { calculateMultiDestinationPrice, type PricingResult } from "../../lib/pricing";
 
 interface BookingFormProps {
   destinations: Destination[];
@@ -31,11 +32,43 @@ export default function BookingForm({
   }, [destinations]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [pricing, setPricing] = useState<PricingResult | null>(null);
+  const [pricingLoading, setPricingLoading] = useState(false);
 
-  const totalPrice =
-    destinations.reduce((sum, dest) => sum + dest.price, 0) *
-    formData.guests *
-    formData.nights;
+  // Calculate dynamic pricing when form data changes
+  useEffect(() => {
+    const calculatePricing = async () => {
+      if (destinations.length === 0) return;
+
+      setPricingLoading(true);
+      try {
+        const result = await calculateMultiDestinationPrice(
+          destinations,
+          new Date(formData.startDate),
+          formData.guests,
+          formData.nights
+        );
+        setPricing(result);
+      } catch (error) {
+        console.error('Failed to calculate pricing:', error);
+        // Fallback to static pricing
+        const staticPrice = destinations.reduce((sum, dest) => sum + dest.price, 0) *
+          formData.guests * formData.nights;
+        setPricing({
+          basePrice: staticPrice,
+          finalPrice: staticPrice,
+          adjustments: { season: 0, weather: 0, demand: 0, weekend: 0, lastMinute: 0 },
+          pricingReason: 'Pricing calculation failed, showing base price'
+        });
+      } finally {
+        setPricingLoading(false);
+      }
+    };
+
+    calculatePricing();
+  }, [destinations, formData.startDate, formData.guests, formData.nights]);
+
+  const totalPrice = pricing?.finalPrice || 0;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -185,27 +218,67 @@ export default function BookingForm({
 
           {/* Price Breakdown */}
           <div className="bg-white/5 rounded-lg p-4 space-y-2">
-            <div className="flex justify-between text-white/70">
-              <span>Base price per night:</span>
-              <span>
-                ₹
-                {destinations
-                  .reduce((sum, dest) => sum + dest.price, 0)
-                  .toLocaleString()}
-              </span>
-            </div>
-            <div className="flex justify-between text-white/70">
-              <span>Guests × Nights:</span>
-              <span>
-                {formData.guests} × {formData.nights}
-              </span>
-            </div>
-            <div className="border-t border-white/10 pt-2">
-              <div className="flex justify-between text-xl font-bold text-green-400">
-                <span>Total Price:</span>
-                <span>₹{totalPrice.toLocaleString()}</span>
+            {pricingLoading ? (
+              <div className="text-center text-white/70 py-4">
+                Calculating price...
               </div>
-            </div>
+            ) : pricing ? (
+              <>
+                <div className="flex justify-between text-white/70">
+                  <span>Base price:</span>
+                  <span>₹{pricing.basePrice.toLocaleString()}</span>
+                </div>
+                {pricing.adjustments.season !== 0 && (
+                  <div className="flex justify-between text-white/70">
+                    <span>Seasonal adjustment:</span>
+                    <span className={pricing.adjustments.season > 0 ? 'text-green-400' : 'text-red-400'}>
+                      {pricing.adjustments.season > 0 ? '+' : ''}{pricing.adjustments.season}%
+                    </span>
+                  </div>
+                )}
+                {pricing.adjustments.weather !== 0 && (
+                  <div className="flex justify-between text-white/70">
+                    <span>Weather adjustment:</span>
+                    <span className={pricing.adjustments.weather > 0 ? 'text-green-400' : 'text-red-400'}>
+                      {pricing.adjustments.weather > 0 ? '+' : ''}{pricing.adjustments.weather}%
+                    </span>
+                  </div>
+                )}
+                {pricing.adjustments.demand !== 0 && (
+                  <div className="flex justify-between text-white/70">
+                    <span>Demand adjustment:</span>
+                    <span className={pricing.adjustments.demand > 0 ? 'text-green-400' : 'text-red-400'}>
+                      {pricing.adjustments.demand > 0 ? '+' : ''}{pricing.adjustments.demand}%
+                    </span>
+                  </div>
+                )}
+                {pricing.adjustments.weekend !== 0 && (
+                  <div className="flex justify-between text-white/70">
+                    <span>Weekend adjustment:</span>
+                    <span className="text-green-400">+{pricing.adjustments.weekend}%</span>
+                  </div>
+                )}
+                {pricing.adjustments.lastMinute !== 0 && (
+                  <div className="flex justify-between text-white/70">
+                    <span>Last-minute adjustment:</span>
+                    <span className="text-green-400">+{pricing.adjustments.lastMinute}%</span>
+                  </div>
+                )}
+                <div className="border-t border-white/10 pt-2">
+                  <div className="flex justify-between text-xl font-bold text-green-400">
+                    <span>Total Price:</span>
+                    <span>₹{totalPrice.toLocaleString()}</span>
+                  </div>
+                </div>
+                <div className="text-xs text-white/60 mt-2">
+                  {pricing.pricingReason}
+                </div>
+              </>
+            ) : (
+              <div className="text-center text-white/70 py-4">
+                Loading pricing information...
+              </div>
+            )}
           </div>
 
           <div className="flex gap-4 pt-4">

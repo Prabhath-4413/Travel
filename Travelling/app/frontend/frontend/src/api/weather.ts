@@ -26,7 +26,7 @@ export interface OpenWeatherMapResponse {
 
 class WeatherService {
   private baseUrl = "https://api.openweathermap.org/data/2.5/weather";
-  private apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
+  private apiKey: string | undefined = (import.meta.env as any).VITE_OPENWEATHER_API_KEY;
 
   // City fallback mapping for locations not recognized by OpenWeather API
   private cityFallbacks: Record<string, string> = {

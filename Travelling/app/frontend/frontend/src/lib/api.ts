@@ -223,6 +223,11 @@ export const destinationsAPI = {
     return response.data;
   },
 
+  update: async (id: number, destination: Partial<Destination>) => {
+    const response = await api.patch(`/admin/destinations/${id}`, destination);
+    return response.data;
+  },
+
   delete: async (id: number) => {
     await api.delete(`/admin/destinations/${id}`);
   },

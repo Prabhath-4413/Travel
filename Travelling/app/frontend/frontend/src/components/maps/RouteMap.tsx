@@ -197,7 +197,7 @@ function RouteLayer({
     const run = async () => {
       const coords: [number, number][] = [
         [userLocation[1], userLocation[0]],
-        ...destinations.map((d) => [d.lon, d.lat]),
+        ...destinations.map((d): [number, number] => [d.lon, d.lat]),
       ];
 
       try {

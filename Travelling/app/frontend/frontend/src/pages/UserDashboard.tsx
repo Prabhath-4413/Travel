@@ -1834,14 +1834,12 @@ export default function UserDashboard(): JSX.Element {
 
                 <div className="rounded-2xl overflow-hidden border border-[#2b5f49]/25">
                   <RouteMap
-                    destinations={
-                      optimizedDestinations as {
-                        destinationId: number;
-                        name: string;
-                        latitude: number;
-                        longitude: number;
-                      }[]
-                    }
+                    destinations={optimizedDestinations.map((d) => ({
+                      destinationId: d.destinationId,
+                      name: d.name,
+                      lat: d.latitude || 0,
+                      lon: d.longitude || 0,
+                    }))}
                   />
                 </div>
               </div>
