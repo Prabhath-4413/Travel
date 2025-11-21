@@ -120,6 +120,58 @@ namespace Travel.Api.Migrations
                     b.ToTable("booking_destinations", (string)null);
                 });
 
+            modelBuilder.Entity("Travel.Api.Models.BookingOtp", b =>
+                {
+                    b.Property<int>("BookingOtpId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("booking_otp_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BookingOtpId"));
+
+                    b.Property<int>("BookingId")
+                        .HasColumnType("integer")
+                        .HasColumnName("booking_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("email");
+
+                    b.Property<DateTime>("Expiry")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expiry");
+
+                    b.Property<string>("Otp")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("character varying(6)")
+                        .HasColumnName("otp");
+
+                    b.Property<bool>("Used")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("used");
+
+                    b.HasKey("BookingOtpId");
+
+                    b.HasIndex("BookingId")
+                        .HasDatabaseName("idx_booking_otps_booking_id");
+
+                    b.HasIndex("Email")
+                        .HasDatabaseName("idx_booking_otps_email");
+
+                    b.ToTable("booking_otps", (string)null);
+                });
+
             modelBuilder.Entity("Travel.Api.Models.Destination", b =>
                 {
                     b.Property<int>("DestinationId")
@@ -186,7 +238,7 @@ namespace Travel.Api.Migrations
                             DestinationId = 1,
                             City = "Goa",
                             Country = "India",
-                            CreatedAt = new DateTime(2025, 11, 11, 9, 57, 18, 800, DateTimeKind.Utc).AddTicks(9487),
+                            CreatedAt = new DateTime(2025, 11, 21, 8, 50, 55, 188, DateTimeKind.Utc).AddTicks(7531),
                             Description = "Golden beaches, vibrant shacks, and Portuguese heritage for a sun-soaked getaway.",
                             ImageUrl = "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=1200&auto=format&fit=crop",
                             Latitude = 15.2993m,
@@ -199,7 +251,7 @@ namespace Travel.Api.Migrations
                             DestinationId = 2,
                             City = "Munnar",
                             Country = "India",
-                            CreatedAt = new DateTime(2025, 11, 11, 9, 57, 18, 800, DateTimeKind.Utc).AddTicks(9500),
+                            CreatedAt = new DateTime(2025, 11, 21, 8, 50, 55, 188, DateTimeKind.Utc).AddTicks(7542),
                             Description = "Mist-covered mountains, endless tea gardens, and cool breezes in Kerala's hill country.",
                             ImageUrl = "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
                             Latitude = 10.0889m,
@@ -212,7 +264,7 @@ namespace Travel.Api.Migrations
                             DestinationId = 3,
                             City = "Jaipur",
                             Country = "India",
-                            CreatedAt = new DateTime(2025, 11, 11, 9, 57, 18, 800, DateTimeKind.Utc).AddTicks(9503),
+                            CreatedAt = new DateTime(2025, 11, 21, 8, 50, 55, 188, DateTimeKind.Utc).AddTicks(7545),
                             Description = "The Pink City's palaces, royal bazaars, and forts wrapped in Rajasthan heritage.",
                             ImageUrl = "https://images.unsplash.com/photo-1564507592333-c60657eea523?q=80&w=1200&auto=format&fit=crop",
                             Latitude = 26.9124m,
@@ -225,7 +277,7 @@ namespace Travel.Api.Migrations
                             DestinationId = 4,
                             City = "Bali",
                             Country = "Indonesia",
-                            CreatedAt = new DateTime(2025, 11, 11, 9, 57, 18, 800, DateTimeKind.Utc).AddTicks(9507),
+                            CreatedAt = new DateTime(2025, 11, 21, 8, 50, 55, 188, DateTimeKind.Utc).AddTicks(7549),
                             Description = "Balinese temples, terraced rice fields, and sunset beaches for an island escape.",
                             ImageUrl = "https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=1200&auto=format&fit=crop",
                             Latitude = -8.3405m,
@@ -238,7 +290,7 @@ namespace Travel.Api.Migrations
                             DestinationId = 5,
                             City = "Paris",
                             Country = "France",
-                            CreatedAt = new DateTime(2025, 11, 11, 9, 57, 18, 800, DateTimeKind.Utc).AddTicks(9510),
+                            CreatedAt = new DateTime(2025, 11, 21, 8, 50, 55, 188, DateTimeKind.Utc).AddTicks(7551),
                             Description = "Iconic boulevards, cafés, and museums in the heart of the City of Light.",
                             ImageUrl = "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=1200&auto=format&fit=crop",
                             Latitude = 48.8566m,
@@ -251,7 +303,7 @@ namespace Travel.Api.Migrations
                             DestinationId = 6,
                             City = "Santorini",
                             Country = "Greece",
-                            CreatedAt = new DateTime(2025, 11, 11, 9, 57, 18, 800, DateTimeKind.Utc).AddTicks(9513),
+                            CreatedAt = new DateTime(2025, 11, 21, 8, 50, 55, 188, DateTimeKind.Utc).AddTicks(7555),
                             Description = "Blue-domed churches, whitewashed cliffs, and legendary caldera sunsets.",
                             ImageUrl = "https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?q=80&w=1200&auto=format&fit=crop",
                             Latitude = 36.3932m,
@@ -264,7 +316,7 @@ namespace Travel.Api.Migrations
                             DestinationId = 7,
                             City = "Tokyo",
                             Country = "Japan",
-                            CreatedAt = new DateTime(2025, 11, 11, 9, 57, 18, 800, DateTimeKind.Utc).AddTicks(9515),
+                            CreatedAt = new DateTime(2025, 11, 21, 8, 50, 55, 188, DateTimeKind.Utc).AddTicks(7557),
                             Description = "Neon-lit streets, ancient temples, and cutting-edge technology in Japan's capital.",
                             ImageUrl = "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=1200&auto=format&fit=crop",
                             Latitude = 35.6762m,
@@ -277,7 +329,7 @@ namespace Travel.Api.Migrations
                             DestinationId = 8,
                             City = "Interlaken",
                             Country = "Switzerland",
-                            CreatedAt = new DateTime(2025, 11, 11, 9, 57, 18, 800, DateTimeKind.Utc).AddTicks(9518),
+                            CreatedAt = new DateTime(2025, 11, 21, 8, 50, 55, 188, DateTimeKind.Utc).AddTicks(7559),
                             Description = "Snow-capped peaks, crystal-clear lakes, and charming alpine villages.",
                             ImageUrl = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1200&auto=format&fit=crop",
                             Latitude = 46.8182m,
@@ -290,7 +342,7 @@ namespace Travel.Api.Migrations
                             DestinationId = 9,
                             City = "Dubai",
                             Country = "UAE",
-                            CreatedAt = new DateTime(2025, 11, 11, 9, 57, 18, 800, DateTimeKind.Utc).AddTicks(9520),
+                            CreatedAt = new DateTime(2025, 11, 21, 8, 50, 55, 188, DateTimeKind.Utc).AddTicks(7561),
                             Description = "Iconic skyscrapers, desert safaris, and world-class shopping in the UAE.",
                             ImageUrl = "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1200&auto=format&fit=crop",
                             Latitude = 25.2048m,
@@ -303,7 +355,7 @@ namespace Travel.Api.Migrations
                             DestinationId = 10,
                             City = "Cusco",
                             Country = "Peru",
-                            CreatedAt = new DateTime(2025, 11, 11, 9, 57, 18, 800, DateTimeKind.Utc).AddTicks(9522),
+                            CreatedAt = new DateTime(2025, 11, 21, 8, 50, 55, 188, DateTimeKind.Utc).AddTicks(7563),
                             Description = "Ancient Incan citadel, Andean mountains, and mystical cloud forests.",
                             ImageUrl = "https://images.unsplash.com/photo-1587595431973-160d0d94add1?q=80&w=1200&auto=format&fit=crop",
                             Latitude = -13.1631m,
@@ -316,7 +368,7 @@ namespace Travel.Api.Migrations
                             DestinationId = 11,
                             City = "Sydney",
                             Country = "Australia",
-                            CreatedAt = new DateTime(2025, 11, 11, 9, 57, 18, 800, DateTimeKind.Utc).AddTicks(9525),
+                            CreatedAt = new DateTime(2025, 11, 21, 8, 50, 55, 188, DateTimeKind.Utc).AddTicks(7566),
                             Description = "Iconic Opera House, Harbour Bridge, and pristine beaches in Australia's harbor city.",
                             ImageUrl = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1200&auto=format&fit=crop",
                             Latitude = -33.8688m,
@@ -329,7 +381,7 @@ namespace Travel.Api.Migrations
                             DestinationId = 12,
                             City = "Reykjavik",
                             Country = "Iceland",
-                            CreatedAt = new DateTime(2025, 11, 11, 9, 57, 18, 800, DateTimeKind.Utc).AddTicks(9528),
+                            CreatedAt = new DateTime(2025, 11, 21, 8, 50, 55, 188, DateTimeKind.Utc).AddTicks(7568),
                             Description = "Glaciers, geysers, waterfalls, and the magical aurora borealis.",
                             ImageUrl = "https://images.unsplash.com/photo-1539635278303-d4002c07eae3?q=80&w=1200&auto=format&fit=crop",
                             Latitude = 64.9631m,
@@ -382,111 +434,6 @@ namespace Travel.Api.Migrations
                         .HasDatabaseName("idx_feedbacks_created_at");
 
                     b.ToTable("feedbacks", (string)null);
-                });
-
-            modelBuilder.Entity("Travel.Api.Models.Payment", b =>
-                {
-                    b.Property<int>("PaymentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("payment_id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PaymentId"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("numeric(10,2)")
-                        .HasColumnName("amount");
-
-                    b.Property<int>("BookingId")
-                        .HasColumnType("integer")
-                        .HasColumnName("booking_id");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at")
-                        .HasDefaultValueSql("NOW()");
-
-                    b.Property<string>("RazorpayOrderId")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("razorpay_order_id");
-
-                    b.Property<string>("RazorpayPaymentId")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("razorpay_payment_id");
-
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0)
-                        .HasColumnName("status");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_at")
-                        .HasDefaultValueSql("NOW()");
-
-                    b.HasKey("PaymentId");
-
-                    b.HasIndex("BookingId")
-                        .IsUnique();
-
-                    b.ToTable("payments", (string)null);
-                });
-
-            modelBuilder.Entity("Travel.Api.Models.Refund", b =>
-                {
-                    b.Property<int>("RefundId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("refund_id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("RefundId"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("numeric(10,2)")
-                        .HasColumnName("amount");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at")
-                        .HasDefaultValueSql("NOW()");
-
-                    b.Property<int>("PaymentId")
-                        .HasColumnType("integer")
-                        .HasColumnName("payment_id");
-
-                    b.Property<DateTime?>("ProcessedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("processed_at");
-
-                    b.Property<string>("RazorpayRefundId")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("razorpay_refund_id");
-
-                    b.Property<string>("Reason")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)")
-                        .HasColumnName("reason");
-
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0)
-                        .HasColumnName("status");
-
-                    b.HasKey("RefundId");
-
-                    b.HasIndex("PaymentId");
-
-                    b.ToTable("refunds", (string)null);
                 });
 
             modelBuilder.Entity("Travel.Api.Models.Review", b =>
@@ -803,26 +750,15 @@ namespace Travel.Api.Migrations
                     b.Navigation("Destination");
                 });
 
-            modelBuilder.Entity("Travel.Api.Models.Payment", b =>
+            modelBuilder.Entity("Travel.Api.Models.BookingOtp", b =>
                 {
                     b.HasOne("Travel.Api.Models.Booking", "Booking")
-                        .WithOne("Payment")
-                        .HasForeignKey("Travel.Api.Models.Payment", "BookingId")
+                        .WithMany()
+                        .HasForeignKey("BookingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Booking");
-                });
-
-            modelBuilder.Entity("Travel.Api.Models.Refund", b =>
-                {
-                    b.HasOne("Travel.Api.Models.Payment", "Payment")
-                        .WithMany("Refunds")
-                        .HasForeignKey("PaymentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("Travel.Api.Models.Review", b =>
@@ -886,8 +822,6 @@ namespace Travel.Api.Migrations
                 {
                     b.Navigation("BookingDestinations");
 
-                    b.Navigation("Payment");
-
                     b.Navigation("TripCancellations");
                 });
 
@@ -896,11 +830,6 @@ namespace Travel.Api.Migrations
                     b.Navigation("BookingDestinations");
 
                     b.Navigation("TravelPackageDestinations");
-                });
-
-            modelBuilder.Entity("Travel.Api.Models.Payment", b =>
-                {
-                    b.Navigation("Refunds");
                 });
 
             modelBuilder.Entity("Travel.Api.Models.TravelPackage", b =>

@@ -249,6 +249,21 @@ export const bookingsAPI = {
     const response = await api.get("/admin/bookings");
     return response.data;
   },
+
+  sendOtp: async (bookingId: number) => {
+    const response = await api.post("/api/booking/send-otp", { bookingId });
+    return response.data;
+  },
+
+  verifyOtp: async (bookingId: number, otp: string) => {
+    const response = await api.post("/api/booking/verify-otp", { bookingId, otp });
+    return response.data;
+  },
+
+  confirmBooking: async (bookingId: number, email: string) => {
+    const response = await api.post("/api/booking/confirm", { bookingId, email });
+    return response.data;
+  },
 };
 
 // Trip Cancellation API

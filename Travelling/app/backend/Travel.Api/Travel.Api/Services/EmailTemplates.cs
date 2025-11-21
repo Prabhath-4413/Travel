@@ -89,5 +89,36 @@ namespace Travel.Api.Services
 </body>
 </html>";
         }
+
+        public static string VerificationOtp(string otp)
+        {
+            return $@"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""utf-8"" />
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1"" />
+    <title>Your Booking OTP</title>
+</head>
+<body style=""margin:0;padding:0;background:#f3f4f6;font-family:'Segoe UI',Arial,sans-serif;color:#111827;"">
+    <div style=""max-width:600px;margin:24px auto;background:#ffffff;border-radius:16px;padding:32px;box-shadow:0 20px 40px rgba(15,23,42,0.12);"">
+        <h1 style=""font-size:26px;margin:0 0 16px;text-align:center;"">🔐 Verify Your Booking</h1>
+        <p style=""font-size:16px;line-height:1.6;margin:0 0 24px;text-align:center;"">Your One-Time Password (OTP) for booking verification is:</p>
+
+        <div style=""background:#ffffff;border:2px solid #3b82f6;border-radius:12px;padding:24px;margin:24px 0;text-align:center;"">
+            <span style=""font-size:40px;font-weight:bold;color:#3b82f6;letter-spacing:8px;font-family:'Courier New',monospace;"">{otp}</span>
+        </div>
+
+        <div style=""background:#eff6ff;border-radius:12px;padding:16px;margin:20px 0;"">
+            <p style=""font-size:14px;line-height:1.6;margin:0;""><b>⏱️ Valid for:</b> 5 minutes only</p>
+            <p style=""font-size:14px;line-height:1.6;margin:8px 0 0;""><b>🔒 Security:</b> This OTP can only be used once</p>
+        </div>
+
+        <p style=""font-size:15px;line-height:1.6;margin:20px 0;"">Enter this OTP in your booking confirmation to proceed. Do not share this code with anyone.</p>
+
+        <p style=""font-size:14px;color:#6b7280;margin:24px 0 0;border-top:1px solid #e5e7eb;padding-top:20px;"">If you didn't request this OTP, please ignore this email.<br/><br/>Best regards,<br/><b>Travel App Team</b></p>
+    </div>
+</body>
+</html>";
+        }
     }
 }

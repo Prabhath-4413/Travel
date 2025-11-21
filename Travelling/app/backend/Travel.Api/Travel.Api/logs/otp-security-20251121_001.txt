@@ -1,0 +1,100 @@
+[2025-11-21 16:22:02.288 +05:30] [INF] BookingReminderService started
+[2025-11-21 16:22:02.507 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-21 16:22:02.508 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-21 16:22:02.508 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-21 16:22:02.508 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-21 16:22:02.509 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-21 16:22:02.509 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-21 16:22:02.509 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-21 16:22:02.509 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-21 16:22:02.513 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-21 16:22:02.517 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-21 16:22:02.519 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-21 16:22:02.521 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-21 16:22:02.632 +05:30] [ERR] Hosting failed to start
+System.IO.IOException: Failed to bind to address http://127.0.0.1:5000: address already in use.
+ ---> Microsoft.AspNetCore.Connections.AddressInUseException: Only one usage of each socket address (protocol/network address/port) is normally permitted.
+ ---> System.Net.Sockets.SocketException (10048): Only one usage of each socket address (protocol/network address/port) is normally permitted.
+   at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, Boolean disconnectOnFailure, String callerName)
+   at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportOptions.CreateDefaultBoundListenSocket(EndPoint endpoint)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate connectionDelegate, EndpointConfig endpointConfig, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.<>c__DisplayClass28_0`1.<<StartAsync>g__OnBind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindAsync(ListenOptions[] listenOptions, AddressBindContext context, Func`2 useHttps, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__15_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+[2025-11-21 16:22:02.654 +05:30] [WRN] Email queue channel shutdown 200 - Connection close forced.
+[2025-11-21 16:22:02.656 +05:30] [WRN] Booking queue channel shutdown 200 - Connection close forced.
+[2025-11-21 16:22:02.657 +05:30] [WRN] Booking email queue channel shutdown 200 - Connection close forced.
+[2025-11-21 16:22:02.657 +05:30] [WRN] Cancellation email queue channel shutdown 200 - Connection close forced.
+[2025-11-21 16:22:02.659 +05:30] [ERR] BackgroundService failed
+System.Threading.Tasks.TaskCanceledException: A task was canceled.
+   at Travel.Api.Services.BookingReminderService.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Administrator\Desktop\Travelling-main\Travelling\app\backend\Travel.Api\Travel.Api\Services\BookingReminderService.cs:line 59
+   at Microsoft.Extensions.Hosting.Internal.Host.TryExecuteBackgroundServiceAsync(BackgroundService backgroundService)
+[2025-11-21 16:24:34.434 +05:30] [INF] BookingReminderService started
+[2025-11-21 16:24:34.613 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-21 16:24:34.614 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-21 16:24:34.615 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-21 16:24:34.615 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-21 16:24:34.615 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-21 16:24:34.616 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-21 16:24:34.616 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-21 16:24:34.616 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-21 16:24:34.621 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-21 16:24:34.624 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-21 16:24:34.627 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-21 16:24:34.630 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-21 16:25:03.606 +05:30] [INF] Fetched 12 destinations
+[2025-11-21 16:26:07.797 +05:30] [INF] BookingReminderService started
+[2025-11-21 16:26:07.969 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-21 16:26:07.970 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-21 16:26:07.971 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-21 16:26:07.971 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-21 16:26:07.971 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-21 16:26:07.971 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-21 16:26:07.971 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-21 16:26:07.971 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-21 16:26:07.975 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-21 16:26:07.978 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-21 16:26:07.980 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-21 16:26:07.983 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-21 16:28:22.551 +05:30] [INF] BookingReminderService started
+[2025-11-21 16:28:22.753 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-21 16:28:22.755 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-21 16:28:22.755 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-21 16:28:22.756 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-21 16:28:22.756 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-21 16:28:22.756 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-21 16:28:22.756 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-21 16:28:22.756 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-21 16:28:22.760 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-21 16:28:22.763 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-21 16:28:22.766 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-21 16:28:22.768 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-21 16:32:14.571 +05:30] [INF] BookingReminderService started
+[2025-11-21 16:32:14.767 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-21 16:32:14.768 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-21 16:32:14.768 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-21 16:32:14.768 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-21 16:32:14.769 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-21 16:32:14.769 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-21 16:32:14.769 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-21 16:32:14.769 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-21 16:32:14.773 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-21 16:32:14.776 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-21 16:32:14.778 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-21 16:32:14.780 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.

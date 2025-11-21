@@ -32,21 +32,6 @@ public enum BookingStatus
     RefundPending = 6
 }
 
-public enum PaymentStatus
-{
-    Pending = 0,
-    Captured = 1,
-    Failed = 2,
-    Refunded = 3
-}
-
-public enum RefundStatus
-{
-    Pending = 0,
-    Processed = 1,
-    Failed = 2
-}
-
 public class User
 {
     [Key]
@@ -161,8 +146,6 @@ public class Booking
     public ICollection<BookingDestination> BookingDestinations { get; set; } = new List<BookingDestination>();
 
     public ICollection<TripCancellation> TripCancellations { get; set; } = new List<TripCancellation>();
-
-    public Payment? Payment { get; set; }
 }
 
 public class BookingDestination
@@ -174,68 +157,6 @@ public class BookingDestination
     [Column("destination_id")]
     public int DestinationId { get; set; }
     public Destination? Destination { get; set; }
-}
-
-public class Payment
-{
-    [Key]
-    [Column("payment_id")]
-    public int PaymentId { get; set; }
-
-    [Required]
-    [MaxLength(100)]
-    public string RazorpayOrderId { get; set; } = string.Empty;
-
-    [MaxLength(100)]
-    public string? RazorpayPaymentId { get; set; }
-
-    [Column(TypeName = "decimal(10,2)")]
-    public decimal Amount { get; set; }
-
-    public PaymentStatus Status { get; set; } = PaymentStatus.Pending;
-
-    [ForeignKey(nameof(Booking))]
-    [Column("booking_id")]
-    public int BookingId { get; set; }
-    public Booking? Booking { get; set; }
-
-    [Column("created_at")]
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-    [Column("updated_at")]
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-
-    public ICollection<Refund> Refunds { get; set; } = new List<Refund>();
-}
-
-public class Refund
-{
-    [Key]
-    [Column("refund_id")]
-    public int RefundId { get; set; }
-
-    [Required]
-    [MaxLength(100)]
-    public string RazorpayRefundId { get; set; } = string.Empty;
-
-    [ForeignKey(nameof(Payment))]
-    [Column("payment_id")]
-    public int PaymentId { get; set; }
-    public Payment? Payment { get; set; }
-
-    [Column(TypeName = "decimal(10,2)")]
-    public decimal Amount { get; set; }
-
-    public RefundStatus Status { get; set; } = RefundStatus.Pending;
-
-    [MaxLength(500)]
-    public string? Reason { get; set; }
-
-    [Column("created_at")]
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-    [Column("processed_at")]
-    public DateTime? ProcessedAt { get; set; }
 }
 
 public class TripCancellation
@@ -301,6 +222,34 @@ public class Review
 
     [MaxLength(1000)]
     public string? Comment { get; set; }
+
+    [Column("created_at")]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+}
+
+public class BookingOtp
+{
+    [Key]
+    [Column("booking_otp_id")]
+    public int BookingOtpId { get; set; }
+
+    [Required]
+    [MaxLength(100)]
+    public string Email { get; set; } = string.Empty;
+
+    [ForeignKey(nameof(Booking))]
+    [Column("booking_id")]
+    public int BookingId { get; set; }
+    public Booking? Booking { get; set; }
+
+    [Required]
+    [MaxLength(6)]
+    public string Otp { get; set; } = string.Empty;
+
+    [Column("expiry")]
+    public DateTime Expiry { get; set; }
+
+    public bool Used { get; set; } = false;
 
     [Column("created_at")]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

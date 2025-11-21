@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { type Destination } from "../lib/api";
 import BookingForm from "../components/booking/BookingForm";
+import OtpVerificationModal from "../components/booking/OtpVerificationModal";
 import EmailConfirmationModal from "../components/booking/EmailConfirmationModal";
 
 interface PendingBooking {
@@ -19,6 +20,7 @@ export default function StartBookingPage() {
     null,
   );
   const [showBookingForm, setShowBookingForm] = useState(false);
+  const [showOtpVerification, setShowOtpVerification] = useState(false);
   const [showEmailConfirmation, setShowEmailConfirmation] = useState(false);
   const [bookingResult, setBookingResult] = useState<any>(null);
 
@@ -48,13 +50,22 @@ export default function StartBookingPage() {
   const handleBookingSuccess = (result: any) => {
     setBookingResult(result);
     setShowBookingForm(false);
-    setShowEmailConfirmation(true);
+    setShowOtpVerification(true);
     // Clear pending booking
     localStorage.removeItem("pendingBooking");
   };
 
   const handleBookingClose = () => {
     setShowBookingForm(false);
+  };
+
+  const handleOtpVerificationSuccess = () => {
+    setShowOtpVerification(false);
+    setShowEmailConfirmation(true);
+  };
+
+  const handleOtpVerificationClose = () => {
+    setShowOtpVerification(false);
   };
 
   const handleEmailConfirmationClose = () => {
@@ -239,6 +250,16 @@ export default function StartBookingPage() {
           destinations={pendingBooking.destinations}
           onClose={handleBookingClose}
           onSuccess={handleBookingSuccess}
+        />
+      )}
+
+      {/* OTP Verification Modal */}
+      {showOtpVerification && bookingResult && user && (
+        <OtpVerificationModal
+          bookingId={bookingResult.bookingId}
+          userEmail={user.email}
+          onClose={handleOtpVerificationClose}
+          onSuccess={handleOtpVerificationSuccess}
         />
       )}
 

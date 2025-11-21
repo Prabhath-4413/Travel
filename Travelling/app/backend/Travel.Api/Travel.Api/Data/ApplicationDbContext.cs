@@ -13,12 +13,11 @@ namespace Travel.Api.Data
         public DbSet<Booking> Bookings => Set<Booking>();
         public DbSet<BookingDestination> BookingDestinations => Set<BookingDestination>();
         public DbSet<TripCancellation> TripCancellations => Set<TripCancellation>();
-        public DbSet<Payment> Payments => Set<Payment>();
-        public DbSet<Refund> Refunds => Set<Refund>();
         public DbSet<Feedback> Feedbacks => Set<Feedback>();
         public DbSet<TravelPackage> TravelPackages => Set<TravelPackage>();
         public DbSet<TravelPackageDestination> TravelPackageDestinations => Set<TravelPackageDestination>();
         public DbSet<Review> Reviews => Set<Review>();
+        public DbSet<BookingOtp> BookingOtps => Set<BookingOtp>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -399,50 +398,6 @@ namespace Travel.Api.Data
             });
 
             //
-            // PAYMENTS
-            //
-            modelBuilder.Entity<Payment>(p =>
-            {
-                p.ToTable("payments");
-                p.HasKey(x => x.PaymentId);
-                p.Property(x => x.PaymentId).HasColumnName("payment_id");
-                p.Property(x => x.RazorpayOrderId).HasColumnName("razorpay_order_id").HasMaxLength(100).IsRequired();
-                p.Property(x => x.RazorpayPaymentId).HasColumnName("razorpay_payment_id").HasMaxLength(100);
-                p.Property(x => x.Amount).HasColumnName("amount").HasColumnType("numeric(10,2)");
-                p.Property(x => x.Status).HasColumnName("status").HasConversion<int>().HasDefaultValue(PaymentStatus.Pending);
-                p.Property(x => x.BookingId).HasColumnName("booking_id").IsRequired();
-                p.Property(x => x.CreatedAt).HasColumnName("created_at").HasDefaultValueSql("NOW()");
-                p.Property(x => x.UpdatedAt).HasColumnName("updated_at").HasDefaultValueSql("NOW()");
-
-                p.HasOne(x => x.Booking)
-                  .WithOne(b => b.Payment)
-                  .HasForeignKey<Payment>(x => x.BookingId)
-                  .OnDelete(DeleteBehavior.Cascade);
-            });
-
-            //
-            // REFUNDS
-            //
-            modelBuilder.Entity<Refund>(r =>
-            {
-                r.ToTable("refunds");
-                r.HasKey(x => x.RefundId);
-                r.Property(x => x.RefundId).HasColumnName("refund_id");
-                r.Property(x => x.RazorpayRefundId).HasColumnName("razorpay_refund_id").HasMaxLength(100).IsRequired();
-                r.Property(x => x.PaymentId).HasColumnName("payment_id").IsRequired();
-                r.Property(x => x.Amount).HasColumnName("amount").HasColumnType("numeric(10,2)");
-                r.Property(x => x.Status).HasColumnName("status").HasConversion<int>().HasDefaultValue(RefundStatus.Pending);
-                r.Property(x => x.Reason).HasColumnName("reason").HasMaxLength(500);
-                r.Property(x => x.CreatedAt).HasColumnName("created_at").HasDefaultValueSql("NOW()");
-                r.Property(x => x.ProcessedAt).HasColumnName("processed_at");
-
-                r.HasOne(x => x.Payment)
-                  .WithMany(p => p.Refunds)
-                  .HasForeignKey(x => x.PaymentId)
-                  .OnDelete(DeleteBehavior.Cascade);
-            });
-
-            //
             // FEEDBACKS
             //
             modelBuilder.Entity<Feedback>(f =>
@@ -512,6 +467,35 @@ namespace Travel.Api.Data
             modelBuilder.Entity<Review>()
                 .HasIndex(r => r.UserId)
                 .HasDatabaseName("idx_reviews_user_id");
+
+            //
+            // BOOKING OTPS
+            //
+            modelBuilder.Entity<BookingOtp>(bo =>
+            {
+                bo.ToTable("booking_otps");
+                bo.HasKey(x => x.BookingOtpId);
+                bo.Property(x => x.BookingOtpId).HasColumnName("booking_otp_id");
+                bo.Property(x => x.Email).HasColumnName("email").HasMaxLength(100).IsRequired();
+                bo.Property(x => x.BookingId).HasColumnName("booking_id").IsRequired();
+                bo.Property(x => x.Otp).HasColumnName("otp").HasMaxLength(6).IsRequired();
+                bo.Property(x => x.Expiry).HasColumnName("expiry").IsRequired();
+                bo.Property(x => x.Used).HasColumnName("used").HasDefaultValue(false);
+                bo.Property(x => x.CreatedAt).HasColumnName("created_at").HasDefaultValueSql("NOW()");
+
+                bo.HasOne(x => x.Booking)
+                    .WithMany()
+                    .HasForeignKey(x => x.BookingId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<BookingOtp>()
+                .HasIndex(bo => bo.Email)
+                .HasDatabaseName("idx_booking_otps_email");
+
+            modelBuilder.Entity<BookingOtp>()
+                .HasIndex(bo => bo.BookingId)
+                .HasDatabaseName("idx_booking_otps_booking_id");
         }
     }
 }

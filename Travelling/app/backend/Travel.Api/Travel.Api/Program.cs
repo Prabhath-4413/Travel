@@ -8,14 +8,33 @@ using System.Text;
 using Travel.Api.Data;
 using Travel.Api.Models;
 using Travel.Api.Services;
+using Travel.Api.Middleware;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 using MimeKit.Text;
 using Newtonsoft.Json.Converters;
 using System.Text.Json.Serialization;
+using Serilog;
+using Serilog.Core;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, configuration) =>
+{
+    configuration
+        .MinimumLevel.Information()
+        .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+        .MinimumLevel.Override("System", LogEventLevel.Warning)
+        .Enrich.FromLogContext()
+        .Enrich.WithProperty("Application", "TravelBooking")
+        .WriteTo.File(
+            path: Path.Combine("logs", "otp-security-.txt"),
+            rollingInterval: RollingInterval.Day,
+            outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz}] [{Level:u3}] {Message:lj}{NewLine}{Exception}"
+        );
+});
 
 // ---------------------------
 // Swagger & CORS
@@ -94,8 +113,13 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<IEmailService, SmtpEmailService>();
 builder.Services.AddSingleton<IEmailTemplateBuilder, EmailTemplateBuilder>();
 
-// Payment services
-builder.Services.AddScoped<IRazorpayService, RazorpayService>();
+// OTP services
+builder.Services.AddScoped<IOtpService, OtpService>();
+builder.Services.AddSingleton<IOtpRateLimiter, OtpRateLimiter>();
+
+// Booking services
+builder.Services.AddScoped<IBookingService, BookingService>();
+
 builder.Services.AddScoped<JwtHelper>();
 
 // Review services
@@ -117,6 +141,7 @@ var app = builder.Build();
 // ---------------------------
 // Middleware
 // ---------------------------
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseCors("Frontend");
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -361,7 +386,7 @@ app.MapPost("/bookings", async (ApplicationDbContext db, IMessageQueueService me
         Nights = dto.Nights,
         StartDate = startDate,
         BookingDate = DateTime.UtcNow,
-        Confirmed = true,
+        Confirmed = false,
         CancellationStatus = CancellationStatus.None,
         Status = BookingStatus.Active
     };
@@ -377,41 +402,12 @@ app.MapPost("/bookings", async (ApplicationDbContext db, IMessageQueueService me
     db.Bookings.Add(booking);
     await db.SaveChangesAsync();
 
-    var destinationNames = destinations.Select(d => d.Name).ToArray();
-
-    var message = new BookingMessage
-    {
-        MessageId = Guid.NewGuid().ToString(),
-        Type = MessageType.BookingConfirmation,
-        BookingId = booking.BookingId,
-        UserId = booking.UserId,
-        UserName = user.Name,
-        UserEmail = user.Email,
-        Destinations = destinationNames,
-        TotalPrice = booking.TotalPrice,
-        Guests = booking.Guests,
-        Nights = booking.Nights,
-        StartDate = booking.StartDate,
-        Confirmed = booking.Confirmed,
-        ReminderSent = booking.ReminderSent,
-        CancellationStatus = (int)booking.CancellationStatus,
-        CreatedAt = booking.CreatedAt
-    };
-
-    try
-    {
-        await messageQueue.PublishBookingMessageAsync(message);
-    }
-    catch (Exception ex)
-    {
-        // Log error but don't fail the booking if message queue is unavailable
-        Console.WriteLine($"⚠️ Failed to publish booking message to queue: {ex.Message}");
-    }
+    var destinationNames = destinations.Select(d => d.Name).ToList();
 
     return Results.Ok(new
     {
         bookingId = booking.BookingId,
-        message = "Booking confirmed successfully.",
+        message = "Booking created successfully. Please verify your email with the OTP sent.",
         total = booking.TotalPrice,
         guests = booking.Guests,
         nights = booking.Nights,
