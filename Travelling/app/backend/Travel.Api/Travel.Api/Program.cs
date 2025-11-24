@@ -130,9 +130,9 @@ builder.Services.AddSingleton<RabbitMqService>();
 builder.Services.AddSingleton<IMessageQueueService>(sp => sp.GetRequiredService<RabbitMqService>());
 
 // Background services
-builder.Services.AddHostedService<BookingReminderService>();
-builder.Services.AddHostedService<EmailConsumerServiceV2>();
-builder.Services.AddHostedService<BookingQueueConsumerService>();
+//builder.Services.AddHostedService<BookingReminderService>();
+//builder.Services.AddHostedService<EmailConsumerServiceV2>();
+//builder.Services.AddHostedService<BookingQueueConsumerService>();
 builder.Services.AddHostedService<BookingEmailConsumerService>();
 builder.Services.AddHostedService<CancellationEmailConsumerService>();
 
@@ -426,7 +426,11 @@ app.MapGet("/bookings/{userId:int}", async (int userId, ApplicationDbContext db,
     }
 
     var bookings = await db.Bookings
+        .AsNoTracking()
         .Where(b => b.UserId == userId)
+        .Include(b => b.BookingDestinations)
+            .ThenInclude(bd => bd.Destination)
+        .Include(b => b.TripCancellations)
         .OrderByDescending(b => b.BookingDate)
         .Select(b => new
         {
@@ -442,6 +446,7 @@ app.MapGet("/bookings/{userId:int}", async (int userId, ApplicationDbContext db,
                 .ToList(),
             status = b.Status,
             cancellationStatus = b.CancellationStatus,
+            confirmed = b.Confirmed,
             latestCancellation = b.TripCancellations
                 .OrderByDescending(tc => tc.RequestedAt)
                 .Select(tc => new
@@ -711,6 +716,7 @@ app.MapPost("/admin/trip-cancellations/{tripCancellationId:int}/approve", async 
 
     var booking = cancellation.Booking!;
     booking.CancellationStatus = CancellationStatus.Approved;
+    booking.Status = BookingStatus.Cancelled;
     booking.Confirmed = false;
 
     await db.SaveChangesAsync();

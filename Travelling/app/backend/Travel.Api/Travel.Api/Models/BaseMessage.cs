@@ -9,7 +9,8 @@ public enum MessageType
     CancellationRequested = 2,
     CancellationRequest = CancellationRequested,
     CancellationDecision = 3,
-    AdminNotification = 4
+    AdminNotification = 4,
+    RescheduleConfirmation = 5
 }
 
 public abstract class BaseMessage

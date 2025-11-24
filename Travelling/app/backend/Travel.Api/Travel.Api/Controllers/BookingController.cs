@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 using Travel.Api.Data;
 using Travel.Api.Models;
 using Travel.Api.Services;
@@ -110,6 +111,148 @@ public class BookingController : ControllerBase
 
         _logger.LogInformation("Booking confirmed successfully for booking {BookingId}", request.BookingId);
         return Ok(new { message = "Booking confirmed successfully", bookingId = request.BookingId });
+    }
+
+    [HttpGet("user-bookings")]
+    [Authorize]
+    public async Task<IActionResult> GetUserBookings()
+    {
+        _logger.LogInformation("GetUserBookings request received");
+
+        var userId = int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var id) ? id : 0;
+        if (userId == 0)
+        {
+            _logger.LogWarning("Unable to extract user ID from claims");
+            return Unauthorized(new { message = "User ID not found in token" });
+        }
+
+        var bookings = await _context.Bookings
+            .Where(b => b.UserId == userId && b.Status == BookingStatus.Active && b.Confirmed)
+            .Include(b => b.BookingDestinations)
+            .ThenInclude(bd => bd.Destination)
+            .OrderByDescending(b => b.StartDate)
+            .ToListAsync();
+
+        var userBookings = bookings.Select(b => new UserBookingDto
+        {
+            BookingId = b.BookingId,
+            Destinations = string.Join(", ", b.BookingDestinations.Select(bd => bd.Destination?.Name ?? "Unknown")),
+            StartDate = b.StartDate,
+            Guests = b.Guests,
+            Nights = b.Nights,
+            TotalPrice = b.TotalPrice,
+            Status = b.Status.ToString()
+        }).ToList();
+
+        _logger.LogInformation("Retrieved {Count} bookings for user {UserId}", userBookings.Count, userId);
+        return Ok(userBookings);
+    }
+
+    [HttpPost("send-reschedule-otp")]
+    [Authorize]
+    public async Task<IActionResult> SendRescheduleOtp([FromBody] SendRescheduleOtpRequest request)
+    {
+        _logger.LogInformation("SendRescheduleOtp request received for booking {BookingId}", request.BookingId);
+
+        var userId = int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var id) ? id : 0;
+        if (userId == 0)
+        {
+            return Unauthorized(new { message = "User ID not found in token" });
+        }
+
+        var booking = await _context.Bookings
+            .Include(b => b.User)
+            .FirstOrDefaultAsync(b => b.BookingId == request.BookingId && b.UserId == userId);
+
+        if (booking == null)
+        {
+            _logger.LogWarning("Booking not found for reschedule OTP: {BookingId}", request.BookingId);
+            return NotFound(new { message = "Booking not found" });
+        }
+
+        if (booking.User == null)
+        {
+            _logger.LogWarning("User information not found for booking {BookingId}", request.BookingId);
+            return BadRequest(new { message = "User information not found" });
+        }
+
+        if (request.NewStartDate <= DateTime.UtcNow)
+        {
+            _logger.LogWarning("Invalid date for reschedule: {NewStartDate}", request.NewStartDate);
+            return BadRequest(new { message = "New start date must be in the future" });
+        }
+
+        var (otp, message, statusCode) = await _otpService.GenerateRescheduleOtpAsync(
+            request.BookingId, 
+            booking.User.Email, 
+            request.NewStartDate,
+            request.NewDestinationId);
+
+        if (statusCode != 200)
+        {
+            _logger.LogWarning("Reschedule OTP generation failed for booking {BookingId}: {Message}", request.BookingId, message);
+            return StatusCode(statusCode, new { message });
+        }
+
+        _logger.LogInformation("Reschedule OTP sent successfully for booking {BookingId}", request.BookingId);
+        return Ok(new { message = "OTP sent successfully to your email" });
+    }
+
+    [HttpPost("verify-reschedule-otp")]
+    [Authorize]
+    public async Task<IActionResult> VerifyRescheduleOtp([FromBody] VerifyRescheduleOtpRequest request)
+    {
+        _logger.LogInformation("VerifyRescheduleOtp request received for booking {BookingId}", request.BookingId);
+
+        var userId = int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var id) ? id : 0;
+        if (userId == 0)
+        {
+            return Unauthorized(new { message = "User ID not found in token" });
+        }
+
+        var booking = await _context.Bookings
+            .Include(b => b.User)
+            .FirstOrDefaultAsync(b => b.BookingId == request.BookingId && b.UserId == userId);
+
+        if (booking == null)
+        {
+            _logger.LogWarning("Booking not found for reschedule verification: {BookingId}", request.BookingId);
+            return NotFound(new { message = "Booking not found" });
+        }
+
+        if (booking.User == null)
+        {
+            _logger.LogWarning("User information not found for reschedule verification: {BookingId}", request.BookingId);
+            return BadRequest(new { message = "User information not found" });
+        }
+
+        var isOtpValid = await _otpService.ValidateRescheduleOtpAsync(
+            request.BookingId, 
+            booking.User.Email, 
+            request.Otp,
+            out var newStartDate,
+            out var newDestinationId);
+
+        if (!isOtpValid)
+        {
+            _logger.LogWarning("Reschedule OTP verification failed for booking {BookingId}", request.BookingId);
+            return BadRequest(new { message = "Invalid or expired OTP" });
+        }
+
+        var (success, reschedulMessage) = await _bookingService.RescheduleBookingAsync(
+            request.BookingId, 
+            booking.User.Email, 
+            request.NewStartDate,
+            request.NewDestinationId);
+
+        if (!success)
+        {
+            _logger.LogWarning("Booking reschedule failed for booking {BookingId}: {Message}", request.BookingId, reschedulMessage);
+            return BadRequest(new { message = reschedulMessage });
+        }
+
+        _logger.LogInformation("Booking rescheduled successfully for booking {BookingId}", request.BookingId);
+        return Ok(new { message = "Booking rescheduled successfully", bookingId = request.BookingId });
     }
 
 }

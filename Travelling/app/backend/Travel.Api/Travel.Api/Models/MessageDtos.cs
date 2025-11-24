@@ -63,3 +63,28 @@ public class CancellationMessage : BaseMessage
 
     public bool? Approved { get; init; }
 }
+
+public class RescheduleMessage : BaseMessage
+{
+    public required int BookingId { get; init; }
+
+    public required int UserId { get; init; }
+
+    public required string UserName { get; init; }
+
+    public required string UserEmail { get; init; }
+
+    public required string[] Destinations { get; init; }
+
+    public decimal TotalPrice { get; init; }
+
+    public int Guests { get; init; }
+
+    public int Nights { get; init; }
+
+    public DateTime StartDate { get; init; }
+
+    public DateTime EndDate { get; init; }
+
+    public DateTime CreatedAt { get; init; }
+}

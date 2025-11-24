@@ -1,0 +1,1473 @@
+2025-11-24 11:57:34.982 +05:30 [INF] BookingReminderService started
+2025-11-24 11:57:35.211 +05:30 [INF] Queue 'travel.bookings' already exists.
+2025-11-24 11:57:35.215 +05:30 [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+2025-11-24 11:57:35.217 +05:30 [INF] Queue 'email_queue' already exists.
+2025-11-24 11:57:35.218 +05:30 [INF] Dead-letter queue 'email_queue.dlq' already exists.
+2025-11-24 11:57:35.219 +05:30 [INF] Queue 'travel.cancellations' already exists.
+2025-11-24 11:57:35.221 +05:30 [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+2025-11-24 11:57:35.222 +05:30 [INF] RabbitMQ topology configured successfully.
+2025-11-24 11:57:35.222 +05:30 [INF] RabbitMQ connection established to localhost:5672.
+2025-11-24 11:57:35.229 +05:30 [INF] Email queue consumer subscribed to email_queue.
+2025-11-24 11:57:35.233 +05:30 [INF] Booking queue consumer subscribed to travel.bookings.
+2025-11-24 11:57:35.237 +05:30 [INF] Booking email queue consumer subscribed to travel.bookings.
+2025-11-24 11:57:35.241 +05:30 [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+2025-11-24 11:57:35.344 +05:30 [ERR] Hosting failed to start
+System.IO.IOException: Failed to bind to address http://127.0.0.1:6000: address already in use.
+ ---> Microsoft.AspNetCore.Connections.AddressInUseException: Only one usage of each socket address (protocol/network address/port) is normally permitted.
+ ---> System.Net.Sockets.SocketException (10048): Only one usage of each socket address (protocol/network address/port) is normally permitted.
+   at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, Boolean disconnectOnFailure, String callerName)
+   at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportOptions.CreateDefaultBoundListenSocket(EndPoint endpoint)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate connectionDelegate, EndpointConfig endpointConfig, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.<>c__DisplayClass28_0`1.<<StartAsync>g__OnBind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindAsync(ListenOptions[] listenOptions, AddressBindContext context, Func`2 useHttps, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__15_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+2025-11-24 11:57:35.368 +05:30 [WRN] Email queue channel shutdown 200 - Connection close forced.
+2025-11-24 11:57:35.372 +05:30 [WRN] Booking queue channel shutdown 200 - Connection close forced.
+2025-11-24 11:57:35.374 +05:30 [WRN] Booking email queue channel shutdown 200 - Connection close forced.
+2025-11-24 11:57:35.376 +05:30 [WRN] Cancellation email queue channel shutdown 200 - Connection close forced.
+2025-11-24 11:58:54.435 +05:30 [INF] BookingReminderService started
+2025-11-24 11:58:54.623 +05:30 [INF] Queue 'travel.bookings' already exists.
+2025-11-24 11:58:54.626 +05:30 [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+2025-11-24 11:58:54.627 +05:30 [INF] Queue 'email_queue' already exists.
+2025-11-24 11:58:54.629 +05:30 [INF] Dead-letter queue 'email_queue.dlq' already exists.
+2025-11-24 11:58:54.630 +05:30 [INF] Queue 'travel.cancellations' already exists.
+2025-11-24 11:58:54.631 +05:30 [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+2025-11-24 11:58:54.632 +05:30 [INF] RabbitMQ topology configured successfully.
+2025-11-24 11:58:54.633 +05:30 [INF] RabbitMQ connection established to localhost:5672.
+2025-11-24 11:58:54.639 +05:30 [INF] Email queue consumer subscribed to email_queue.
+2025-11-24 11:58:54.643 +05:30 [INF] Booking queue consumer subscribed to travel.bookings.
+2025-11-24 11:58:54.647 +05:30 [INF] Booking email queue consumer subscribed to travel.bookings.
+2025-11-24 11:58:54.650 +05:30 [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+2025-11-24 12:13:39.985 +05:30 [INF] BookingReminderService started
+2025-11-24 12:13:40.213 +05:30 [INF] Queue 'travel.bookings' already exists.
+2025-11-24 12:13:40.216 +05:30 [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+2025-11-24 12:13:40.218 +05:30 [INF] Queue 'email_queue' already exists.
+2025-11-24 12:13:40.220 +05:30 [INF] Dead-letter queue 'email_queue.dlq' already exists.
+2025-11-24 12:13:40.221 +05:30 [INF] Queue 'travel.cancellations' already exists.
+2025-11-24 12:13:40.222 +05:30 [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+2025-11-24 12:13:40.223 +05:30 [INF] RabbitMQ topology configured successfully.
+2025-11-24 12:13:40.224 +05:30 [INF] RabbitMQ connection established to localhost:5672.
+2025-11-24 12:13:40.232 +05:30 [INF] Email queue consumer subscribed to email_queue.
+2025-11-24 12:13:40.237 +05:30 [INF] Booking queue consumer subscribed to travel.bookings.
+2025-11-24 12:13:40.242 +05:30 [INF] Booking email queue consumer subscribed to travel.bookings.
+2025-11-24 12:13:40.246 +05:30 [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+2025-11-24 12:19:15.898 +05:30 [INF] Fetched page 1 with 12 destinations out of 12
+2025-11-24 12:19:31.777 +05:30 [INF] Fetched page 1 with 12 destinations out of 12
+2025-11-24 12:19:46.776 +05:30 [INF] Fetched page 1 with 12 destinations out of 12
+2025-11-24 12:19:50.789 +05:30 [INF] Fetched page 1 with 12 destinations out of 12
+2025-11-24 12:20:07.147 +05:30 [INF] Fetched page 1 with 12 destinations out of 12
+2025-11-24 12:20:21.775 +05:30 [INF] Fetched page 1 with 12 destinations out of 12
+2025-11-24 12:20:36.770 +05:30 [INF] Fetched page 1 with 12 destinations out of 12
+2025-11-24 12:20:51.771 +05:30 [INF] Fetched page 1 with 12 destinations out of 12
+2025-11-24 12:21:05.788 +05:30 [INF] Fetched page 1 with 12 destinations out of 12
+2025-11-24 12:21:15.789 +05:30 [INF] Fetched page 1 with 12 destinations out of 12
+2025-11-24 12:21:15.797 +05:30 [INF] Fetched page 1 with 12 destinations out of 12
+2025-11-24 12:21:18.769 +05:30 [INF] Fetched page 1 with 12 destinations out of 12
+2025-11-24 12:21:18.779 +05:30 [INF] Fetched page 1 with 12 destinations out of 12
+2025-11-24 12:21:21.775 +05:30 [INF] Fetched page 1 with 12 destinations out of 12
+2025-11-24 12:21:21.786 +05:30 [INF] Fetched page 1 with 12 destinations out of 12
+2025-11-24 12:21:37.796 +05:30 [INF] Fetched page 1 with 12 destinations out of 12
+2025-11-24 12:21:52.783 +05:30 [INF] Fetched page 1 with 12 destinations out of 12
+2025-11-24 12:22:07.977 +05:30 [INF] Fetched page 1 with 12 destinations out of 12
+2025-11-24 12:22:22.762 +05:30 [INF] Fetched page 1 with 12 destinations out of 12
+2025-11-24 12:22:38.235 +05:30 [INF] Fetched page 1 with 12 destinations out of 12
+[2025-11-24 12:26:29.437 +05:30] [INF] BookingReminderService started
+[2025-11-24 12:26:29.673 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 12:26:29.675 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 12:26:29.677 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 12:26:29.677 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 12:26:29.678 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 12:26:29.678 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 12:26:29.678 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 12:26:29.678 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 12:26:29.685 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 12:26:29.689 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 12:26:29.693 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 12:26:29.696 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 12:28:50.412 +05:30] [INF] BookingReminderService started
+[2025-11-24 12:28:50.611 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 12:28:50.612 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 12:28:50.613 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 12:28:50.613 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 12:28:50.613 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 12:28:50.613 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 12:28:50.614 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 12:28:50.614 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 12:28:50.618 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 12:28:50.621 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 12:28:50.624 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 12:28:50.626 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 12:32:40.737 +05:30] [INF] BookingReminderService started
+[2025-11-24 12:32:40.942 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 12:32:40.943 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 12:32:40.944 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 12:32:40.944 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 12:32:40.944 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 12:32:40.944 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 12:32:40.944 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 12:32:40.945 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 12:32:40.949 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 12:32:40.951 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 12:32:40.954 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 12:32:40.957 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 12:39:00.327 +05:30] [INF] BookingReminderService started
+[2025-11-24 12:39:00.603 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 12:39:00.605 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 12:39:00.605 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 12:39:00.606 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 12:39:00.606 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 12:39:00.606 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 12:39:00.606 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 12:39:00.607 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 12:39:00.613 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 12:39:00.617 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 12:39:00.620 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 12:39:00.623 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 12:40:40.937 +05:30] [INF] BookingReminderService started
+[2025-11-24 12:40:41.207 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 12:40:41.208 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 12:40:41.209 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 12:40:41.209 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 12:40:41.210 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 12:40:41.210 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 12:40:41.210 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 12:40:41.210 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 12:40:41.218 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 12:40:41.223 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 12:40:41.228 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 12:40:41.232 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 12:43:53.335 +05:30] [INF] BookingReminderService started
+[2025-11-24 12:43:53.543 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 12:43:53.544 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 12:43:53.545 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 12:43:53.545 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 12:43:53.545 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 12:43:53.546 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 12:43:53.546 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 12:43:53.546 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 12:43:53.550 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 12:43:53.553 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 12:43:53.555 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 12:43:53.558 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:08:17.663 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:08:17.940 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:08:17.941 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:08:17.941 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:08:17.942 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:08:17.942 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:08:17.942 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:08:17.942 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:08:17.943 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:08:17.948 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:08:17.950 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:08:17.954 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:08:17.957 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:09:16.100 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:09:16.363 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:09:16.364 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:09:16.365 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:09:16.365 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:09:16.365 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:09:16.366 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:09:16.366 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:09:16.366 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:09:16.371 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:09:16.375 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:09:16.378 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:09:16.382 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:11:46.879 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:11:47.126 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:11:47.128 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:11:47.128 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:11:47.129 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:11:47.129 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:11:47.130 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:11:47.130 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:11:47.130 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:11:47.136 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:11:47.141 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:11:47.145 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:11:47.149 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:12:23.685 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:12:23.863 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:12:23.864 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:12:23.865 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:12:23.865 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:12:23.865 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:12:23.865 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:12:23.866 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:12:23.866 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:12:23.869 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:12:23.872 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:12:23.875 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:12:23.877 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:13:36.918 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:13:37.119 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:13:37.121 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:13:37.121 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:13:37.122 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:13:37.122 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:13:37.122 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:13:37.122 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:13:37.123 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:13:37.127 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:13:37.130 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:13:37.133 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:13:37.137 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:15:18.398 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:15:18.569 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:15:18.570 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:15:18.571 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:15:18.571 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:15:18.571 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:15:18.572 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:15:18.572 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:15:18.572 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:15:18.576 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:15:18.579 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:15:18.581 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:15:18.584 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:17:32.709 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:17:32.895 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:17:32.896 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:17:32.896 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:17:32.896 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:17:32.897 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:17:32.897 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:17:32.897 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:17:32.897 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:17:32.901 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:17:32.904 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:17:32.906 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:17:32.909 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:19:38.004 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:19:38.183 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:19:38.184 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:19:38.184 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:19:38.184 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:19:38.185 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:19:38.185 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:19:38.185 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:19:38.185 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:19:38.189 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:19:38.192 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:19:38.194 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:19:38.198 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:22:18.151 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:22:18.333 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:22:18.334 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:22:18.334 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:22:18.334 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:22:18.334 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:22:18.335 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:22:18.335 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:22:18.335 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:22:18.339 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:22:18.341 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:22:18.346 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:22:18.348 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:25:03.826 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:25:04.013 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:25:04.014 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:25:04.014 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:25:04.014 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:25:04.015 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:25:04.015 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:25:04.015 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:25:04.015 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:25:04.020 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:25:04.023 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:25:04.027 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:25:04.029 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:27:04.551 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:27:04.756 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:27:04.758 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:27:04.758 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:27:04.759 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:27:04.759 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:27:04.759 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:27:04.759 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:27:04.760 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:27:04.765 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:27:04.768 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:27:04.772 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:27:04.775 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:30:19.859 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:30:20.056 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:30:20.057 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:30:20.057 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:30:20.057 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:30:20.057 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:30:20.058 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:30:20.058 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:30:20.058 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:30:20.062 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:30:20.065 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:30:20.068 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:30:20.070 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:31:24.335 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:31:24.519 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:31:24.521 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:31:24.521 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:31:24.521 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:31:24.522 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:31:24.522 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:31:24.522 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:31:24.522 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:31:24.526 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:31:24.529 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:31:24.531 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:31:24.533 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:34:23.024 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:34:23.212 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:34:23.213 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:34:23.213 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:34:23.214 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:34:23.214 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:34:23.215 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:34:23.215 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:34:23.215 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:34:23.219 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:34:23.223 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:34:23.229 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:34:23.232 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:34:48.927 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:34:49.128 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:34:49.129 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:34:49.130 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:34:49.130 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:34:49.130 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:34:49.130 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:34:49.130 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:34:49.131 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:34:49.137 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:34:49.141 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:34:49.145 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:34:49.148 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:36:34.547 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:36:34.738 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:36:34.740 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:36:34.740 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:36:34.740 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:36:34.741 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:36:34.741 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:36:34.741 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:36:34.741 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:36:34.745 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:36:34.748 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:36:34.751 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:36:34.753 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:36:50.582 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:36:50.762 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:36:50.763 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:36:50.764 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:36:50.764 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:36:50.764 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:36:50.765 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:36:50.765 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:36:50.765 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:36:50.769 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:36:50.772 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:36:50.775 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:36:50.778 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:38:56.155 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:38:56.347 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:38:56.350 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:38:56.350 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:38:56.351 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:38:56.351 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:38:56.351 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:38:56.351 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:38:56.351 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:38:56.355 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:38:56.358 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:38:56.361 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:38:56.364 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:40:52.619 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:40:52.819 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:40:52.820 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:40:52.821 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:40:52.821 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:40:52.822 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:40:52.822 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:40:52.822 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:40:52.822 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:40:52.827 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:40:52.830 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:40:52.832 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:40:52.835 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:44:34.500 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:44:34.689 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:44:34.690 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:44:34.690 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:44:34.692 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:44:34.692 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:44:34.693 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:44:34.693 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:44:34.693 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:44:34.697 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:44:34.700 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:44:34.703 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:44:34.706 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:44:47.281 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:44:50.694 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:44:50.710 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:45:05.668 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:45:20.660 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:45:35.677 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:45:50.686 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:46:05.679 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:46:20.680 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:46:56.681 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:47:12.950 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:50:35.261 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:50:35.539 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:50:35.540 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:50:35.540 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:50:35.541 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:50:35.541 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:50:35.542 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:50:35.542 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:50:35.542 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:50:35.548 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:50:35.551 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:50:35.553 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:50:35.556 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:53:30.599 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:53:30.790 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:53:30.792 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:53:30.792 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:53:30.792 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:53:30.793 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:53:30.793 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:53:30.793 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:53:30.794 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:53:30.798 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:53:30.802 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:53:30.805 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:53:30.808 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:54:41.424 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:54:41.864 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:54:41.867 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:54:41.868 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:54:41.869 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:54:41.870 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:54:41.871 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:54:41.871 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:54:41.871 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:54:41.887 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:54:41.893 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:54:41.898 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:54:41.902 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:54:50.442 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:55:05.200 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:55:19.230 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:55:20.214 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:55:20.231 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:55:35.207 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:55:50.213 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:56:05.214 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:56:21.191 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:56:36.185 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:56:51.193 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:57:31.368 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:57:31.567 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:57:31.568 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:57:31.569 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:57:31.569 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:57:31.570 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:57:31.570 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:57:31.570 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:57:31.571 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:57:31.575 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:57:31.578 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:57:31.581 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:57:31.584 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:58:37.816 +05:30] [INF] BookingReminderService started
+[2025-11-24 14:58:38.166 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 14:58:38.168 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 14:58:38.169 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 14:58:38.169 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 14:58:38.170 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 14:58:38.171 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 14:58:38.171 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 14:58:38.171 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 14:58:38.178 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 14:58:38.183 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 14:58:38.187 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 14:58:38.192 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 14:58:41.454 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:58:54.568 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:58:56.587 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:58:56.598 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:59:12.191 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:59:27.184 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:59:42.322 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 14:59:57.189 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:00:12.198 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:00:28.565 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:00:59.843 +05:30] [INF] BookingReminderService started
+[2025-11-24 15:01:00.165 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 15:01:00.176 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 15:01:00.177 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 15:01:00.178 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 15:01:00.180 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 15:01:00.183 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 15:01:00.183 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 15:01:00.184 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 15:01:00.205 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 15:01:00.214 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 15:01:00.220 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 15:01:00.227 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 15:01:17.184 +05:30] [INF] BookingReminderService started
+[2025-11-24 15:01:17.389 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 15:01:17.391 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 15:01:17.392 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 15:01:17.396 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 15:01:17.397 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 15:01:17.397 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 15:01:17.397 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 15:01:17.398 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 15:01:17.404 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 15:01:17.409 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 15:01:17.413 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 15:01:17.420 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 15:01:41.397 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:02:41.190 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:03:41.524 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:04:41.337 +05:30] [ERR] An exception occurred while iterating over the results of a query for context type 'Travel.Api.Data.ApplicationDbContext'.
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+[2025-11-24 15:04:41.340 +05:30] [ERR] Failed to fetch destinations
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Program.<<Main>$>g__GetDestinations|0_13(ApplicationDbContext db, ILogger`1 logger) in C:\Users\Administrator\Desktop\Travelling-main\Travelling\app\backend\Travel.Api\Travel.Api\Program.cs:line 272
+[2025-11-24 15:05:08.098 +05:30] [ERR] An exception occurred while iterating over the results of a query for context type 'Travel.Api.Data.ApplicationDbContext'.
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+[2025-11-24 15:05:08.100 +05:30] [ERR] Failed to fetch destinations
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Program.<<Main>$>g__GetDestinations|0_13(ApplicationDbContext db, ILogger`1 logger) in C:\Users\Administrator\Desktop\Travelling-main\Travelling\app\backend\Travel.Api\Travel.Api\Program.cs:line 272
+[2025-11-24 15:05:11.549 +05:30] [ERR] An exception occurred while iterating over the results of a query for context type 'Travel.Api.Data.ApplicationDbContext'.
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+[2025-11-24 15:05:11.549 +05:30] [ERR] Failed to fetch destinations
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Program.<<Main>$>g__GetDestinations|0_13(ApplicationDbContext db, ILogger`1 logger) in C:\Users\Administrator\Desktop\Travelling-main\Travelling\app\backend\Travel.Api\Travel.Api\Program.cs:line 272
+[2025-11-24 15:05:12.466 +05:30] [ERR] An exception occurred while iterating over the results of a query for context type 'Travel.Api.Data.ApplicationDbContext'.
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+[2025-11-24 15:05:12.469 +05:30] [ERR] Failed to fetch destinations
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Program.<<Main>$>g__GetDestinations|0_13(ApplicationDbContext db, ILogger`1 logger) in C:\Users\Administrator\Desktop\Travelling-main\Travelling\app\backend\Travel.Api\Travel.Api\Program.cs:line 272
+[2025-11-24 15:05:12.529 +05:30] [ERR] An exception occurred while iterating over the results of a query for context type 'Travel.Api.Data.ApplicationDbContext'.
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+[2025-11-24 15:05:12.532 +05:30] [ERR] Failed to fetch destinations
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Program.<<Main>$>g__GetDestinations|0_13(ApplicationDbContext db, ILogger`1 logger) in C:\Users\Administrator\Desktop\Travelling-main\Travelling\app\backend\Travel.Api\Travel.Api\Program.cs:line 272
+[2025-11-24 15:05:28.186 +05:30] [ERR] An exception occurred while iterating over the results of a query for context type 'Travel.Api.Data.ApplicationDbContext'.
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+[2025-11-24 15:05:28.186 +05:30] [ERR] Failed to fetch destinations
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Program.<<Main>$>g__GetDestinations|0_13(ApplicationDbContext db, ILogger`1 logger) in C:\Users\Administrator\Desktop\Travelling-main\Travelling\app\backend\Travel.Api\Travel.Api\Program.cs:line 272
+[2025-11-24 15:05:43.563 +05:30] [ERR] An exception occurred while iterating over the results of a query for context type 'Travel.Api.Data.ApplicationDbContext'.
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+[2025-11-24 15:05:43.565 +05:30] [ERR] Failed to fetch destinations
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Program.<<Main>$>g__GetDestinations|0_13(ApplicationDbContext db, ILogger`1 logger) in C:\Users\Administrator\Desktop\Travelling-main\Travelling\app\backend\Travel.Api\Travel.Api\Program.cs:line 272
+[2025-11-24 15:05:58.187 +05:30] [ERR] An exception occurred while iterating over the results of a query for context type 'Travel.Api.Data.ApplicationDbContext'.
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+[2025-11-24 15:05:58.187 +05:30] [ERR] Failed to fetch destinations
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Program.<<Main>$>g__GetDestinations|0_13(ApplicationDbContext db, ILogger`1 logger) in C:\Users\Administrator\Desktop\Travelling-main\Travelling\app\backend\Travel.Api\Travel.Api\Program.cs:line 272
+[2025-11-24 15:06:13.192 +05:30] [ERR] An exception occurred while iterating over the results of a query for context type 'Travel.Api.Data.ApplicationDbContext'.
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+[2025-11-24 15:06:13.193 +05:30] [ERR] Failed to fetch destinations
+System.ArgumentException: Couldn't set data source (Parameter 'data source')
+ ---> System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at Npgsql.NpgsqlConnectionStringBuilder.GeneratedActions(GeneratedAction action, String keyword, Object& value)
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   --- End of inner exception stack trace ---
+   at Npgsql.NpgsqlConnectionStringBuilder.set_Item(String keyword, Object value)
+   at System.Data.Common.DbConnectionStringBuilder.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnectionStringBuilder..ctor(String connectionString)
+   at Npgsql.NpgsqlConnection.SetupDataSource()
+   at Npgsql.NpgsqlConnection.set_ConnectionString(String value)
+   at Npgsql.NpgsqlConnection..ctor(String connectionString)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlRelationalConnection.CreateDbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.get_DbConnection()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Program.<<Main>$>g__GetDestinations|0_13(ApplicationDbContext db, ILogger`1 logger) in C:\Users\Administrator\Desktop\Travelling-main\Travelling\app\backend\Travel.Api\Travel.Api\Program.cs:line 272
+[2025-11-24 15:06:28.286 +05:30] [ERR] An error occurred using the connection to database 'travel' on server 'tcp://localhost:5432'.
+[2025-11-24 15:06:28.291 +05:30] [ERR] An exception occurred while iterating over the results of a query for context type 'Travel.Api.Data.ApplicationDbContext'.
+Npgsql.PostgresException (0x80004005): 3D000: database "travel" does not exist
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|213_1(NpgsqlConnector conn, SslMode sslMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken, Boolean isFirstAttempt)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|34_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: FATAL
+    SqlState: 3D000
+    MessageText: database "travel" does not exist
+    File: postinit.c
+    Line: 1023
+    Routine: InitPostgres
+Npgsql.PostgresException (0x80004005): 3D000: database "travel" does not exist
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|213_1(NpgsqlConnector conn, SslMode sslMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken, Boolean isFirstAttempt)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|34_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: FATAL
+    SqlState: 3D000
+    MessageText: database "travel" does not exist
+    File: postinit.c
+    Line: 1023
+    Routine: InitPostgres
+[2025-11-24 15:06:28.292 +05:30] [ERR] Failed to fetch destinations
+Npgsql.PostgresException (0x80004005): 3D000: database "travel" does not exist
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|213_1(NpgsqlConnector conn, SslMode sslMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken, Boolean isFirstAttempt)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|34_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Program.<<Main>$>g__GetDestinations|0_13(ApplicationDbContext db, ILogger`1 logger) in C:\Users\Administrator\Desktop\Travelling-main\Travelling\app\backend\Travel.Api\Travel.Api\Program.cs:line 272
+  Exception data:
+    Severity: FATAL
+    SqlState: 3D000
+    MessageText: database "travel" does not exist
+    File: postinit.c
+    Line: 1023
+    Routine: InitPostgres
+[2025-11-24 15:06:43.249 +05:30] [ERR] An error occurred using the connection to database 'travel' on server 'tcp://localhost:5432'.
+[2025-11-24 15:06:43.250 +05:30] [ERR] An exception occurred while iterating over the results of a query for context type 'Travel.Api.Data.ApplicationDbContext'.
+Npgsql.PostgresException (0x80004005): 3D000: database "travel" does not exist
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|213_1(NpgsqlConnector conn, SslMode sslMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken, Boolean isFirstAttempt)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|34_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: FATAL
+    SqlState: 3D000
+    MessageText: database "travel" does not exist
+    File: postinit.c
+    Line: 1023
+    Routine: InitPostgres
+Npgsql.PostgresException (0x80004005): 3D000: database "travel" does not exist
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|213_1(NpgsqlConnector conn, SslMode sslMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken, Boolean isFirstAttempt)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|34_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: FATAL
+    SqlState: 3D000
+    MessageText: database "travel" does not exist
+    File: postinit.c
+    Line: 1023
+    Routine: InitPostgres
+[2025-11-24 15:06:43.252 +05:30] [ERR] Failed to fetch destinations
+Npgsql.PostgresException (0x80004005): 3D000: database "travel" does not exist
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|213_1(NpgsqlConnector conn, SslMode sslMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken, Boolean isFirstAttempt)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|34_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Program.<<Main>$>g__GetDestinations|0_13(ApplicationDbContext db, ILogger`1 logger) in C:\Users\Administrator\Desktop\Travelling-main\Travelling\app\backend\Travel.Api\Travel.Api\Program.cs:line 272
+  Exception data:
+    Severity: FATAL
+    SqlState: 3D000
+    MessageText: database "travel" does not exist
+    File: postinit.c
+    Line: 1023
+    Routine: InitPostgres
+[2025-11-24 15:15:14.801 +05:30] [INF] BookingReminderService started
+[2025-11-24 15:15:15.091 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 15:15:15.092 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 15:15:15.093 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 15:15:15.093 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 15:15:15.093 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 15:15:15.094 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 15:15:15.094 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 15:15:15.094 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 15:15:15.101 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 15:15:15.104 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 15:15:15.107 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 15:15:15.110 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 15:16:09.334 +05:30] [INF] BookingReminderService started
+[2025-11-24 15:16:09.556 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 15:16:09.559 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 15:16:09.559 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 15:16:09.560 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 15:16:09.560 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 15:16:09.560 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 15:16:09.560 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 15:16:09.560 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 15:16:09.564 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 15:16:09.567 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 15:16:09.570 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 15:16:09.572 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 15:17:02.506 +05:30] [ERR] Failed executing DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "users" AS "u"
+    WHERE "u"."email" = 'admin@example.com')
+[2025-11-24 15:17:02.569 +05:30] [ERR] An exception occurred while iterating over the results of a query for context type 'Travel.Api.Data.ApplicationDbContext'.
+Microsoft.Data.Sqlite.SqliteException (0x80004005): SQLite Error 1: 'no such table: users'.
+   at Microsoft.Data.Sqlite.SqliteException.ThrowExceptionForRC(Int32 rc, sqlite3 db)
+   at Microsoft.Data.Sqlite.SqliteCommand.PrepareAndEnumerateStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteCommand.GetStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteDataReader.NextResult()
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Microsoft.Data.Sqlite.SqliteException (0x80004005): SQLite Error 1: 'no such table: users'.
+   at Microsoft.Data.Sqlite.SqliteException.ThrowExceptionForRC(Int32 rc, sqlite3 db)
+   at Microsoft.Data.Sqlite.SqliteCommand.PrepareAndEnumerateStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteCommand.GetStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteDataReader.NextResult()
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+[2025-11-24 15:17:41.737 +05:30] [INF] BookingReminderService started
+[2025-11-24 15:17:41.970 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 15:17:41.971 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 15:17:41.972 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 15:17:41.973 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 15:17:41.973 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 15:17:41.974 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 15:17:41.974 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 15:17:41.974 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 15:17:41.980 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 15:17:41.986 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 15:17:41.992 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 15:17:41.995 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 15:17:50.503 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:18:18.905 +05:30] [INF] BookingReminderService started
+[2025-11-24 15:18:19.098 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 15:18:19.099 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 15:18:19.099 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 15:18:19.099 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 15:18:19.100 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 15:18:19.100 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 15:18:19.100 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 15:18:19.100 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 15:18:19.104 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 15:18:19.107 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 15:18:19.109 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 15:18:19.111 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 15:18:20.436 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:18:35.228 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:18:50.229 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:19:27.094 +05:30] [INF] BookingReminderService started
+[2025-11-24 15:19:27.382 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 15:19:27.383 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 15:19:27.383 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 15:19:27.383 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 15:19:27.384 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 15:19:27.384 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 15:19:27.384 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 15:19:27.384 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 15:19:27.389 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 15:19:27.392 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 15:19:27.395 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 15:19:27.398 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 15:19:55.473 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:20:10.065 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:20:20.236 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:20:35.245 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:21:18.460 +05:30] [INF] BookingReminderService started
+[2025-11-24 15:21:18.627 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 15:21:18.628 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 15:21:18.629 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 15:21:18.629 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 15:21:18.630 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 15:21:18.630 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 15:21:18.630 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 15:21:18.630 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 15:21:18.634 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 15:21:18.637 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 15:21:18.639 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 15:21:18.641 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 15:21:58.521 +05:30] [INF] BookingReminderService started
+[2025-11-24 15:21:58.714 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 15:21:58.716 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 15:21:58.717 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 15:21:58.717 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 15:21:58.718 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 15:21:58.718 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 15:21:58.718 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 15:21:58.718 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 15:21:58.723 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 15:21:58.727 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 15:21:58.730 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 15:21:58.733 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 15:29:50.347 +05:30] [INF] BookingReminderService started
+[2025-11-24 15:29:50.682 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 15:29:50.683 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 15:29:50.684 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 15:29:50.684 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 15:29:50.685 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 15:29:50.685 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 15:29:50.685 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 15:29:50.685 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 15:29:50.691 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 15:29:50.694 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 15:29:50.697 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 15:29:50.702 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 15:29:52.565 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:30:07.288 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:30:22.282 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:30:37.259 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:30:52.257 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:31:07.273 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:31:22.269 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:31:55.271 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:33:43.717 +05:30] [INF] BookingReminderService started
+[2025-11-24 15:33:44.104 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 15:33:44.107 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 15:33:44.108 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 15:33:44.109 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 15:33:44.110 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 15:33:44.111 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 15:33:44.111 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 15:33:44.111 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 15:33:44.121 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 15:33:44.129 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 15:33:44.135 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 15:33:44.142 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 15:33:55.558 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:34:55.252 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:41:18.623 +05:30] [INF] BookingReminderService started
+[2025-11-24 15:41:19.974 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 15:41:19.981 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 15:41:19.998 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 15:41:20.001 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 15:41:20.003 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 15:41:20.007 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 15:41:20.008 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 15:41:20.008 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 15:41:20.027 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 15:41:20.042 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 15:41:20.069 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 15:41:20.087 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 15:42:55.529 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:43:55.262 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:44:55.261 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:45:55.262 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:48:41.672 +05:30] [INF] BookingReminderService started
+[2025-11-24 15:48:41.907 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 15:48:41.908 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 15:48:41.908 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 15:48:41.908 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 15:48:41.909 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 15:48:41.909 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 15:48:41.909 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 15:48:41.909 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 15:48:41.913 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 15:48:41.916 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 15:48:41.921 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 15:48:41.924 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 15:51:24.613 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:51:39.442 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:51:54.444 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:52:09.442 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:52:24.437 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:52:39.447 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:52:54.443 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:53:09.437 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:53:24.437 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:53:39.444 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:53:54.439 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:54:09.446 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:54:24.450 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:54:39.438 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:54:54.449 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:55:10.241 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:55:25.241 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:55:40.233 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:55:55.240 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:56:45.496 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:56:55.238 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:57:10.243 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:57:25.244 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:57:40.233 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:57:55.232 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:58:10.246 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:58:25.240 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:58:40.231 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:58:55.233 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 15:59:55.252 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:00:55.265 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:02:21.271 +05:30] [INF] BookingReminderService started
+[2025-11-24 16:02:21.475 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 16:02:21.477 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 16:02:21.477 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 16:02:21.477 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 16:02:21.477 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 16:02:21.478 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 16:02:21.478 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 16:02:21.478 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 16:02:21.483 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 16:02:21.486 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 16:02:21.488 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 16:02:21.492 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 16:02:55.452 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:03:55.254 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:04:55.249 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:05:55.253 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:06:55.239 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:07:55.237 +05:30] [INF] Fetched 12 destinations

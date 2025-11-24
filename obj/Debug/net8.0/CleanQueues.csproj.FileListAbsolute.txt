@@ -1,5 +1,0 @@
-c:\Users\Administrator\Desktop\Travelling-main\obj\Debug\net8.0\CleanQueues.csproj.AssemblyReference.cache
-c:\Users\Administrator\Desktop\Travelling-main\obj\Debug\net8.0\CleanQueues.GeneratedMSBuildEditorConfig.editorconfig
-c:\Users\Administrator\Desktop\Travelling-main\obj\Debug\net8.0\CleanQueues.AssemblyInfoInputs.cache
-c:\Users\Administrator\Desktop\Travelling-main\obj\Debug\net8.0\CleanQueues.AssemblyInfo.cs
-c:\Users\Administrator\Desktop\Travelling-main\obj\Debug\net8.0\CleanQueues.csproj.CoreCompileInputs.cache

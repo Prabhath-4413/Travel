@@ -143,6 +143,9 @@ public class Booking
     [Column("created_at")]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+    [Column("updated_at")]
+    public DateTime? UpdatedAt { get; set; }
+
     public ICollection<BookingDestination> BookingDestinations { get; set; } = new List<BookingDestination>();
 
     public ICollection<TripCancellation> TripCancellations { get; set; } = new List<TripCancellation>();
@@ -245,6 +248,64 @@ public class BookingOtp
     [Required]
     [MaxLength(6)]
     public string Otp { get; set; } = string.Empty;
+
+    [Column("expiry")]
+    public DateTime Expiry { get; set; }
+
+    public bool Used { get; set; } = false;
+
+    [Column("created_at")]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+}
+
+public class UserBookingDto
+{
+    public int BookingId { get; set; }
+    public string Destinations { get; set; } = string.Empty;
+    public DateTime StartDate { get; set; }
+    public int Guests { get; set; }
+    public int Nights { get; set; }
+    public decimal TotalPrice { get; set; }
+    public string Status { get; set; } = string.Empty;
+}
+
+public class SendRescheduleOtpRequest
+{
+    public int BookingId { get; set; }
+    public DateTime NewStartDate { get; set; }
+    public int? NewDestinationId { get; set; }
+}
+
+public class VerifyRescheduleOtpRequest
+{
+    public int BookingId { get; set; }
+    public string Otp { get; set; } = string.Empty;
+    public DateTime NewStartDate { get; set; }
+    public int? NewDestinationId { get; set; }
+}
+
+public class RescheduleOtp
+{
+    [Key]
+    [Column("reschedule_otp_id")]
+    public int RescheduleOtpId { get; set; }
+
+    [Required]
+    [MaxLength(100)]
+    public string Email { get; set; } = string.Empty;
+
+    [ForeignKey(nameof(Booking))]
+    [Column("booking_id")]
+    public int BookingId { get; set; }
+    public Booking? Booking { get; set; }
+
+    [Required]
+    [MaxLength(6)]
+    public string Otp { get; set; } = string.Empty;
+
+    public DateTime NewStartDate { get; set; }
+
+    public int? NewDestinationId { get; set; }
 
     [Column("expiry")]
     public DateTime Expiry { get; set; }

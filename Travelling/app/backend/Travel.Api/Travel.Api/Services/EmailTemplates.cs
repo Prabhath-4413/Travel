@@ -120,5 +120,67 @@ namespace Travel.Api.Services
 </body>
 </html>";
         }
+
+        public static string RescheduleOtp(string otp)
+        {
+            return $@"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""utf-8"" />
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1"" />
+    <title>Your Trip Reschedule OTP</title>
+</head>
+<body style=""margin:0;padding:0;background:#f3f4f6;font-family:'Segoe UI',Arial,sans-serif;color:#111827;"">
+    <div style=""max-width:600px;margin:24px auto;background:#ffffff;border-radius:16px;padding:32px;box-shadow:0 20px 40px rgba(15,23,42,0.12);"">
+        <h1 style=""font-size:26px;margin:0 0 16px;text-align:center;"">📅 Reschedule Your Trip</h1>
+        <p style=""font-size:16px;line-height:1.6;margin:0 0 24px;text-align:center;"">Your One-Time Password (OTP) for trip reschedule verification is:</p>
+
+        <div style=""background:#ffffff;border:2px solid #8b5cf6;border-radius:12px;padding:24px;margin:24px 0;text-align:center;"">
+            <span style=""font-size:40px;font-weight:bold;color:#8b5cf6;letter-spacing:8px;font-family:'Courier New',monospace;"">{otp}</span>
+        </div>
+
+        <div style=""background:#f3e8ff;border-radius:12px;padding:16px;margin:20px 0;"">
+            <p style=""font-size:14px;line-height:1.6;margin:0;""><b>⏱️ Valid for:</b> 5 minutes only</p>
+            <p style=""font-size:14px;line-height:1.6;margin:8px 0 0;""><b>🔒 Security:</b> This OTP can only be used once</p>
+        </div>
+
+        <p style=""font-size:15px;line-height:1.6;margin:20px 0;"">Enter this OTP to confirm your trip reschedule. Do not share this code with anyone.</p>
+
+        <p style=""font-size:14px;color:#6b7280;margin:24px 0 0;border-top:1px solid #e5e7eb;padding-top:20px;"">If you didn't request to reschedule, please ignore this email.<br/><br/>Best regards,<br/><b>SuiteSavvy</b></p>
+    </div>
+</body>
+</html>";
+        }
+
+        public static string RescheduleConfirmation(string userName, int bookingId, string newDestination, DateTime newStartDate, DateTime newEndDate, int guests, decimal totalPrice)
+        {
+            var formattedTotal = totalPrice.ToString("C", CultureInfo.CurrentCulture);
+
+            return $@"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""utf-8"" />
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1"" />
+    <title>Trip Rescheduled Successfully</title>
+</head>
+<body style=""margin:0;padding:0;background:#f3f4f6;font-family:'Segoe UI',Arial,sans-serif;color:#111827;"">
+    <div style=""max-width:600px;margin:24px auto;background:#ffffff;border-radius:16px;padding:32px;box-shadow:0 20px 40px rgba(15,23,42,0.12);"">
+        <h1 style=""font-size:26px;margin:0 0 16px;text-align:center;"">✈️ Trip Rescheduled Successfully!</h1>
+        <p style=""font-size:16px;line-height:1.6;margin:0 0 16px;"">Hi <b>{userName}</b>, your trip has been rescheduled successfully! Here are your updated details.</p>
+        
+        <p style=""font-size:15px;line-height:1.6;margin:0 0 12px;""><b>Booking ID:</b> #{bookingId}</p>
+        <p style=""font-size:15px;line-height:1.6;margin:0 0 12px;""><b>New Destination:</b> {newDestination}</p>
+        <p style=""font-size:15px;line-height:1.6;margin:0 0 12px;""><b>Check-in:</b> {newStartDate:dddd, MMMM d, yyyy}</p>
+        <p style=""font-size:15px;line-height:1.6;margin:0 0 12px;""><b>Check-out:</b> {newEndDate:dddd, MMMM d, yyyy}</p>
+        <p style=""font-size:15px;line-height:1.6;margin:0 0 12px;""><b>Guests:</b> {guests}</p>
+        <p style=""font-size:15px;line-height:1.6;margin:0 24px 24px 0;padding:12px 16px;border-left:4px solid #8b5cf6;background:#f3e8ff;""><b>Total Price:</b> {formattedTotal}</p>
+        
+        <p style=""font-size:15px;line-height:1.6;margin:0 0 16px;"">We look forward to hosting you on your rescheduled dates. If you need any assistance, please don't hesitate to reach out. Have a wonderful trip! 🌍</p>
+        
+        <p style=""font-size:14px;color:#6b7280;margin:24px 0 0;border-top:1px solid #e5e7eb;padding-top:20px;"">Warm wishes,<br/><b>SuiteSavvy</b></p>
+    </div>
+</body>
+</html>";
+        }
     }
 }

@@ -71,6 +71,16 @@ export interface Booking {
   latestCancellation?: TripCancellationDetail | null;
 }
 
+export interface UserBooking {
+  bookingId: number;
+  destinations: string;
+  startDate: string;
+  guests: number;
+  nights: number;
+  totalPrice: number;
+  status: string;
+}
+
 export interface TripCancellationDetail {
   tripCancellationId: number;
   status: TripCancellationStatus;
@@ -245,6 +255,11 @@ export const bookingsAPI = {
     return response.data;
   },
 
+  getCurrentUserBookings: async (): Promise<UserBooking[]> => {
+    const response = await api.get("/api/booking/user-bookings");
+    return response.data;
+  },
+
   getAll: async () => {
     const response = await api.get("/admin/bookings");
     return response.data;
@@ -262,6 +277,25 @@ export const bookingsAPI = {
 
   confirmBooking: async (bookingId: number, email: string) => {
     const response = await api.post("/api/booking/confirm", { bookingId, email });
+    return response.data;
+  },
+
+  sendRescheduleOtp: async (bookingId: number, newStartDate: Date, newDestinationId?: number) => {
+    const response = await api.post("/api/booking/send-reschedule-otp", {
+      bookingId,
+      newStartDate,
+      newDestinationId
+    });
+    return response.data;
+  },
+
+  verifyRescheduleOtp: async (bookingId: number, otp: string, newStartDate: Date, newDestinationId?: number) => {
+    const response = await api.post("/api/booking/verify-reschedule-otp", {
+      bookingId,
+      otp,
+      newStartDate,
+      newDestinationId
+    });
     return response.data;
   },
 };

@@ -18,6 +18,7 @@ namespace Travel.Api.Data
         public DbSet<TravelPackageDestination> TravelPackageDestinations => Set<TravelPackageDestination>();
         public DbSet<Review> Reviews => Set<Review>();
         public DbSet<BookingOtp> BookingOtps => Set<BookingOtp>();
+        public DbSet<RescheduleOtp> RescheduleOtps => Set<RescheduleOtp>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

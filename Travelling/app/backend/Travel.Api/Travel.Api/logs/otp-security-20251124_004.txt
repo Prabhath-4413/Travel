@@ -1,0 +1,474 @@
+[2025-11-24 16:05:00.968 +05:30] [INF] BookingReminderService started
+[2025-11-24 16:05:01.193 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 16:05:01.196 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 16:05:01.197 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 16:05:01.197 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 16:05:01.197 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 16:05:01.198 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 16:05:01.198 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 16:05:01.198 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 16:05:01.204 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 16:05:01.207 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 16:05:01.212 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 16:05:01.215 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 16:05:01.359 +05:30] [ERR] Hosting failed to start
+System.IO.IOException: Failed to bind to address http://127.0.0.1:5000: address already in use.
+ ---> Microsoft.AspNetCore.Connections.AddressInUseException: Only one usage of each socket address (protocol/network address/port) is normally permitted.
+ ---> System.Net.Sockets.SocketException (10048): Only one usage of each socket address (protocol/network address/port) is normally permitted.
+   at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, Boolean disconnectOnFailure, String callerName)
+   at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportOptions.CreateDefaultBoundListenSocket(EndPoint endpoint)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate connectionDelegate, EndpointConfig endpointConfig, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.<>c__DisplayClass28_0`1.<<StartAsync>g__OnBind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindAsync(ListenOptions[] listenOptions, AddressBindContext context, Func`2 useHttps, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__15_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+[2025-11-24 16:05:01.393 +05:30] [WRN] Email queue channel shutdown 200 - Connection close forced.
+[2025-11-24 16:05:01.396 +05:30] [WRN] Booking queue channel shutdown 200 - Connection close forced.
+[2025-11-24 16:05:01.397 +05:30] [WRN] Booking email queue channel shutdown 200 - Connection close forced.
+[2025-11-24 16:05:01.397 +05:30] [WRN] Cancellation email queue channel shutdown 200 - Connection close forced.
+[2025-11-24 16:05:01.400 +05:30] [ERR] BackgroundService failed
+System.Threading.Tasks.TaskCanceledException: A task was canceled.
+   at Travel.Api.Services.BookingReminderService.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\Administrator\Desktop\Travelling-main\Travelling\app\backend\Travel.Api\Travel.Api\Services\BookingReminderService.cs:line 59
+   at Microsoft.Extensions.Hosting.Internal.Host.TryExecuteBackgroundServiceAsync(BackgroundService backgroundService)
+[2025-11-24 16:09:28.719 +05:30] [INF] BookingReminderService started
+[2025-11-24 16:09:28.910 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 16:09:28.911 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 16:09:28.911 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 16:09:28.911 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 16:09:28.912 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 16:09:28.912 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 16:09:28.912 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 16:09:28.912 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 16:09:28.916 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 16:09:28.919 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 16:09:28.921 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 16:09:28.923 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 16:09:55.532 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:10:55.229 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:11:44.328 +05:30] [INF] BookingReminderService started
+[2025-11-24 16:11:44.553 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 16:11:44.554 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 16:11:44.555 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 16:11:44.555 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 16:11:44.555 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 16:11:44.555 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 16:11:44.555 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 16:11:44.555 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 16:11:44.560 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 16:11:44.563 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 16:11:44.566 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 16:11:44.570 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 16:11:55.431 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:12:55.237 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:13:55.232 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:14:55.224 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:15:55.251 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:16:18.095 +05:30] [INF] BookingReminderService started
+[2025-11-24 16:16:18.295 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 16:16:18.296 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 16:16:18.297 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 16:16:18.297 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 16:16:18.297 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 16:16:18.297 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 16:16:18.297 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 16:16:18.298 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 16:16:18.302 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 16:16:18.306 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 16:16:18.309 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 16:16:18.312 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 16:16:47.048 +05:30] [INF] BookingReminderService started
+[2025-11-24 16:16:47.268 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 16:16:47.269 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 16:16:47.270 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 16:16:47.270 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 16:16:47.270 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 16:16:47.271 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 16:16:47.271 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 16:16:47.271 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 16:16:47.275 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-24 16:16:47.278 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-24 16:16:47.282 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 16:16:47.286 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 16:16:55.439 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:17:55.232 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:18:55.233 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:20:55.483 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:21:21.504 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:21:22.776 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:21:22.781 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:21:23.447 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:21:23.451 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:21:29.660 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:21:29.686 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:21:29.708 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:21:29.712 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:21:29.716 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:21:29.722 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:22:15.628 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:22:20.829 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:22:30.221 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:22:35.643 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:22:41.510 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:22:41.514 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:22:51.223 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:22:56.516 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:23:06.220 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:23:11.514 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:23:21.212 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:23:26.510 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:23:36.226 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:23:41.515 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:23:55.229 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:23:56.507 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:24:11.506 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:24:26.514 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:24:41.512 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:24:55.219 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:24:56.512 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:25:06.915 +05:30] [INF] SendOtp request received for booking 1
+[2025-11-24 16:25:06.936 +05:30] [INF] OTP generation requested for booking 1, email prabhath.galla@quixy.com
+[2025-11-24 16:25:06.939 +05:30] [INF] OTP rate limit check for booking 1: No previous requests
+[2025-11-24 16:25:06.963 +05:30] [INF] Generated new OTP for booking 1, expiry "2025-11-24T11:00:06.9634129Z"
+[2025-11-24 16:25:06.994 +05:30] [INF] Sending OTP email to prabhath.galla@quixy.com
+[2025-11-24 16:25:07.032 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-24 16:25:07.032 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-24 16:25:07.086 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-24 16:25:07.092 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-24 16:25:09.136 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-24 16:25:09.136 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-24 16:25:09.628 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-24 16:25:09.628 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-24 16:25:11.335 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-24 16:25:11.335 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-24 16:25:11.517 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:25:11.577 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-24 16:25:11.577 +05:30] [INF] OTP email sent successfully to prabhath.galla@quixy.com
+[2025-11-24 16:25:11.577 +05:30] [INF] OTP email sent successfully for booking 1 to prabhath.galla@quixy.com
+[2025-11-24 16:25:11.579 +05:30] [INF] Recorded OTP request for booking 1 at "2025-11-24T10:55:11.5789210Z"
+[2025-11-24 16:25:11.581 +05:30] [INF] OTP sent successfully for booking 1
+[2025-11-24 16:25:18.254 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:25:21.403 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:25:27.222 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:25:32.010 +05:30] [INF] VerifyOtp request received for booking 1
+[2025-11-24 16:25:32.013 +05:30] [INF] OTP validation requested for booking 1, email prabhath.galla@quixy.com
+[2025-11-24 16:25:32.017 +05:30] [INF] OTP validation successful for booking 1
+[2025-11-24 16:25:32.017 +05:30] [INF] OTP verified successfully for booking 1
+[2025-11-24 16:25:32.031 +05:30] [INF] ConfirmBooking request received for booking 1, email prabhath.galla@quixy.com
+[2025-11-24 16:25:32.033 +05:30] [INF] Confirming booking 1 for email prabhath.galla@quixy.com
+[2025-11-24 16:25:32.075 +05:30] [INF] Booking status updated to Confirmed for booking 1
+[2025-11-24 16:25:32.076 +05:30] [INF] Marking OTP as used for booking 1, email prabhath.galla@quixy.com
+[2025-11-24 16:25:32.081 +05:30] [INF] OTP marked as used for booking 1
+[2025-11-24 16:25:32.165 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 16:25:32.168 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 16:25:32.168 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 16:25:32.169 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 16:25:32.171 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 16:25:32.172 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 16:25:32.172 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 16:25:32.173 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 16:25:32.185 +05:30] [INF] Published message 4badfac550904a8b84d0ee498c6b6c22 to travel.bookings.
+[2025-11-24 16:25:32.185 +05:30] [INF] Booking confirmation message published to queue for booking 1
+[2025-11-24 16:25:32.186 +05:30] [INF] Booking confirmed successfully for booking 1
+[2025-11-24 16:25:36.222 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:25:42.210 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:25:51.214 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:25:57.210 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:26:06.220 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:26:12.212 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:26:27.206 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:26:42.216 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:26:55.207 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:26:57.215 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:27:11.510 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:27:26.512 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:27:41.506 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:27:55.207 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:27:56.507 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:28:12.218 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:29:18.591 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:29:20.742 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:29:35.639 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:29:46.488 +05:30] [INF] SendOtp request received for booking 2
+[2025-11-24 16:29:46.552 +05:30] [INF] OTP generation requested for booking 2, email prabhathchowdarygalla@gmail.com
+[2025-11-24 16:29:46.554 +05:30] [INF] OTP rate limit check for booking 2: No previous requests
+[2025-11-24 16:29:46.572 +05:30] [INF] Generated new OTP for booking 2, expiry "2025-11-24T11:04:46.5725367Z"
+[2025-11-24 16:29:46.609 +05:30] [INF] Sending OTP email to prabhathchowdarygalla@gmail.com
+[2025-11-24 16:29:46.619 +05:30] [INF] Email sending initiated - To: prabhathchowdarygalla@gmail.com, Subject: Your OTP for Booking Verification
+[2025-11-24 16:29:46.620 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-24 16:29:46.665 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhathchowdarygalla@gmail.com, Subject: Your OTP for Booking Verification
+[2025-11-24 16:29:46.669 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-24 16:29:47.957 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-24 16:29:47.957 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-24 16:29:48.415 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-24 16:29:48.415 +05:30] [INF] Sending email message - To: prabhathchowdarygalla@gmail.com, Subject: Your OTP for Booking Verification
+[2025-11-24 16:29:49.890 +05:30] [INF] Email sent successfully - To: prabhathchowdarygalla@gmail.com, Subject: Your OTP for Booking Verification
+[2025-11-24 16:29:49.891 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-24 16:29:50.131 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-24 16:29:50.132 +05:30] [INF] OTP email sent successfully to prabhathchowdarygalla@gmail.com
+[2025-11-24 16:29:50.132 +05:30] [INF] OTP email sent successfully for booking 2 to prabhathchowdarygalla@gmail.com
+[2025-11-24 16:29:50.133 +05:30] [INF] Recorded OTP request for booking 2 at "2025-11-24T10:59:50.1335142Z"
+[2025-11-24 16:29:50.134 +05:30] [INF] OTP sent successfully for booking 2
+[2025-11-24 16:29:51.203 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:30:06.215 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:30:21.213 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:30:36.209 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:30:51.217 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:48:55.431 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:48:58.530 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:48:58.536 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:49:11.513 +05:30] [INF] SendOtp request received for booking 4
+[2025-11-24 16:49:11.559 +05:30] [INF] OTP generation requested for booking 4, email prabhath.galla@quixy.com
+[2025-11-24 16:49:11.561 +05:30] [INF] OTP rate limit check for booking 4: No previous requests
+[2025-11-24 16:49:11.600 +05:30] [INF] Generated new OTP for booking 4, expiry "2025-11-24T11:24:11.6006101Z"
+[2025-11-24 16:49:11.657 +05:30] [INF] Sending OTP email to prabhath.galla@quixy.com
+[2025-11-24 16:49:11.688 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-24 16:49:11.688 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-24 16:49:11.744 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-24 16:49:11.751 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-24 16:49:13.474 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:49:13.539 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-24 16:49:13.539 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-24 16:49:13.993 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-24 16:49:13.994 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-24 16:49:15.538 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-24 16:49:15.538 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-24 16:49:15.787 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-24 16:49:15.788 +05:30] [INF] OTP email sent successfully to prabhath.galla@quixy.com
+[2025-11-24 16:49:15.788 +05:30] [INF] OTP email sent successfully for booking 4 to prabhath.galla@quixy.com
+[2025-11-24 16:49:15.789 +05:30] [INF] Recorded OTP request for booking 4 at "2025-11-24T11:19:15.7897442Z"
+[2025-11-24 16:49:15.791 +05:30] [INF] OTP sent successfully for booking 4
+[2025-11-24 16:49:28.478 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:49:28.980 +05:30] [INF] VerifyOtp request received for booking 4
+[2025-11-24 16:49:28.985 +05:30] [INF] OTP validation requested for booking 4, email prabhath.galla@quixy.com
+[2025-11-24 16:49:28.990 +05:30] [INF] OTP validation successful for booking 4
+[2025-11-24 16:49:28.990 +05:30] [INF] OTP verified successfully for booking 4
+[2025-11-24 16:49:29.008 +05:30] [INF] ConfirmBooking request received for booking 4, email prabhath.galla@quixy.com
+[2025-11-24 16:49:29.014 +05:30] [INF] Confirming booking 4 for email prabhath.galla@quixy.com
+[2025-11-24 16:49:29.069 +05:30] [INF] Booking status updated to Confirmed for booking 4
+[2025-11-24 16:49:29.070 +05:30] [INF] Marking OTP as used for booking 4, email prabhath.galla@quixy.com
+[2025-11-24 16:49:29.077 +05:30] [INF] OTP marked as used for booking 4
+[2025-11-24 16:49:29.159 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 16:49:29.159 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 16:49:29.159 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 16:49:29.160 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 16:49:29.160 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 16:49:29.160 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 16:49:29.160 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 16:49:29.160 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 16:49:29.173 +05:30] [INF] Published message bc0e7007bdf447938e9dfb95501fb58d to travel.bookings.
+[2025-11-24 16:49:29.173 +05:30] [INF] Booking confirmation message published to queue for booking 4
+[2025-11-24 16:49:29.174 +05:30] [INF] Booking confirmed successfully for booking 4
+[2025-11-24 16:49:44.191 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:49:58.473 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:50:14.191 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:50:29.191 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:50:43.062 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:50:43.075 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:50:44.198 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:50:47.522 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:50:47.532 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:50:47.540 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:50:47.548 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:50:49.770 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:50:49.776 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:50:56.929 +05:30] [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+[2025-11-24 16:51:05.196 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:51:10.428 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:51:13.468 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:51:16.250 +05:30] [INF] Published message eda72a6c-37b7-4dee-ac9c-d730d72671fd to travel.cancellations.
+[2025-11-24 16:51:16.250 +05:30] [INF] 📤 Cancellation request message published for booking #4
+[2025-11-24 16:51:16.256 +05:30] [INF] Published message 866122a1-8f60-4448-aadf-ff9d994ca645 to travel.admin.
+[2025-11-24 16:51:16.256 +05:30] [INF] 📤 Admin notification sent for cancellation request #1
+[2025-11-24 16:51:18.626 +05:30] [INF] Published message b9b5c1eb-52d8-4d24-9463-c77463a03695 to travel.cancellations.
+[2025-11-24 16:51:18.626 +05:30] [INF] 📤 Cancellation request message published for booking #3
+[2025-11-24 16:51:18.626 +05:30] [INF] Published message 20af3fab-3cff-4507-a540-4e67fdb9556a to travel.admin.
+[2025-11-24 16:51:18.627 +05:30] [INF] 📤 Admin notification sent for cancellation request #2
+[2025-11-24 16:51:20.197 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:51:29.436 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:51:35.193 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:51:44.197 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:51:50.198 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:51:59.186 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:52:05.190 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:52:11.981 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 16:52:12.024 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 16:52:12.025 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 16:52:12.026 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 16:52:12.026 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 16:52:12.027 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 16:52:12.027 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 16:52:12.027 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 16:52:12.041 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 16:52:12.354 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #1
+[2025-11-24 16:52:12.355 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-24 16:52:12.387 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #1
+[2025-11-24 16:52:12.389 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-24 16:52:13.696 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-24 16:52:13.696 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-24 16:52:14.152 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-24 16:52:14.152 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #1
+[2025-11-24 16:52:14.367 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:52:15.752 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #1
+[2025-11-24 16:52:15.752 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-24 16:52:15.996 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-24 16:52:15.997 +05:30] [INF] Booking confirmation email sent to prabhath.galla@quixy.com for booking #1.
+[2025-11-24 16:52:15.997 +05:30] [INF] Booking email message processed. MessageId 4badfac550904a8b84d0ee498c6b6c22.
+[2025-11-24 16:52:16.005 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #4
+[2025-11-24 16:52:16.005 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-24 16:52:16.005 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #4
+[2025-11-24 16:52:16.005 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-24 16:52:17.252 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-24 16:52:17.252 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-24 16:52:17.693 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-24 16:52:17.693 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #4
+[2025-11-24 16:52:19.076 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #4
+[2025-11-24 16:52:19.076 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-24 16:52:19.320 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-24 16:52:19.320 +05:30] [INF] Booking confirmation email sent to prabhath.galla@quixy.com for booking #4.
+[2025-11-24 16:52:19.320 +05:30] [INF] Booking email message processed. MessageId bc0e7007bdf447938e9dfb95501fb58d.
+[2025-11-24 16:52:20.206 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:52:55.203 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:52:55.304 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:53:55.201 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:54:50.739 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 16:54:50.773 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 16:54:50.774 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 16:54:50.774 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 16:54:50.774 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 16:54:50.774 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 16:54:50.774 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 16:54:50.775 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 16:54:50.779 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 16:54:50.786 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 16:54:51.116 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Cancellation Request Received - Booking #4
+[2025-11-24 16:54:51.116 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-24 16:54:51.150 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Cancellation Request Received - Booking #4
+[2025-11-24 16:54:51.152 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-24 16:54:53.415 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-24 16:54:53.415 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-24 16:54:53.871 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-24 16:54:53.871 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Cancellation Request Received - Booking #4
+[2025-11-24 16:54:55.319 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Cancellation Request Received - Booking #4
+[2025-11-24 16:54:55.319 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-24 16:54:55.380 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:54:55.568 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-24 16:54:55.568 +05:30] [INF] Cancellation email sent to prabhath.galla@quixy.com for booking #4, message type "CancellationRequested".
+[2025-11-24 16:54:55.569 +05:30] [INF] Cancellation email message processed. MessageId eda72a6c-37b7-4dee-ac9c-d730d72671fd.
+[2025-11-24 16:54:55.576 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Cancellation Request Received - Booking #3
+[2025-11-24 16:54:55.576 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-24 16:54:55.576 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Cancellation Request Received - Booking #3
+[2025-11-24 16:54:55.576 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-24 16:54:56.994 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-24 16:54:56.994 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-24 16:54:57.436 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-24 16:54:57.436 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Cancellation Request Received - Booking #3
+[2025-11-24 16:54:58.846 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Cancellation Request Received - Booking #3
+[2025-11-24 16:54:58.846 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-24 16:54:59.082 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-24 16:54:59.082 +05:30] [INF] Cancellation email sent to prabhath.galla@quixy.com for booking #3, message type "CancellationRequested".
+[2025-11-24 16:54:59.083 +05:30] [INF] Cancellation email message processed. MessageId b9b5c1eb-52d8-4d24-9463-c77463a03695.
+[2025-11-24 16:55:06.533 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:55:09.380 +05:30] [INF] Published message 559f0d81-1d90-46ac-944e-11101b6d5090 to travel.cancellations.
+[2025-11-24 16:55:09.381 +05:30] [INF] 📤 Cancellation approval message published for booking #4
+[2025-11-24 16:55:09.385 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Cancellation Approved - Booking #4
+[2025-11-24 16:55:09.385 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-24 16:55:09.386 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Cancellation Approved - Booking #4
+[2025-11-24 16:55:09.386 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-24 16:55:09.444 +05:30] [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+[2025-11-24 16:55:10.836 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-24 16:55:10.837 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-24 16:55:11.283 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-24 16:55:11.284 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Cancellation Approved - Booking #4
+[2025-11-24 16:55:12.193 +05:30] [INF] Published message e34b01e5-1aff-4ac1-bdb5-77c5c4d9c3a6 to travel.cancellations.
+[2025-11-24 16:55:12.193 +05:30] [INF] 📤 Cancellation approval message published for booking #3
+[2025-11-24 16:55:12.795 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Cancellation Approved - Booking #4
+[2025-11-24 16:55:12.795 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-24 16:55:13.032 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-24 16:55:13.032 +05:30] [INF] Cancellation email sent to prabhath.galla@quixy.com for booking #4, message type "CancellationDecision".
+[2025-11-24 16:55:13.033 +05:30] [INF] Cancellation email message processed. MessageId 559f0d81-1d90-46ac-944e-11101b6d5090.
+[2025-11-24 16:55:13.037 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Cancellation Approved - Booking #3
+[2025-11-24 16:55:13.037 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-24 16:55:13.037 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Cancellation Approved - Booking #3
+[2025-11-24 16:55:13.037 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-24 16:55:14.223 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-24 16:55:14.223 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-24 16:55:14.642 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-24 16:55:14.642 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Cancellation Approved - Booking #3
+[2025-11-24 16:55:16.018 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Cancellation Approved - Booking #3
+[2025-11-24 16:55:16.018 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-24 16:55:16.254 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-24 16:55:16.254 +05:30] [INF] Cancellation email sent to prabhath.galla@quixy.com for booking #3, message type "CancellationDecision".
+[2025-11-24 16:55:16.254 +05:30] [INF] Cancellation email message processed. MessageId e34b01e5-1aff-4ac1-bdb5-77c5c4d9c3a6.
+[2025-11-24 16:55:20.190 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:55:35.196 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:55:46.407 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:55:50.189 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:55:58.035 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:55:58.055 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:56:05.196 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:56:13.032 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:56:26.899 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:56:28.196 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:56:35.191 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:56:43.182 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:56:50.184 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:56:58.187 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:57:05.186 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:57:13.197 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:57:20.194 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:57:28.190 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:57:55.183 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:57:55.185 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:58:32.626 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:58:36.206 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:58:43.050 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:58:58.209 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:59:13.201 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:59:28.193 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 16:59:43.191 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 17:47:31.861 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-24 17:47:31.894 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-24 17:47:31.894 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-24 17:47:31.895 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-24 17:47:31.895 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-24 17:47:31.895 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-24 17:47:31.895 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-24 17:47:31.895 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-24 17:47:31.900 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-24 17:47:31.903 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-24 17:47:41.252 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 17:47:41.332 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 17:47:56.098 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 17:48:12.068 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 17:48:27.072 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 17:48:42.070 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 17:48:57.057 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 17:49:12.060 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 17:49:55.062 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 17:50:18.821 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 17:50:26.091 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 17:50:41.090 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 17:50:57.066 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 17:51:12.070 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 17:51:27.064 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 17:51:42.062 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 17:52:55.071 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 17:53:54.937 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 17:54:54.858 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 17:55:54.790 +05:30] [INF] Fetched 12 destinations
+[2025-11-24 17:56:54.718 +05:30] [INF] Fetched 12 destinations

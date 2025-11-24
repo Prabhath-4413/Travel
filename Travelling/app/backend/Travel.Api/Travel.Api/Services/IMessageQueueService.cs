@@ -28,6 +28,11 @@ namespace Travel.Api.Services
         Task PublishCancellationMessageAsync(CancellationMessage message);
         
         /// <summary>
+        /// Publish a message to the reschedule queue
+        /// </summary>
+        Task PublishRescheduleMessageAsync(RescheduleMessage message);
+        
+        /// <summary>
         /// Check if the connection is healthy
         /// </summary>
         bool IsConnected { get; }
