@@ -1,0 +1,1073 @@
+[2025-11-25 16:46:38.395 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-25 16:46:38.423 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-25 16:46:38.423 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-25 16:46:38.424 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-25 16:46:38.424 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-25 16:46:38.425 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-25 16:46:38.425 +05:30] [INF] Dead-letter queue 'travel.reschedule.dlq' already exists.
+[2025-11-25 16:46:38.425 +05:30] [INF] Queue 'travel.reschedule' already exists.
+[2025-11-25 16:46:38.425 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-25 16:46:38.426 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-25 16:46:38.430 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-25 16:46:38.437 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-25 16:46:38.539 +05:30] [ERR] Hosting failed to start
+System.IO.IOException: Failed to bind to address http://127.0.0.1:6000: address already in use.
+ ---> Microsoft.AspNetCore.Connections.AddressInUseException: Only one usage of each socket address (protocol/network address/port) is normally permitted.
+ ---> System.Net.Sockets.SocketException (10048): Only one usage of each socket address (protocol/network address/port) is normally permitted.
+   at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, Boolean disconnectOnFailure, String callerName)
+   at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportOptions.CreateDefaultBoundListenSocket(EndPoint endpoint)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate connectionDelegate, EndpointConfig endpointConfig, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.<>c__DisplayClass28_0`1.<<StartAsync>g__OnBind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindAsync(ListenOptions[] listenOptions, AddressBindContext context, Func`2 useHttps, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__15_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+[2025-11-25 16:46:38.559 +05:30] [WRN] Booking email queue channel shutdown 200 - Connection close forced.
+[2025-11-25 16:46:38.561 +05:30] [WRN] Cancellation email queue channel shutdown 200 - Connection close forced.
+[2025-11-25 16:46:54.164 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-25 16:46:54.189 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-25 16:46:54.190 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-25 16:46:54.190 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-25 16:46:54.191 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-25 16:46:54.191 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-25 16:46:54.191 +05:30] [INF] Dead-letter queue 'travel.reschedule.dlq' already exists.
+[2025-11-25 16:46:54.192 +05:30] [INF] Queue 'travel.reschedule' already exists.
+[2025-11-25 16:46:54.192 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-25 16:46:54.192 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-25 16:46:54.198 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-25 16:46:54.202 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-25 16:48:33.291 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-25 16:48:33.316 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-25 16:48:33.316 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-25 16:48:33.317 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-25 16:48:33.317 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-25 16:48:33.317 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-25 16:48:33.318 +05:30] [INF] Dead-letter queue 'travel.reschedule.dlq' already exists.
+[2025-11-25 16:48:33.318 +05:30] [INF] Queue 'travel.reschedule' already exists.
+[2025-11-25 16:48:33.318 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-25 16:48:33.318 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-25 16:48:33.330 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-25 16:48:33.335 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-25 16:50:11.753 +05:30] [INF] Health check requested
+[2025-11-25 16:50:32.214 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-25 16:50:32.240 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-25 16:50:32.241 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-25 16:50:32.241 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-25 16:50:32.241 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-25 16:50:32.241 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-25 16:50:32.242 +05:30] [INF] Dead-letter queue 'travel.reschedule.dlq' already exists.
+[2025-11-25 16:50:32.242 +05:30] [INF] Queue 'travel.reschedule' already exists.
+[2025-11-25 16:50:32.242 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-25 16:50:32.242 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-25 16:50:32.248 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-25 16:50:32.253 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-25 16:50:36.814 +05:30] [INF] Health check requested
+[2025-11-25 16:50:38.151 +05:30] [INF] Health check requested
+[2025-11-25 16:50:38.159 +05:30] [INF] Health check requested
+[2025-11-25 16:50:38.250 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:50:38.333 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:50:48.134 +05:30] [INF] Health check requested
+[2025-11-25 16:50:48.140 +05:30] [INF] Health check requested
+[2025-11-25 16:50:54.136 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:50:56.809 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:50:58.135 +05:30] [INF] Health check requested
+[2025-11-25 16:50:58.141 +05:30] [INF] Health check requested
+[2025-11-25 16:52:23.569 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-25 16:52:23.596 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-25 16:52:23.597 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-25 16:52:23.597 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-25 16:52:23.598 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-25 16:52:23.598 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-25 16:52:23.599 +05:30] [INF] Dead-letter queue 'travel.reschedule.dlq' already exists.
+[2025-11-25 16:52:23.600 +05:30] [INF] Queue 'travel.reschedule' already exists.
+[2025-11-25 16:52:23.600 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-25 16:52:23.600 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-25 16:52:23.604 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-25 16:52:23.608 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-25 16:52:27.627 +05:30] [INF] Health check requested
+[2025-11-25 16:52:27.685 +05:30] [INF] Health check requested
+[2025-11-25 16:52:27.770 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:52:27.900 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:52:37.639 +05:30] [INF] Health check requested
+[2025-11-25 16:52:37.954 +05:30] [INF] Health check requested
+[2025-11-25 16:52:42.709 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:52:47.637 +05:30] [INF] Health check requested
+[2025-11-25 16:52:47.954 +05:30] [INF] Health check requested
+[2025-11-25 16:52:57.624 +05:30] [INF] Health check requested
+[2025-11-25 16:52:57.709 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:52:57.951 +05:30] [INF] Health check requested
+[2025-11-25 16:53:07.624 +05:30] [INF] Health check requested
+[2025-11-25 16:53:07.960 +05:30] [INF] Health check requested
+[2025-11-25 16:53:10.960 +05:30] [INF] GetUserBookings request received
+[2025-11-25 16:53:11.026 +05:30] [INF] Retrieved 0 bookings for user 2
+[2025-11-25 16:53:11.035 +05:30] [INF] GetUserBookings request received
+[2025-11-25 16:53:11.036 +05:30] [INF] Retrieved 0 bookings for user 2
+[2025-11-25 16:53:12.721 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:53:17.625 +05:30] [INF] Health check requested
+[2025-11-25 16:53:17.976 +05:30] [INF] Health check requested
+[2025-11-25 16:53:22.750 +05:30] [INF] Creating booking for userId 2 with 1 destinations
+[2025-11-25 16:53:22.868 +05:30] [INF] Booking entity created with id 1
+[2025-11-25 16:53:22.886 +05:30] [INF] Booking created successfully with id 1 for userId 2 with 1 destinations
+[2025-11-25 16:53:22.898 +05:30] [INF] Published message 3f02829a-c3e7-4fe0-9b71-86acee3d8d36 to travel.bookings.
+[2025-11-25 16:53:22.898 +05:30] [INF] Booking message published to queue for booking 1
+[2025-11-25 16:53:22.952 +05:30] [INF] SendOtp request received for booking 1
+[2025-11-25 16:53:22.962 +05:30] [INF] OTP generation requested for booking 1, email tapankumar.meher@quixy.com
+[2025-11-25 16:53:22.964 +05:30] [INF] OTP rate limit check for booking 1: No previous requests
+[2025-11-25 16:53:22.987 +05:30] [INF] Generated new OTP for booking 1, expiry "2025-11-25T11:28:22.9869919Z"
+[2025-11-25 16:53:22.993 +05:30] [INF] Email sending initiated - To: tapankumar.meher@quixy.com, Subject: Booking Confirmed - Booking #1
+[2025-11-25 16:53:22.994 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-25 16:53:23.018 +05:30] [INF] Sending OTP email to tapankumar.meher@quixy.com
+[2025-11-25 16:53:23.019 +05:30] [INF] Email sending initiated - To: tapankumar.meher@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-25 16:53:23.020 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-25 16:53:23.044 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: tapankumar.meher@quixy.com, Subject: Booking Confirmed - Booking #1
+[2025-11-25 16:53:23.044 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: tapankumar.meher@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-25 16:53:23.049 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-25 16:53:23.049 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-25 16:53:25.304 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-25 16:53:25.304 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-25 16:53:25.305 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-25 16:53:25.306 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-25 16:53:25.780 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-25 16:53:25.780 +05:30] [INF] Sending email message - To: tapankumar.meher@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-25 16:53:25.781 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-25 16:53:25.781 +05:30] [INF] Sending email message - To: tapankumar.meher@quixy.com, Subject: Booking Confirmed - Booking #1
+[2025-11-25 16:53:27.629 +05:30] [INF] Health check requested
+[2025-11-25 16:53:27.729 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:53:27.901 +05:30] [INF] Email sent successfully - To: tapankumar.meher@quixy.com, Subject: Booking Confirmed - Booking #1
+[2025-11-25 16:53:27.901 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-25 16:53:27.960 +05:30] [INF] Health check requested
+[2025-11-25 16:53:28.148 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-25 16:53:28.148 +05:30] [INF] Booking confirmation email sent to tapankumar.meher@quixy.com for booking #1.
+[2025-11-25 16:53:28.151 +05:30] [INF] Booking email message processed. MessageId 3f02829a-c3e7-4fe0-9b71-86acee3d8d36.
+[2025-11-25 16:53:28.566 +05:30] [INF] Email sent successfully - To: tapankumar.meher@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-25 16:53:28.567 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-25 16:53:28.804 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-25 16:53:28.805 +05:30] [INF] OTP email sent successfully to tapankumar.meher@quixy.com
+[2025-11-25 16:53:28.805 +05:30] [INF] OTP email sent successfully for booking 1 to tapankumar.meher@quixy.com
+[2025-11-25 16:53:28.809 +05:30] [INF] Recorded OTP request for booking 1 at "2025-11-25T11:23:28.8095131Z"
+[2025-11-25 16:53:28.813 +05:30] [INF] OTP sent successfully for booking 1
+[2025-11-25 16:53:37.381 +05:30] [INF] GetUserBookings request received
+[2025-11-25 16:53:37.382 +05:30] [INF] Retrieved 0 bookings for user 2
+[2025-11-25 16:53:37.385 +05:30] [INF] GetUserBookings request received
+[2025-11-25 16:53:37.386 +05:30] [INF] Retrieved 0 bookings for user 2
+[2025-11-25 16:53:37.629 +05:30] [INF] Health check requested
+[2025-11-25 16:53:37.949 +05:30] [INF] Health check requested
+[2025-11-25 16:53:40.033 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:53:40.037 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:53:40.040 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:53:40.042 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:53:42.421 +05:30] [INF] Health check requested
+[2025-11-25 16:53:42.427 +05:30] [INF] Health check requested
+[2025-11-25 16:53:42.431 +05:30] [INF] Health check requested
+[2025-11-25 16:53:42.508 +05:30] [INF] Health check requested
+[2025-11-25 16:53:42.523 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:53:42.527 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:53:52.431 +05:30] [INF] Health check requested
+[2025-11-25 16:53:52.486 +05:30] [INF] Health check requested
+[2025-11-25 16:53:57.509 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:54:02.432 +05:30] [INF] Health check requested
+[2025-11-25 16:54:02.488 +05:30] [INF] Health check requested
+[2025-11-25 16:54:12.442 +05:30] [INF] Health check requested
+[2025-11-25 16:54:12.494 +05:30] [INF] Health check requested
+[2025-11-25 16:54:12.505 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:54:22.446 +05:30] [INF] Health check requested
+[2025-11-25 16:54:22.495 +05:30] [INF] Health check requested
+[2025-11-25 16:54:27.511 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:54:32.433 +05:30] [INF] Health check requested
+[2025-11-25 16:54:32.489 +05:30] [INF] Health check requested
+[2025-11-25 16:54:42.433 +05:30] [INF] Health check requested
+[2025-11-25 16:54:42.494 +05:30] [INF] Health check requested
+[2025-11-25 16:54:42.500 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:54:47.026 +05:30] [INF] GetUserBookings request received
+[2025-11-25 16:54:47.027 +05:30] [INF] Retrieved 0 bookings for user 3
+[2025-11-25 16:54:47.041 +05:30] [INF] GetUserBookings request received
+[2025-11-25 16:54:47.042 +05:30] [INF] Retrieved 0 bookings for user 3
+[2025-11-25 16:54:52.430 +05:30] [INF] Health check requested
+[2025-11-25 16:54:52.486 +05:30] [INF] Health check requested
+[2025-11-25 16:54:55.499 +05:30] [INF] Creating booking for userId 3 with 1 destinations
+[2025-11-25 16:54:55.504 +05:30] [INF] Booking entity created with id 2
+[2025-11-25 16:54:55.508 +05:30] [INF] Booking created successfully with id 2 for userId 3 with 1 destinations
+[2025-11-25 16:54:55.512 +05:30] [INF] Published message b39adb49-7803-4a43-bf7c-e4a14a8dc639 to travel.bookings.
+[2025-11-25 16:54:55.513 +05:30] [INF] Booking message published to queue for booking 2
+[2025-11-25 16:54:55.518 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #2
+[2025-11-25 16:54:55.518 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-25 16:54:55.519 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #2
+[2025-11-25 16:54:55.519 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-25 16:54:55.531 +05:30] [INF] SendOtp request received for booking 2
+[2025-11-25 16:54:55.532 +05:30] [INF] OTP generation requested for booking 2, email prabhath.galla@quixy.com
+[2025-11-25 16:54:55.532 +05:30] [INF] OTP rate limit check for booking 2: No previous requests
+[2025-11-25 16:54:55.532 +05:30] [INF] Generated new OTP for booking 2, expiry "2025-11-25T11:29:55.5327005Z"
+[2025-11-25 16:54:55.534 +05:30] [INF] Sending OTP email to prabhath.galla@quixy.com
+[2025-11-25 16:54:55.534 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-25 16:54:55.534 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-25 16:54:55.535 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-25 16:54:55.535 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-25 16:54:56.716 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-25 16:54:56.717 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-25 16:54:56.792 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-25 16:54:56.792 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-25 16:54:57.168 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-25 16:54:57.168 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-25 16:54:57.250 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-25 16:54:57.250 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #2
+[2025-11-25 16:54:57.514 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:54:58.715 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-25 16:54:58.715 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-25 16:54:58.951 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-25 16:54:58.952 +05:30] [INF] OTP email sent successfully to prabhath.galla@quixy.com
+[2025-11-25 16:54:58.952 +05:30] [INF] OTP email sent successfully for booking 2 to prabhath.galla@quixy.com
+[2025-11-25 16:54:58.952 +05:30] [INF] Recorded OTP request for booking 2 at "2025-11-25T11:24:58.9525412Z"
+[2025-11-25 16:54:58.952 +05:30] [INF] OTP sent successfully for booking 2
+[2025-11-25 16:54:59.088 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #2
+[2025-11-25 16:54:59.088 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-25 16:54:59.333 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-25 16:54:59.333 +05:30] [INF] Booking confirmation email sent to prabhath.galla@quixy.com for booking #2.
+[2025-11-25 16:54:59.333 +05:30] [INF] Booking email message processed. MessageId b39adb49-7803-4a43-bf7c-e4a14a8dc639.
+[2025-11-25 16:55:02.715 +05:30] [INF] Health check requested
+[2025-11-25 16:55:02.718 +05:30] [INF] Health check requested
+[2025-11-25 16:55:13.125 +05:30] [INF] Health check requested
+[2025-11-25 16:55:13.127 +05:30] [INF] Health check requested
+[2025-11-25 16:55:13.134 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:55:16.115 +05:30] [INF] VerifyOtp request received for booking 2
+[2025-11-25 16:55:16.117 +05:30] [INF] OTP validation requested for booking 2, email prabhath.galla@quixy.com
+[2025-11-25 16:55:16.122 +05:30] [INF] OTP validation successful for booking 2
+[2025-11-25 16:55:16.122 +05:30] [INF] OTP verified successfully for booking 2
+[2025-11-25 16:55:16.134 +05:30] [INF] ConfirmBooking request received for booking 2, email prabhath.galla@quixy.com
+[2025-11-25 16:55:16.136 +05:30] [INF] Confirming booking 2 for email prabhath.galla@quixy.com
+[2025-11-25 16:55:16.156 +05:30] [INF] Booking status updated to Confirmed for booking 2
+[2025-11-25 16:55:16.157 +05:30] [INF] Marking OTP as used for booking 2, email prabhath.galla@quixy.com
+[2025-11-25 16:55:16.164 +05:30] [INF] OTP marked as used for booking 2
+[2025-11-25 16:55:16.168 +05:30] [INF] Published message 51d5db78922b4db29927bdd6b32ac28f to travel.bookings.
+[2025-11-25 16:55:16.168 +05:30] [INF] Booking confirmation message published to queue for booking 2
+[2025-11-25 16:55:16.169 +05:30] [INF] Booking confirmed successfully for booking 2
+[2025-11-25 16:55:16.171 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #2
+[2025-11-25 16:55:16.171 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-25 16:55:16.172 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #2
+[2025-11-25 16:55:16.172 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-25 16:55:17.412 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-25 16:55:17.412 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-25 16:55:18.469 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-25 16:55:18.469 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #2
+[2025-11-25 16:55:20.017 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #2
+[2025-11-25 16:55:20.017 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-25 16:55:20.260 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-25 16:55:20.260 +05:30] [INF] Booking confirmation email sent to prabhath.galla@quixy.com for booking #2.
+[2025-11-25 16:55:20.261 +05:30] [INF] Booking email message processed. MessageId 51d5db78922b4db29927bdd6b32ac28f.
+[2025-11-25 16:55:21.129 +05:30] [INF] GetUserBookings request received
+[2025-11-25 16:55:21.133 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-25 16:55:21.139 +05:30] [INF] GetUserBookings request received
+[2025-11-25 16:55:21.140 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-25 16:55:22.440 +05:30] [INF] Health check requested
+[2025-11-25 16:55:22.488 +05:30] [INF] Health check requested
+[2025-11-25 16:55:28.137 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:55:33.129 +05:30] [INF] Health check requested
+[2025-11-25 16:55:33.133 +05:30] [INF] Health check requested
+[2025-11-25 16:55:42.431 +05:30] [INF] Health check requested
+[2025-11-25 16:55:42.481 +05:30] [INF] Health check requested
+[2025-11-25 16:55:42.497 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:55:43.173 +05:30] [INF] GetUserBookings request received
+[2025-11-25 16:55:43.175 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-25 16:55:43.183 +05:30] [INF] GetUserBookings request received
+[2025-11-25 16:55:43.191 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-25 16:55:52.429 +05:30] [INF] Health check requested
+[2025-11-25 16:55:52.497 +05:30] [INF] Health check requested
+[2025-11-25 16:55:57.381 +05:30] [INF] SendRescheduleOtp request received for booking 2
+[2025-11-25 16:55:57.389 +05:30] [INF] Reschedule OTP generation requested for booking 2, email prabhath.galla@quixy.com
+[2025-11-25 16:55:57.389 +05:30] [WRN] OTP rate limit exceeded for booking 2: 60-second limit. Retry after 2 seconds
+[2025-11-25 16:55:57.389 +05:30] [WRN] Reschedule OTP generation blocked due to rate limit for booking 2: Please wait 2 seconds before requesting a new OTP
+[2025-11-25 16:55:57.389 +05:30] [WRN] Reschedule OTP generation failed for booking 2: Please wait 2 seconds before requesting a new OTP
+[2025-11-25 16:55:57.510 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:56:02.431 +05:30] [INF] Health check requested
+[2025-11-25 16:56:02.498 +05:30] [INF] Health check requested
+[2025-11-25 16:56:13.122 +05:30] [INF] Health check requested
+[2025-11-25 16:56:13.128 +05:30] [INF] Health check requested
+[2025-11-25 16:56:13.135 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:56:23.124 +05:30] [INF] Health check requested
+[2025-11-25 16:56:23.128 +05:30] [INF] Health check requested
+[2025-11-25 16:56:28.133 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:56:33.125 +05:30] [INF] Health check requested
+[2025-11-25 16:56:33.126 +05:30] [INF] Health check requested
+[2025-11-25 16:56:43.122 +05:30] [INF] Health check requested
+[2025-11-25 16:56:43.123 +05:30] [INF] Health check requested
+[2025-11-25 16:56:43.125 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:56:53.134 +05:30] [INF] Health check requested
+[2025-11-25 16:56:53.138 +05:30] [INF] Health check requested
+[2025-11-25 16:56:58.133 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:57:03.118 +05:30] [INF] Health check requested
+[2025-11-25 16:57:03.121 +05:30] [INF] Health check requested
+[2025-11-25 16:57:13.121 +05:30] [INF] Health check requested
+[2025-11-25 16:57:13.124 +05:30] [INF] Health check requested
+[2025-11-25 16:57:13.125 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:57:23.131 +05:30] [INF] Health check requested
+[2025-11-25 16:57:23.133 +05:30] [INF] Health check requested
+[2025-11-25 16:57:28.126 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:57:51.135 +05:30] [INF] Health check requested
+[2025-11-25 16:57:51.138 +05:30] [INF] Health check requested
+[2025-11-25 16:57:51.138 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:58:51.121 +05:30] [INF] Health check requested
+[2025-11-25 16:58:51.124 +05:30] [INF] Health check requested
+[2025-11-25 16:58:51.125 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 16:59:51.135 +05:30] [INF] Health check requested
+[2025-11-25 16:59:51.139 +05:30] [INF] Health check requested
+[2025-11-25 16:59:51.141 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:00:51.123 +05:30] [INF] Health check requested
+[2025-11-25 17:00:51.126 +05:30] [INF] Health check requested
+[2025-11-25 17:00:51.128 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:01:51.138 +05:30] [INF] Health check requested
+[2025-11-25 17:01:51.143 +05:30] [INF] Health check requested
+[2025-11-25 17:01:51.152 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:01:59.149 +05:30] [INF] Health check requested
+[2025-11-25 17:01:59.153 +05:30] [INF] GetUserBookings request received
+[2025-11-25 17:01:59.157 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-25 17:01:59.157 +05:30] [INF] Health check requested
+[2025-11-25 17:01:59.160 +05:30] [INF] GetUserBookings request received
+[2025-11-25 17:01:59.162 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-25 17:01:59.162 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:02:10.126 +05:30] [INF] Health check requested
+[2025-11-25 17:02:15.130 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:02:20.130 +05:30] [INF] Health check requested
+[2025-11-25 17:02:30.121 +05:30] [INF] Health check requested
+[2025-11-25 17:02:30.122 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:02:40.123 +05:30] [INF] Health check requested
+[2025-11-25 17:02:45.127 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:02:50.120 +05:30] [INF] Health check requested
+[2025-11-25 17:02:51.127 +05:30] [INF] Health check requested
+[2025-11-25 17:03:00.116 +05:30] [INF] Health check requested
+[2025-11-25 17:03:00.117 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:03:15.128 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:03:51.130 +05:30] [INF] Health check requested
+[2025-11-25 17:03:51.141 +05:30] [INF] Health check requested
+[2025-11-25 17:03:51.149 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:04:51.655 +05:30] [INF] Health check requested
+[2025-11-25 17:04:51.659 +05:30] [INF] Health check requested
+[2025-11-25 17:04:51.659 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:05:51.121 +05:30] [INF] Health check requested
+[2025-11-25 17:05:51.123 +05:30] [INF] Health check requested
+[2025-11-25 17:05:51.128 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:06:51.136 +05:30] [INF] Health check requested
+[2025-11-25 17:06:51.140 +05:30] [INF] Health check requested
+[2025-11-25 17:06:51.151 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:07:51.124 +05:30] [INF] Health check requested
+[2025-11-25 17:07:51.130 +05:30] [INF] Health check requested
+[2025-11-25 17:07:51.136 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:08:38.416 +05:30] [INF] Health check requested
+[2025-11-25 17:08:38.418 +05:30] [INF] Health check requested
+[2025-11-25 17:08:38.427 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:08:39.158 +05:30] [INF] Health check requested
+[2025-11-25 17:08:42.437 +05:30] [INF] Health check requested
+[2025-11-25 17:08:44.158 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:08:46.504 +05:30] [INF] Creating booking for userId 3 with 1 destinations
+[2025-11-25 17:08:46.527 +05:30] [INF] Booking entity created with id 3
+[2025-11-25 17:08:46.535 +05:30] [INF] Booking created successfully with id 3 for userId 3 with 1 destinations
+[2025-11-25 17:08:46.555 +05:30] [INF] Published message 040c280a-0c4e-4ef0-b01a-bf2f55a03b60 to travel.bookings.
+[2025-11-25 17:08:46.555 +05:30] [INF] Booking message published to queue for booking 3
+[2025-11-25 17:08:46.587 +05:30] [INF] SendOtp request received for booking 3
+[2025-11-25 17:08:46.589 +05:30] [INF] OTP generation requested for booking 3, email prabhath.galla@quixy.com
+[2025-11-25 17:08:46.589 +05:30] [INF] OTP rate limit check for booking 3: No previous requests
+[2025-11-25 17:08:46.593 +05:30] [INF] Generated new OTP for booking 3, expiry "2025-11-25T11:43:46.5935383Z"
+[2025-11-25 17:08:46.596 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #3
+[2025-11-25 17:08:46.600 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-25 17:08:46.603 +05:30] [INF] Sending OTP email to prabhath.galla@quixy.com
+[2025-11-25 17:08:46.603 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-25 17:08:46.603 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-25 17:08:46.604 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #3
+[2025-11-25 17:08:46.604 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-25 17:08:46.604 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-25 17:08:46.604 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-25 17:08:48.182 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-25 17:08:48.183 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-25 17:08:48.338 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-25 17:08:48.338 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-25 17:08:48.773 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-25 17:08:48.773 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-25 17:08:48.811 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-25 17:08:48.811 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #3
+[2025-11-25 17:08:49.170 +05:30] [INF] Health check requested
+[2025-11-25 17:08:50.462 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-25 17:08:50.462 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-25 17:08:50.710 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-25 17:08:50.710 +05:30] [INF] OTP email sent successfully to prabhath.galla@quixy.com
+[2025-11-25 17:08:50.710 +05:30] [INF] OTP email sent successfully for booking 3 to prabhath.galla@quixy.com
+[2025-11-25 17:08:50.711 +05:30] [INF] Recorded OTP request for booking 3 at "2025-11-25T11:38:50.7110610Z"
+[2025-11-25 17:08:50.711 +05:30] [INF] OTP sent successfully for booking 3
+[2025-11-25 17:08:50.876 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #3
+[2025-11-25 17:08:50.876 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-25 17:08:51.112 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-25 17:08:51.113 +05:30] [INF] Booking confirmation email sent to prabhath.galla@quixy.com for booking #3.
+[2025-11-25 17:08:51.113 +05:30] [INF] Booking email message processed. MessageId 040c280a-0c4e-4ef0-b01a-bf2f55a03b60.
+[2025-11-25 17:08:52.441 +05:30] [INF] Health check requested
+[2025-11-25 17:09:00.122 +05:30] [INF] Health check requested
+[2025-11-25 17:09:00.132 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:09:03.116 +05:30] [INF] Health check requested
+[2025-11-25 17:09:10.123 +05:30] [INF] Health check requested
+[2025-11-25 17:09:11.131 +05:30] [INF] Health check requested
+[2025-11-25 17:09:11.134 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:09:11.149 +05:30] [INF] Health check requested
+[2025-11-25 17:09:13.118 +05:30] [INF] Health check requested
+[2025-11-25 17:09:22.200 +05:30] [INF] Health check requested
+[2025-11-25 17:09:23.117 +05:30] [INF] Health check requested
+[2025-11-25 17:09:27.144 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:09:51.041 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-25 17:09:51.071 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-25 17:09:51.072 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-25 17:09:51.072 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-25 17:09:51.073 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-25 17:09:51.073 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-25 17:09:51.073 +05:30] [INF] Dead-letter queue 'travel.reschedule.dlq' already exists.
+[2025-11-25 17:09:51.073 +05:30] [INF] Queue 'travel.reschedule' already exists.
+[2025-11-25 17:09:51.073 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-25 17:09:51.074 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-25 17:09:51.080 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-25 17:09:51.084 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-25 17:09:53.270 +05:30] [INF] Health check requested
+[2025-11-25 17:09:53.486 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:09:53.578 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:09:56.945 +05:30] [INF] Health check requested
+[2025-11-25 17:09:58.659 +05:30] [INF] GetUserBookings request received
+[2025-11-25 17:09:58.817 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-25 17:09:58.829 +05:30] [INF] GetUserBookings request received
+[2025-11-25 17:09:58.831 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-25 17:10:02.431 +05:30] [INF] Health check requested
+[2025-11-25 17:10:06.946 +05:30] [INF] Health check requested
+[2025-11-25 17:10:07.617 +05:30] [INF] GetUserBookings request received
+[2025-11-25 17:10:07.621 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-25 17:10:07.625 +05:30] [INF] GetUserBookings request received
+[2025-11-25 17:10:07.630 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-25 17:10:08.369 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:10:12.427 +05:30] [INF] Health check requested
+[2025-11-25 17:10:16.957 +05:30] [INF] Health check requested
+[2025-11-25 17:10:21.232 +05:30] [INF] Creating booking for userId 3 with 1 destinations
+[2025-11-25 17:10:21.385 +05:30] [INF] Booking entity created with id 4
+[2025-11-25 17:10:21.395 +05:30] [INF] Booking created successfully with id 4 for userId 3 with 1 destinations
+[2025-11-25 17:10:21.407 +05:30] [INF] Published message e7b7f505-3d72-447a-824d-d747f507cab1 to travel.bookings.
+[2025-11-25 17:10:21.408 +05:30] [INF] Booking message published to queue for booking 4
+[2025-11-25 17:10:21.459 +05:30] [INF] SendOtp request received for booking 4
+[2025-11-25 17:10:21.475 +05:30] [INF] OTP generation requested for booking 4, email prabhath.galla@quixy.com
+[2025-11-25 17:10:21.477 +05:30] [INF] OTP rate limit check for booking 4: No previous requests
+[2025-11-25 17:10:21.495 +05:30] [INF] Generated new OTP for booking 4, expiry "2025-11-25T11:45:21.4954449Z"
+[2025-11-25 17:10:21.495 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #4
+[2025-11-25 17:10:21.496 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-25 17:10:21.532 +05:30] [INF] Sending OTP email to prabhath.galla@quixy.com
+[2025-11-25 17:10:21.533 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-25 17:10:21.533 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-25 17:10:21.551 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #4
+[2025-11-25 17:10:21.551 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-25 17:10:21.559 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-25 17:10:21.559 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-25 17:10:22.425 +05:30] [INF] Health check requested
+[2025-11-25 17:10:22.802 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-25 17:10:22.802 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-25 17:10:22.807 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-25 17:10:22.807 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-25 17:10:23.253 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-25 17:10:23.253 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #4
+[2025-11-25 17:10:23.260 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-25 17:10:23.260 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-25 17:10:23.373 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:10:24.811 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #4
+[2025-11-25 17:10:24.811 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-25 17:10:25.052 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-25 17:10:25.052 +05:30] [INF] Booking confirmation email sent to prabhath.galla@quixy.com for booking #4.
+[2025-11-25 17:10:25.052 +05:30] [INF] Booking email message processed. MessageId e7b7f505-3d72-447a-824d-d747f507cab1.
+[2025-11-25 17:10:25.136 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-25 17:10:25.136 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-25 17:10:25.378 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-25 17:10:25.379 +05:30] [INF] OTP email sent successfully to prabhath.galla@quixy.com
+[2025-11-25 17:10:25.379 +05:30] [INF] OTP email sent successfully for booking 4 to prabhath.galla@quixy.com
+[2025-11-25 17:10:25.385 +05:30] [INF] Recorded OTP request for booking 4 at "2025-11-25T11:40:25.3848595Z"
+[2025-11-25 17:10:25.387 +05:30] [INF] OTP sent successfully for booking 4
+[2025-11-25 17:10:27.115 +05:30] [INF] Health check requested
+[2025-11-25 17:10:33.121 +05:30] [INF] Health check requested
+[2025-11-25 17:10:37.114 +05:30] [INF] Health check requested
+[2025-11-25 17:10:39.158 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:10:40.126 +05:30] [INF] Health check requested
+[2025-11-25 17:10:40.129 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:10:40.149 +05:30] [INF] Health check requested
+[2025-11-25 17:10:43.118 +05:30] [INF] Health check requested
+[2025-11-25 17:10:51.129 +05:30] [INF] Health check requested
+[2025-11-25 17:10:53.123 +05:30] [INF] Health check requested
+[2025-11-25 17:10:56.128 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:11:01.120 +05:30] [INF] Health check requested
+[2025-11-25 17:11:03.114 +05:30] [INF] Health check requested
+[2025-11-25 17:11:11.115 +05:30] [INF] Health check requested
+[2025-11-25 17:11:11.119 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:11:13.115 +05:30] [INF] Health check requested
+[2025-11-25 17:11:21.116 +05:30] [INF] Health check requested
+[2025-11-25 17:11:23.118 +05:30] [INF] Health check requested
+[2025-11-25 17:11:26.139 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:11:31.118 +05:30] [INF] Health check requested
+[2025-11-25 17:11:41.124 +05:30] [INF] Health check requested
+[2025-11-25 17:11:41.130 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:11:51.128 +05:30] [INF] Health check requested
+[2025-11-25 17:11:51.130 +05:30] [INF] Health check requested
+[2025-11-25 17:11:56.118 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:12:22.360 +05:30] [INF] Health check requested
+[2025-11-25 17:12:22.373 +05:30] [INF] Health check requested
+[2025-11-25 17:12:22.377 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:12:23.706 +05:30] [INF] GetUserBookings request received
+[2025-11-25 17:12:23.708 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-25 17:12:23.710 +05:30] [INF] GetUserBookings request received
+[2025-11-25 17:12:23.712 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-25 17:12:25.131 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:12:30.150 +05:30] [INF] Health check requested
+[2025-11-25 17:12:32.427 +05:30] [INF] Health check requested
+[2025-11-25 17:12:40.133 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:12:40.159 +05:30] [INF] Health check requested
+[2025-11-25 17:12:42.429 +05:30] [INF] Health check requested
+[2025-11-25 17:12:51.121 +05:30] [INF] Health check requested
+[2025-11-25 17:12:53.125 +05:30] [INF] Health check requested
+[2025-11-25 17:12:56.133 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:13:01.121 +05:30] [INF] Health check requested
+[2025-11-25 17:13:03.117 +05:30] [INF] Health check requested
+[2025-11-25 17:13:11.124 +05:30] [INF] Health check requested
+[2025-11-25 17:13:11.128 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:13:13.127 +05:30] [INF] Health check requested
+[2025-11-25 17:13:21.122 +05:30] [INF] Health check requested
+[2025-11-25 17:13:23.117 +05:30] [INF] Health check requested
+[2025-11-25 17:13:26.137 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:13:31.117 +05:30] [INF] Health check requested
+[2025-11-25 17:13:33.116 +05:30] [INF] Health check requested
+[2025-11-25 17:13:41.118 +05:30] [INF] Health check requested
+[2025-11-25 17:13:41.120 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:13:49.529 +05:30] [INF] Health check requested
+[2025-11-25 17:13:50.161 +05:30] [INF] Health check requested
+[2025-11-25 17:13:53.120 +05:30] [INF] Health check requested
+[2025-11-25 17:13:56.119 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:14:01.118 +05:30] [INF] Health check requested
+[2025-11-25 17:14:03.113 +05:30] [INF] Health check requested
+[2025-11-25 17:14:11.124 +05:30] [INF] Health check requested
+[2025-11-25 17:14:11.127 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:14:13.118 +05:30] [INF] Health check requested
+[2025-11-25 17:14:21.120 +05:30] [INF] Health check requested
+[2025-11-25 17:14:23.120 +05:30] [INF] Health check requested
+[2025-11-25 17:14:25.148 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:14:31.118 +05:30] [INF] Health check requested
+[2025-11-25 17:14:33.122 +05:30] [INF] Health check requested
+[2025-11-25 17:14:40.142 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:14:40.172 +05:30] [INF] Health check requested
+[2025-11-25 17:14:42.422 +05:30] [INF] Health check requested
+[2025-11-25 17:14:43.955 +05:30] [INF] GetUserBookings request received
+[2025-11-25 17:14:43.959 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-25 17:14:43.963 +05:30] [INF] GetUserBookings request received
+[2025-11-25 17:14:43.967 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-25 17:14:50.163 +05:30] [INF] Health check requested
+[2025-11-25 17:14:52.425 +05:30] [INF] Health check requested
+[2025-11-25 17:14:55.145 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:14:57.071 +05:30] [INF] SendRescheduleOtp request received for booking 2
+[2025-11-25 17:14:57.093 +05:30] [INF] Reschedule OTP generation requested for booking 2, email prabhath.galla@quixy.com
+[2025-11-25 17:14:57.093 +05:30] [INF] OTP rate limit check for booking 2: No previous requests
+[2025-11-25 17:14:57.130 +05:30] [INF] Sending reschedule OTP email to prabhath.galla@quixy.com
+[2025-11-25 17:14:57.130 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Your OTP for Trip Reschedule Verification
+[2025-11-25 17:14:57.131 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-25 17:14:57.132 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Your OTP for Trip Reschedule Verification
+[2025-11-25 17:14:57.132 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-25 17:14:58.697 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-25 17:14:58.697 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-25 17:14:59.283 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-25 17:14:59.283 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Your OTP for Trip Reschedule Verification
+[2025-11-25 17:15:00.162 +05:30] [INF] Health check requested
+[2025-11-25 17:15:01.056 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Your OTP for Trip Reschedule Verification
+[2025-11-25 17:15:01.056 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-25 17:15:01.304 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-25 17:15:01.305 +05:30] [INF] Reschedule OTP email sent successfully to prabhath.galla@quixy.com
+[2025-11-25 17:15:01.305 +05:30] [INF] Reschedule OTP email sent successfully for booking 2
+[2025-11-25 17:15:01.306 +05:30] [INF] Recorded OTP request for booking 2 at "2025-11-25T11:45:01.3064349Z"
+[2025-11-25 17:15:01.308 +05:30] [INF] Reschedule OTP sent successfully for booking 2
+[2025-11-25 17:15:02.427 +05:30] [INF] Health check requested
+[2025-11-25 17:15:11.113 +05:30] [INF] Health check requested
+[2025-11-25 17:15:11.115 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:15:13.119 +05:30] [INF] Health check requested
+[2025-11-25 17:15:16.902 +05:30] [INF] VerifyRescheduleOtp request received for booking 2
+[2025-11-25 17:15:16.905 +05:30] [INF] Reschedule OTP validation requested for booking 2
+[2025-11-25 17:15:16.911 +05:30] [INF] Reschedule OTP validation successful for booking 2
+[2025-11-25 17:15:16.914 +05:30] [INF] Rescheduling booking 2 for email prabhath.galla@quixy.com to date "2025-12-07T00:00:00.0000000"
+[2025-11-25 17:15:16.942 +05:30] [INF] Booking 2 rescheduled from "2025-11-25T00:00:00.0000000" to "2025-12-07T00:00:00.0000000"
+[2025-11-25 17:15:16.945 +05:30] [INF] Marking reschedule OTP as used for booking 2
+[2025-11-25 17:15:16.951 +05:30] [INF] Reschedule OTP marked as used for booking 2
+[2025-11-25 17:15:16.965 +05:30] [INF] Published message 6dbcc9e6d05d413fa1c8691a1a572523 to travel.reschedule.
+[2025-11-25 17:15:16.965 +05:30] [INF] Reschedule confirmation message published to queue for booking 2
+[2025-11-25 17:15:16.966 +05:30] [INF] Booking rescheduled successfully for booking 2
+[2025-11-25 17:15:20.158 +05:30] [INF] Health check requested
+[2025-11-25 17:15:22.440 +05:30] [INF] Health check requested
+[2025-11-25 17:15:25.218 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:15:31.129 +05:30] [INF] Health check requested
+[2025-11-25 17:15:33.129 +05:30] [INF] Health check requested
+[2025-11-25 17:15:40.130 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:15:41.112 +05:30] [INF] Health check requested
+[2025-11-25 17:15:43.113 +05:30] [INF] Health check requested
+[2025-11-25 17:15:51.120 +05:30] [INF] Health check requested
+[2025-11-25 17:15:53.121 +05:30] [INF] Health check requested
+[2025-11-25 17:15:55.147 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:16:01.119 +05:30] [INF] Health check requested
+[2025-11-25 17:16:03.129 +05:30] [INF] Health check requested
+[2025-11-25 17:16:11.118 +05:30] [INF] Health check requested
+[2025-11-25 17:16:11.119 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:16:13.113 +05:30] [INF] Health check requested
+[2025-11-25 17:16:21.117 +05:30] [INF] Health check requested
+[2025-11-25 17:16:23.113 +05:30] [INF] Health check requested
+[2025-11-25 17:16:26.125 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:16:51.128 +05:30] [INF] Health check requested
+[2025-11-25 17:16:51.130 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:16:51.131 +05:30] [INF] Health check requested
+[2025-11-25 17:17:51.118 +05:30] [INF] Health check requested
+[2025-11-25 17:17:51.121 +05:30] [INF] Health check requested
+[2025-11-25 17:17:51.122 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:18:51.114 +05:30] [INF] Health check requested
+[2025-11-25 17:18:51.120 +05:30] [INF] Health check requested
+[2025-11-25 17:18:51.124 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:19:51.116 +05:30] [INF] Health check requested
+[2025-11-25 17:19:51.119 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:19:51.119 +05:30] [INF] Health check requested
+[2025-11-25 17:20:51.119 +05:30] [INF] Health check requested
+[2025-11-25 17:20:51.122 +05:30] [INF] Health check requested
+[2025-11-25 17:20:51.123 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:21:51.115 +05:30] [INF] Health check requested
+[2025-11-25 17:21:51.118 +05:30] [INF] Health check requested
+[2025-11-25 17:21:51.119 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:22:51.113 +05:30] [INF] Health check requested
+[2025-11-25 17:22:51.118 +05:30] [INF] Health check requested
+[2025-11-25 17:22:51.125 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:23:51.109 +05:30] [INF] Health check requested
+[2025-11-25 17:23:51.112 +05:30] [INF] Health check requested
+[2025-11-25 17:23:51.114 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:24:51.119 +05:30] [INF] Health check requested
+[2025-11-25 17:24:51.123 +05:30] [INF] Health check requested
+[2025-11-25 17:24:51.124 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:25:51.102 +05:30] [INF] Health check requested
+[2025-11-25 17:25:51.106 +05:30] [INF] Health check requested
+[2025-11-25 17:25:51.108 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:26:51.116 +05:30] [INF] Health check requested
+[2025-11-25 17:26:51.119 +05:30] [INF] Health check requested
+[2025-11-25 17:26:51.121 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:27:51.100 +05:30] [INF] Health check requested
+[2025-11-25 17:27:51.103 +05:30] [INF] Health check requested
+[2025-11-25 17:27:51.104 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:28:51.093 +05:30] [INF] Health check requested
+[2025-11-25 17:28:51.095 +05:30] [INF] Health check requested
+[2025-11-25 17:28:51.096 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:29:51.099 +05:30] [INF] Health check requested
+[2025-11-25 17:29:51.101 +05:30] [INF] Health check requested
+[2025-11-25 17:29:51.106 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:30:51.097 +05:30] [INF] Health check requested
+[2025-11-25 17:30:51.101 +05:30] [INF] Health check requested
+[2025-11-25 17:30:51.102 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:31:51.099 +05:30] [INF] Health check requested
+[2025-11-25 17:31:51.101 +05:30] [INF] Health check requested
+[2025-11-25 17:31:51.102 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:32:51.110 +05:30] [INF] Health check requested
+[2025-11-25 17:32:51.114 +05:30] [INF] Health check requested
+[2025-11-25 17:32:51.117 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:33:51.095 +05:30] [INF] Health check requested
+[2025-11-25 17:33:51.098 +05:30] [INF] Health check requested
+[2025-11-25 17:33:51.099 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:34:51.118 +05:30] [INF] Health check requested
+[2025-11-25 17:34:51.121 +05:30] [INF] Health check requested
+[2025-11-25 17:34:51.122 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:35:51.094 +05:30] [INF] Health check requested
+[2025-11-25 17:35:51.097 +05:30] [INF] Health check requested
+[2025-11-25 17:35:51.100 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:36:51.094 +05:30] [INF] Health check requested
+[2025-11-25 17:36:51.097 +05:30] [INF] Health check requested
+[2025-11-25 17:36:51.099 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:37:51.104 +05:30] [INF] Health check requested
+[2025-11-25 17:37:51.106 +05:30] [INF] Health check requested
+[2025-11-25 17:37:51.107 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:38:51.094 +05:30] [INF] Health check requested
+[2025-11-25 17:38:51.096 +05:30] [INF] Health check requested
+[2025-11-25 17:38:51.097 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:39:51.109 +05:30] [INF] Health check requested
+[2025-11-25 17:39:51.111 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:39:51.113 +05:30] [INF] Health check requested
+[2025-11-25 17:40:51.097 +05:30] [INF] Health check requested
+[2025-11-25 17:40:51.100 +05:30] [INF] Health check requested
+[2025-11-25 17:40:51.101 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:41:51.091 +05:30] [INF] Health check requested
+[2025-11-25 17:41:51.094 +05:30] [INF] Health check requested
+[2025-11-25 17:41:51.095 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:42:51.092 +05:30] [INF] Health check requested
+[2025-11-25 17:42:51.094 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:42:51.095 +05:30] [INF] Health check requested
+[2025-11-25 17:43:51.107 +05:30] [INF] Health check requested
+[2025-11-25 17:43:51.109 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:43:51.110 +05:30] [INF] Health check requested
+[2025-11-25 17:44:51.095 +05:30] [INF] Health check requested
+[2025-11-25 17:44:51.098 +05:30] [INF] Health check requested
+[2025-11-25 17:44:51.100 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:45:51.093 +05:30] [INF] Health check requested
+[2025-11-25 17:45:51.095 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:45:51.095 +05:30] [INF] Health check requested
+[2025-11-25 17:46:51.088 +05:30] [INF] Health check requested
+[2025-11-25 17:46:51.092 +05:30] [INF] Health check requested
+[2025-11-25 17:46:51.093 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:47:51.104 +05:30] [INF] Health check requested
+[2025-11-25 17:47:51.108 +05:30] [INF] Health check requested
+[2025-11-25 17:47:51.110 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:48:51.090 +05:30] [INF] Health check requested
+[2025-11-25 17:48:51.093 +05:30] [INF] Health check requested
+[2025-11-25 17:48:51.098 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:49:51.103 +05:30] [INF] Health check requested
+[2025-11-25 17:49:51.106 +05:30] [INF] Health check requested
+[2025-11-25 17:49:51.107 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:50:51.093 +05:30] [INF] Health check requested
+[2025-11-25 17:50:51.097 +05:30] [INF] Health check requested
+[2025-11-25 17:50:51.098 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:51:51.092 +05:30] [INF] Health check requested
+[2025-11-25 17:51:51.095 +05:30] [INF] Health check requested
+[2025-11-25 17:51:51.097 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:52:51.092 +05:30] [INF] Health check requested
+[2025-11-25 17:52:51.096 +05:30] [INF] Health check requested
+[2025-11-25 17:52:51.102 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:53:51.089 +05:30] [INF] Health check requested
+[2025-11-25 17:53:51.090 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:53:51.091 +05:30] [INF] Health check requested
+[2025-11-25 17:54:51.093 +05:30] [INF] Health check requested
+[2025-11-25 17:54:51.096 +05:30] [INF] Health check requested
+[2025-11-25 17:54:51.097 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:55:51.092 +05:30] [INF] Health check requested
+[2025-11-25 17:55:51.097 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:55:51.098 +05:30] [INF] Health check requested
+[2025-11-25 17:56:51.098 +05:30] [INF] Health check requested
+[2025-11-25 17:56:51.100 +05:30] [INF] Health check requested
+[2025-11-25 17:56:51.101 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:57:51.089 +05:30] [INF] Health check requested
+[2025-11-25 17:57:51.092 +05:30] [INF] Health check requested
+[2025-11-25 17:57:51.098 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:58:51.080 +05:30] [INF] Health check requested
+[2025-11-25 17:58:51.082 +05:30] [INF] Health check requested
+[2025-11-25 17:58:51.083 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 17:59:51.077 +05:30] [INF] Health check requested
+[2025-11-25 17:59:51.082 +05:30] [INF] Health check requested
+[2025-11-25 17:59:51.083 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:00:51.101 +05:30] [INF] Health check requested
+[2025-11-25 18:00:51.109 +05:30] [INF] Health check requested
+[2025-11-25 18:00:51.120 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:01:51.077 +05:30] [INF] Health check requested
+[2025-11-25 18:01:51.079 +05:30] [INF] Health check requested
+[2025-11-25 18:01:51.083 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:02:51.109 +05:30] [INF] Health check requested
+[2025-11-25 18:02:51.121 +05:30] [INF] Health check requested
+[2025-11-25 18:02:51.129 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:03:17.121 +05:30] [INF] Health check requested
+[2025-11-25 18:03:17.123 +05:30] [INF] Health check requested
+[2025-11-25 18:03:17.125 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:03:20.658 +05:30] [INF] Health check requested
+[2025-11-25 18:03:20.660 +05:30] [INF] Health check requested
+[2025-11-25 18:03:20.671 +05:30] [INF] Health check requested
+[2025-11-25 18:03:20.672 +05:30] [INF] Health check requested
+[2025-11-25 18:03:20.700 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:03:20.705 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:03:20.709 +05:30] [INF] GetUserBookings request received
+[2025-11-25 18:03:20.765 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-25 18:03:20.768 +05:30] [INF] GetUserBookings request received
+[2025-11-25 18:03:20.771 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-25 18:03:30.683 +05:30] [INF] Health check requested
+[2025-11-25 18:03:30.687 +05:30] [INF] Health check requested
+[2025-11-25 18:03:31.702 +05:30] [INF] Creating booking for userId 3 with 1 destinations
+[2025-11-25 18:03:31.733 +05:30] [INF] Booking entity created with id 5
+[2025-11-25 18:03:31.738 +05:30] [INF] Booking created successfully with id 5 for userId 3 with 1 destinations
+[2025-11-25 18:03:31.758 +05:30] [INF] Published message 81181d55-0bdb-4d73-8ff7-32f0662b6c5d to travel.bookings.
+[2025-11-25 18:03:31.758 +05:30] [INF] Booking message published to queue for booking 5
+[2025-11-25 18:03:31.783 +05:30] [INF] SendOtp request received for booking 5
+[2025-11-25 18:03:31.785 +05:30] [INF] OTP generation requested for booking 5, email prabhath.galla@quixy.com
+[2025-11-25 18:03:31.785 +05:30] [INF] OTP rate limit check for booking 5: No previous requests
+[2025-11-25 18:03:31.789 +05:30] [INF] Generated new OTP for booking 5, expiry "2025-11-25T12:38:31.7891161Z"
+[2025-11-25 18:03:31.799 +05:30] [INF] Sending OTP email to prabhath.galla@quixy.com
+[2025-11-25 18:03:31.799 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-25 18:03:31.801 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-25 18:03:31.803 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-25 18:03:31.804 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-25 18:03:31.805 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #5
+[2025-11-25 18:03:31.805 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-25 18:03:31.805 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #5
+[2025-11-25 18:03:31.805 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-25 18:03:33.576 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-25 18:03:33.576 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-25 18:03:33.582 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-25 18:03:33.582 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-25 18:03:34.025 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-25 18:03:34.025 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #5
+[2025-11-25 18:03:34.026 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-25 18:03:34.026 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-25 18:03:35.696 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:03:35.978 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Booking Confirmed - Booking #5
+[2025-11-25 18:03:35.978 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-25 18:03:36.219 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-25 18:03:36.219 +05:30] [INF] Booking confirmation email sent to prabhath.galla@quixy.com for booking #5.
+[2025-11-25 18:03:36.220 +05:30] [INF] Booking email message processed. MessageId 81181d55-0bdb-4d73-8ff7-32f0662b6c5d.
+[2025-11-25 18:03:36.530 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-25 18:03:36.530 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-25 18:03:36.773 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-25 18:03:36.773 +05:30] [INF] OTP email sent successfully to prabhath.galla@quixy.com
+[2025-11-25 18:03:36.773 +05:30] [INF] OTP email sent successfully for booking 5 to prabhath.galla@quixy.com
+[2025-11-25 18:03:36.773 +05:30] [INF] Recorded OTP request for booking 5 at "2025-11-25T12:33:36.7739031Z"
+[2025-11-25 18:03:36.774 +05:30] [INF] OTP sent successfully for booking 5
+[2025-11-25 18:03:41.071 +05:30] [INF] Health check requested
+[2025-11-25 18:03:41.074 +05:30] [INF] Health check requested
+[2025-11-25 18:03:51.075 +05:30] [INF] Health check requested
+[2025-11-25 18:03:51.077 +05:30] [INF] Health check requested
+[2025-11-25 18:03:51.083 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:04:00.680 +05:30] [INF] Health check requested
+[2025-11-25 18:04:00.683 +05:30] [INF] Health check requested
+[2025-11-25 18:04:01.328 +05:30] [INF] GetUserBookings request received
+[2025-11-25 18:04:01.340 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-25 18:04:01.342 +05:30] [INF] GetUserBookings request received
+[2025-11-25 18:04:01.343 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-25 18:04:02.619 +05:30] [INF] GetUserBookings request received
+[2025-11-25 18:04:02.621 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-25 18:04:02.623 +05:30] [INF] GetUserBookings request received
+[2025-11-25 18:04:02.624 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-25 18:04:05.700 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:04:10.694 +05:30] [INF] Health check requested
+[2025-11-25 18:04:10.696 +05:30] [INF] Health check requested
+[2025-11-25 18:04:20.687 +05:30] [INF] Health check requested
+[2025-11-25 18:04:20.690 +05:30] [INF] Health check requested
+[2025-11-25 18:04:20.698 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:04:30.696 +05:30] [INF] Health check requested
+[2025-11-25 18:04:30.699 +05:30] [INF] Health check requested
+[2025-11-25 18:04:35.701 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:04:36.581 +05:30] [INF] SendRescheduleOtp request received for booking 2
+[2025-11-25 18:04:36.583 +05:30] [INF] Reschedule OTP generation requested for booking 2, email prabhath.galla@quixy.com
+[2025-11-25 18:04:36.587 +05:30] [INF] OTP rate limit check for booking 2: Allowed (0/5 requests in 10 minutes)
+[2025-11-25 18:04:36.590 +05:30] [INF] Sending reschedule OTP email to prabhath.galla@quixy.com
+[2025-11-25 18:04:36.590 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Your OTP for Trip Reschedule Verification
+[2025-11-25 18:04:36.590 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-25 18:04:36.592 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Your OTP for Trip Reschedule Verification
+[2025-11-25 18:04:36.593 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-25 18:04:37.822 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-25 18:04:37.822 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-25 18:04:38.349 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-25 18:04:38.349 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Your OTP for Trip Reschedule Verification
+[2025-11-25 18:04:40.221 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Your OTP for Trip Reschedule Verification
+[2025-11-25 18:04:40.221 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-25 18:04:40.459 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-25 18:04:40.459 +05:30] [INF] Reschedule OTP email sent successfully to prabhath.galla@quixy.com
+[2025-11-25 18:04:40.459 +05:30] [INF] Reschedule OTP email sent successfully for booking 2
+[2025-11-25 18:04:40.459 +05:30] [INF] Recorded OTP request for booking 2 at "2025-11-25T12:34:40.4599517Z"
+[2025-11-25 18:04:40.460 +05:30] [INF] Reschedule OTP sent successfully for booking 2
+[2025-11-25 18:04:40.676 +05:30] [INF] Health check requested
+[2025-11-25 18:04:40.679 +05:30] [INF] Health check requested
+[2025-11-25 18:04:51.080 +05:30] [INF] Health check requested
+[2025-11-25 18:04:51.082 +05:30] [INF] Health check requested
+[2025-11-25 18:04:51.084 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:05:01.076 +05:30] [INF] Health check requested
+[2025-11-25 18:05:01.077 +05:30] [INF] Health check requested
+[2025-11-25 18:05:06.088 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:05:11.071 +05:30] [INF] Health check requested
+[2025-11-25 18:05:11.074 +05:30] [INF] Health check requested
+[2025-11-25 18:05:21.071 +05:30] [INF] Health check requested
+[2025-11-25 18:05:21.074 +05:30] [INF] Health check requested
+[2025-11-25 18:05:21.075 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:05:31.071 +05:30] [INF] Health check requested
+[2025-11-25 18:05:31.075 +05:30] [INF] Health check requested
+[2025-11-25 18:05:36.076 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:05:41.072 +05:30] [INF] Health check requested
+[2025-11-25 18:05:41.073 +05:30] [INF] Health check requested
+[2025-11-25 18:05:51.074 +05:30] [INF] Health check requested
+[2025-11-25 18:05:51.078 +05:30] [INF] Health check requested
+[2025-11-25 18:05:51.082 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:06:40.469 +05:30] [INF] Health check requested
+[2025-11-25 18:06:40.472 +05:30] [INF] Health check requested
+[2025-11-25 18:06:40.477 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:06:48.028 +05:30] [INF] VerifyRescheduleOtp request received for booking 2
+[2025-11-25 18:06:48.031 +05:30] [INF] Reschedule OTP validation requested for booking 2
+[2025-11-25 18:06:48.032 +05:30] [INF] Reschedule OTP validation successful for booking 2
+[2025-11-25 18:06:48.032 +05:30] [INF] Rescheduling booking 2 for email prabhath.galla@quixy.com to date "2025-12-04T00:00:00.0000000"
+[2025-11-25 18:06:48.036 +05:30] [INF] Booking 2 rescheduled from "2025-12-07T00:00:00.0000000" to "2025-12-04T00:00:00.0000000"
+[2025-11-25 18:06:48.036 +05:30] [INF] Marking reschedule OTP as used for booking 2
+[2025-11-25 18:06:48.039 +05:30] [INF] Reschedule OTP marked as used for booking 2
+[2025-11-25 18:06:48.047 +05:30] [INF] Published message c3b172766edc4be383a6d5d8a4d3f8d6 to travel.reschedule.
+[2025-11-25 18:06:48.047 +05:30] [INF] Reschedule confirmation message published to queue for booking 2
+[2025-11-25 18:06:48.048 +05:30] [INF] Booking rescheduled successfully for booking 2
+[2025-11-25 18:06:50.669 +05:30] [INF] Health check requested
+[2025-11-25 18:06:50.671 +05:30] [INF] Health check requested
+[2025-11-25 18:06:50.694 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:07:01.064 +05:30] [INF] Health check requested
+[2025-11-25 18:07:01.066 +05:30] [INF] Health check requested
+[2025-11-25 18:07:06.068 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:07:11.067 +05:30] [INF] Health check requested
+[2025-11-25 18:07:11.071 +05:30] [INF] Health check requested
+[2025-11-25 18:07:21.070 +05:30] [INF] Health check requested
+[2025-11-25 18:07:21.071 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:07:21.072 +05:30] [INF] Health check requested
+[2025-11-25 18:07:31.072 +05:30] [INF] Health check requested
+[2025-11-25 18:07:31.073 +05:30] [INF] Health check requested
+[2025-11-25 18:07:36.068 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:07:41.072 +05:30] [INF] Health check requested
+[2025-11-25 18:07:41.075 +05:30] [INF] Health check requested
+[2025-11-25 18:07:51.075 +05:30] [INF] Health check requested
+[2025-11-25 18:07:51.077 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:07:51.077 +05:30] [INF] Health check requested
+[2025-11-25 18:08:51.082 +05:30] [INF] Health check requested
+[2025-11-25 18:08:51.088 +05:30] [INF] Health check requested
+[2025-11-25 18:08:51.094 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:09:51.080 +05:30] [INF] Health check requested
+[2025-11-25 18:09:51.084 +05:30] [INF] Fetched 12 destinations
+[2025-11-25 18:09:51.086 +05:30] [INF] Health check requested
+[2025-11-25 18:17:23.286 +05:30] [INF] BookingReminderService started
+[2025-11-25 18:17:23.678 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-25 18:17:23.680 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-25 18:17:23.681 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-25 18:17:23.682 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-25 18:17:23.682 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-25 18:17:23.682 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-25 18:17:23.682 +05:30] [INF] Dead-letter queue 'travel.reschedule.dlq' already exists.
+[2025-11-25 18:17:23.683 +05:30] [INF] Queue 'travel.reschedule' already exists.
+[2025-11-25 18:17:23.683 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-25 18:17:23.683 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-25 18:17:23.699 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-25 18:17:23.703 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-25 18:17:23.709 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-25 18:17:23.714 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-25 18:17:23.719 +05:30] [INF] Reschedule email queue consumer subscribed to travel.reschedule.
+[2025-11-25 18:17:23.757 +05:30] [INF] Email sending initiated - To: admin@example.com, Subject: New Trip Cancellation Request - Booking #4
+[2025-11-25 18:17:23.758 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-25 18:17:23.813 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: admin@example.com, Subject: New Trip Cancellation Request - Booking #4
+[2025-11-25 18:17:23.820 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-25 18:17:24.002 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Trip Rescheduled Successfully - Booking #2
+[2025-11-25 18:17:24.002 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-25 18:17:24.002 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Trip Rescheduled Successfully - Booking #2
+[2025-11-25 18:17:24.002 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-25 18:17:25.707 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-25 18:17:25.707 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-25 18:17:25.710 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-25 18:17:25.710 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-25 18:17:26.161 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-25 18:17:26.161 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Trip Rescheduled Successfully - Booking #2
+[2025-11-25 18:17:26.232 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-25 18:17:26.232 +05:30] [INF] Sending email message - To: admin@example.com, Subject: New Trip Cancellation Request - Booking #4
+[2025-11-25 18:17:26.241 +05:30] [INF] Health check requested
+[2025-11-25 18:17:26.325 +05:30] [INF] Health check requested
+[2025-11-25 18:17:26.423 +05:30] [INF] GetUserBookings request received
+[2025-11-25 18:17:26.448 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-25 18:17:26.460 +05:30] [INF] GetUserBookings request received
+[2025-11-25 18:17:26.464 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-25 18:17:27.923 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Trip Rescheduled Successfully - Booking #2
+[2025-11-25 18:17:27.923 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-25 18:17:28.165 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-25 18:17:28.166 +05:30] [INF] Reschedule email sent to prabhath.galla@quixy.com for booking #2, message type "RescheduleConfirmation".
+[2025-11-25 18:17:28.168 +05:30] [INF] Reschedule email message processed. MessageId 6dbcc9e6d05d413fa1c8691a1a572523.
+[2025-11-25 18:17:28.173 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Trip Rescheduled Successfully - Booking #2
+[2025-11-25 18:17:28.173 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-25 18:17:28.173 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Trip Rescheduled Successfully - Booking #2
+[2025-11-25 18:17:28.173 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-25 18:17:28.401 +05:30] [INF] Email sent successfully - To: admin@example.com, Subject: New Trip Cancellation Request - Booking #4
+[2025-11-25 18:17:28.401 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-25 18:17:28.644 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-25 18:17:28.645 +05:30] [INF] Email message processed. MessageId 866122a1-8f60-4448-aadf-ff9d994ca645.
+[2025-11-25 18:17:28.650 +05:30] [INF] Email sending initiated - To: admin@example.com, Subject: New Trip Cancellation Request - Booking #3
+[2025-11-25 18:17:28.650 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-25 18:17:28.650 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: admin@example.com, Subject: New Trip Cancellation Request - Booking #3
+[2025-11-25 18:17:28.650 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-25 18:17:29.387 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-25 18:17:29.387 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-25 18:17:29.816 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-25 18:17:29.816 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Trip Rescheduled Successfully - Booking #2
+[2025-11-25 18:17:29.845 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-25 18:17:29.845 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-25 18:17:30.316 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-25 18:17:30.316 +05:30] [INF] Sending email message - To: admin@example.com, Subject: New Trip Cancellation Request - Booking #3
+[2025-11-25 18:17:31.386 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Trip Rescheduled Successfully - Booking #2
+[2025-11-25 18:17:31.387 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-25 18:17:31.626 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-25 18:17:31.626 +05:30] [INF] Reschedule email sent to prabhath.galla@quixy.com for booking #2, message type "RescheduleConfirmation".
+[2025-11-25 18:17:31.627 +05:30] [INF] Reschedule email message processed. MessageId c3b172766edc4be383a6d5d8a4d3f8d6.
+[2025-11-25 18:17:32.733 +05:30] [INF] Email sent successfully - To: admin@example.com, Subject: New Trip Cancellation Request - Booking #3
+[2025-11-25 18:17:32.733 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-25 18:17:32.970 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-25 18:17:32.970 +05:30] [INF] Email message processed. MessageId 20af3fab-3cff-4507-a540-4e67fdb9556a.
+[2025-11-25 18:17:35.936 +05:30] [INF] Health check requested
+[2025-11-25 18:17:36.157 +05:30] [INF] Health check requested
+[2025-11-25 18:17:45.932 +05:30] [INF] Health check requested
+[2025-11-25 18:17:46.169 +05:30] [INF] Health check requested
+[2025-11-25 18:17:56.066 +05:30] [INF] Health check requested
+[2025-11-25 18:17:57.067 +05:30] [INF] Health check requested
+[2025-11-25 18:18:06.073 +05:30] [INF] Health check requested
+[2025-11-25 18:18:07.059 +05:30] [INF] Health check requested
+[2025-11-25 18:18:16.057 +05:30] [INF] Health check requested
+[2025-11-25 18:18:17.057 +05:30] [INF] Health check requested
+[2025-11-25 18:18:26.058 +05:30] [INF] Health check requested
+[2025-11-25 18:18:27.063 +05:30] [INF] Health check requested
+[2025-11-25 18:18:36.066 +05:30] [INF] Health check requested
+[2025-11-25 18:18:37.061 +05:30] [INF] Health check requested
+[2025-11-25 18:18:46.063 +05:30] [INF] Health check requested
+[2025-11-25 18:18:47.067 +05:30] [INF] Health check requested
+[2025-11-25 18:19:25.505 +05:30] [INF] BookingReminderService started
+[2025-11-25 18:19:25.713 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-25 18:19:25.715 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-25 18:19:25.715 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-25 18:19:25.715 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-25 18:19:25.716 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-25 18:19:25.716 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-25 18:19:25.716 +05:30] [INF] Dead-letter queue 'travel.reschedule.dlq' already exists.
+[2025-11-25 18:19:25.717 +05:30] [INF] Queue 'travel.reschedule' already exists.
+[2025-11-25 18:19:25.717 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-25 18:19:25.717 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-25 18:19:25.725 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-25 18:19:25.728 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-25 18:19:25.732 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-25 18:19:25.737 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-25 18:19:25.765 +05:30] [INF] Reschedule email queue consumer subscribed to travel.reschedule.
+[2025-11-25 18:19:51.204 +05:30] [INF] Health check requested
+[2025-11-25 18:19:51.275 +05:30] [INF] Health check requested
+[2025-11-25 18:20:51.077 +05:30] [INF] Health check requested
+[2025-11-25 18:20:51.080 +05:30] [INF] Health check requested
+[2025-11-25 18:21:51.078 +05:30] [INF] Health check requested
+[2025-11-25 18:21:51.084 +05:30] [INF] Health check requested
+[2025-11-25 18:22:51.068 +05:30] [INF] Health check requested
+[2025-11-25 18:22:51.073 +05:30] [INF] Health check requested
+[2025-11-25 18:23:51.068 +05:30] [INF] Health check requested
+[2025-11-25 18:23:51.071 +05:30] [INF] Health check requested
+[2025-11-25 18:24:51.080 +05:30] [INF] Health check requested
+[2025-11-25 18:24:51.084 +05:30] [INF] Health check requested
+[2025-11-25 18:25:51.079 +05:30] [INF] Health check requested
+[2025-11-25 18:25:51.083 +05:30] [INF] Health check requested
+[2025-11-25 18:26:51.063 +05:30] [INF] Health check requested
+[2025-11-25 18:26:51.067 +05:30] [INF] Health check requested
+[2025-11-25 18:27:51.078 +05:30] [INF] Health check requested
+[2025-11-25 18:27:51.082 +05:30] [INF] Health check requested
+[2025-11-25 18:28:51.068 +05:30] [INF] Health check requested
+[2025-11-25 18:28:51.073 +05:30] [INF] Health check requested
+[2025-11-25 18:29:51.060 +05:30] [INF] Health check requested
+[2025-11-25 18:29:51.065 +05:30] [INF] Health check requested
+[2025-11-25 18:30:51.075 +05:30] [INF] Health check requested
+[2025-11-25 18:30:51.078 +05:30] [INF] Health check requested
+[2025-11-25 18:31:51.066 +05:30] [INF] Health check requested
+[2025-11-25 18:31:51.070 +05:30] [INF] Health check requested
+[2025-11-25 18:32:51.068 +05:30] [INF] Health check requested
+[2025-11-25 18:32:51.080 +05:30] [INF] Health check requested
+[2025-11-25 18:33:51.055 +05:30] [INF] Health check requested
+[2025-11-25 18:33:51.059 +05:30] [INF] Health check requested
+[2025-11-25 18:34:51.047 +05:30] [INF] Health check requested
+[2025-11-25 18:34:51.052 +05:30] [INF] Health check requested
+[2025-11-25 18:35:51.050 +05:30] [INF] Health check requested
+[2025-11-25 18:35:51.054 +05:30] [INF] Health check requested
+[2025-11-25 18:36:51.048 +05:30] [INF] Health check requested
+[2025-11-25 18:36:51.051 +05:30] [INF] Health check requested
+[2025-11-25 18:37:51.046 +05:30] [INF] Health check requested
+[2025-11-25 18:37:51.048 +05:30] [INF] Health check requested
+[2025-11-25 18:38:51.043 +05:30] [INF] Health check requested
+[2025-11-25 18:38:51.046 +05:30] [INF] Health check requested
+[2025-11-25 18:39:51.043 +05:30] [INF] Health check requested
+[2025-11-25 18:39:51.047 +05:30] [INF] Health check requested
+[2025-11-25 18:40:51.042 +05:30] [INF] Health check requested
+[2025-11-25 18:40:51.045 +05:30] [INF] Health check requested
+[2025-11-25 18:41:51.041 +05:30] [INF] Health check requested
+[2025-11-25 18:41:51.044 +05:30] [INF] Health check requested
+[2025-11-25 18:42:51.039 +05:30] [INF] Health check requested
+[2025-11-25 18:42:51.042 +05:30] [INF] Health check requested
+[2025-11-25 18:43:51.049 +05:30] [INF] Health check requested
+[2025-11-25 18:43:51.052 +05:30] [INF] Health check requested

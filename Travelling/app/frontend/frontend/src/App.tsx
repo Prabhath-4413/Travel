@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -8,6 +9,8 @@ import {
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { DestinationsProvider } from "./contexts/DestinationsContext";
+import { initializeApiClient } from "./lib/api";
+import { createHealthCheckListener } from "./lib/backendDetector";
 import LandingPage from "./pages/LandingPage";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
@@ -16,6 +19,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import PaymentPage from "./pages/PaymentPage";
 import StartBookingPage from "./pages/StartBookingPage";
 import MultiDestinationSelector from "./components/booking/MultiDestinationSelector";
+import BackendConnectionError from "./components/BackendConnectionError";
 
 // ✅ Protected Route Component
 function ProtectedRoute({
@@ -153,7 +157,58 @@ function AppRoutes() {
   );
 }
 
-export default function App() {
+function AppWithHealthCheck() {
+  const [backendStatus, setBackendStatus] = useState<
+    "loading" | "healthy" | "unhealthy"
+  >("loading");
+
+  useEffect(() => {
+    let unsubscribeHealthCheck: (() => void) | null = null;
+
+    const initializeApp = async () => {
+      try {
+        await initializeApiClient();
+        setBackendStatus("healthy");
+
+        unsubscribeHealthCheck = await createHealthCheckListener((status) => {
+          setBackendStatus(status === "healthy" ? "healthy" : "unhealthy");
+        });
+      } catch (error) {
+        console.error("Failed to initialize API client:", error);
+        setBackendStatus("unhealthy");
+      }
+    };
+
+    initializeApp();
+
+    return () => {
+      if (unsubscribeHealthCheck) {
+        unsubscribeHealthCheck();
+      }
+    };
+  }, []);
+
+  if (backendStatus === "loading") {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-[#0e1512]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#7fb539] mx-auto mb-4"></div>
+          <p className="text-white">Initializing application...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (backendStatus === "unhealthy") {
+    return (
+      <BackendConnectionError
+        message="Unable to connect to the backend server. Please ensure your .NET backend is running."
+        onRetry={() => window.location.reload()}
+        isFullScreen={true}
+      />
+    );
+  }
+
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <AuthProvider>
@@ -167,4 +222,8 @@ export default function App() {
       </AuthProvider>
     </GoogleOAuthProvider>
   );
+}
+
+export default function App() {
+  return <AppWithHealthCheck />;
 }

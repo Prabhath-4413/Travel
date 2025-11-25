@@ -153,10 +153,12 @@ public class Booking
 
 public class BookingDestination
 {
+    [Key]
     [Column("booking_id")]
     public int BookingId { get; set; }
     public Booking? Booking { get; set; }
 
+    [Key]
     [Column("destination_id")]
     public int DestinationId { get; set; }
     public Destination? Destination { get; set; }
@@ -194,10 +196,12 @@ public class TripCancellation
 
 public class TravelPackageDestination
 {
+    [Key]
     [Column("package_id")]
     public int TravelPackageId { get; set; }
     public TravelPackage? TravelPackage { get; set; }
 
+    [Key]
     [Column("destination_id")]
     public int DestinationId { get; set; }
     public Destination? Destination { get; set; }

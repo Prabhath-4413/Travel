@@ -54,18 +54,16 @@ export default function OtpVerificationModal({
     } catch (err: any) {
       const statusCode = err.response?.status;
       const message = err.response?.data?.message;
-      
+
       if (statusCode === 429) {
-        setError(
-          message || "Too many OTP requests. Please try again later."
-        );
+        setError(message || "Too many OTP requests. Please try again later.");
       } else if (statusCode === 500 && message === "Email failed to send") {
-        setError("Email server is temporarily unavailable. Please try again later.");
+        setError(
+          "Email server is temporarily unavailable. Please try again later.",
+        );
       } else {
         setError(
-          message ||
-            err.message ||
-            "Failed to send OTP. Please try again."
+          message || err.message || "Failed to send OTP. Please try again.",
         );
       }
     } finally {
@@ -85,11 +83,16 @@ export default function OtpVerificationModal({
     try {
       const verifyResponse = await bookingsAPI.verifyOtp(bookingId, otp);
       setSuccessMessage("OTP verified! Confirming booking...");
-      
+
       setIsConfirming(true);
-      const confirmResponse = await bookingsAPI.confirmBooking(bookingId, userEmail);
-      
-      setSuccessMessage("🎉 Booking Confirmed! Check your email for confirmation.");
+      const confirmResponse = await bookingsAPI.confirmBooking(
+        bookingId,
+        userEmail,
+      );
+
+      setSuccessMessage(
+        "🎉 Booking Confirmed! Check your email for confirmation.",
+      );
       setTimeout(() => {
         onSuccess();
       }, 2000);
@@ -97,7 +100,7 @@ export default function OtpVerificationModal({
       setError(
         err.response?.data?.message ||
           err.message ||
-          "Invalid OTP. Please try again."
+          "Invalid OTP. Please try again.",
       );
     } finally {
       setIsLoading(false);
@@ -175,7 +178,10 @@ export default function OtpVerificationModal({
               transition={{ delay: 0.6 }}
               className="text-center py-8"
             >
-              <svg className="animate-spin h-12 w-12 text-blue-500 mx-auto mb-4" viewBox="0 0 24 24">
+              <svg
+                className="animate-spin h-12 w-12 text-blue-500 mx-auto mb-4"
+                viewBox="0 0 24 24"
+              >
                 <circle
                   className="opacity-25"
                   cx="12"
@@ -264,7 +270,9 @@ export default function OtpVerificationModal({
 
               <motion.button
                 type="submit"
-                disabled={isLoading || isConfirming || isSendingOtp || otp.length !== 6}
+                disabled={
+                  isLoading || isConfirming || isSendingOtp || otp.length !== 6
+                }
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="w-full py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
@@ -297,7 +305,9 @@ export default function OtpVerificationModal({
               <button
                 type="button"
                 onClick={sendOtpOnMount}
-                disabled={timeLeft > 240 || isSendingOtp || error.includes("rate")}
+                disabled={
+                  timeLeft > 240 || isSendingOtp || error.includes("rate")
+                }
                 className="w-full py-2 text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 title={error.includes("rate") ? error : ""}
               >

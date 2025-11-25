@@ -13,7 +13,9 @@ public interface IOtpService
     Task MarkOtpAsUsedAsync(int bookingId, string email);
     Task<bool> IsOtpExpiredAsync(int bookingId, string email);
     Task<(string? Otp, string Message, int StatusCode)> GenerateRescheduleOtpAsync(int bookingId, string email, DateTime newStartDate, int? newDestinationId);
-    Task<bool> ValidateRescheduleOtpAsync(int bookingId, string email, string otp, out DateTime newStartDate, out int? newDestinationId);
+    Task<(bool Success, DateTime NewStartDate, int? NewDestinationId)>
+    ValidateRescheduleOtpAsync(int bookingId, string email, string otp);
+
     Task MarkRescheduleOtpAsUsedAsync(int bookingId, string email);
 }
 
@@ -263,11 +265,10 @@ public class OtpService : IOtpService
         }
     }
 
-    public async Task<bool> ValidateRescheduleOtpAsync(int bookingId, string email, string otp, out DateTime newStartDate, out int? newDestinationId)
+    public async Task<(bool Success, DateTime NewStartDate, int? NewDestinationId)>
+     ValidateRescheduleOtpAsync(int bookingId, string email, string otp)
     {
         _logger.LogInformation("Reschedule OTP validation requested for booking {BookingId}", bookingId);
-        newStartDate = DateTime.MinValue;
-        newDestinationId = null;
 
         var rescheduleOtp = await _context.RescheduleOtps
             .FirstOrDefaultAsync(ro =>
@@ -279,15 +280,16 @@ public class OtpService : IOtpService
 
         if (rescheduleOtp != null)
         {
-            newStartDate = rescheduleOtp.NewStartDate;
-            newDestinationId = rescheduleOtp.NewDestinationId;
             _logger.LogInformation("Reschedule OTP validation successful for booking {BookingId}", bookingId);
-            return true;
+
+            return (true, rescheduleOtp.NewStartDate, rescheduleOtp.NewDestinationId);
         }
 
         _logger.LogWarning("Reschedule OTP validation failed for booking {BookingId}", bookingId);
-        return false;
+
+        return (false, DateTime.MinValue, null);
     }
+
 
     public async Task MarkRescheduleOtpAsUsedAsync(int bookingId, string email)
     {

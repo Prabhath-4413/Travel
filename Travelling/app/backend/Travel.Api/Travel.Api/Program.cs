@@ -18,8 +18,15 @@ using System.Text.Json.Serialization;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true);
+}
 
 builder.Host.UseSerilog((context, configuration) =>
 {
@@ -64,7 +71,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(o =>
 {
     var cs = builder.Configuration.GetConnectionString("DefaultConnection")
              ?? throw new InvalidOperationException("Connection string not found.");
-    o.UseNpgsql(cs);
+
+    if (builder.Environment.IsDevelopment())
+    {
+        // Use SQLite for development
+        o.UseSqlite(cs);
+    }
+    else
+    {
+        // Use PostgreSQL for production
+        o.UseNpgsql(cs);
+    }
 });
 
 // ---------------------------
@@ -109,6 +126,41 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
+// ---------------------------
+// Rate Limiting
+// ---------------------------
+builder.Services.AddRateLimiter(options =>
+{
+    const string authPolicy = "auth-limiter";
+    
+    options.GlobalLimiter ??= PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? httpContext.Connection.RemoteIpAddress?.ToString() ?? "anonymous",
+            factory: partition => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 100,
+                Window = TimeSpan.FromMinutes(1)
+            }));
+
+    options.AddPolicy(authPolicy, httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "anonymous",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 5,
+                Window = TimeSpan.FromMinutes(1),
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                QueueLimit = 2
+            }));
+
+    options.OnRejected = (context, _) =>
+    {
+        context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+        return new ValueTask(context.HttpContext.Response.WriteAsJsonAsync(
+            new { message = "Rate limit exceeded. Try again later." }));
+    };
+});
+
 // Email services
 builder.Services.AddScoped<IEmailService, SmtpEmailService>();
 builder.Services.AddSingleton<IEmailTemplateBuilder, EmailTemplateBuilder>();
@@ -130,11 +182,12 @@ builder.Services.AddSingleton<RabbitMqService>();
 builder.Services.AddSingleton<IMessageQueueService>(sp => sp.GetRequiredService<RabbitMqService>());
 
 // Background services
-//builder.Services.AddHostedService<BookingReminderService>();
-//builder.Services.AddHostedService<EmailConsumerServiceV2>();
-//builder.Services.AddHostedService<BookingQueueConsumerService>();
+builder.Services.AddHostedService<BookingReminderService>();
+builder.Services.AddHostedService<EmailConsumerServiceV2>();
+builder.Services.AddHostedService<BookingQueueConsumerService>();
 builder.Services.AddHostedService<BookingEmailConsumerService>();
 builder.Services.AddHostedService<CancellationEmailConsumerService>();
+builder.Services.AddHostedService<RescheduleEmailConsumerService>();
 
 var app = builder.Build();
 
@@ -145,6 +198,7 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseCors("Frontend");
 app.UseSwagger();
 app.UseSwaggerUI();
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
@@ -217,9 +271,10 @@ app.MapPost("/auth/register", async (ApplicationDbContext db, RegisterDto dto) =
     db.Users.Add(user);
     await db.SaveChangesAsync();
     return Results.Ok(new { userId = user.UserId });
-}).AllowAnonymous();
+}).AllowAnonymous()
+.RequireRateLimiting("auth-limiter");
 
-app.MapPost("/auth/login", async (ApplicationDbContext db, LoginDto dto, HttpResponse http) =>
+app.MapPost("/auth/login", async (ApplicationDbContext db, LoginDto dto, HttpResponse http, ILogger<Program> logger) =>
 {
     try
     {
@@ -231,9 +286,11 @@ app.MapPost("/auth/login", async (ApplicationDbContext db, LoginDto dto, HttpRes
         var cookieOptions = new CookieOptions
         {
             HttpOnly = true,
-            Secure = false, // set true in production (HTTPS)
-            SameSite = SameSiteMode.Lax,
-            Expires = DateTimeOffset.UtcNow.AddHours(12)
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Expires = DateTimeOffset.UtcNow.AddHours(1),
+            IsEssential = true,
+            Domain = app.Environment.IsProduction() ? "yourdomain.com" : null
         };
         http.Cookies.Append("AuthToken", token, cookieOptions);
 
@@ -241,9 +298,11 @@ app.MapPost("/auth/login", async (ApplicationDbContext db, LoginDto dto, HttpRes
     }
     catch (Exception ex)
     {
-        return Results.Problem($"Login error: {ex.Message}", statusCode: 500);
+        logger.LogError(ex, "Login failed for email {Email}", dto.Email);
+        return Results.Unauthorized();
     }
-}).AllowAnonymous();
+}).AllowAnonymous()
+.RequireRateLimiting("auth-limiter");
 
 // Extra Auth Endpoints (cookie session)
 // -------------------------------------
@@ -265,17 +324,35 @@ app.MapGet("/auth/me", async (ApplicationDbContext db, ClaimsPrincipal userClaim
 // ---------------------------
 // Destinations Endpoints
 // ---------------------------
-static async Task<IResult> GetDestinations(ApplicationDbContext db, ILogger<Program> logger)
+static async Task<IResult> GetDestinations(ApplicationDbContext db, ILogger<Program> logger, int page = 1, int pageSize = 20)
 {
     try
     {
+        if (page < 1) page = 1;
+        if (pageSize < 1) pageSize = 1;
+        if (pageSize > 100) pageSize = 100;
+
+        var total = await db.Destinations.CountAsync();
+
         var destinations = await db.Destinations
             .AsNoTracking()
             .OrderBy(d => d.Name)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
 
-        logger.LogInformation("Fetched {Count} destinations", destinations.Count);
-        return Results.Ok(destinations);
+        logger.LogInformation("Fetched page {Page} with {Count} destinations out of {Total}", page, destinations.Count, total);
+        return Results.Ok(new
+        {
+            data = destinations,
+            pagination = new
+            {
+                page,
+                pageSize,
+                total,
+                pages = (total + pageSize - 1) / pageSize
+            }
+        });
     }
     catch (Exception ex)
     {
@@ -284,22 +361,15 @@ static async Task<IResult> GetDestinations(ApplicationDbContext db, ILogger<Prog
     }
 }
 
-app.MapGet("/api/destinations", GetDestinations);
-app.MapGet("/destinations", GetDestinations);
+app.MapGet("/api/v1/destinations", GetDestinations);
 
-app.MapGet("/api/destinations/{id:int}", async (ApplicationDbContext db, int id) =>
+app.MapGet("/api/v1/destinations/{id:int}", async (ApplicationDbContext db, int id) =>
 {
     var destination = await db.Destinations.AsNoTracking().FirstOrDefaultAsync(x => x.DestinationId == id);
     return destination is not null ? Results.Ok(destination) : Results.NotFound();
 });
 
-app.MapGet("/destinations/{id:int}", async (ApplicationDbContext db, int id) =>
-{
-    var destination = await db.Destinations.AsNoTracking().FirstOrDefaultAsync(x => x.DestinationId == id);
-    return destination is not null ? Results.Ok(destination) : Results.NotFound();
-});
-
-app.MapPost("/admin/destinations", async (ApplicationDbContext db, CreateDestinationDto dto) =>
+app.MapPost("/api/v1/destinations", async (ApplicationDbContext db, CreateDestinationDto dto) =>
 {
     var d = new Destination
     {
@@ -315,7 +385,7 @@ app.MapPost("/admin/destinations", async (ApplicationDbContext db, CreateDestina
     return Results.Ok(d);
 }).RequireAuthorization(policy => policy.RequireRole("admin"));
 
-app.MapDelete("/admin/destinations/{id:int}", async (ApplicationDbContext db, int id) =>
+app.MapDelete("/api/v1/destinations/{id:int}", async (ApplicationDbContext db, int id) =>
 {
     var d = await db.Destinations.FindAsync(id);
     if (d is null) return Results.NotFound();
@@ -417,7 +487,7 @@ app.MapPost("/bookings", async (ApplicationDbContext db, IMessageQueueService me
     });
 }).RequireAuthorization();
 
-app.MapGet("/bookings/{userId:int}", async (int userId, ApplicationDbContext db, ClaimsPrincipal userClaims) =>
+app.MapGet("/bookings/{userId:int}", async (int userId, ApplicationDbContext db, ClaimsPrincipal userClaims, int page = 1, int pageSize = 20) =>
 {
     var sub = userClaims.FindFirstValue(JwtRegisteredClaimNames.Sub) ?? userClaims.FindFirstValue(ClaimTypes.NameIdentifier);
     if (!int.TryParse(sub, out var authenticatedUserId) || authenticatedUserId != userId)
@@ -425,13 +495,19 @@ app.MapGet("/bookings/{userId:int}", async (int userId, ApplicationDbContext db,
         return Results.Forbid();
     }
 
-    var bookings = await db.Bookings
-        .AsNoTracking()
+    if (page < 1) page = 1;
+    if (pageSize < 1) pageSize = 1;
+    if (pageSize > 100) pageSize = 100;
+
+    var total = await db.Bookings
         .Where(b => b.UserId == userId)
-        .Include(b => b.BookingDestinations)
-            .ThenInclude(bd => bd.Destination)
-        .Include(b => b.TripCancellations)
+        .CountAsync();
+
+    var bookings = await db.Bookings
+        .Where(b => b.UserId == userId)
         .OrderByDescending(b => b.BookingDate)
+        .Skip((page - 1) * pageSize)
+        .Take(pageSize)
         .Select(b => new
         {
             bookingId = b.BookingId,
@@ -446,7 +522,6 @@ app.MapGet("/bookings/{userId:int}", async (int userId, ApplicationDbContext db,
                 .ToList(),
             status = b.Status,
             cancellationStatus = b.CancellationStatus,
-            confirmed = b.Confirmed,
             latestCancellation = b.TripCancellations
                 .OrderByDescending(tc => tc.RequestedAt)
                 .Select(tc => new
@@ -462,7 +537,17 @@ app.MapGet("/bookings/{userId:int}", async (int userId, ApplicationDbContext db,
         })
         .ToListAsync();
 
-    return Results.Ok(bookings);
+    return Results.Ok(new
+    {
+        data = bookings,
+        pagination = new
+        {
+            page,
+            pageSize,
+            total,
+            pages = (total + pageSize - 1) / pageSize
+        }
+    });
 }).RequireAuthorization();
 
 // ---------------------------
@@ -517,10 +602,23 @@ decimal DegToRad(decimal deg) => deg * (decimal)Math.PI / 180m;
 // ---------------------------
 // Review API
 // ---------------------------
-app.MapPost("/api/reviews", async (ReviewRequestDto dto, ApplicationDbContext db, ReviewService reviewService) =>
+app.MapPost("/api/reviews", async (ReviewRequestDto dto, ApplicationDbContext db, ReviewService reviewService, ClaimsPrincipal userClaims, ILogger<Program> logger) =>
 {
     try
     {
+        var authenticatedUserId = int.Parse(userClaims.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
+        
+        if (authenticatedUserId == 0)
+        {
+            return Results.Unauthorized();
+        }
+        
+        if (authenticatedUserId != dto.UserId)
+        {
+            logger.LogWarning("User {AuthenticatedUserId} attempted to review on behalf of user {RequestedUserId}", authenticatedUserId, dto.UserId);
+            return Results.Forbid();
+        }
+
         if (dto.Rating < 1 || dto.Rating > 5)
         {
             return Results.BadRequest(new { message = "Rating must be between 1 and 5." });
@@ -535,15 +633,17 @@ app.MapPost("/api/reviews", async (ReviewRequestDto dto, ApplicationDbContext db
     }
     catch (InvalidOperationException ex)
     {
-        return Results.BadRequest(new { message = ex.Message });
+        logger.LogWarning(ex, "Invalid operation while adding review");
+        return Results.BadRequest(new { message = "Unable to add review. Please ensure you have booked this destination." });
     }
     catch (Exception ex)
     {
-        return Results.Problem($"Error adding review: {ex.Message}", statusCode: 500);
+        logger.LogError(ex, "Error adding review");
+        return Results.Problem("An error occurred while adding your review. Please try again later.", statusCode: 500);
     }
-}).AllowAnonymous();
+}).RequireAuthorization();
 
-app.MapGet("/api/reviews/{destinationId:int}", async (int destinationId, ReviewService reviewService) =>
+app.MapGet("/api/reviews/{destinationId:int}", async (int destinationId, ReviewService reviewService, ILogger<Program> logger) =>
 {
     try
     {
@@ -552,11 +652,12 @@ app.MapGet("/api/reviews/{destinationId:int}", async (int destinationId, ReviewS
     }
     catch (Exception ex)
     {
-        return Results.Problem($"Error retrieving reviews: {ex.Message}", statusCode: 500);
+        logger.LogError(ex, "Error retrieving reviews for destination {DestinationId}", destinationId);
+        return Results.Problem("An error occurred while retrieving reviews. Please try again later.", statusCode: 500);
     }
 }).AllowAnonymous();
 
-app.MapGet("/api/reviews/average/{destinationId:int}", async (int destinationId, ReviewService reviewService) =>
+app.MapGet("/api/reviews/average/{destinationId:int}", async (int destinationId, ReviewService reviewService, ILogger<Program> logger) =>
 {
     try
     {
@@ -565,7 +666,8 @@ app.MapGet("/api/reviews/average/{destinationId:int}", async (int destinationId,
     }
     catch (Exception ex)
     {
-        return Results.Problem($"Error retrieving average rating: {ex.Message}", statusCode: 500);
+        logger.LogError(ex, "Error retrieving average rating for destination {DestinationId}", destinationId);
+        return Results.Problem("An error occurred while retrieving the rating. Please try again later.", statusCode: 500);
     }
 }).AllowAnonymous();
 
@@ -716,7 +818,6 @@ app.MapPost("/admin/trip-cancellations/{tripCancellationId:int}/approve", async 
 
     var booking = cancellation.Booking!;
     booking.CancellationStatus = CancellationStatus.Approved;
-    booking.Status = BookingStatus.Cancelled;
     booking.Confirmed = false;
 
     await db.SaveChangesAsync();
@@ -805,7 +906,7 @@ app.MapPost("/admin/trip-cancellations/{tripCancellationId:int}/reject", async (
 // ---------------------------
 // Test Email Endpoint (Admin only)
 // ---------------------------
-app.MapPost("/admin/test-email", async (ApplicationDbContext db, ClaimsPrincipal userClaims) =>
+app.MapPost("/admin/test-email", async (ApplicationDbContext db, ClaimsPrincipal userClaims, ILogger<Program> logger) =>
 {
     var sub = userClaims.FindFirstValue(JwtRegisteredClaimNames.Sub) ?? userClaims.FindFirstValue(ClaimTypes.NameIdentifier);
     if (!int.TryParse(sub, out var userId)) return Results.Unauthorized();
@@ -872,11 +973,10 @@ Travel App Team
     }
     catch (Exception ex)
     {
+        logger.LogError(ex, "Failed to send test email to {Email}", user.Email);
         return Results.BadRequest(new { 
             success = false, 
-            message = "Failed to send test email",
-            error = ex.Message,
-            details = "Check your SMTP configuration in appsettings.json"
+            message = "Failed to send test email. Please check your SMTP configuration."
         });
     }
 }).RequireAuthorization(policy => policy.RequireRole("admin"));
@@ -886,12 +986,76 @@ app.Run();
 // ---------------------------
 // DTOs / Records
 // ---------------------------
-public record RegisterDto(string Name, string Email, string Password);
-public record LoginDto(string Email, string Password);
+
+public class RegisterDto
+{
+    [Required(ErrorMessage = "Name is required")]
+    [MinLength(2, ErrorMessage = "Name must be at least 2 characters")]
+    [MaxLength(100, ErrorMessage = "Name cannot exceed 100 characters")]
+    public string Name { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "Email is required")]
+    [EmailAddress(ErrorMessage = "Invalid email format")]
+    public string Email { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "Password is required")]
+    [MinLength(8, ErrorMessage = "Password must be at least 8 characters")]
+    public string Password { get; set; } = string.Empty;
+
+    [Compare("Password", ErrorMessage = "Password and confirmation password do not match")]
+    public string ConfirmPassword { get; set; } = string.Empty;
+}
+
+public class LoginDto
+{
+    [Required(ErrorMessage = "Email is required")]
+    [EmailAddress(ErrorMessage = "Invalid email format")]
+    public string Email { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "Password is required")]
+    [MinLength(6, ErrorMessage = "Password must be at least 6 characters")]
+    public string Password { get; set; } = string.Empty;
+}
+
 public record CreateDestinationDto(string Name, string? Description, decimal Price, string? ImageUrl, decimal? Latitude, decimal? Longitude);
 public record UpdateDestinationDto(string? Name, string? Description, decimal? Price, string? ImageUrl, decimal? Latitude, decimal? Longitude, string? Country, string? City);
-public record BookingRequestDto(int UserId, int[] DestinationIds, int Guests, int Nights, DateTime StartDate);
+
+public class BookingRequestDto
+{
+    [Required]
+    [Range(1, int.MaxValue, ErrorMessage = "UserId must be greater than 0")]
+    public int UserId { get; set; }
+
+    [Required]
+    [MinLength(1, ErrorMessage = "At least one destination required")]
+    [MaxLength(10, ErrorMessage = "Maximum 10 destinations allowed")]
+    public int[] DestinationIds { get; set; } = Array.Empty<int>();
+
+    [Range(1, 20, ErrorMessage = "Guests must be between 1 and 20")]
+    public int Guests { get; set; }
+
+    [Range(1, 30, ErrorMessage = "Nights must be between 1 and 30")]
+    public int Nights { get; set; }
+
+    [DataType(DataType.DateTime)]
+    public DateTime StartDate { get; set; }
+}
+
 public record ShortestPathRequestDto(Coordinate[] Points);
 public record Coordinate(decimal Latitude, decimal Longitude);
-public record ReviewRequestDto(int UserId, int DestinationId, int Rating, string? Comment);
+
+public class ReviewRequestDto
+{
+    [Required]
+    public int UserId { get; set; }
+
+    [Required]
+    public int DestinationId { get; set; }
+
+    [Range(1, 5, ErrorMessage = "Rating must be between 1 and 5")]
+    public int Rating { get; set; }
+
+    [MaxLength(500, ErrorMessage = "Comment cannot exceed 500 characters")]
+    public string? Comment { get; set; }
+}
 

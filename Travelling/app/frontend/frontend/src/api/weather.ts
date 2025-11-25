@@ -26,7 +26,8 @@ export interface OpenWeatherMapResponse {
 
 class WeatherService {
   private baseUrl = "https://api.openweathermap.org/data/2.5/weather";
-  private apiKey: string | undefined = (import.meta.env as any).VITE_OPENWEATHER_API_KEY;
+  private apiKey: string | undefined = (import.meta.env as any)
+    .VITE_OPENWEATHER_API_KEY;
 
   // City fallback mapping for locations not recognized by OpenWeather API
   private cityFallbacks: Record<string, string> = {
@@ -160,9 +161,10 @@ class WeatherService {
   }
 
   async getWeatherByCity(cityName: string): Promise<WeatherData> {
+    const fallbackCity = this.getCityForWeather(cityName);
     const citiesToTry = [
-      cityName, // Original city name
-      this.getCityForWeather(cityName), // Fallback city
+      fallbackCity !== cityName ? fallbackCity : cityName, // Try fallback first if different
+      cityName, // Original city name as fallback
     ];
 
     // Remove duplicates
@@ -205,7 +207,9 @@ class WeatherService {
     }
 
     // If all cities failed, throw a user-friendly error
-    throw new Error("Weather data unavailable for this location");
+    throw new Error(
+      `Weather data unavailable for "${cityName}". Please check your location or try again later.`,
+    );
   }
 
   /**

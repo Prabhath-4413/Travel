@@ -15,7 +15,9 @@ export default function MultiDestinationSelector() {
     Destination[]
   >([]);
   const [showRouteModal, setShowRouteModal] = useState(false);
-  const [destinationPricings, setDestinationPricings] = useState<Map<number, PricingResult>>(new Map());
+  const [destinationPricings, setDestinationPricings] = useState<
+    Map<number, PricingResult>
+  >(new Map());
 
   // Calculate pricing for all destinations
   useEffect(() => {
@@ -34,9 +36,15 @@ export default function MultiDestinationSelector() {
             pricing: {
               basePrice: dest.price,
               finalPrice: dest.price,
-              adjustments: { season: 0, weather: 0, demand: 0, weekend: 0, lastMinute: 0 },
-              pricingReason: 'Base price'
-            }
+              adjustments: {
+                season: 0,
+                weather: 0,
+                demand: 0,
+                weekend: 0,
+                lastMinute: 0,
+              },
+              pricingReason: "Base price",
+            },
           };
         }
       });
@@ -80,13 +88,10 @@ export default function MultiDestinationSelector() {
     navigate("/start-booking");
   };
 
-  const totalPrice = selectedDestinations.reduce(
-    (sum, dest) => {
-      const pricing = destinationPricings.get(dest.destinationId);
-      return sum + (pricing?.finalPrice || dest.price);
-    },
-    0,
-  );
+  const totalPrice = selectedDestinations.reduce((sum, dest) => {
+    const pricing = destinationPricings.get(dest.destinationId);
+    return sum + (pricing?.finalPrice || dest.price);
+  }, 0);
 
   return (
     <div className="min-h-screen bg-[#0e1512] text-white">
@@ -242,7 +247,11 @@ export default function MultiDestinationSelector() {
                       )}
                     </div>
                     <span className="text-sm text-white/70">
-                      ₹{destinationPricings.get(destination.destinationId)?.finalPrice?.toLocaleString() || destination.price.toLocaleString()}
+                      ₹
+                      {destinationPricings
+                        .get(destination.destinationId)
+                        ?.finalPrice?.toLocaleString() ||
+                        destination.price.toLocaleString()}
                     </span>
                   </div>
 

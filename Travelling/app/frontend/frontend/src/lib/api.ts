@@ -1,4 +1,5 @@
 import axios from "axios";
+import { detectBackendPort } from "./backendDetector";
 
 // Provide minimal typing for Vite's import.meta.env so TS doesn't error when a global
 // declaration file (e.g. env.d.ts) is not present in the project.
@@ -12,7 +13,7 @@ declare global {
   }
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+let API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 // Create axios instance with default config
 const api = axios.create({
@@ -20,8 +21,33 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true, // Enable sending cookies with requests
+  withCredentials: true,
 });
+
+export async function initializeApiClient() {
+  const detection = await detectBackendPort();
+
+  if (detection.baseUrl) {
+    API_BASE_URL = detection.baseUrl;
+    api.defaults.baseURL = detection.baseUrl;
+    console.log(`API client initialized with ${detection.baseUrl}`);
+  } else {
+    console.warn(
+      `Could not detect backend. Using fallback: ${API_BASE_URL}`,
+    );
+  }
+
+  return API_BASE_URL;
+}
+
+export function getApiBaseUrl(): string {
+  return API_BASE_URL;
+}
+
+export function updateApiBaseUrl(newUrl: string): void {
+  API_BASE_URL = newUrl;
+  api.defaults.baseURL = newUrl;
+}
 
 // Add auth token to requests
 api.interceptors.request.use((config) => {
@@ -32,7 +58,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Handle auth errors
+// Handle errors (auth errors and connection errors)
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -41,6 +67,15 @@ api.interceptors.response.use(
       localStorage.removeItem("user");
       window.location.href = "/login";
     }
+
+    if (error.code === "ERR_NETWORK" || error.message === "Network Error") {
+      const enhancedError = new Error(
+        `Backend connection failed (${API_BASE_URL}). Make sure the .NET backend is running.`,
+      );
+      Object.assign(enhancedError, error);
+      return Promise.reject(enhancedError);
+    }
+
     return Promise.reject(error);
   },
 );
@@ -250,11 +285,6 @@ export const bookingsAPI = {
     return response.data;
   },
 
-  getUserBookings: async (userId: number): Promise<Booking[]> => {
-    const response = await api.get(`/bookings/${userId}`);
-    return response.data;
-  },
-
   getCurrentUserBookings: async (): Promise<UserBooking[]> => {
     const response = await api.get("/api/booking/user-bookings");
     return response.data;
@@ -271,30 +301,45 @@ export const bookingsAPI = {
   },
 
   verifyOtp: async (bookingId: number, otp: string) => {
-    const response = await api.post("/api/booking/verify-otp", { bookingId, otp });
-    return response.data;
-  },
-
-  confirmBooking: async (bookingId: number, email: string) => {
-    const response = await api.post("/api/booking/confirm", { bookingId, email });
-    return response.data;
-  },
-
-  sendRescheduleOtp: async (bookingId: number, newStartDate: Date, newDestinationId?: number) => {
-    const response = await api.post("/api/booking/send-reschedule-otp", {
+    const response = await api.post("/api/booking/verify-otp", {
       bookingId,
-      newStartDate,
-      newDestinationId
+      otp,
     });
     return response.data;
   },
 
-  verifyRescheduleOtp: async (bookingId: number, otp: string, newStartDate: Date, newDestinationId?: number) => {
+  confirmBooking: async (bookingId: number, email: string) => {
+    const response = await api.post("/api/booking/confirm", {
+      bookingId,
+      email,
+    });
+    return response.data;
+  },
+
+  sendRescheduleOtp: async (
+    bookingId: number,
+    newStartDate: Date,
+    newDestinationId?: number,
+  ) => {
+    const response = await api.post("/api/booking/send-reschedule-otp", {
+      bookingId,
+      newStartDate,
+      newDestinationId,
+    });
+    return response.data;
+  },
+
+  verifyRescheduleOtp: async (
+    bookingId: number,
+    otp: string,
+    newStartDate: Date,
+    newDestinationId?: number,
+  ) => {
     const response = await api.post("/api/booking/verify-reschedule-otp", {
       bookingId,
       otp,
       newStartDate,
-      newDestinationId
+      newDestinationId,
     });
     return response.data;
   },

@@ -39,6 +39,8 @@ namespace Travel.Api.Data
                 b.HasIndex(u => u.Email).IsUnique();
                 b.Property(u => u.Password).HasColumnName("password").HasMaxLength(255).IsRequired();
                 b.Property(u => u.Role).HasColumnName("role").HasMaxLength(50).IsRequired().HasDefaultValue("user");
+                b.Property(u => u.GoogleId).HasColumnName("google_id").HasMaxLength(255);
+                b.Property(u => u.Picture).HasColumnName("picture").HasMaxLength(500);
                 b.Property(u => u.CreatedAt).HasColumnName("created_at").HasDefaultValueSql("NOW()");
             });
 
@@ -322,6 +324,7 @@ namespace Travel.Api.Data
                 b.Property(x => x.Guests).HasColumnName("guests");
                 b.Property(x => x.Nights).HasColumnName("nights");
                 b.Property(x => x.BookingDate).HasColumnName("booking_date").HasDefaultValueSql("NOW()");
+                b.Property(x => x.StartDate).HasColumnName("StartDate").HasDefaultValueSql("NOW()");
                 b.Property(x => x.Confirmed).HasColumnName("confirmed").HasDefaultValue(false);
                 b.Property(x => x.ReminderSent).HasColumnName("reminder_sent").HasDefaultValue(false);
                 b.Property(x => x.Status).HasColumnName("status").HasConversion<int>().HasDefaultValue(BookingStatus.Active);
@@ -335,6 +338,7 @@ namespace Travel.Api.Data
                     .HasDefaultValue(CancellationStatus.None);
 
                 b.Property(x => x.CreatedAt).HasColumnName("created_at").HasDefaultValueSql("NOW()");
+                b.Property(x => x.UpdatedAt).HasColumnName("updated_at");
 
                 b.HasOne(x => x.User)
                     .WithMany(u => u.Bookings)

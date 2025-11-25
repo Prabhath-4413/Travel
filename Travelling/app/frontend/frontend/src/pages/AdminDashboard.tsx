@@ -313,21 +313,36 @@ export default function AdminDashboard() {
   const handlePriceDown = async (destination: Destination) => {
     try {
       // Calculate current pricing to get weather and weekend adjustments
-      const pricingResult = await calculateDynamicPrice(destination, new Date(), 1, 1);
+      const pricingResult = await calculateDynamicPrice(
+        destination,
+        new Date(),
+        1,
+        1,
+      );
 
       // Calculate the reduction amount (negative adjustments for weather and weekend)
-      const weatherReduction = pricingResult.adjustments.weather < 0 ? Math.abs(pricingResult.adjustments.weather) : 0;
-      const weekendReduction = pricingResult.adjustments.weekend > 0 ? pricingResult.adjustments.weekend : 0;
+      const weatherReduction =
+        pricingResult.adjustments.weather < 0
+          ? Math.abs(pricingResult.adjustments.weather)
+          : 0;
+      const weekendReduction =
+        pricingResult.adjustments.weekend > 0
+          ? pricingResult.adjustments.weekend
+          : 0;
 
       // Apply additional reduction if weather is bad or it's weekend
       const totalReductionPercent = weatherReduction + weekendReduction;
 
       if (totalReductionPercent === 0) {
-        alert("No price reduction applicable - weather is good and it's not a weekend.");
+        alert(
+          "No price reduction applicable - weather is good and it's not a weekend.",
+        );
         return;
       }
 
-      const suggestedPrice = Math.round(destination.price * (1 - totalReductionPercent / 100));
+      const suggestedPrice = Math.round(
+        destination.price * (1 - totalReductionPercent / 100),
+      );
 
       if (suggestedPrice >= destination.price) {
         alert("No price reduction needed.");
@@ -336,8 +351,10 @@ export default function AdminDashboard() {
 
       // Collect reasons
       const reasons = [];
-      if (pricingResult.adjustments.weather < 0) reasons.push('Bad weather conditions');
-      if (pricingResult.adjustments.weekend > 0) reasons.push('Weekend pricing');
+      if (pricingResult.adjustments.weather < 0)
+        reasons.push("Bad weather conditions");
+      if (pricingResult.adjustments.weekend > 0)
+        reasons.push("Weekend pricing");
 
       // Open the price edit modal
       setPriceEditModal({
@@ -348,13 +365,17 @@ export default function AdminDashboard() {
       });
     } catch (err) {
       console.error("Error calculating price reduction:", err);
-      alert("Failed to calculate price suggestion. Check weather API connection.");
+      alert(
+        "Failed to calculate price suggestion. Check weather API connection.",
+      );
     }
   };
 
   const handleSavePrice = (newPrice: number) => {
     // Since backend doesn't support updates, just show success message
-    alert(`Price suggestion saved for reference!\n\nNew price: ₹${newPrice.toLocaleString()}\n\nPlease manually update this price in your database.`);
+    alert(
+      `Price suggestion saved for reference!\n\nNew price: ₹${newPrice.toLocaleString()}\n\nPlease manually update this price in your database.`,
+    );
     setPriceEditModal({
       isOpen: false,
       destination: null,
@@ -970,12 +991,14 @@ export default function AdminDashboard() {
             destination={priceEditModal.destination}
             suggestedPrice={priceEditModal.suggestedPrice}
             reasons={priceEditModal.reasons}
-            onClose={() => setPriceEditModal({
-              isOpen: false,
-              destination: null,
-              suggestedPrice: 0,
-              reasons: [],
-            })}
+            onClose={() =>
+              setPriceEditModal({
+                isOpen: false,
+                destination: null,
+                suggestedPrice: 0,
+                reasons: [],
+              })
+            }
             onSave={handleSavePrice}
           />
         )}
@@ -1358,7 +1381,9 @@ function PriceEditModal({
     onSave(price);
   };
 
-  const reductionPercent = Math.round(((destination.price - suggestedPrice) / destination.price) * 100);
+  const reductionPercent = Math.round(
+    ((destination.price - suggestedPrice) / destination.price) * 100,
+  );
 
   return (
     <motion.div
@@ -1419,7 +1444,9 @@ function PriceEditModal({
           </div>
 
           <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
-            <h5 className="text-blue-300 font-medium mb-2">Reason for Suggestion:</h5>
+            <h5 className="text-blue-300 font-medium mb-2">
+              Reason for Suggestion:
+            </h5>
             <ul className="text-blue-200 text-sm space-y-1">
               {reasons.map((reason, index) => (
                 <li key={index} className="flex items-center">
@@ -1447,8 +1474,9 @@ function PriceEditModal({
 
           <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
             <p className="text-yellow-200 text-sm">
-              <strong>Note:</strong> Backend doesn't support automatic price updates.
-              The new price will be displayed for reference only. Please manually update the price in your database.
+              <strong>Note:</strong> Backend doesn't support automatic price
+              updates. The new price will be displayed for reference only.
+              Please manually update the price in your database.
             </p>
           </div>
 

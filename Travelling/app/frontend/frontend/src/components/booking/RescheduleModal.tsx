@@ -8,7 +8,7 @@ interface RescheduleModalProps {
   destinations: Destination[];
 }
 
-type ModalStep = "bookings" | "select-date" | "otp-verification" | "success";
+type ModalStep = "bookings" | "select-date" | "otp-verification" | "success" | "confirmation";
 
 export default function RescheduleModal({
   onClose,
@@ -16,9 +16,13 @@ export default function RescheduleModal({
 }: RescheduleModalProps) {
   const [step, setStep] = useState<ModalStep>("bookings");
   const [userBookings, setUserBookings] = useState<UserBooking[]>([]);
-  const [selectedBooking, setSelectedBooking] = useState<UserBooking | null>(null);
+  const [selectedBooking, setSelectedBooking] = useState<UserBooking | null>(
+    null,
+  );
   const [newStartDate, setNewStartDate] = useState<string>("");
-  const [newDestinationId, setNewDestinationId] = useState<number | undefined>();
+  const [newDestinationId, setNewDestinationId] = useState<
+    number | undefined
+  >();
   const [otp, setOtp] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSendingOtp, setIsSendingOtp] = useState(false);
@@ -77,7 +81,7 @@ export default function RescheduleModal({
       await bookingsAPI.sendRescheduleOtp(
         selectedBooking.bookingId,
         new Date(newStartDate),
-        newDestinationId
+        newDestinationId,
       );
       setOtpSent(true);
       setTimeLeft(300);
@@ -90,9 +94,13 @@ export default function RescheduleModal({
       if (statusCode === 429) {
         setError(message || "Too many OTP requests. Please try again later.");
       } else if (statusCode === 500 && message === "Email failed to send") {
-        setError("Email server is temporarily unavailable. Please try again later.");
+        setError(
+          "Email server is temporarily unavailable. Please try again later.",
+        );
       } else {
-        setError(message || err.message || "Failed to send OTP. Please try again.");
+        setError(
+          message || err.message || "Failed to send OTP. Please try again.",
+        );
       }
     } finally {
       setIsSendingOtp(false);
@@ -145,20 +153,16 @@ export default function RescheduleModal({
         selectedBooking.bookingId,
         otp,
         new Date(newStartDate),
-        newDestinationId
+        newDestinationId,
       );
 
-      setSuccessMessage("🎉 Booking rescheduled successfully! Check your email for confirmation.");
-      setIsConfirming(true);
-
-      setTimeout(() => {
-        onClose();
-      }, 2000);
+      setStep("confirmation");
+      setIsConfirming(false);
     } catch (err: any) {
       setError(
         err.response?.data?.message ||
           err.message ||
-          "Invalid OTP. Please try again."
+          "Invalid OTP. Please try again.",
       );
     } finally {
       setIsLoading(false);
@@ -189,7 +193,7 @@ export default function RescheduleModal({
         initial={{ scale: 0.8, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.8, opacity: 0, y: 20 }}
-        className="bg-[#0e1512] rounded-2xl border border-white/20 p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+        className="bg-gradient-to-br from-[#0e1512] via-[#0f1613] to-[#0e1512] rounded-3xl border border-white/20 shadow-2xl shadow-black/50 p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto backdrop-blur-xl"
       >
         <div className="text-center">
           <motion.div
@@ -225,6 +229,7 @@ export default function RescheduleModal({
             {step === "bookings" && "Reschedule Your Trip"}
             {step === "select-date" && "Choose New Date"}
             {step === "otp-verification" && "Verify Your Email"}
+            {step === "confirmation" && "Trip Rescheduled Successfully!"}
             {step === "success" && "Success!"}
           </motion.h2>
 
@@ -237,6 +242,7 @@ export default function RescheduleModal({
             {step === "bookings" && "Select a booking to reschedule"}
             {step === "select-date" && "Pick a new travel date"}
             {step === "otp-verification" && "Enter the OTP sent to your email"}
+            {step === "confirmation" && "Your booking has been updated successfully"}
             {step === "success" && "Your trip has been rescheduled"}
           </motion.p>
 
@@ -260,7 +266,10 @@ export default function RescheduleModal({
 
               {isLoading ? (
                 <div className="flex justify-center py-8">
-                  <svg className="animate-spin h-12 w-12 text-purple-500" viewBox="0 0 24 24">
+                  <svg
+                    className="animate-spin h-12 w-12 text-purple-500"
+                    viewBox="0 0 24 24"
+                  >
                     <circle
                       className="opacity-25"
                       cx="12"
@@ -282,25 +291,66 @@ export default function RescheduleModal({
                   {userBookings.map((booking) => (
                     <motion.button
                       key={booking.bookingId}
-                      whileHover={{ scale: 1.02 }}
+                      whileHover={{ scale: 1.02, y: -2 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => handleSelectBooking(booking)}
-                      className="w-full p-4 rounded-lg bg-white/5 border border-white/20 hover:border-purple-500/50 hover:bg-purple-500/10 transition-all text-left"
+                      className="w-full p-6 rounded-xl bg-gradient-to-r from-white/5 to-white/10 border border-white/20 hover:border-purple-500/50 hover:bg-gradient-to-r hover:from-purple-500/10 hover:to-pink-500/10 transition-all text-left group shadow-lg hover:shadow-purple-500/20"
                     >
-                      <p className="font-semibold text-white">{booking.destinations}</p>
-                      <p className="text-sm text-white/70 mt-1">
-                        {new Date(booking.startDate).toLocaleDateString("en-US", {
-                          weekday: "long",
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })} • {booking.guests} guests • {booking.nights} nights
-                      </p>
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-purple-500/20 rounded-full flex items-center justify-center group-hover:bg-purple-500/30 transition-colors">
+                            <svg className="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <p className="font-bold text-white text-lg group-hover:text-purple-300 transition-colors">
+                              {booking.destinations}
+                            </p>
+                            <p className="text-sm text-white/60">
+                              Booking #{booking.bookingId}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="w-2 h-2 bg-green-400 rounded-full mb-1"></div>
+                          <span className="text-xs text-green-400 font-medium">Active</span>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-4 text-sm">
+                        <div className="flex items-center gap-2">
+                          <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          <span className="text-white/70">
+                            {new Date(booking.startDate).toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                            })}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                          </svg>
+                          <span className="text-white/70">{booking.guests} guests</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                          </svg>
+                          <span className="text-white/70">{booking.nights} nights</span>
+                        </div>
+                      </div>
                     </motion.button>
                   ))}
                 </div>
               ) : (
-                <p className="text-white/70">No bookings available to reschedule</p>
+                <p className="text-white/70">
+                  No bookings available to reschedule
+                </p>
               )}
             </motion.div>
           )}
@@ -323,22 +373,57 @@ export default function RescheduleModal({
                 </motion.div>
               )}
 
-              <div className="bg-white/5 border border-white/20 rounded-lg p-4 text-left">
-                <p className="text-sm text-white/70 mb-2">Current Booking:</p>
-                <p className="font-semibold text-white">{selectedBooking.destinations}</p>
-                <p className="text-sm text-white/70 mt-2">
-                  {new Date(selectedBooking.startDate).toLocaleDateString("en-US", {
-                    weekday: "long",
-                    month: "short",
-                    day: "numeric",
-                  })} • {selectedBooking.guests} guests
-                </p>
+              <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-xl p-6 backdrop-blur-sm">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">
+                    <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-semibold text-white">Current Booking Details</h3>
+                </div>
+
+                <div className="grid gap-3">
+                  <div className="flex justify-between items-center py-2 border-b border-white/10">
+                    <span className="text-white/70 text-sm">Destination</span>
+                    <span className="font-semibold text-white">{selectedBooking.destinations}</span>
+                  </div>
+
+                  <div className="flex justify-between items-center py-2 border-b border-white/10">
+                    <span className="text-white/70 text-sm">Check-in Date</span>
+                    <span className="font-semibold text-white">
+                      {new Date(selectedBooking.startDate).toLocaleDateString("en-US", {
+                        weekday: "short",
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </span>
+                  </div>
+
+                  <div className="flex justify-between items-center py-2 border-b border-white/10">
+                    <span className="text-white/70 text-sm">Duration</span>
+                    <span className="font-semibold text-white">{selectedBooking.nights} nights</span>
+                  </div>
+
+                  <div className="flex justify-between items-center py-2">
+                    <span className="text-white/70 text-sm">Guests</span>
+                    <span className="font-semibold text-white">{selectedBooking.guests} guests</span>
+                  </div>
+                </div>
               </div>
 
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-white/90">
-                  New Travel Date
-                </label>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <label className="text-sm font-semibold text-white/90">
+                    New Travel Date
+                  </label>
+                </div>
                 <input
                   type="date"
                   value={newStartDate}
@@ -347,24 +432,34 @@ export default function RescheduleModal({
                     setError("");
                   }}
                   min={getMinDate()}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                  className="w-full px-4 py-4 bg-gradient-to-r from-white/5 to-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 transition-all placeholder-white/50 text-center font-medium"
                 />
               </div>
 
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-white/90">
-                  New Destination (Optional)
-                </label>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-8 h-8 bg-orange-500/20 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <label className="text-sm font-semibold text-white/90">
+                    New Destination (Optional)
+                  </label>
+                </div>
                 <select
                   value={newDestinationId || ""}
                   onChange={(e) => {
-                    setNewDestinationId(e.target.value ? parseInt(e.target.value) : undefined);
+                    setNewDestinationId(
+                      e.target.value ? parseInt(e.target.value) : undefined,
+                    );
                   }}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                  className="w-full px-4 py-4 bg-gradient-to-r from-white/5 to-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all"
                 >
-                  <option value="">Keep current destination</option>
+                  <option value="" className="bg-gray-800">Keep current destination</option>
                   {destinations.map((dest) => (
-                    <option key={dest.destinationId} value={dest.destinationId}>
+                    <option key={dest.destinationId} value={dest.destinationId} className="bg-gray-800">
                       {dest.name}
                     </option>
                   ))}
@@ -413,7 +508,10 @@ export default function RescheduleModal({
                   transition={{ delay: 0.6 }}
                   className="text-center py-8"
                 >
-                  <svg className="animate-spin h-12 w-12 text-purple-500 mx-auto mb-4" viewBox="0 0 24 24">
+                  <svg
+                    className="animate-spin h-12 w-12 text-purple-500 mx-auto mb-4"
+                    viewBox="0 0 24 24"
+                  >
                     <circle
                       className="opacity-25"
                       cx="12"
@@ -502,14 +600,22 @@ export default function RescheduleModal({
 
                   <motion.button
                     type="submit"
-                    disabled={isLoading || isConfirming || isSendingOtp || otp.length !== 6}
+                    disabled={
+                      isLoading ||
+                      isConfirming ||
+                      isSendingOtp ||
+                      otp.length !== 6
+                    }
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isLoading || isConfirming ? (
                       <span className="flex items-center justify-center gap-2">
-                        <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                        <svg
+                          className="animate-spin h-5 w-5"
+                          viewBox="0 0 24 24"
+                        >
                           <circle
                             className="opacity-25"
                             cx="12"
@@ -535,7 +641,9 @@ export default function RescheduleModal({
                   <button
                     type="button"
                     onClick={sendOtpOnMount}
-                    disabled={timeLeft > 240 || isSendingOtp || error.includes("rate")}
+                    disabled={
+                      timeLeft > 240 || isSendingOtp || error.includes("rate")
+                    }
                     className="w-full py-2 text-purple-400 hover:text-purple-300 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     title={error.includes("rate") ? error : ""}
                   >
@@ -549,6 +657,112 @@ export default function RescheduleModal({
                   </button>
                 </motion.form>
               )}
+            </motion.div>
+          )}
+
+          {/* Confirmation Success */}
+          {step === "confirmation" && selectedBooking && (
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              className="space-y-6"
+            >
+              {/* Success Animation */}
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
+                className="w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-500/30"
+              >
+                <motion.svg
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ delay: 0.5, duration: 0.8 }}
+                  className="w-10 h-10 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={3}
+                    d="M5 13l4 4L19 7"
+                  />
+                </motion.svg>
+              </motion.div>
+
+              {/* Updated Booking Details */}
+              <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-500/20 rounded-2xl p-6 backdrop-blur-sm">
+                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                  <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                  Updated Booking Details
+                </h3>
+
+                <div className="grid gap-4">
+                  <div className="flex justify-between items-center py-2 border-b border-white/10">
+                    <span className="text-white/70">Booking ID</span>
+                    <span className="font-semibold text-white">#{selectedBooking.bookingId}</span>
+                  </div>
+
+                  <div className="flex justify-between items-center py-2 border-b border-white/10">
+                    <span className="text-white/70">Destination</span>
+                    <span className="font-semibold text-white">
+                      {newDestinationId
+                        ? destinations.find(d => d.destinationId === newDestinationId)?.name || selectedBooking.destinations
+                        : selectedBooking.destinations
+                      }
+                    </span>
+                  </div>
+
+                  <div className="flex justify-between items-center py-2 border-b border-white/10">
+                    <span className="text-white/70">New Check-in</span>
+                    <span className="font-semibold text-white">
+                      {new Date(newStartDate).toLocaleDateString("en-US", {
+                        weekday: "long",
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </span>
+                  </div>
+
+                  <div className="flex justify-between items-center py-2 border-b border-white/10">
+                    <span className="text-white/70">Duration</span>
+                    <span className="font-semibold text-white">{selectedBooking.nights} nights</span>
+                  </div>
+
+                  <div className="flex justify-between items-center py-2">
+                    <span className="text-white/70">Guests</span>
+                    <span className="font-semibold text-white">{selectedBooking.guests} guests</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Success Message */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 }}
+                className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-xl p-4 text-center"
+              >
+                <p className="text-white/90 font-medium mb-2">🎉 Your trip has been rescheduled successfully!</p>
+                <p className="text-white/70 text-sm">A confirmation email has been sent to your inbox with all the details.</p>
+              </motion.div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-3 pt-4">
+                <motion.button
+                  type="button"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={onClose}
+                  className="flex-1 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold rounded-xl transition-all shadow-lg shadow-green-500/30"
+                >
+                  Done
+                </motion.button>
+              </div>
             </motion.div>
           )}
 

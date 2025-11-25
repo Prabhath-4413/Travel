@@ -93,7 +93,7 @@ export default function StartBookingPage() {
       </div>
     );
   }
-  
+
   return (
     <div className="min-h-screen bg-[#0e1512] text-white">
       {/* Header */}

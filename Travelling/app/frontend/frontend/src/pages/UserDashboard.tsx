@@ -17,6 +17,7 @@ import {
 import { useDestinations } from "../contexts/DestinationsContext";
 import BookingForm from "../components/booking/BookingForm";
 import EmailConfirmationModal from "../components/booking/EmailConfirmationModal";
+import RescheduleModal from "../components/booking/RescheduleModal";
 import {
   CancellationBadge,
   CancellationDetails,
@@ -398,6 +399,8 @@ export default function UserDashboard(): JSX.Element {
   const [priceMin, setPriceMin] = useState<number | undefined>(undefined);
   const [priceMax, setPriceMax] = useState<number | undefined>(undefined);
   const [heroIndex, setHeroIndex] = useState(0);
+  const [showRescheduleModal, setShowRescheduleModal] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
 
   const floatingParticles = useMemo(
     () =>
@@ -567,10 +570,23 @@ export default function UserDashboard(): JSX.Element {
   const loadData = async () => {
     try {
       setLoading(true);
-      const bookingsData = await bookingsAPI.getUserBookings(user!.userId);
+      const userBookingsData = await bookingsAPI.getCurrentUserBookings();
+      // Transform UserBooking[] to Booking[]
+      const bookingsData: Booking[] = userBookingsData.map((ub) => ({
+        bookingId: ub.bookingId,
+        totalPrice: ub.totalPrice,
+        guests: ub.guests,
+        nights: ub.nights,
+        bookingDate: ub.startDate,
+        destinations: ub.destinations.split(", "),
+        cancellationStatus: ub.status as CancellationStatus,
+      }));
       setBookings(bookingsData);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error loading bookings", error);
+      const errorMessage = error.response?.data?.message || error.message || "Failed to load bookings";
+      toast.error(errorMessage);
+      setBookings([]);
     } finally {
       setLoading(false);
     }
@@ -695,7 +711,12 @@ export default function UserDashboard(): JSX.Element {
     setBookingResult(result);
     setShowConfirmation(true);
     setShowBookingForm(false);
-    await Promise.all([loadData(), refreshDestinations()]);
+    try {
+      await Promise.all([loadData(), refreshDestinations()]);
+    } catch (error) {
+      console.error("Error reloading data after booking", error);
+      toast.error("Booking created but failed to refresh data. Please refresh the page.");
+    }
   };
 
   const handleRequestCancellation = (bookingId: number) => {
@@ -820,6 +841,14 @@ export default function UserDashboard(): JSX.Element {
                 title="Cancellation center"
               >
                 Manage cancellations
+              </button>
+              <button
+                onClick={() => setShowRescheduleModal(true)}
+                className="h-12 px-5 rounded-full border border-purple-400/40 text-purple-300 hover:text-purple-200 hover:bg-purple-400/10 transition-colors"
+                type="button"
+                title="Reschedule bookings"
+              >
+                Reschedule
               </button>
               <motion.div
                 whileHover={{ scale: 1.05 }}
@@ -1516,7 +1545,19 @@ export default function UserDashboard(): JSX.Element {
                             />
                           </div>
                         )}
-                        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                          {booking.cancellationStatus !== "Approved" && (
+                            <button
+                              onClick={() => {
+                                setSelectedBooking(booking);
+                                setShowRescheduleModal(true);
+                              }}
+                              className="px-4 py-3 rounded-xl border border-purple-400/40 text-purple-300 hover:bg-purple-400/10"
+                              type="button"
+                            >
+                              Reschedule
+                            </button>
+                          )}
                           <button
                             onClick={() =>
                               handleRequestCancellation(booking.bookingId)
@@ -1602,14 +1643,12 @@ export default function UserDashboard(): JSX.Element {
                     </div>
                     <div className="rounded-2xl overflow-hidden border border-[#2b5f49]/25">
                       <RouteMap
-                        destinations={
-                          optimizedDestinations.map((d) => ({
-                            destinationId: d.destinationId,
-                            name: d.name,
-                            lat: d.latitude || 0,
-                            lon: d.longitude || 0,
-                          }))
-                        }
+                        destinations={optimizedDestinations.map((d) => ({
+                          destinationId: d.destinationId,
+                          name: d.name,
+                          lat: d.latitude || 0,
+                          lon: d.longitude || 0,
+                        }))}
                       />
                     </div>
                   </div>
@@ -2178,6 +2217,16 @@ export default function UserDashboard(): JSX.Element {
           lon: d.longitude || 0,
         }))}
       />
+
+      <AnimatePresence>
+        {showRescheduleModal && (
+          <RescheduleModal
+            onClose={() => setShowRescheduleModal(false)}
+            destinations={destinations}
+            selectedBooking={selectedBooking}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

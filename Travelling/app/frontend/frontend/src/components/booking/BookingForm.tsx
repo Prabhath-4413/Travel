@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import toast from "react-hot-toast";
 import { useAuth } from "../../contexts/AuthContext";
 import { bookingsAPI, type Destination } from "../../lib/api";
-import { calculateMultiDestinationPrice, type PricingResult } from "../../lib/pricing";
+import {
+  calculateMultiDestinationPrice,
+  type PricingResult,
+} from "../../lib/pricing";
 
 interface BookingFormProps {
   destinations: Destination[];
@@ -46,19 +50,27 @@ export default function BookingForm({
           destinations,
           new Date(formData.startDate),
           formData.guests,
-          formData.nights
+          formData.nights,
         );
         setPricing(result);
       } catch (error) {
-        console.error('Failed to calculate pricing:', error);
+        console.error("Failed to calculate pricing:", error);
         // Fallback to static pricing
-        const staticPrice = destinations.reduce((sum, dest) => sum + dest.price, 0) *
-          formData.guests * formData.nights;
+        const staticPrice =
+          destinations.reduce((sum, dest) => sum + dest.price, 0) *
+          formData.guests *
+          formData.nights;
         setPricing({
           basePrice: staticPrice,
           finalPrice: staticPrice,
-          adjustments: { season: 0, weather: 0, demand: 0, weekend: 0, lastMinute: 0 },
-          pricingReason: 'Pricing calculation failed, showing base price'
+          adjustments: {
+            season: 0,
+            weather: 0,
+            demand: 0,
+            weekend: 0,
+            lastMinute: 0,
+          },
+          pricingReason: "Pricing calculation failed, showing base price",
         });
       } finally {
         setPricingLoading(false);
@@ -100,11 +112,9 @@ export default function BookingForm({
         destinations: response.destinations,
       });
     } catch (err: any) {
-      setError(
-        err.response?.data?.message ||
-          err.message ||
-          "Failed to complete booking",
-      );
+      const errorMessage = err.response?.data?.message || err.message || "Failed to complete booking";
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -231,37 +241,62 @@ export default function BookingForm({
                 {pricing.adjustments.season !== 0 && (
                   <div className="flex justify-between text-white/70">
                     <span>Seasonal adjustment:</span>
-                    <span className={pricing.adjustments.season > 0 ? 'text-green-400' : 'text-red-400'}>
-                      {pricing.adjustments.season > 0 ? '+' : ''}{pricing.adjustments.season}%
+                    <span
+                      className={
+                        pricing.adjustments.season > 0
+                          ? "text-green-400"
+                          : "text-red-400"
+                      }
+                    >
+                      {pricing.adjustments.season > 0 ? "+" : ""}
+                      {pricing.adjustments.season}%
                     </span>
                   </div>
                 )}
                 {pricing.adjustments.weather !== 0 && (
                   <div className="flex justify-between text-white/70">
                     <span>Weather adjustment:</span>
-                    <span className={pricing.adjustments.weather > 0 ? 'text-green-400' : 'text-red-400'}>
-                      {pricing.adjustments.weather > 0 ? '+' : ''}{pricing.adjustments.weather}%
+                    <span
+                      className={
+                        pricing.adjustments.weather > 0
+                          ? "text-green-400"
+                          : "text-red-400"
+                      }
+                    >
+                      {pricing.adjustments.weather > 0 ? "+" : ""}
+                      {pricing.adjustments.weather}%
                     </span>
                   </div>
                 )}
                 {pricing.adjustments.demand !== 0 && (
                   <div className="flex justify-between text-white/70">
                     <span>Demand adjustment:</span>
-                    <span className={pricing.adjustments.demand > 0 ? 'text-green-400' : 'text-red-400'}>
-                      {pricing.adjustments.demand > 0 ? '+' : ''}{pricing.adjustments.demand}%
+                    <span
+                      className={
+                        pricing.adjustments.demand > 0
+                          ? "text-green-400"
+                          : "text-red-400"
+                      }
+                    >
+                      {pricing.adjustments.demand > 0 ? "+" : ""}
+                      {pricing.adjustments.demand}%
                     </span>
                   </div>
                 )}
                 {pricing.adjustments.weekend !== 0 && (
                   <div className="flex justify-between text-white/70">
                     <span>Weekend adjustment:</span>
-                    <span className="text-green-400">+{pricing.adjustments.weekend}%</span>
+                    <span className="text-green-400">
+                      +{pricing.adjustments.weekend}%
+                    </span>
                   </div>
                 )}
                 {pricing.adjustments.lastMinute !== 0 && (
                   <div className="flex justify-between text-white/70">
                     <span>Last-minute adjustment:</span>
-                    <span className="text-green-400">+{pricing.adjustments.lastMinute}%</span>
+                    <span className="text-green-400">
+                      +{pricing.adjustments.lastMinute}%
+                    </span>
                   </div>
                 )}
                 <div className="border-t border-white/10 pt-2">

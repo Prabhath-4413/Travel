@@ -218,8 +218,8 @@ export default function WeatherWidget({
         // Extract city from cityName if it's a descriptive name
         cityToUse = extractCityName(cityName);
       } else if (location?.city) {
-        // Use location city as fallback, cleaned
-        cityToUse = location.city.split(",")[0].trim();
+        // Use location city as fallback, cleaned and extracted
+        cityToUse = extractCityName(location.city.split(",")[0].trim());
       }
 
       if (!cityToUse && (!lat || !lon)) return;

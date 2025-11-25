@@ -5,6 +5,8 @@ using System.Security.Claims;
 using Travel.Api.Data;
 using Travel.Api.Models;
 using Travel.Api.Services;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace Travel.Api.Controllers;
 
@@ -117,35 +119,45 @@ public class BookingController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GetUserBookings()
     {
-        _logger.LogInformation("GetUserBookings request received");
-
-        var userId = int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var id) ? id : 0;
-        if (userId == 0)
+        try
         {
-            _logger.LogWarning("Unable to extract user ID from claims");
-            return Unauthorized(new { message = "User ID not found in token" });
+            _logger.LogInformation("GetUserBookings request received");
+
+            var userId = int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var id) ? id : 0;
+            if (userId == 0)
+            {
+                _logger.LogWarning("Unable to extract user ID from claims");
+                return Unauthorized(new { message = "User ID not found in token" });
+            }
+
+            var bookings = await _context.Bookings
+                .Include(b => b.BookingDestinations)
+                .ThenInclude(bd => bd.Destination)
+                .Where(b => b.UserId == userId && (b.Status == BookingStatus.Active || b.Status == BookingStatus.Confirmed) && b.Confirmed)
+                .OrderByDescending(b => b.StartDate)
+                .ToListAsync();
+
+            var userBookings = bookings.Select(b => new UserBookingDto
+            {
+                BookingId = b.BookingId,
+                Destinations = b.BookingDestinations != null && b.BookingDestinations.Any() 
+                    ? string.Join(", ", b.BookingDestinations.Select(bd => bd.Destination?.Name ?? "Unknown"))
+                    : "Unknown",
+                StartDate = b.StartDate,
+                Guests = b.Guests,
+                Nights = b.Nights,
+                TotalPrice = b.TotalPrice,
+                Status = b.Status.ToString()
+            }).ToList();
+
+            _logger.LogInformation("Retrieved {Count} bookings for user {UserId}", userBookings.Count, userId);
+            return Ok(userBookings);
         }
-
-        var bookings = await _context.Bookings
-            .Where(b => b.UserId == userId && b.Status == BookingStatus.Active && b.Confirmed)
-            .Include(b => b.BookingDestinations)
-            .ThenInclude(bd => bd.Destination)
-            .OrderByDescending(b => b.StartDate)
-            .ToListAsync();
-
-        var userBookings = bookings.Select(b => new UserBookingDto
+        catch (Exception ex)
         {
-            BookingId = b.BookingId,
-            Destinations = string.Join(", ", b.BookingDestinations.Select(bd => bd.Destination?.Name ?? "Unknown")),
-            StartDate = b.StartDate,
-            Guests = b.Guests,
-            Nights = b.Nights,
-            TotalPrice = b.TotalPrice,
-            Status = b.Status.ToString()
-        }).ToList();
-
-        _logger.LogInformation("Retrieved {Count} bookings for user {UserId}", userBookings.Count, userId);
-        return Ok(userBookings);
+            _logger.LogError(ex, "Error retrieving user bookings");
+            return StatusCode(500, new { message = "Error retrieving bookings", error = ex.Message });
+        }
     }
 
     [HttpPost("send-reschedule-otp")]
@@ -226,29 +238,31 @@ public class BookingController : ControllerBase
             return BadRequest(new { message = "User information not found" });
         }
 
-        var isOtpValid = await _otpService.ValidateRescheduleOtpAsync(
-            request.BookingId, 
-            booking.User.Email, 
-            request.Otp,
-            out var newStartDate,
-            out var newDestinationId);
+        var result = await _otpService.ValidateRescheduleOtpAsync(
+    request.BookingId,
+    booking.User.Email,
+    request.Otp);
 
-        if (!isOtpValid)
+        if (!result.Success)
         {
             _logger.LogWarning("Reschedule OTP verification failed for booking {BookingId}", request.BookingId);
             return BadRequest(new { message = "Invalid or expired OTP" });
         }
 
-        var (success, reschedulMessage) = await _bookingService.RescheduleBookingAsync(
-            request.BookingId, 
-            booking.User.Email, 
-            request.NewStartDate,
-            request.NewDestinationId);
+        var newStartDate = result.NewStartDate;
+        var newDestinationId = result.NewDestinationId;
+
+        var (success, rescheduleMessage) = await _bookingService.RescheduleBookingAsync(
+            request.BookingId,
+            booking.User.Email,
+            newStartDate,
+            newDestinationId);
+
 
         if (!success)
         {
-            _logger.LogWarning("Booking reschedule failed for booking {BookingId}: {Message}", request.BookingId, reschedulMessage);
-            return BadRequest(new { message = reschedulMessage });
+            _logger.LogWarning("Booking reschedule failed for booking {BookingId}: {Message}", request.BookingId, rescheduleMessage);
+            return BadRequest(new { message = rescheduleMessage });
         }
 
         _logger.LogInformation("Booking rescheduled successfully for booking {BookingId}", request.BookingId);
@@ -272,4 +286,17 @@ public class ConfirmBookingRequest
 {
     public int BookingId { get; set; }
     public string Email { get; set; } = string.Empty;
+}
+
+public class SendRescheduleOtpRequest
+{
+    public int BookingId { get; set; }
+    public DateTime NewStartDate { get; set; }
+    public int? NewDestinationId { get; set; }
+}
+
+public class VerifyRescheduleOtpRequest
+{
+    public int BookingId { get; set; }
+    public string Otp { get; set; } = string.Empty;
 }

@@ -14,6 +14,7 @@ namespace Travel.Api.Services
         string BuildCancellationRequestedAdminBody(TripCancellation cancellation, Models.Booking booking);
         string BuildCancellationDecisionUserBody(Models.Booking booking, bool approved, string? adminComment);
         string BuildCancellationDecisionAdminBody(TripCancellation cancellation, bool approved);
+        string BuildRescheduleConfirmationUserBody(Models.Booking booking);
     }
 
     public class EmailTemplateBuilder : IEmailTemplateBuilder
@@ -392,6 +393,88 @@ namespace Travel.Api.Services
 
               <p style=""margin:14px 0 0;color:#475569;font-size:14px;line-height:1.4;"">
                 This message is for administrative purposes. Use the Admin dashboard to view full details and take additional actions if necessary.
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style=""padding:14px 20px;background:#0b1412;color:#e2e8f0;text-align:center;font-size:13px;"">
+              SuiteSavvy Travel App • All Rights Reserved • support@suitesavvy.com
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>";
+        }
+
+        public string BuildRescheduleConfirmationUserBody(Models.Booking booking)
+        {
+            var encodedUserName = WebUtility.HtmlEncode(booking.User?.Name ?? "Guest");
+            var encodedBookingId = WebUtility.HtmlEncode(booking.BookingId.ToString() ?? string.Empty);
+            var encodedStartDate = WebUtility.HtmlEncode(booking.StartDate.ToString("yyyy-MM-dd"));
+            var encodedEndDate = WebUtility.HtmlEncode(booking.StartDate.AddDays(booking.Nights).ToString("yyyy-MM-dd"));
+            var encodedGuests = WebUtility.HtmlEncode(booking.Guests.ToString());
+            var encodedNights = WebUtility.HtmlEncode(booking.Nights.ToString());
+            var encodedTotalPrice = WebUtility.HtmlEncode(booking.TotalPrice.ToString("F2"));
+
+            var destinationNames = booking.BookingDestinations?
+                                       .Select(bd => bd.Destination?.Name)
+                                       .Where(n => !string.IsNullOrWhiteSpace(n))
+                                       .Select(n => n!)
+                                       .ToList() ?? new List<string>();
+
+            var encodedDestinations = destinationNames.Any()
+                ? WebUtility.HtmlEncode(string.Join(", ", destinationNames))
+                : "Not specified";
+
+            return $@"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+  <meta charset=""utf-8"" />
+  <meta name=""viewport"" content=""width=device-width, initial-scale=1.0""/>
+  <title>Reschedule Confirmation</title>
+</head>
+<body style=""margin:0;padding:0;background:#0b1412;font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;color:#0b1412;"">
+  <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"" style=""padding:28px 12px;background:linear-gradient(180deg, rgba(11,20,18,0.9), rgba(11,20,18,1));"">
+    <tr>
+      <td align=""center"">
+        <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""600"" style=""max-width:600px;width:100%;background:#f8fafc;border-radius:12px;overflow:hidden;"">
+          <tr>
+            <td style=""padding:18px 20px;background:#07231f;color:#f8fafc;"">
+              <div style=""font-weight:700;font-size:18px;"">SuiteSavvy ✈️</div>
+            </td>
+          </tr>
+          <tr>
+            <td style=""padding:22px 24px;background:#f8fafc;color:#0b1412;"">
+              <div style=""font-size:13px;color:#68d391;text-transform:uppercase;margin-bottom:8px;"">✅ Trip Rescheduled</div>
+              <h2 style=""margin:6px 0 10px;font-size:18px;"">Hello {encodedUserName}, your trip has been rescheduled!</h2>
+              <p style=""margin:0 0 12px;color:#475569;font-size:14px;line-height:1.4;"">
+                Great news — your booking has been successfully rescheduled. Below are your updated trip details.
+              </p>
+
+              <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"" style=""margin-top:12px;border-collapse:separate;border-spacing:0 10px;"">
+                <tr>
+                  <td style=""background:#07231f;color:#f8fafc;padding:12px;border-radius:8px;"">
+                    <div style=""font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;"">Booking ID</div>
+                    <div style=""font-weight:700;font-size:15px;color:#68d391;"">#{encodedBookingId}</div>
+
+                    <div style=""margin-top:10px;font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;"">New Trip Dates</div>
+                    <div style=""font-weight:700;font-size:14px;color:#f8fafc;"">{encodedStartDate} — {encodedEndDate}</div>
+
+                    <div style=""margin-top:10px;font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;"">Destination</div>
+                    <div style=""font-size:14px;color:#f8fafc;"">{encodedDestinations}</div>
+
+                    <div style=""margin-top:10px;font-size:12px;color:#e2e8f0;text-transform:uppercase;margin-bottom:6px;"">Guests & Duration</div>
+                    <div style=""font-size:14px;color:#f8fafc;"">{encodedGuests} guests • {encodedNights} nights</div>
+                  </td>
+                </tr>
+              </table>
+
+              <p style=""margin:14px 0 0;color:#475569;font-size:14px;line-height:1.4;"">
+                Your updated booking is now active. You can view details and manage your trip through your SuiteSavvy dashboard.
               </p>
             </td>
           </tr>
