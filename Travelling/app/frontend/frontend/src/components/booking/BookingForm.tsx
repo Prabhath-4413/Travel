@@ -39,6 +39,18 @@ export default function BookingForm({
   const [pricing, setPricing] = useState<PricingResult | null>(null);
   const [pricingLoading, setPricingLoading] = useState(false);
 
+  useEffect(() => {
+    if (typeof document === "undefined") {
+      return;
+    }
+    const { body } = document;
+    const previousOverflow = body.style.overflow;
+    body.style.overflow = "hidden";
+    return () => {
+      body.style.overflow = previousOverflow;
+    };
+  }, []);
+
   // Calculate dynamic pricing when form data changes
   useEffect(() => {
     const calculatePricing = async () => {
@@ -81,6 +93,28 @@ export default function BookingForm({
   }, [destinations, formData.startDate, formData.guests, formData.nights]);
 
   const totalPrice = pricing?.finalPrice || 0;
+  const formatPercent = (value: number) => {
+    const rounded = Math.round(value);
+    return `${rounded > 0 ? "+" : rounded < 0 ? "" : ""}${rounded}%`;
+  };
+  const adjustmentDetails = [
+    {
+      label: "Seasonal trend",
+      value: pricing?.adjustments.season ?? 0,
+    },
+    {
+      label: "Weather pattern",
+      value: pricing?.adjustments.weather ?? 0,
+    },
+    {
+      label: "Demand pulse",
+      value: pricing?.adjustments.demand ?? 0,
+    },
+    {
+      label: "Last-minute flex",
+      value: pricing?.adjustments.lastMinute ?? 0,
+    },
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -125,242 +159,264 @@ export default function BookingForm({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center px-6"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 px-4 py-8 backdrop-blur-xl"
+      onClick={onClose}
     >
-      <motion.div
-        initial={{ scale: 0.8, opacity: 0, y: 20 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.8, opacity: 0, y: 20 }}
-        className="bg-[#0e1512] rounded-2xl border border-white/20 p-8 max-w-lg w-full"
+      <motion.section
+        initial={{ opacity: 0, scale: 0.94, y: 24 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.94, y: 24 }}
+        className="relative w-full max-w-5xl overflow-hidden rounded-[32px] border border-white/15 bg-[#05090f]/85 text-white shadow-[0_35px_90px_rgba(0,0,0,0.85)] backdrop-blur-2xl max-h-[85vh]"
+        onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-2xl font-bold">Complete Your Booking</h3>
-          <button
-            onClick={onClose}
-            className="text-white/70 hover:text-white transition-colors"
-          >
-            ✕
-          </button>
-        </div>
+        <button
+          onClick={onClose}
+          className="absolute right-6 top-6 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-sm font-semibold text-white/80 transition hover:bg-white/20"
+          type="button"
+          aria-label="Close booking form"
+        >
+          ✕
+        </button>
 
-        {/* Selected Destinations */}
-        <div className="mb-6">
-          <h4 className="text-lg font-semibold mb-3">Selected Destinations</h4>
+        <div className="max-h-[85vh] overflow-y-auto p-6 sm:p-10 space-y-8">
           <div className="space-y-2">
-            {destinations.map((destination) => (
-              <div
-                key={destination.destinationId}
-                className="flex items-center justify-between p-3 bg-white/5 rounded-lg"
-              >
-                <span className="text-white">{destination.name}</span>
-                <span className="text-blue-400">
-                  ₹{destination.price.toLocaleString()}/night
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
-              {error}
-            </div>
-          )}
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-white/90 mb-2">
-                Start Date *
-              </label>
-              <input
-                type="date"
-                required
-                value={formData.startDate}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    startDate: e.target.value,
-                  }))
-                }
-                className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-white/90 mb-2">
-                Number of Guests *
-              </label>
-              <input
-                type="number"
-                min="1"
-                max="20"
-                required
-                value={formData.guests}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    guests: parseInt(e.target.value) || 1,
-                  }))
-                }
-                className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-white/90 mb-2">
-                Number of Nights *
-              </label>
-              <input
-                type="number"
-                min="1"
-                max="30"
-                required
-                value={formData.nights}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    nights: parseInt(e.target.value) || 1,
-                  }))
-                }
-                className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-              />
-            </div>
+            <p className="text-xs uppercase tracking-[0.35em] text-white/50">
+              Review & confirm
+            </p>
+            <h3 className="text-3xl font-semibold leading-tight">
+              Confirm Your Package
+            </h3>
+            <p className="text-white/70">
+              Double-check destinations, travel dates, and live pricing before locking in your concierge itinerary.
+            </p>
           </div>
 
-          {/* Price Breakdown */}
-          <div className="bg-white/5 rounded-lg p-4 space-y-2">
-            {pricingLoading ? (
-              <div className="text-center text-white/70 py-4">
-                Calculating price...
-              </div>
-            ) : pricing ? (
-              <>
-                <div className="flex justify-between text-white/70">
-                  <span>Base price:</span>
-                  <span>₹{pricing.basePrice.toLocaleString()}</span>
-                </div>
-                {pricing.adjustments.season !== 0 && (
-                  <div className="flex justify-between text-white/70">
-                    <span>Seasonal adjustment:</span>
-                    <span
-                      className={
-                        pricing.adjustments.season > 0
-                          ? "text-green-400"
-                          : "text-red-400"
-                      }
-                    >
-                      {pricing.adjustments.season > 0 ? "+" : ""}
-                      {pricing.adjustments.season}%
-                    </span>
-                  </div>
-                )}
-                {pricing.adjustments.weather !== 0 && (
-                  <div className="flex justify-between text-white/70">
-                    <span>Weather adjustment:</span>
-                    <span
-                      className={
-                        pricing.adjustments.weather > 0
-                          ? "text-green-400"
-                          : "text-red-400"
-                      }
-                    >
-                      {pricing.adjustments.weather > 0 ? "+" : ""}
-                      {pricing.adjustments.weather}%
-                    </span>
-                  </div>
-                )}
-                {pricing.adjustments.demand !== 0 && (
-                  <div className="flex justify-between text-white/70">
-                    <span>Demand adjustment:</span>
-                    <span
-                      className={
-                        pricing.adjustments.demand > 0
-                          ? "text-green-400"
-                          : "text-red-400"
-                      }
-                    >
-                      {pricing.adjustments.demand > 0 ? "+" : ""}
-                      {pricing.adjustments.demand}%
-                    </span>
-                  </div>
-                )}
-                {pricing.adjustments.weekend !== 0 && (
-                  <div className="flex justify-between text-white/70">
-                    <span>Weekend adjustment:</span>
-                    <span className="text-green-400">
-                      +{pricing.adjustments.weekend}%
-                    </span>
-                  </div>
-                )}
-                {pricing.adjustments.lastMinute !== 0 && (
-                  <div className="flex justify-between text-white/70">
-                    <span>Last-minute adjustment:</span>
-                    <span className="text-green-400">
-                      +{pricing.adjustments.lastMinute}%
-                    </span>
-                  </div>
-                )}
-                <div className="border-t border-white/10 pt-2">
-                  <div className="flex justify-between text-xl font-bold text-green-400">
-                    <span>Total Price:</span>
-                    <span>₹{totalPrice.toLocaleString()}</span>
-                  </div>
-                </div>
-                <div className="text-xs text-white/60 mt-2">
-                  {pricing.pricingReason}
-                </div>
-              </>
-            ) : (
-              <div className="text-center text-white/70 py-4">
-                Loading pricing information...
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="rounded-2xl border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-200">
+                {error}
               </div>
             )}
-          </div>
 
-          <div className="flex gap-4 pt-4">
-            <button
-              type="button"
-              onClick={onClose}
-              disabled={isLoading}
-              className="flex-1 px-4 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg border border-white/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Cancel
-            </button>
-            <motion.button
-              type="submit"
-              disabled={isLoading}
-              whileHover={{ scale: isLoading ? 1 : 1.02 }}
-              whileTap={{ scale: isLoading ? 1 : 0.98 }}
-              className="flex-1 px-4 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-green-500/50"
-            >
-              {isLoading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                      fill="none"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
-                  Processing...
-                </span>
-              ) : (
-                <span className="flex items-center justify-center gap-2">
-                  Confirm Booking for ₹{totalPrice.toLocaleString()}
-                </span>
-              )}
-            </motion.button>
-          </div>
-        </form>
-      </motion.div>
+            <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
+              <div className="space-y-6">
+                <section className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.4)]">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.35em] text-white/60">
+                        Selected destinations
+                      </p>
+                      <h4 className="mt-2 text-2xl font-semibold">Itinerary lineup</h4>
+                    </div>
+                    <span className="rounded-full border border-white/10 px-3 py-1 text-sm text-white/70">
+                      {destinations.length} spots
+                    </span>
+                  </div>
+                  <div className="mt-4 space-y-3">
+                    {destinations.length === 0 ? (
+                      <p className="rounded-2xl border border-dashed border-white/15 bg-black/30 p-4 text-sm text-white/60">
+                        No destinations selected. Add locations to continue.
+                      </p>
+                    ) : (
+                      destinations.map((destination) => (
+                        <div
+                          key={destination.destinationId}
+                          className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/30 px-4 py-3"
+                        >
+                          <div>
+                            <p className="text-base font-semibold text-white">
+                              {destination.name}
+                            </p>
+                            <p className="text-sm text-white/60">
+                              {destination.city || destination.country || "Worldwide"}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-sm uppercase tracking-wide text-white/60">
+                              Per night
+                            </p>
+                            <p className="text-lg font-semibold text-blue-200">
+                              ₹{destination.price.toLocaleString()}
+                            </p>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </section>
+
+                <section className="rounded-3xl border border-white/10 bg-white/5 p-6">
+                  <p className="text-xs uppercase tracking-[0.35em] text-white/60">
+                    Travel details
+                  </p>
+                  <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                    <div className="sm:col-span-2">
+                      <label className="text-sm font-semibold text-white/90">
+                        Start date
+                      </label>
+                      <input
+                        type="date"
+                        required
+                        value={formData.startDate}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            startDate: e.target.value,
+                          }))
+                        }
+                        className="mt-2 w-full rounded-2xl border border-white/15 bg-black/20 px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-semibold text-white/90">
+                        Guests
+                      </label>
+                      <input
+                        type="number"
+                        min="1"
+                        max="20"
+                        required
+                        value={formData.guests}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            guests: parseInt(e.target.value) || 1,
+                          }))
+                        }
+                        className="mt-2 w-full rounded-2xl border border-white/15 bg-black/20 px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-semibold text-white/90">
+                        Nights
+                      </label>
+                      <input
+                        type="number"
+                        min="1"
+                        max="30"
+                        required
+                        value={formData.nights}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            nights: parseInt(e.target.value) || 1,
+                          }))
+                        }
+                        className="mt-2 w-full rounded-2xl border border-white/15 bg-black/20 px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+                      />
+                    </div>
+                  </div>
+                </section>
+              </div>
+
+              <div className="space-y-6">
+                <section className="rounded-3xl border border-white/10 bg-gradient-to-br from-blue-500/15 via-purple-500/10 to-pink-500/10 p-6 shadow-[0_20px_60px_rgba(8,47,73,0.35)]">
+                  <p className="text-xs uppercase tracking-[0.35em] text-white/70">
+                    Price intelligence
+                  </p>
+                  {pricingLoading ? (
+                    <div className="py-10 text-center text-white/70">
+                      Calculating live pricing...
+                    </div>
+                  ) : pricing ? (
+                    <div className="mt-4 space-y-4">
+                      <div className="flex items-center justify-between text-white/85">
+                        <span>Base package</span>
+                        <span className="text-lg font-semibold">
+                          ₹{pricing.basePrice.toLocaleString()}
+                        </span>
+                      </div>
+                      <div className="grid gap-3">
+                        {adjustmentDetails.map((item) => (
+                          <div
+                            key={item.label}
+                            className="flex items-center justify-between text-sm text-white/80"
+                          >
+                            <span>{item.label}</span>
+                            <span
+                              className={
+                                item.value > 0
+                                  ? "text-emerald-300"
+                                  : item.value < 0
+                                    ? "text-rose-300"
+                                    : "text-white/60"
+                              }
+                            >
+                              {formatPercent(item.value)}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="border-t border-white/20 pt-4">
+                        <p className="text-xs uppercase tracking-[0.35em] text-white/60">
+                          Estimated total
+                        </p>
+                        <p className="mt-2 text-3xl font-semibold text-emerald-300">
+                          ₹{totalPrice.toLocaleString()}
+                        </p>
+                      </div>
+                      <p className="text-xs text-white/70">
+                        {pricing.pricingReason}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="py-10 text-center text-white/70">
+                      Loading pricing information...
+                    </div>
+                  )}
+                </section>
+
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    disabled={isLoading}
+                    className="flex-1 rounded-2xl border border-white/20 bg-white/10 px-5 py-3 text-white/80 transition hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    Cancel
+                  </button>
+                  <motion.button
+                    type="submit"
+                    disabled={isLoading}
+                    whileHover={{ scale: isLoading ? 1 : 1.02 }}
+                    whileTap={{ scale: isLoading ? 1 : 0.98 }}
+                    className="flex-1 rounded-2xl bg-gradient-to-r from-emerald-500 to-blue-500 px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(16,185,129,0.35)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {isLoading ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24">
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                            fill="none"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          />
+                        </svg>
+                        Processing...
+                      </span>
+                    ) : (
+                      <span className="flex flex-col leading-tight text-center">
+                        <span className="text-base font-semibold">Confirm Booking</span>
+                        <span className="text-xs text-white/80">
+                          ₹{totalPrice.toLocaleString()} total
+                        </span>
+                      </span>
+                    )}
+                  </motion.button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </motion.section>
     </motion.div>
   );
 }

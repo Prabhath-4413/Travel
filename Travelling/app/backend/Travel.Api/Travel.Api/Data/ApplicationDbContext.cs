@@ -207,6 +207,18 @@ namespace Travel.Api.Data
                         Longitude = -19.0208m,
                         Country = "Iceland",
                         City = "Reykjavik"
+                    },
+                    new Destination
+                    {
+                        DestinationId = 13,
+                        Name = "Maldives Overwater Retreat",
+                        Description = "Turquoise lagoons, coral reefs, and private villas floating above the Indian Ocean.",
+                        ImageUrl = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80",
+                        Price = 72000m,
+                        Latitude = 3.2028m,
+                        Longitude = 73.2207m,
+                        Country = "Maldives",
+                        City = "Malé"
                     });
             });
 
@@ -307,6 +319,15 @@ namespace Travel.Api.Data
                         Description = "Rich history, architectural marvels, and culinary traditions across Europe's most iconic cities.",
                         Price = 1199.99m,
                         ImageUrl = "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=1200&auto=format&fit=crop",
+                        CreatedAt = packageSeedTimestamp
+                    },
+                    new TravelPackage
+                    {
+                        PackageId = 8,
+                        Name = "Iconic Horizons",
+                        Description = "From Maldivian lagoons to Swiss summits and Dubai's desert skyline, experience three signatures in one itinerary.",
+                        Price = 1599.99m,
+                        ImageUrl = "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1600&q=80",
                         CreatedAt = packageSeedTimestamp
                     });
             });

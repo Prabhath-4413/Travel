@@ -1,0 +1,2722 @@
+[2025-11-26 10:11:26.004 +05:30] [INF] BookingReminderService started
+[2025-11-26 10:11:26.239 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-26 10:11:26.240 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-26 10:11:26.241 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-26 10:11:26.242 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-26 10:11:26.242 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-26 10:11:26.242 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-26 10:11:26.243 +05:30] [INF] Dead-letter queue 'travel.reschedule.dlq' already exists.
+[2025-11-26 10:11:26.244 +05:30] [INF] Queue 'travel.reschedule' already exists.
+[2025-11-26 10:11:26.244 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-26 10:11:26.244 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-26 10:11:26.251 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-26 10:11:26.254 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-26 10:11:26.258 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-26 10:11:26.260 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-26 10:11:26.263 +05:30] [INF] Reschedule email queue consumer subscribed to travel.reschedule.
+[2025-11-26 10:11:26.687 +05:30] [INF] Health check requested
+[2025-11-26 10:11:26.764 +05:30] [INF] Health check requested
+[2025-11-26 10:11:35.215 +05:30] [INF] Health check requested
+[2025-11-26 10:11:35.218 +05:30] [INF] Health check requested
+[2025-11-26 10:11:45.219 +05:30] [INF] Health check requested
+[2025-11-26 10:11:45.223 +05:30] [INF] Health check requested
+[2025-11-26 10:11:55.195 +05:30] [INF] Health check requested
+[2025-11-26 10:11:55.198 +05:30] [INF] Health check requested
+[2025-11-26 10:12:04.495 +05:30] [INF] Health check requested
+[2025-11-26 10:12:04.735 +05:30] [INF] Health check requested
+[2025-11-26 10:12:15.086 +05:30] [INF] Health check requested
+[2025-11-26 10:12:15.089 +05:30] [INF] Health check requested
+[2025-11-26 10:12:25.081 +05:30] [INF] Health check requested
+[2025-11-26 10:12:25.120 +05:30] [INF] Health check requested
+[2025-11-26 10:12:34.969 +05:30] [INF] Health check requested
+[2025-11-26 10:12:34.971 +05:30] [INF] Health check requested
+[2025-11-26 10:12:44.915 +05:30] [INF] Health check requested
+[2025-11-26 10:12:44.918 +05:30] [INF] Health check requested
+[2025-11-26 10:12:54.867 +05:30] [INF] Health check requested
+[2025-11-26 10:12:54.869 +05:30] [INF] Health check requested
+[2025-11-26 10:13:04.809 +05:30] [INF] Health check requested
+[2025-11-26 10:13:04.811 +05:30] [INF] Health check requested
+[2025-11-26 10:13:49.577 +05:30] [INF] Health check requested
+[2025-11-26 10:13:49.586 +05:30] [INF] Health check requested
+[2025-11-26 10:14:49.249 +05:30] [INF] Health check requested
+[2025-11-26 10:14:49.251 +05:30] [INF] Health check requested
+[2025-11-26 10:15:48.941 +05:30] [INF] Health check requested
+[2025-11-26 10:15:48.943 +05:30] [INF] Health check requested
+[2025-11-26 10:16:48.614 +05:30] [INF] Health check requested
+[2025-11-26 10:16:48.617 +05:30] [INF] Health check requested
+[2025-11-26 10:17:48.610 +05:30] [INF] Health check requested
+[2025-11-26 10:17:48.612 +05:30] [INF] Health check requested
+[2025-11-26 10:18:48.607 +05:30] [INF] Health check requested
+[2025-11-26 10:18:48.611 +05:30] [INF] Health check requested
+[2025-11-26 10:19:48.609 +05:30] [INF] Health check requested
+[2025-11-26 10:19:48.613 +05:30] [INF] Health check requested
+[2025-11-26 10:20:48.623 +05:30] [INF] Health check requested
+[2025-11-26 10:20:48.624 +05:30] [INF] Health check requested
+[2025-11-26 10:21:48.608 +05:30] [INF] Health check requested
+[2025-11-26 10:21:48.610 +05:30] [INF] Health check requested
+[2025-11-26 10:22:48.434 +05:30] [INF] Health check requested
+[2025-11-26 10:22:48.441 +05:30] [INF] Health check requested
+[2025-11-26 10:22:53.611 +05:30] [INF] Health check requested
+[2025-11-26 10:22:53.612 +05:30] [INF] Health check requested
+[2025-11-26 10:23:03.610 +05:30] [INF] Health check requested
+[2025-11-26 10:23:03.612 +05:30] [INF] Health check requested
+[2025-11-26 10:23:13.603 +05:30] [INF] Health check requested
+[2025-11-26 10:23:13.605 +05:30] [INF] Health check requested
+[2025-11-26 10:23:23.613 +05:30] [INF] Health check requested
+[2025-11-26 10:23:23.615 +05:30] [INF] Health check requested
+[2025-11-26 10:23:33.615 +05:30] [INF] Health check requested
+[2025-11-26 10:23:33.617 +05:30] [INF] Health check requested
+[2025-11-26 10:23:43.608 +05:30] [INF] Health check requested
+[2025-11-26 10:23:43.610 +05:30] [INF] Health check requested
+[2025-11-26 10:23:53.605 +05:30] [INF] Health check requested
+[2025-11-26 10:23:53.609 +05:30] [INF] Health check requested
+[2025-11-26 10:24:03.615 +05:30] [INF] Health check requested
+[2025-11-26 10:24:03.618 +05:30] [INF] Health check requested
+[2025-11-26 10:24:13.613 +05:30] [INF] Health check requested
+[2025-11-26 10:24:13.615 +05:30] [INF] Health check requested
+[2025-11-26 10:24:23.598 +05:30] [INF] Health check requested
+[2025-11-26 10:24:23.600 +05:30] [INF] Health check requested
+[2025-11-26 10:24:48.610 +05:30] [INF] Health check requested
+[2025-11-26 10:24:48.612 +05:30] [INF] Health check requested
+[2025-11-26 10:25:12.081 +05:30] [INF] Health check requested
+[2025-11-26 10:25:12.086 +05:30] [INF] Health check requested
+[2025-11-26 10:25:12.959 +05:30] [INF] Health check requested
+[2025-11-26 10:25:13.204 +05:30] [INF] Health check requested
+[2025-11-26 10:25:22.965 +05:30] [INF] Health check requested
+[2025-11-26 10:25:23.194 +05:30] [INF] Health check requested
+[2025-11-26 10:25:33.594 +05:30] [INF] Health check requested
+[2025-11-26 10:25:33.598 +05:30] [INF] Health check requested
+[2025-11-26 10:25:42.961 +05:30] [INF] Health check requested
+[2025-11-26 10:25:43.192 +05:30] [INF] Health check requested
+[2025-11-26 10:25:52.961 +05:30] [INF] Health check requested
+[2025-11-26 10:25:53.196 +05:30] [INF] Health check requested
+[2025-11-26 10:26:03.597 +05:30] [INF] Health check requested
+[2025-11-26 10:26:03.601 +05:30] [INF] Health check requested
+[2025-11-26 10:26:13.598 +05:30] [INF] Health check requested
+[2025-11-26 10:26:13.599 +05:30] [INF] Health check requested
+[2025-11-26 10:26:23.591 +05:30] [INF] Health check requested
+[2025-11-26 10:26:23.592 +05:30] [INF] Health check requested
+[2025-11-26 10:26:33.591 +05:30] [INF] Health check requested
+[2025-11-26 10:26:33.594 +05:30] [INF] Health check requested
+[2025-11-26 10:26:43.601 +05:30] [INF] Health check requested
+[2025-11-26 10:26:43.602 +05:30] [INF] Health check requested
+[2025-11-26 10:26:53.587 +05:30] [INF] Health check requested
+[2025-11-26 10:26:53.591 +05:30] [INF] Health check requested
+[2025-11-26 10:27:48.589 +05:30] [INF] Health check requested
+[2025-11-26 10:27:48.592 +05:30] [INF] Health check requested
+[2025-11-26 10:28:09.516 +05:30] [INF] Health check requested
+[2025-11-26 10:28:09.521 +05:30] [INF] Health check requested
+[2025-11-26 10:28:13.595 +05:30] [INF] Health check requested
+[2025-11-26 10:28:13.597 +05:30] [INF] Health check requested
+[2025-11-26 10:28:23.581 +05:30] [INF] Health check requested
+[2025-11-26 10:28:23.583 +05:30] [INF] Health check requested
+[2025-11-26 10:28:33.581 +05:30] [INF] Health check requested
+[2025-11-26 10:28:33.583 +05:30] [INF] Health check requested
+[2025-11-26 10:28:43.580 +05:30] [INF] Health check requested
+[2025-11-26 10:28:43.582 +05:30] [INF] Health check requested
+[2025-11-26 10:28:53.583 +05:30] [INF] Health check requested
+[2025-11-26 10:28:53.584 +05:30] [INF] Health check requested
+[2025-11-26 10:29:03.584 +05:30] [INF] Health check requested
+[2025-11-26 10:29:03.586 +05:30] [INF] Health check requested
+[2025-11-26 10:29:13.580 +05:30] [INF] Health check requested
+[2025-11-26 10:29:13.581 +05:30] [INF] Health check requested
+[2025-11-26 10:29:48.582 +05:30] [INF] Health check requested
+[2025-11-26 10:29:48.583 +05:30] [INF] Health check requested
+[2025-11-26 10:30:41.156 +05:30] [INF] Health check requested
+[2025-11-26 10:30:41.157 +05:30] [INF] Health check requested
+[2025-11-26 10:30:42.948 +05:30] [INF] Health check requested
+[2025-11-26 10:30:43.177 +05:30] [INF] Health check requested
+[2025-11-26 10:30:52.949 +05:30] [INF] Health check requested
+[2025-11-26 10:30:53.182 +05:30] [INF] Health check requested
+[2025-11-26 10:31:02.943 +05:30] [INF] Health check requested
+[2025-11-26 10:31:03.183 +05:30] [INF] Health check requested
+[2025-11-26 10:31:06.619 +05:30] [INF] Health check requested
+[2025-11-26 10:31:06.621 +05:30] [INF] Health check requested
+[2025-11-26 10:31:06.636 +05:30] [INF] Health check requested
+[2025-11-26 10:31:06.637 +05:30] [INF] Health check requested
+[2025-11-26 10:31:16.647 +05:30] [INF] Health check requested
+[2025-11-26 10:31:16.651 +05:30] [INF] Health check requested
+[2025-11-26 10:31:24.975 +05:30] [INF] Health check requested
+[2025-11-26 10:31:24.977 +05:30] [INF] Health check requested
+[2025-11-26 10:31:24.979 +05:30] [INF] Health check requested
+[2025-11-26 10:31:24.981 +05:30] [INF] Health check requested
+[2025-11-26 10:31:34.993 +05:30] [INF] Health check requested
+[2025-11-26 10:31:34.996 +05:30] [INF] Health check requested
+[2025-11-26 10:31:44.989 +05:30] [INF] Health check requested
+[2025-11-26 10:31:44.992 +05:30] [INF] Health check requested
+[2025-11-26 10:31:54.986 +05:30] [INF] Health check requested
+[2025-11-26 10:31:54.988 +05:30] [INF] Health check requested
+[2025-11-26 10:32:04.985 +05:30] [INF] Health check requested
+[2025-11-26 10:32:04.987 +05:30] [INF] Health check requested
+[2025-11-26 10:32:14.994 +05:30] [INF] Health check requested
+[2025-11-26 10:32:14.997 +05:30] [INF] Health check requested
+[2025-11-26 10:32:24.987 +05:30] [INF] Health check requested
+[2025-11-26 10:32:24.994 +05:30] [INF] Health check requested
+[2025-11-26 10:32:34.987 +05:30] [INF] Health check requested
+[2025-11-26 10:32:34.990 +05:30] [INF] Health check requested
+[2025-11-26 10:32:44.990 +05:30] [INF] Health check requested
+[2025-11-26 10:32:44.994 +05:30] [INF] Health check requested
+[2025-11-26 10:32:54.985 +05:30] [INF] Health check requested
+[2025-11-26 10:32:54.989 +05:30] [INF] Health check requested
+[2025-11-26 10:33:04.991 +05:30] [INF] Health check requested
+[2025-11-26 10:33:04.995 +05:30] [INF] Health check requested
+[2025-11-26 10:33:14.992 +05:30] [INF] Health check requested
+[2025-11-26 10:33:14.996 +05:30] [INF] Health check requested
+[2025-11-26 10:33:25.576 +05:30] [INF] Health check requested
+[2025-11-26 10:33:25.579 +05:30] [INF] Health check requested
+[2025-11-26 10:33:35.577 +05:30] [INF] Health check requested
+[2025-11-26 10:33:35.582 +05:30] [INF] Health check requested
+[2025-11-26 10:33:45.585 +05:30] [INF] Health check requested
+[2025-11-26 10:33:45.589 +05:30] [INF] Health check requested
+[2025-11-26 10:33:55.585 +05:30] [INF] Health check requested
+[2025-11-26 10:33:55.589 +05:30] [INF] Health check requested
+[2025-11-26 10:34:04.999 +05:30] [INF] Health check requested
+[2025-11-26 10:34:05.008 +05:30] [INF] Health check requested
+[2025-11-26 10:34:14.988 +05:30] [INF] Health check requested
+[2025-11-26 10:34:14.990 +05:30] [INF] Health check requested
+[2025-11-26 10:34:24.981 +05:30] [INF] Health check requested
+[2025-11-26 10:34:24.983 +05:30] [INF] Health check requested
+[2025-11-26 10:34:35.597 +05:30] [INF] Health check requested
+[2025-11-26 10:34:35.600 +05:30] [INF] Health check requested
+[2025-11-26 10:34:45.576 +05:30] [INF] Health check requested
+[2025-11-26 10:34:45.578 +05:30] [INF] Health check requested
+[2025-11-26 10:34:55.589 +05:30] [INF] Health check requested
+[2025-11-26 10:34:55.596 +05:30] [INF] Health check requested
+[2025-11-26 10:35:05.580 +05:30] [INF] Health check requested
+[2025-11-26 10:35:05.582 +05:30] [INF] Health check requested
+[2025-11-26 10:35:15.594 +05:30] [INF] Health check requested
+[2025-11-26 10:35:15.599 +05:30] [INF] Health check requested
+[2025-11-26 10:35:25.582 +05:30] [INF] Health check requested
+[2025-11-26 10:35:25.587 +05:30] [INF] Health check requested
+[2025-11-26 10:35:48.582 +05:30] [INF] Health check requested
+[2025-11-26 10:35:48.585 +05:30] [INF] Health check requested
+[2025-11-26 10:36:32.230 +05:30] [INF] Health check requested
+[2025-11-26 10:36:32.233 +05:30] [INF] Health check requested
+[2025-11-26 10:36:35.581 +05:30] [INF] Health check requested
+[2025-11-26 10:36:35.583 +05:30] [INF] Health check requested
+[2025-11-26 10:36:45.577 +05:30] [INF] Health check requested
+[2025-11-26 10:36:45.580 +05:30] [INF] Health check requested
+[2025-11-26 10:36:55.587 +05:30] [INF] Health check requested
+[2025-11-26 10:36:55.589 +05:30] [INF] Health check requested
+[2025-11-26 10:37:18.202 +05:30] [INF] BookingReminderService started
+[2025-11-26 10:37:18.405 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-26 10:37:18.406 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-26 10:37:18.407 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-26 10:37:18.408 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-26 10:37:18.408 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-26 10:37:18.409 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-26 10:37:18.409 +05:30] [INF] Dead-letter queue 'travel.reschedule.dlq' already exists.
+[2025-11-26 10:37:18.409 +05:30] [INF] Queue 'travel.reschedule' already exists.
+[2025-11-26 10:37:18.409 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-26 10:37:18.409 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-26 10:37:18.415 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-26 10:37:18.418 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-26 10:37:18.421 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-26 10:37:18.423 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-26 10:37:18.425 +05:30] [INF] Reschedule email queue consumer subscribed to travel.reschedule.
+[2025-11-26 10:37:24.028 +05:30] [INF] Health check requested
+[2025-11-26 10:37:24.101 +05:30] [INF] Health check requested
+[2025-11-26 10:37:24.105 +05:30] [INF] Health check requested
+[2025-11-26 10:37:24.186 +05:30] [INF] Health check requested
+[2025-11-26 10:37:34.112 +05:30] [INF] Health check requested
+[2025-11-26 10:37:34.179 +05:30] [INF] Health check requested
+[2025-11-26 10:37:40.996 +05:30] [INF] Health check requested
+[2025-11-26 10:37:40.999 +05:30] [INF] Health check requested
+[2025-11-26 10:37:41.002 +05:30] [INF] Health check requested
+[2025-11-26 10:37:41.195 +05:30] [INF] Health check requested
+[2025-11-26 10:37:51.016 +05:30] [INF] Health check requested
+[2025-11-26 10:37:51.192 +05:30] [INF] Health check requested
+[2025-11-26 10:38:01.010 +05:30] [INF] Health check requested
+[2025-11-26 10:38:01.194 +05:30] [INF] Health check requested
+[2025-11-26 10:38:11.011 +05:30] [INF] Health check requested
+[2025-11-26 10:38:11.194 +05:30] [INF] Health check requested
+[2025-11-26 10:38:21.589 +05:30] [INF] Health check requested
+[2025-11-26 10:38:21.591 +05:30] [INF] Health check requested
+[2025-11-26 10:38:31.582 +05:30] [INF] Health check requested
+[2025-11-26 10:38:31.584 +05:30] [INF] Health check requested
+[2025-11-26 10:38:41.578 +05:30] [INF] Health check requested
+[2025-11-26 10:38:41.582 +05:30] [INF] Health check requested
+[2025-11-26 10:38:51.588 +05:30] [INF] Health check requested
+[2025-11-26 10:38:51.590 +05:30] [INF] Health check requested
+[2025-11-26 10:39:01.590 +05:30] [INF] Health check requested
+[2025-11-26 10:39:01.593 +05:30] [INF] Health check requested
+[2025-11-26 10:39:48.588 +05:30] [INF] Health check requested
+[2025-11-26 10:39:48.592 +05:30] [INF] Health check requested
+[2025-11-26 10:40:48.597 +05:30] [INF] Health check requested
+[2025-11-26 10:40:48.601 +05:30] [INF] Health check requested
+[2025-11-26 10:41:43.501 +05:30] [INF] BookingReminderService started
+[2025-11-26 10:41:43.722 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-26 10:41:43.724 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-26 10:41:43.725 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-26 10:41:43.725 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-26 10:41:43.726 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-26 10:41:43.726 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-26 10:41:43.727 +05:30] [INF] Dead-letter queue 'travel.reschedule.dlq' already exists.
+[2025-11-26 10:41:43.727 +05:30] [INF] Queue 'travel.reschedule' already exists.
+[2025-11-26 10:41:43.727 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-26 10:41:43.727 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-26 10:41:43.734 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-26 10:41:43.736 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-26 10:41:43.739 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-26 10:41:43.743 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-26 10:41:43.746 +05:30] [INF] Reschedule email queue consumer subscribed to travel.reschedule.
+[2025-11-26 10:41:45.149 +05:30] [INF] Health check requested
+[2025-11-26 10:41:45.205 +05:30] [INF] Health check requested
+[2025-11-26 10:41:46.757 +05:30] [INF] Health check requested
+[2025-11-26 10:41:46.764 +05:30] [INF] Health check requested
+[2025-11-26 10:41:46.776 +05:30] [INF] Health check requested
+[2025-11-26 10:41:46.790 +05:30] [INF] Health check requested
+[2025-11-26 10:41:56.776 +05:30] [INF] Health check requested
+[2025-11-26 10:41:56.778 +05:30] [INF] Health check requested
+[2025-11-26 10:41:59.606 +05:30] [INF] Health check requested
+[2025-11-26 10:41:59.609 +05:30] [INF] Health check requested
+[2025-11-26 10:41:59.612 +05:30] [INF] Health check requested
+[2025-11-26 10:41:59.673 +05:30] [INF] Health check requested
+[2025-11-26 10:42:01.335 +05:30] [INF] Health check requested
+[2025-11-26 10:42:01.337 +05:30] [INF] Health check requested
+[2025-11-26 10:42:11.337 +05:30] [INF] Health check requested
+[2025-11-26 10:42:11.338 +05:30] [INF] Health check requested
+[2025-11-26 10:42:21.339 +05:30] [INF] Health check requested
+[2025-11-26 10:42:21.340 +05:30] [INF] Health check requested
+[2025-11-26 10:42:31.338 +05:30] [INF] Health check requested
+[2025-11-26 10:42:31.342 +05:30] [INF] Health check requested
+[2025-11-26 10:42:41.335 +05:30] [INF] Health check requested
+[2025-11-26 10:42:41.339 +05:30] [INF] Health check requested
+[2025-11-26 10:42:51.336 +05:30] [INF] Health check requested
+[2025-11-26 10:42:51.340 +05:30] [INF] Health check requested
+[2025-11-26 10:42:58.009 +05:30] [INF] Health check requested
+[2025-11-26 10:42:58.012 +05:30] [INF] Health check requested
+[2025-11-26 10:42:58.021 +05:30] [INF] Health check requested
+[2025-11-26 10:42:58.058 +05:30] [INF] Health check requested
+[2025-11-26 10:43:08.037 +05:30] [INF] Health check requested
+[2025-11-26 10:43:08.062 +05:30] [INF] Health check requested
+[2025-11-26 10:43:11.914 +05:30] [INF] GetUserBookings request received
+[2025-11-26 10:43:11.996 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 10:43:12.000 +05:30] [INF] GetUserBookings request received
+[2025-11-26 10:43:12.002 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 10:43:14.183 +05:30] [INF] GetUserBookings request received
+[2025-11-26 10:43:14.186 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 10:43:14.189 +05:30] [INF] GetUserBookings request received
+[2025-11-26 10:43:14.192 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 10:43:18.031 +05:30] [INF] Health check requested
+[2025-11-26 10:43:18.060 +05:30] [INF] Health check requested
+[2025-11-26 10:43:28.033 +05:30] [INF] Health check requested
+[2025-11-26 10:43:28.057 +05:30] [INF] Health check requested
+[2025-11-26 10:43:38.574 +05:30] [INF] Health check requested
+[2025-11-26 10:43:38.578 +05:30] [INF] Health check requested
+[2025-11-26 10:43:48.576 +05:30] [INF] Health check requested
+[2025-11-26 10:43:48.578 +05:30] [INF] Health check requested
+[2025-11-26 10:43:58.578 +05:30] [INF] Health check requested
+[2025-11-26 10:43:58.582 +05:30] [INF] Health check requested
+[2025-11-26 10:44:08.574 +05:30] [INF] Health check requested
+[2025-11-26 10:44:08.575 +05:30] [INF] Health check requested
+[2025-11-26 10:44:18.572 +05:30] [INF] Health check requested
+[2025-11-26 10:44:18.574 +05:30] [INF] Health check requested
+[2025-11-26 10:44:28.575 +05:30] [INF] Health check requested
+[2025-11-26 10:44:28.577 +05:30] [INF] Health check requested
+[2025-11-26 10:44:38.575 +05:30] [INF] Health check requested
+[2025-11-26 10:44:38.577 +05:30] [INF] Health check requested
+[2025-11-26 10:44:48.581 +05:30] [INF] Health check requested
+[2025-11-26 10:44:48.583 +05:30] [INF] Health check requested
+[2025-11-26 10:45:48.574 +05:30] [INF] Health check requested
+[2025-11-26 10:45:48.576 +05:30] [INF] Health check requested
+[2025-11-26 10:46:48.561 +05:30] [INF] Health check requested
+[2025-11-26 10:46:48.563 +05:30] [INF] Health check requested
+[2025-11-26 10:47:48.564 +05:30] [INF] Health check requested
+[2025-11-26 10:47:48.565 +05:30] [INF] Health check requested
+[2025-11-26 10:48:48.563 +05:30] [INF] Health check requested
+[2025-11-26 10:48:48.565 +05:30] [INF] Health check requested
+[2025-11-26 10:49:48.574 +05:30] [INF] Health check requested
+[2025-11-26 10:49:48.576 +05:30] [INF] Health check requested
+[2025-11-26 10:50:48.565 +05:30] [INF] Health check requested
+[2025-11-26 10:50:48.567 +05:30] [INF] Health check requested
+[2025-11-26 10:51:48.561 +05:30] [INF] Health check requested
+[2025-11-26 10:51:48.564 +05:30] [INF] Health check requested
+[2025-11-26 10:52:48.566 +05:30] [INF] Health check requested
+[2025-11-26 10:52:48.570 +05:30] [INF] Health check requested
+[2025-11-26 10:53:48.576 +05:30] [INF] Health check requested
+[2025-11-26 10:53:48.581 +05:30] [INF] Health check requested
+[2025-11-26 10:54:14.265 +05:30] [INF] Health check requested
+[2025-11-26 10:54:14.278 +05:30] [INF] Health check requested
+[2025-11-26 10:54:18.563 +05:30] [INF] Health check requested
+[2025-11-26 10:54:18.565 +05:30] [INF] Health check requested
+[2025-11-26 10:54:28.569 +05:30] [INF] Health check requested
+[2025-11-26 10:54:28.570 +05:30] [INF] Health check requested
+[2025-11-26 10:54:38.571 +05:30] [INF] Health check requested
+[2025-11-26 10:54:38.575 +05:30] [INF] Health check requested
+[2025-11-26 10:54:48.563 +05:30] [INF] Health check requested
+[2025-11-26 10:54:48.564 +05:30] [INF] Health check requested
+[2025-11-26 10:54:58.568 +05:30] [INF] Health check requested
+[2025-11-26 10:54:58.573 +05:30] [INF] Health check requested
+[2025-11-26 10:55:08.016 +05:30] [INF] Health check requested
+[2025-11-26 10:55:08.047 +05:30] [INF] Health check requested
+[2025-11-26 10:58:01.317 +05:30] [INF] Health check requested
+[2025-11-26 10:58:01.320 +05:30] [INF] Health check requested
+[2025-11-26 10:58:01.323 +05:30] [INF] Health check requested
+[2025-11-26 10:58:01.325 +05:30] [INF] Health check requested
+[2025-11-26 10:58:01.374 +05:30] [INF] GetUserBookings request received
+[2025-11-26 10:58:01.391 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 10:58:01.393 +05:30] [INF] GetUserBookings request received
+[2025-11-26 10:58:01.395 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 10:58:11.579 +05:30] [INF] Health check requested
+[2025-11-26 10:58:11.583 +05:30] [INF] Health check requested
+[2025-11-26 10:58:21.561 +05:30] [INF] Health check requested
+[2025-11-26 10:58:21.566 +05:30] [INF] Health check requested
+[2025-11-26 10:58:31.557 +05:30] [INF] Health check requested
+[2025-11-26 10:58:31.559 +05:30] [INF] Health check requested
+[2025-11-26 10:58:41.567 +05:30] [INF] Health check requested
+[2025-11-26 10:58:41.569 +05:30] [INF] Health check requested
+[2025-11-26 10:58:51.560 +05:30] [INF] Health check requested
+[2025-11-26 10:58:51.562 +05:30] [INF] Health check requested
+[2025-11-26 10:59:01.559 +05:30] [INF] Health check requested
+[2025-11-26 10:59:01.561 +05:30] [INF] Health check requested
+[2025-11-26 10:59:48.568 +05:30] [INF] Health check requested
+[2025-11-26 10:59:48.569 +05:30] [INF] Health check requested
+[2025-11-26 11:00:22.026 +05:30] [INF] Health check requested
+[2025-11-26 11:00:22.033 +05:30] [INF] Health check requested
+[2025-11-26 11:00:26.507 +05:30] [INF] GetUserBookings request received
+[2025-11-26 11:00:26.511 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 11:00:26.514 +05:30] [INF] GetUserBookings request received
+[2025-11-26 11:00:26.517 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 11:00:31.321 +05:30] [INF] Health check requested
+[2025-11-26 11:00:31.324 +05:30] [INF] Health check requested
+[2025-11-26 11:00:41.319 +05:30] [INF] Health check requested
+[2025-11-26 11:00:41.322 +05:30] [INF] Health check requested
+[2025-11-26 11:00:51.161 +05:30] [INF] SendRescheduleOtp request received for booking 2
+[2025-11-26 11:00:51.178 +05:30] [INF] Reschedule OTP generation requested for booking 2, email prabhath.galla@quixy.com
+[2025-11-26 11:00:51.180 +05:30] [INF] OTP rate limit check for booking 2: No previous requests
+[2025-11-26 11:00:51.321 +05:30] [INF] Health check requested
+[2025-11-26 11:00:51.323 +05:30] [INF] Health check requested
+[2025-11-26 11:00:51.324 +05:30] [INF] Sending reschedule OTP email to prabhath.galla@quixy.com
+[2025-11-26 11:00:51.347 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Your OTP for Trip Reschedule Verification
+[2025-11-26 11:00:51.347 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-26 11:00:51.390 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Your OTP for Trip Reschedule Verification
+[2025-11-26 11:00:51.394 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-26 11:00:53.188 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-26 11:00:53.188 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-26 11:00:53.648 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-26 11:00:53.648 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Your OTP for Trip Reschedule Verification
+[2025-11-26 11:00:55.167 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Your OTP for Trip Reschedule Verification
+[2025-11-26 11:00:55.167 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-26 11:00:55.409 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-26 11:00:55.410 +05:30] [INF] Reschedule OTP email sent successfully to prabhath.galla@quixy.com
+[2025-11-26 11:00:55.410 +05:30] [INF] Reschedule OTP email sent successfully for booking 2
+[2025-11-26 11:00:55.414 +05:30] [INF] Recorded OTP request for booking 2 at "2025-11-26T05:30:55.4140282Z"
+[2025-11-26 11:00:55.418 +05:30] [INF] Reschedule OTP sent successfully for booking 2
+[2025-11-26 11:01:01.550 +05:30] [INF] Health check requested
+[2025-11-26 11:01:01.552 +05:30] [INF] Health check requested
+[2025-11-26 11:01:11.325 +05:30] [INF] Health check requested
+[2025-11-26 11:01:11.329 +05:30] [INF] Health check requested
+[2025-11-26 11:01:12.855 +05:30] [INF] VerifyRescheduleOtp request received for booking 2
+[2025-11-26 11:01:12.858 +05:30] [INF] Reschedule OTP validation requested for booking 2
+[2025-11-26 11:01:12.865 +05:30] [INF] Reschedule OTP validation successful for booking 2
+[2025-11-26 11:01:12.871 +05:30] [INF] Rescheduling booking 2 for email prabhath.galla@quixy.com to date "2025-11-28T00:00:00.0000000"
+[2025-11-26 11:01:12.971 +05:30] [INF] Booking 2 rescheduled from "2025-12-04T00:00:00.0000000" to "2025-11-28T00:00:00.0000000"
+[2025-11-26 11:01:12.972 +05:30] [INF] Marking reschedule OTP as used for booking 2
+[2025-11-26 11:01:12.976 +05:30] [INF] Reschedule OTP marked as used for booking 2
+[2025-11-26 11:01:13.012 +05:30] [INF] Published message 86c652882e054529915484edd715d159 to travel.reschedule.
+[2025-11-26 11:01:13.012 +05:30] [INF] Reschedule confirmation message published to queue for booking 2
+[2025-11-26 11:01:13.013 +05:30] [INF] Booking rescheduled successfully for booking 2
+[2025-11-26 11:01:13.073 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Trip Rescheduled Successfully - Booking #2
+[2025-11-26 11:01:13.073 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-26 11:01:13.073 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Trip Rescheduled Successfully - Booking #2
+[2025-11-26 11:01:13.073 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-26 11:01:14.379 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-26 11:01:14.379 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-26 11:01:14.806 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-26 11:01:14.806 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Trip Rescheduled Successfully - Booking #2
+[2025-11-26 11:01:16.120 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Trip Rescheduled Successfully - Booking #2
+[2025-11-26 11:01:16.120 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-26 11:01:16.363 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-26 11:01:16.364 +05:30] [INF] Reschedule email sent to prabhath.galla@quixy.com for booking #2, message type "RescheduleConfirmation".
+[2025-11-26 11:01:16.368 +05:30] [INF] Reschedule email message processed. MessageId 86c652882e054529915484edd715d159.
+[2025-11-26 11:01:21.560 +05:30] [INF] Health check requested
+[2025-11-26 11:01:21.561 +05:30] [INF] Health check requested
+[2025-11-26 11:01:31.313 +05:30] [INF] Health check requested
+[2025-11-26 11:01:31.315 +05:30] [INF] Health check requested
+[2025-11-26 11:01:36.345 +05:30] [INF] GetUserBookings request received
+[2025-11-26 11:01:36.348 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 11:01:36.351 +05:30] [INF] GetUserBookings request received
+[2025-11-26 11:01:36.353 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 11:01:41.325 +05:30] [INF] Health check requested
+[2025-11-26 11:01:41.327 +05:30] [INF] Health check requested
+[2025-11-26 11:01:51.318 +05:30] [INF] Health check requested
+[2025-11-26 11:01:51.322 +05:30] [INF] Health check requested
+[2025-11-26 11:02:01.316 +05:30] [INF] Health check requested
+[2025-11-26 11:02:01.320 +05:30] [INF] Health check requested
+[2025-11-26 11:02:11.314 +05:30] [INF] Health check requested
+[2025-11-26 11:02:11.321 +05:30] [INF] Health check requested
+[2025-11-26 11:02:21.314 +05:30] [INF] Health check requested
+[2025-11-26 11:02:21.320 +05:30] [INF] Health check requested
+[2025-11-26 11:02:31.314 +05:30] [INF] Health check requested
+[2025-11-26 11:02:31.317 +05:30] [INF] Health check requested
+[2025-11-26 11:02:41.310 +05:30] [INF] Health check requested
+[2025-11-26 11:02:41.312 +05:30] [INF] Health check requested
+[2025-11-26 11:02:51.312 +05:30] [INF] Health check requested
+[2025-11-26 11:02:51.319 +05:30] [INF] Health check requested
+[2025-11-26 11:03:00.910 +05:30] [INF] Health check requested
+[2025-11-26 11:03:00.918 +05:30] [INF] Health check requested
+[2025-11-26 11:03:10.922 +05:30] [INF] Health check requested
+[2025-11-26 11:03:10.926 +05:30] [INF] Health check requested
+[2025-11-26 11:03:20.917 +05:30] [INF] Health check requested
+[2025-11-26 11:03:20.921 +05:30] [INF] Health check requested
+[2025-11-26 11:03:30.908 +05:30] [INF] Health check requested
+[2025-11-26 11:03:30.912 +05:30] [INF] Health check requested
+[2025-11-26 11:03:40.910 +05:30] [INF] Health check requested
+[2025-11-26 11:03:40.913 +05:30] [INF] Health check requested
+[2025-11-26 11:03:50.912 +05:30] [INF] Health check requested
+[2025-11-26 11:03:50.916 +05:30] [INF] Health check requested
+[2025-11-26 11:04:00.914 +05:30] [INF] Health check requested
+[2025-11-26 11:04:00.919 +05:30] [INF] Health check requested
+[2025-11-26 11:04:10.909 +05:30] [INF] Health check requested
+[2025-11-26 11:04:10.910 +05:30] [INF] Health check requested
+[2025-11-26 11:04:20.913 +05:30] [INF] Health check requested
+[2025-11-26 11:04:20.917 +05:30] [INF] Health check requested
+[2025-11-26 11:04:30.915 +05:30] [INF] Health check requested
+[2025-11-26 11:04:30.919 +05:30] [INF] Health check requested
+[2025-11-26 11:04:40.918 +05:30] [INF] Health check requested
+[2025-11-26 11:04:40.922 +05:30] [INF] Health check requested
+[2025-11-26 11:04:50.909 +05:30] [INF] Health check requested
+[2025-11-26 11:04:50.912 +05:30] [INF] Health check requested
+[2025-11-26 11:05:00.909 +05:30] [INF] Health check requested
+[2025-11-26 11:05:00.911 +05:30] [INF] Health check requested
+[2025-11-26 11:05:10.906 +05:30] [INF] Health check requested
+[2025-11-26 11:05:10.907 +05:30] [INF] Health check requested
+[2025-11-26 11:05:20.910 +05:30] [INF] Health check requested
+[2025-11-26 11:05:20.914 +05:30] [INF] Health check requested
+[2025-11-26 11:05:30.911 +05:30] [INF] Health check requested
+[2025-11-26 11:05:30.914 +05:30] [INF] Health check requested
+[2025-11-26 11:05:40.912 +05:30] [INF] Health check requested
+[2025-11-26 11:05:40.916 +05:30] [INF] Health check requested
+[2025-11-26 11:05:50.919 +05:30] [INF] Health check requested
+[2025-11-26 11:05:50.922 +05:30] [INF] Health check requested
+[2025-11-26 11:06:00.922 +05:30] [INF] Health check requested
+[2025-11-26 11:06:00.926 +05:30] [INF] Health check requested
+[2025-11-26 11:06:10.922 +05:30] [INF] Health check requested
+[2025-11-26 11:06:10.925 +05:30] [INF] Health check requested
+[2025-11-26 11:06:20.906 +05:30] [INF] Health check requested
+[2025-11-26 11:06:20.908 +05:30] [INF] Health check requested
+[2025-11-26 11:06:30.904 +05:30] [INF] Health check requested
+[2025-11-26 11:06:30.906 +05:30] [INF] Health check requested
+[2025-11-26 11:06:40.911 +05:30] [INF] Health check requested
+[2025-11-26 11:06:40.914 +05:30] [INF] Health check requested
+[2025-11-26 11:06:50.912 +05:30] [INF] Health check requested
+[2025-11-26 11:06:50.915 +05:30] [INF] Health check requested
+[2025-11-26 11:07:00.914 +05:30] [INF] Health check requested
+[2025-11-26 11:07:00.916 +05:30] [INF] Health check requested
+[2025-11-26 11:07:10.917 +05:30] [INF] Health check requested
+[2025-11-26 11:07:10.920 +05:30] [INF] Health check requested
+[2025-11-26 11:07:20.921 +05:30] [INF] Health check requested
+[2025-11-26 11:07:20.923 +05:30] [INF] Health check requested
+[2025-11-26 11:07:30.924 +05:30] [INF] Health check requested
+[2025-11-26 11:07:30.927 +05:30] [INF] Health check requested
+[2025-11-26 11:07:40.919 +05:30] [INF] Health check requested
+[2025-11-26 11:07:40.920 +05:30] [INF] Health check requested
+[2025-11-26 11:07:50.909 +05:30] [INF] Health check requested
+[2025-11-26 11:07:50.911 +05:30] [INF] Health check requested
+[2025-11-26 11:08:00.906 +05:30] [INF] Health check requested
+[2025-11-26 11:08:00.907 +05:30] [INF] Health check requested
+[2025-11-26 11:08:10.911 +05:30] [INF] Health check requested
+[2025-11-26 11:08:10.915 +05:30] [INF] Health check requested
+[2025-11-26 11:08:20.911 +05:30] [INF] Health check requested
+[2025-11-26 11:08:20.912 +05:30] [INF] Health check requested
+[2025-11-26 11:08:30.913 +05:30] [INF] Health check requested
+[2025-11-26 11:08:30.914 +05:30] [INF] Health check requested
+[2025-11-26 11:08:40.922 +05:30] [INF] Health check requested
+[2025-11-26 11:08:40.926 +05:30] [INF] Health check requested
+[2025-11-26 11:08:50.905 +05:30] [INF] Health check requested
+[2025-11-26 11:08:50.906 +05:30] [INF] Health check requested
+[2025-11-26 11:09:00.905 +05:30] [INF] Health check requested
+[2025-11-26 11:09:00.906 +05:30] [INF] Health check requested
+[2025-11-26 11:09:10.909 +05:30] [INF] Health check requested
+[2025-11-26 11:09:10.911 +05:30] [INF] Health check requested
+[2025-11-26 11:09:20.911 +05:30] [INF] Health check requested
+[2025-11-26 11:09:20.913 +05:30] [INF] Health check requested
+[2025-11-26 11:09:30.915 +05:30] [INF] Health check requested
+[2025-11-26 11:09:30.919 +05:30] [INF] Health check requested
+[2025-11-26 11:09:40.918 +05:30] [INF] Health check requested
+[2025-11-26 11:09:40.921 +05:30] [INF] Health check requested
+[2025-11-26 11:09:50.917 +05:30] [INF] Health check requested
+[2025-11-26 11:09:50.920 +05:30] [INF] Health check requested
+[2025-11-26 11:10:00.921 +05:30] [INF] Health check requested
+[2025-11-26 11:10:00.925 +05:30] [INF] Health check requested
+[2025-11-26 11:10:10.907 +05:30] [INF] Health check requested
+[2025-11-26 11:10:10.910 +05:30] [INF] Health check requested
+[2025-11-26 11:10:20.906 +05:30] [INF] Health check requested
+[2025-11-26 11:10:20.909 +05:30] [INF] Health check requested
+[2025-11-26 11:10:30.911 +05:30] [INF] Health check requested
+[2025-11-26 11:10:30.915 +05:30] [INF] Health check requested
+[2025-11-26 11:10:40.915 +05:30] [INF] Health check requested
+[2025-11-26 11:10:40.918 +05:30] [INF] Health check requested
+[2025-11-26 11:10:50.915 +05:30] [INF] Health check requested
+[2025-11-26 11:10:50.918 +05:30] [INF] Health check requested
+[2025-11-26 11:11:00.917 +05:30] [INF] Health check requested
+[2025-11-26 11:11:00.921 +05:30] [INF] Health check requested
+[2025-11-26 11:11:10.913 +05:30] [INF] Health check requested
+[2025-11-26 11:11:10.914 +05:30] [INF] Health check requested
+[2025-11-26 11:11:20.915 +05:30] [INF] Health check requested
+[2025-11-26 11:11:20.916 +05:30] [INF] Health check requested
+[2025-11-26 11:11:30.918 +05:30] [INF] Health check requested
+[2025-11-26 11:11:30.920 +05:30] [INF] Health check requested
+[2025-11-26 11:11:40.905 +05:30] [INF] Health check requested
+[2025-11-26 11:11:40.907 +05:30] [INF] Health check requested
+[2025-11-26 11:11:50.904 +05:30] [INF] Health check requested
+[2025-11-26 11:11:50.906 +05:30] [INF] Health check requested
+[2025-11-26 11:12:00.907 +05:30] [INF] Health check requested
+[2025-11-26 11:12:00.909 +05:30] [INF] Health check requested
+[2025-11-26 11:12:10.910 +05:30] [INF] Health check requested
+[2025-11-26 11:12:10.912 +05:30] [INF] Health check requested
+[2025-11-26 11:12:20.911 +05:30] [INF] Health check requested
+[2025-11-26 11:12:20.913 +05:30] [INF] Health check requested
+[2025-11-26 11:12:30.913 +05:30] [INF] Health check requested
+[2025-11-26 11:12:30.914 +05:30] [INF] Health check requested
+[2025-11-26 11:12:40.915 +05:30] [INF] Health check requested
+[2025-11-26 11:12:40.916 +05:30] [INF] Health check requested
+[2025-11-26 11:12:50.918 +05:30] [INF] Health check requested
+[2025-11-26 11:12:50.919 +05:30] [INF] Health check requested
+[2025-11-26 11:13:00.918 +05:30] [INF] Health check requested
+[2025-11-26 11:13:00.920 +05:30] [INF] Health check requested
+[2025-11-26 11:13:10.905 +05:30] [INF] Health check requested
+[2025-11-26 11:13:10.907 +05:30] [INF] Health check requested
+[2025-11-26 11:13:20.907 +05:30] [INF] Health check requested
+[2025-11-26 11:13:20.908 +05:30] [INF] Health check requested
+[2025-11-26 11:13:30.909 +05:30] [INF] Health check requested
+[2025-11-26 11:13:30.910 +05:30] [INF] Health check requested
+[2025-11-26 11:13:40.911 +05:30] [INF] Health check requested
+[2025-11-26 11:13:40.912 +05:30] [INF] Health check requested
+[2025-11-26 11:13:50.906 +05:30] [INF] Health check requested
+[2025-11-26 11:13:50.907 +05:30] [INF] Health check requested
+[2025-11-26 11:14:00.915 +05:30] [INF] Health check requested
+[2025-11-26 11:14:00.916 +05:30] [INF] Health check requested
+[2025-11-26 11:14:10.917 +05:30] [INF] Health check requested
+[2025-11-26 11:14:10.918 +05:30] [INF] Health check requested
+[2025-11-26 11:14:20.916 +05:30] [INF] Health check requested
+[2025-11-26 11:14:20.917 +05:30] [INF] Health check requested
+[2025-11-26 11:14:30.904 +05:30] [INF] Health check requested
+[2025-11-26 11:14:30.906 +05:30] [INF] Health check requested
+[2025-11-26 11:14:40.909 +05:30] [INF] Health check requested
+[2025-11-26 11:14:40.954 +05:30] [INF] Health check requested
+[2025-11-26 11:14:50.916 +05:30] [INF] Health check requested
+[2025-11-26 11:14:50.920 +05:30] [INF] Health check requested
+[2025-11-26 11:15:00.915 +05:30] [INF] Health check requested
+[2025-11-26 11:15:00.918 +05:30] [INF] Health check requested
+[2025-11-26 11:15:10.917 +05:30] [INF] Health check requested
+[2025-11-26 11:15:10.920 +05:30] [INF] Health check requested
+[2025-11-26 11:15:20.914 +05:30] [INF] Health check requested
+[2025-11-26 11:15:20.916 +05:30] [INF] Health check requested
+[2025-11-26 11:15:30.918 +05:30] [INF] Health check requested
+[2025-11-26 11:15:30.920 +05:30] [INF] Health check requested
+[2025-11-26 11:15:40.905 +05:30] [INF] Health check requested
+[2025-11-26 11:15:40.908 +05:30] [INF] Health check requested
+[2025-11-26 11:15:50.907 +05:30] [INF] Health check requested
+[2025-11-26 11:15:50.910 +05:30] [INF] Health check requested
+[2025-11-26 11:16:00.906 +05:30] [INF] Health check requested
+[2025-11-26 11:16:00.907 +05:30] [INF] Health check requested
+[2025-11-26 11:16:10.907 +05:30] [INF] Health check requested
+[2025-11-26 11:16:10.909 +05:30] [INF] Health check requested
+[2025-11-26 11:16:20.909 +05:30] [INF] Health check requested
+[2025-11-26 11:16:20.911 +05:30] [INF] Health check requested
+[2025-11-26 11:16:30.917 +05:30] [INF] Health check requested
+[2025-11-26 11:16:30.921 +05:30] [INF] Health check requested
+[2025-11-26 11:16:40.919 +05:30] [INF] Health check requested
+[2025-11-26 11:16:40.922 +05:30] [INF] Health check requested
+[2025-11-26 11:16:50.903 +05:30] [INF] Health check requested
+[2025-11-26 11:16:50.907 +05:30] [INF] Health check requested
+[2025-11-26 11:17:00.903 +05:30] [INF] Health check requested
+[2025-11-26 11:17:00.906 +05:30] [INF] Health check requested
+[2025-11-26 11:17:10.902 +05:30] [INF] Health check requested
+[2025-11-26 11:17:10.904 +05:30] [INF] Health check requested
+[2025-11-26 11:17:20.903 +05:30] [INF] Health check requested
+[2025-11-26 11:17:20.905 +05:30] [INF] Health check requested
+[2025-11-26 11:17:30.905 +05:30] [INF] Health check requested
+[2025-11-26 11:17:30.907 +05:30] [INF] Health check requested
+[2025-11-26 11:17:40.907 +05:30] [INF] Health check requested
+[2025-11-26 11:17:40.909 +05:30] [INF] Health check requested
+[2025-11-26 11:17:50.909 +05:30] [INF] Health check requested
+[2025-11-26 11:17:50.910 +05:30] [INF] Health check requested
+[2025-11-26 11:18:00.911 +05:30] [INF] Health check requested
+[2025-11-26 11:18:00.912 +05:30] [INF] Health check requested
+[2025-11-26 11:18:10.913 +05:30] [INF] Health check requested
+[2025-11-26 11:18:10.914 +05:30] [INF] Health check requested
+[2025-11-26 11:18:20.913 +05:30] [INF] Health check requested
+[2025-11-26 11:18:20.915 +05:30] [INF] Health check requested
+[2025-11-26 11:18:30.900 +05:30] [INF] Health check requested
+[2025-11-26 11:18:30.901 +05:30] [INF] Health check requested
+[2025-11-26 11:18:40.901 +05:30] [INF] Health check requested
+[2025-11-26 11:18:40.903 +05:30] [INF] Health check requested
+[2025-11-26 11:18:50.903 +05:30] [INF] Health check requested
+[2025-11-26 11:18:50.905 +05:30] [INF] Health check requested
+[2025-11-26 11:19:00.905 +05:30] [INF] Health check requested
+[2025-11-26 11:19:00.907 +05:30] [INF] Health check requested
+[2025-11-26 11:19:10.907 +05:30] [INF] Health check requested
+[2025-11-26 11:19:10.908 +05:30] [INF] Health check requested
+[2025-11-26 11:19:20.909 +05:30] [INF] Health check requested
+[2025-11-26 11:19:20.910 +05:30] [INF] Health check requested
+[2025-11-26 11:19:30.908 +05:30] [INF] Health check requested
+[2025-11-26 11:19:30.910 +05:30] [INF] Health check requested
+[2025-11-26 11:19:40.913 +05:30] [INF] Health check requested
+[2025-11-26 11:19:40.915 +05:30] [INF] Health check requested
+[2025-11-26 11:19:50.898 +05:30] [INF] Health check requested
+[2025-11-26 11:19:50.899 +05:30] [INF] Health check requested
+[2025-11-26 11:20:00.900 +05:30] [INF] Health check requested
+[2025-11-26 11:20:00.901 +05:30] [INF] Health check requested
+[2025-11-26 11:20:10.901 +05:30] [INF] Health check requested
+[2025-11-26 11:20:10.903 +05:30] [INF] Health check requested
+[2025-11-26 11:20:20.904 +05:30] [INF] Health check requested
+[2025-11-26 11:20:20.905 +05:30] [INF] Health check requested
+[2025-11-26 11:20:30.905 +05:30] [INF] Health check requested
+[2025-11-26 11:20:30.908 +05:30] [INF] Health check requested
+[2025-11-26 11:20:41.543 +05:30] [INF] Health check requested
+[2025-11-26 11:20:41.544 +05:30] [INF] Health check requested
+[2025-11-26 11:20:51.541 +05:30] [INF] Health check requested
+[2025-11-26 11:20:51.542 +05:30] [INF] Health check requested
+[2025-11-26 11:21:01.544 +05:30] [INF] Health check requested
+[2025-11-26 11:21:01.547 +05:30] [INF] Health check requested
+[2025-11-26 11:21:11.540 +05:30] [INF] Health check requested
+[2025-11-26 11:21:11.541 +05:30] [INF] Health check requested
+[2025-11-26 11:21:21.542 +05:30] [INF] Health check requested
+[2025-11-26 11:21:21.544 +05:30] [INF] Health check requested
+[2025-11-26 11:21:31.534 +05:30] [INF] Health check requested
+[2025-11-26 11:21:31.536 +05:30] [INF] Health check requested
+[2025-11-26 11:21:48.549 +05:30] [INF] Health check requested
+[2025-11-26 11:21:48.551 +05:30] [INF] Health check requested
+[2025-11-26 11:22:48.534 +05:30] [INF] Health check requested
+[2025-11-26 11:22:48.536 +05:30] [INF] Health check requested
+[2025-11-26 11:23:16.851 +05:30] [INF] Health check requested
+[2025-11-26 11:23:16.855 +05:30] [INF] Health check requested
+[2025-11-26 11:23:20.896 +05:30] [INF] Health check requested
+[2025-11-26 11:23:20.898 +05:30] [INF] Health check requested
+[2025-11-26 11:23:30.907 +05:30] [INF] Health check requested
+[2025-11-26 11:23:30.910 +05:30] [INF] Health check requested
+[2025-11-26 11:23:40.894 +05:30] [INF] Health check requested
+[2025-11-26 11:23:40.895 +05:30] [INF] Health check requested
+[2025-11-26 11:38:31.860 +05:30] [INF] BookingReminderService started
+[2025-11-26 11:38:32.130 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-26 11:38:32.131 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-26 11:38:32.131 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-26 11:38:32.131 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-26 11:38:32.131 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-26 11:38:32.132 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-26 11:38:32.132 +05:30] [INF] Dead-letter queue 'travel.reschedule.dlq' already exists.
+[2025-11-26 11:38:32.132 +05:30] [INF] Queue 'travel.reschedule' already exists.
+[2025-11-26 11:38:32.132 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-26 11:38:32.132 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-26 11:38:32.137 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-26 11:38:32.140 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-26 11:38:32.142 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-26 11:38:32.145 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-26 11:38:32.147 +05:30] [INF] Reschedule email queue consumer subscribed to travel.reschedule.
+[2025-11-26 11:38:34.597 +05:30] [INF] Health check requested
+[2025-11-26 11:38:34.663 +05:30] [INF] Health check requested
+[2025-11-26 11:38:44.473 +05:30] [INF] Health check requested
+[2025-11-26 11:38:44.475 +05:30] [INF] Health check requested
+[2025-11-26 11:38:54.483 +05:30] [INF] Health check requested
+[2025-11-26 11:38:54.488 +05:30] [INF] Health check requested
+[2025-11-26 11:39:04.448 +05:30] [INF] Health check requested
+[2025-11-26 11:39:04.452 +05:30] [INF] Health check requested
+[2025-11-26 11:39:14.386 +05:30] [INF] Health check requested
+[2025-11-26 11:39:14.388 +05:30] [INF] Health check requested
+[2025-11-26 11:39:24.316 +05:30] [INF] Health check requested
+[2025-11-26 11:39:24.319 +05:30] [INF] Health check requested
+[2025-11-26 11:39:33.661 +05:30] [INF] Health check requested
+[2025-11-26 11:39:33.914 +05:30] [INF] Health check requested
+[2025-11-26 11:39:43.602 +05:30] [INF] Health check requested
+[2025-11-26 11:39:43.852 +05:30] [INF] Health check requested
+[2025-11-26 11:39:53.577 +05:30] [INF] Health check requested
+[2025-11-26 11:39:53.793 +05:30] [INF] Health check requested
+[2025-11-26 11:40:03.487 +05:30] [INF] Health check requested
+[2025-11-26 11:40:03.735 +05:30] [INF] Health check requested
+[2025-11-26 11:40:13.430 +05:30] [INF] Health check requested
+[2025-11-26 11:40:13.676 +05:30] [INF] Health check requested
+[2025-11-26 11:40:23.964 +05:30] [INF] Health check requested
+[2025-11-26 11:40:23.965 +05:30] [INF] Health check requested
+[2025-11-26 11:40:33.896 +05:30] [INF] Health check requested
+[2025-11-26 11:40:33.898 +05:30] [INF] Health check requested
+[2025-11-26 11:40:43.837 +05:30] [INF] Health check requested
+[2025-11-26 11:40:43.839 +05:30] [INF] Health check requested
+[2025-11-26 11:40:53.777 +05:30] [INF] Health check requested
+[2025-11-26 11:40:53.782 +05:30] [INF] Health check requested
+[2025-11-26 11:41:03.714 +05:30] [INF] Health check requested
+[2025-11-26 11:41:03.715 +05:30] [INF] Health check requested
+[2025-11-26 11:41:27.578 +05:30] [INF] Health check requested
+[2025-11-26 11:41:27.579 +05:30] [INF] Health check requested
+[2025-11-26 11:42:27.221 +05:30] [INF] Health check requested
+[2025-11-26 11:42:27.223 +05:30] [INF] Health check requested
+[2025-11-26 11:43:26.858 +05:30] [INF] Health check requested
+[2025-11-26 11:43:26.860 +05:30] [INF] Health check requested
+[2025-11-26 11:44:26.686 +05:30] [INF] Health check requested
+[2025-11-26 11:44:26.688 +05:30] [INF] Health check requested
+[2025-11-26 11:45:26.683 +05:30] [INF] Health check requested
+[2025-11-26 11:45:26.685 +05:30] [INF] Health check requested
+[2025-11-26 11:46:26.680 +05:30] [INF] Health check requested
+[2025-11-26 11:46:26.682 +05:30] [INF] Health check requested
+[2025-11-26 11:47:26.683 +05:30] [INF] Health check requested
+[2025-11-26 11:47:26.690 +05:30] [INF] Health check requested
+[2025-11-26 11:48:21.349 +05:30] [INF] Health check requested
+[2025-11-26 11:48:21.363 +05:30] [INF] Health check requested
+[2025-11-26 11:48:22.690 +05:30] [INF] Health check requested
+[2025-11-26 11:48:22.694 +05:30] [INF] Health check requested
+[2025-11-26 11:48:32.683 +05:30] [INF] Health check requested
+[2025-11-26 11:48:32.685 +05:30] [INF] Health check requested
+[2025-11-26 11:48:42.683 +05:30] [INF] Health check requested
+[2025-11-26 11:48:42.685 +05:30] [INF] Health check requested
+[2025-11-26 11:48:52.678 +05:30] [INF] Health check requested
+[2025-11-26 11:48:52.679 +05:30] [INF] Health check requested
+[2025-11-26 11:49:02.679 +05:30] [INF] Health check requested
+[2025-11-26 11:49:02.681 +05:30] [INF] Health check requested
+[2025-11-26 11:49:12.682 +05:30] [INF] Health check requested
+[2025-11-26 11:49:12.683 +05:30] [INF] Health check requested
+[2025-11-26 11:49:26.678 +05:30] [INF] Health check requested
+[2025-11-26 11:49:26.682 +05:30] [INF] Health check requested
+[2025-11-26 11:49:41.781 +05:30] [INF] Health check requested
+[2025-11-26 11:49:41.791 +05:30] [INF] Health check requested
+[2025-11-26 11:49:42.326 +05:30] [INF] Health check requested
+[2025-11-26 11:49:52.684 +05:30] [INF] Health check requested
+[2025-11-26 11:49:52.688 +05:30] [INF] Health check requested
+[2025-11-26 11:50:02.692 +05:30] [INF] Health check requested
+[2025-11-26 11:50:02.696 +05:30] [INF] Health check requested
+[2025-11-26 11:50:12.681 +05:30] [INF] Health check requested
+[2025-11-26 11:50:12.684 +05:30] [INF] Health check requested
+[2025-11-26 11:50:22.682 +05:30] [INF] Health check requested
+[2025-11-26 11:50:22.686 +05:30] [INF] Health check requested
+[2025-11-26 11:50:32.685 +05:30] [INF] Health check requested
+[2025-11-26 11:50:32.688 +05:30] [INF] Health check requested
+[2025-11-26 11:51:26.684 +05:30] [INF] Health check requested
+[2025-11-26 11:51:26.687 +05:30] [INF] Health check requested
+[2025-11-26 11:51:43.056 +05:30] [INF] Health check requested
+[2025-11-26 11:51:43.075 +05:30] [INF] Health check requested
+[2025-11-26 11:51:52.085 +05:30] [INF] Health check requested
+[2025-11-26 11:51:52.330 +05:30] [INF] Health check requested
+[2025-11-26 11:52:02.072 +05:30] [INF] Health check requested
+[2025-11-26 11:52:02.319 +05:30] [INF] Health check requested
+[2025-11-26 11:52:12.081 +05:30] [INF] Health check requested
+[2025-11-26 11:52:12.321 +05:30] [INF] Health check requested
+[2025-11-26 11:52:22.072 +05:30] [INF] Health check requested
+[2025-11-26 11:52:22.322 +05:30] [INF] Health check requested
+[2025-11-26 11:52:32.073 +05:30] [INF] Health check requested
+[2025-11-26 11:52:32.323 +05:30] [INF] Health check requested
+[2025-11-26 11:52:42.075 +05:30] [INF] Health check requested
+[2025-11-26 11:52:42.315 +05:30] [INF] Health check requested
+[2025-11-26 11:52:52.073 +05:30] [INF] Health check requested
+[2025-11-26 11:52:52.321 +05:30] [INF] Health check requested
+[2025-11-26 11:53:02.669 +05:30] [INF] Health check requested
+[2025-11-26 11:53:02.672 +05:30] [INF] Health check requested
+[2025-11-26 11:53:12.673 +05:30] [INF] Health check requested
+[2025-11-26 11:53:12.676 +05:30] [INF] Health check requested
+[2025-11-26 11:53:22.665 +05:30] [INF] Health check requested
+[2025-11-26 11:53:22.667 +05:30] [INF] Health check requested
+[2025-11-26 11:53:32.665 +05:30] [INF] Health check requested
+[2025-11-26 11:53:32.668 +05:30] [INF] Health check requested
+[2025-11-26 11:53:42.673 +05:30] [INF] Health check requested
+[2025-11-26 11:53:42.676 +05:30] [INF] Health check requested
+[2025-11-26 11:54:26.656 +05:30] [INF] Health check requested
+[2025-11-26 11:54:26.658 +05:30] [INF] Health check requested
+[2025-11-26 11:55:26.655 +05:30] [INF] Health check requested
+[2025-11-26 11:55:26.656 +05:30] [INF] Health check requested
+[2025-11-26 11:55:32.655 +05:30] [INF] Health check requested
+[2025-11-26 11:55:32.659 +05:30] [INF] Health check requested
+[2025-11-26 11:55:42.652 +05:30] [INF] Health check requested
+[2025-11-26 11:55:42.654 +05:30] [INF] Health check requested
+[2025-11-26 11:55:52.648 +05:30] [INF] Health check requested
+[2025-11-26 11:55:52.649 +05:30] [INF] Health check requested
+[2025-11-26 11:56:02.658 +05:30] [INF] Health check requested
+[2025-11-26 11:56:02.662 +05:30] [INF] Health check requested
+[2025-11-26 11:56:12.649 +05:30] [INF] Health check requested
+[2025-11-26 11:56:12.652 +05:30] [INF] Health check requested
+[2025-11-26 11:56:22.650 +05:30] [INF] Health check requested
+[2025-11-26 11:56:22.654 +05:30] [INF] Health check requested
+[2025-11-26 11:57:26.648 +05:30] [INF] Health check requested
+[2025-11-26 11:57:26.650 +05:30] [INF] Health check requested
+[2025-11-26 11:58:26.651 +05:30] [INF] Health check requested
+[2025-11-26 11:58:26.665 +05:30] [INF] Health check requested
+[2025-11-26 11:59:26.647 +05:30] [INF] Health check requested
+[2025-11-26 11:59:26.649 +05:30] [INF] Health check requested
+[2025-11-26 12:00:26.653 +05:30] [INF] Health check requested
+[2025-11-26 12:00:26.654 +05:30] [INF] Health check requested
+[2025-11-26 12:01:26.649 +05:30] [INF] Health check requested
+[2025-11-26 12:01:26.651 +05:30] [INF] Health check requested
+[2025-11-26 12:02:26.648 +05:30] [INF] Health check requested
+[2025-11-26 12:02:26.650 +05:30] [INF] Health check requested
+[2025-11-26 12:03:26.660 +05:30] [INF] Health check requested
+[2025-11-26 12:03:26.661 +05:30] [INF] Health check requested
+[2025-11-26 12:04:26.649 +05:30] [INF] Health check requested
+[2025-11-26 12:04:26.651 +05:30] [INF] Health check requested
+[2025-11-26 12:05:26.650 +05:30] [INF] Health check requested
+[2025-11-26 12:05:26.652 +05:30] [INF] Health check requested
+[2025-11-26 12:06:26.651 +05:30] [INF] Health check requested
+[2025-11-26 12:06:26.652 +05:30] [INF] Health check requested
+[2025-11-26 12:07:26.661 +05:30] [INF] Health check requested
+[2025-11-26 12:07:26.663 +05:30] [INF] Health check requested
+[2025-11-26 12:08:26.655 +05:30] [INF] Health check requested
+[2025-11-26 12:08:26.656 +05:30] [INF] Health check requested
+[2025-11-26 12:09:26.661 +05:30] [INF] Health check requested
+[2025-11-26 12:09:26.663 +05:30] [INF] Health check requested
+[2025-11-26 12:10:26.648 +05:30] [INF] Health check requested
+[2025-11-26 12:10:26.649 +05:30] [INF] Health check requested
+[2025-11-26 12:11:26.643 +05:30] [INF] Health check requested
+[2025-11-26 12:11:26.644 +05:30] [INF] Health check requested
+[2025-11-26 12:12:26.639 +05:30] [INF] Health check requested
+[2025-11-26 12:12:26.641 +05:30] [INF] Health check requested
+[2025-11-26 12:13:26.632 +05:30] [INF] Health check requested
+[2025-11-26 12:13:26.634 +05:30] [INF] Health check requested
+[2025-11-26 12:14:26.633 +05:30] [INF] Health check requested
+[2025-11-26 12:14:26.635 +05:30] [INF] Health check requested
+[2025-11-26 12:15:26.632 +05:30] [INF] Health check requested
+[2025-11-26 12:15:26.634 +05:30] [INF] Health check requested
+[2025-11-26 12:16:17.799 +05:30] [INF] Health check requested
+[2025-11-26 12:16:17.804 +05:30] [INF] Health check requested
+[2025-11-26 12:16:22.033 +05:30] [INF] Health check requested
+[2025-11-26 12:16:22.286 +05:30] [INF] Health check requested
+[2025-11-26 12:16:32.041 +05:30] [INF] Health check requested
+[2025-11-26 12:16:32.280 +05:30] [INF] Health check requested
+[2025-11-26 12:16:42.034 +05:30] [INF] Health check requested
+[2025-11-26 12:16:42.287 +05:30] [INF] Health check requested
+[2025-11-26 12:16:52.037 +05:30] [INF] Health check requested
+[2025-11-26 12:16:52.295 +05:30] [INF] Health check requested
+[2025-11-26 12:17:02.036 +05:30] [INF] Health check requested
+[2025-11-26 12:17:02.279 +05:30] [INF] Health check requested
+[2025-11-26 12:17:12.033 +05:30] [INF] Health check requested
+[2025-11-26 12:17:12.281 +05:30] [INF] Health check requested
+[2025-11-26 12:17:22.035 +05:30] [INF] Health check requested
+[2025-11-26 12:17:22.279 +05:30] [INF] Health check requested
+[2025-11-26 12:17:32.038 +05:30] [INF] Health check requested
+[2025-11-26 12:17:32.282 +05:30] [INF] Health check requested
+[2025-11-26 12:17:42.034 +05:30] [INF] Health check requested
+[2025-11-26 12:17:42.289 +05:30] [INF] Health check requested
+[2025-11-26 12:17:52.037 +05:30] [INF] Health check requested
+[2025-11-26 12:17:52.285 +05:30] [INF] Health check requested
+[2025-11-26 12:18:02.042 +05:30] [INF] Health check requested
+[2025-11-26 12:18:02.288 +05:30] [INF] Health check requested
+[2025-11-26 12:18:12.040 +05:30] [INF] Health check requested
+[2025-11-26 12:18:12.278 +05:30] [INF] Health check requested
+[2025-11-26 12:18:22.042 +05:30] [INF] Health check requested
+[2025-11-26 12:18:22.280 +05:30] [INF] Health check requested
+[2025-11-26 12:18:32.033 +05:30] [INF] Health check requested
+[2025-11-26 12:18:32.282 +05:30] [INF] Health check requested
+[2025-11-26 12:18:42.030 +05:30] [INF] Health check requested
+[2025-11-26 12:18:42.280 +05:30] [INF] Health check requested
+[2025-11-26 12:18:52.631 +05:30] [INF] Health check requested
+[2025-11-26 12:18:52.633 +05:30] [INF] Health check requested
+[2025-11-26 12:19:02.630 +05:30] [INF] Health check requested
+[2025-11-26 12:19:02.632 +05:30] [INF] Health check requested
+[2025-11-26 12:19:12.628 +05:30] [INF] Health check requested
+[2025-11-26 12:19:12.630 +05:30] [INF] Health check requested
+[2025-11-26 12:19:22.631 +05:30] [INF] Health check requested
+[2025-11-26 12:19:22.635 +05:30] [INF] Health check requested
+[2025-11-26 12:19:32.636 +05:30] [INF] Health check requested
+[2025-11-26 12:19:32.639 +05:30] [INF] Health check requested
+[2025-11-26 12:19:42.634 +05:30] [INF] Health check requested
+[2025-11-26 12:19:42.635 +05:30] [INF] Health check requested
+[2025-11-26 12:20:26.641 +05:30] [INF] Health check requested
+[2025-11-26 12:20:26.643 +05:30] [INF] Health check requested
+[2025-11-26 12:21:26.635 +05:30] [INF] Health check requested
+[2025-11-26 12:21:26.636 +05:30] [INF] Health check requested
+[2025-11-26 12:22:26.634 +05:30] [INF] Health check requested
+[2025-11-26 12:22:26.636 +05:30] [INF] Health check requested
+[2025-11-26 12:23:26.638 +05:30] [INF] Health check requested
+[2025-11-26 12:23:26.640 +05:30] [INF] Health check requested
+[2025-11-26 12:24:26.646 +05:30] [INF] Health check requested
+[2025-11-26 12:24:26.648 +05:30] [INF] Health check requested
+[2025-11-26 12:25:26.636 +05:30] [INF] Health check requested
+[2025-11-26 12:25:26.639 +05:30] [INF] Health check requested
+[2025-11-26 12:26:26.631 +05:30] [INF] Health check requested
+[2025-11-26 12:26:26.634 +05:30] [INF] Health check requested
+[2025-11-26 12:27:26.643 +05:30] [INF] Health check requested
+[2025-11-26 12:27:26.646 +05:30] [INF] Health check requested
+[2025-11-26 12:28:26.640 +05:30] [INF] Health check requested
+[2025-11-26 12:28:26.647 +05:30] [INF] Health check requested
+[2025-11-26 12:29:26.618 +05:30] [INF] Health check requested
+[2025-11-26 12:29:26.622 +05:30] [INF] Health check requested
+[2025-11-26 12:30:26.616 +05:30] [INF] Health check requested
+[2025-11-26 12:30:26.618 +05:30] [INF] Health check requested
+[2025-11-26 12:31:26.617 +05:30] [INF] Health check requested
+[2025-11-26 12:31:26.619 +05:30] [INF] Health check requested
+[2025-11-26 12:32:26.629 +05:30] [INF] Health check requested
+[2025-11-26 12:32:26.631 +05:30] [INF] Health check requested
+[2025-11-26 12:33:26.621 +05:30] [INF] Health check requested
+[2025-11-26 12:33:26.623 +05:30] [INF] Health check requested
+[2025-11-26 12:34:26.615 +05:30] [INF] Health check requested
+[2025-11-26 12:34:26.617 +05:30] [INF] Health check requested
+[2025-11-26 12:35:26.615 +05:30] [INF] Health check requested
+[2025-11-26 12:35:26.617 +05:30] [INF] Health check requested
+[2025-11-26 12:36:26.631 +05:30] [INF] Health check requested
+[2025-11-26 12:36:26.633 +05:30] [INF] Health check requested
+[2025-11-26 12:37:26.619 +05:30] [INF] Health check requested
+[2025-11-26 12:37:26.622 +05:30] [INF] Health check requested
+[2025-11-26 12:38:26.619 +05:30] [INF] Health check requested
+[2025-11-26 12:38:26.621 +05:30] [INF] Health check requested
+[2025-11-26 12:39:26.616 +05:30] [INF] Health check requested
+[2025-11-26 12:39:26.619 +05:30] [INF] Health check requested
+[2025-11-26 12:40:26.614 +05:30] [INF] Health check requested
+[2025-11-26 12:40:26.616 +05:30] [INF] Health check requested
+[2025-11-26 12:41:26.612 +05:30] [INF] Health check requested
+[2025-11-26 12:41:26.614 +05:30] [INF] Health check requested
+[2025-11-26 12:42:26.616 +05:30] [INF] Health check requested
+[2025-11-26 12:42:26.618 +05:30] [INF] Health check requested
+[2025-11-26 12:43:26.609 +05:30] [INF] Health check requested
+[2025-11-26 12:43:26.611 +05:30] [INF] Health check requested
+[2025-11-26 12:44:26.610 +05:30] [INF] Health check requested
+[2025-11-26 12:44:26.613 +05:30] [INF] Health check requested
+[2025-11-26 12:45:26.622 +05:30] [INF] Health check requested
+[2025-11-26 12:45:26.624 +05:30] [INF] Health check requested
+[2025-11-26 12:46:26.606 +05:30] [INF] Health check requested
+[2025-11-26 12:46:26.607 +05:30] [INF] Health check requested
+[2025-11-26 12:47:26.604 +05:30] [INF] Health check requested
+[2025-11-26 12:47:26.606 +05:30] [INF] Health check requested
+[2025-11-26 12:48:26.615 +05:30] [INF] Health check requested
+[2025-11-26 12:48:26.616 +05:30] [INF] Health check requested
+[2025-11-26 12:49:26.602 +05:30] [INF] Health check requested
+[2025-11-26 12:49:26.605 +05:30] [INF] Health check requested
+[2025-11-26 12:50:26.600 +05:30] [INF] Health check requested
+[2025-11-26 12:50:26.602 +05:30] [INF] Health check requested
+[2025-11-26 12:51:26.600 +05:30] [INF] Health check requested
+[2025-11-26 12:51:26.604 +05:30] [INF] Health check requested
+[2025-11-26 12:52:26.600 +05:30] [INF] Health check requested
+[2025-11-26 12:52:26.602 +05:30] [INF] Health check requested
+[2025-11-26 12:53:26.601 +05:30] [INF] Health check requested
+[2025-11-26 12:53:26.602 +05:30] [INF] Health check requested
+[2025-11-26 12:54:26.600 +05:30] [INF] Health check requested
+[2025-11-26 12:54:26.602 +05:30] [INF] Health check requested
+[2025-11-26 12:55:26.598 +05:30] [INF] Health check requested
+[2025-11-26 12:55:26.599 +05:30] [INF] Health check requested
+[2025-11-26 12:56:26.598 +05:30] [INF] Health check requested
+[2025-11-26 12:56:26.600 +05:30] [INF] Health check requested
+[2025-11-26 12:57:26.613 +05:30] [INF] Health check requested
+[2025-11-26 12:57:26.616 +05:30] [INF] Health check requested
+[2025-11-26 12:58:26.598 +05:30] [INF] Health check requested
+[2025-11-26 12:58:26.600 +05:30] [INF] Health check requested
+[2025-11-26 12:59:26.613 +05:30] [INF] Health check requested
+[2025-11-26 12:59:26.615 +05:30] [INF] Health check requested
+[2025-11-26 13:00:26.592 +05:30] [INF] Health check requested
+[2025-11-26 13:00:26.594 +05:30] [INF] Health check requested
+[2025-11-26 13:01:26.593 +05:30] [INF] Health check requested
+[2025-11-26 13:01:26.594 +05:30] [INF] Health check requested
+[2025-11-26 13:02:26.589 +05:30] [INF] Health check requested
+[2025-11-26 13:02:26.591 +05:30] [INF] Health check requested
+[2025-11-26 13:03:26.589 +05:30] [INF] Health check requested
+[2025-11-26 13:03:26.591 +05:30] [INF] Health check requested
+[2025-11-26 13:04:26.587 +05:30] [INF] Health check requested
+[2025-11-26 13:04:26.590 +05:30] [INF] Health check requested
+[2025-11-26 13:05:26.586 +05:30] [INF] Health check requested
+[2025-11-26 13:05:26.588 +05:30] [INF] Health check requested
+[2025-11-26 13:06:26.585 +05:30] [INF] Health check requested
+[2025-11-26 13:06:26.587 +05:30] [INF] Health check requested
+[2025-11-26 13:07:26.583 +05:30] [INF] Health check requested
+[2025-11-26 13:07:26.585 +05:30] [INF] Health check requested
+[2025-11-26 13:08:26.581 +05:30] [INF] Health check requested
+[2025-11-26 13:08:26.583 +05:30] [INF] Health check requested
+[2025-11-26 13:09:26.580 +05:30] [INF] Health check requested
+[2025-11-26 13:09:26.581 +05:30] [INF] Health check requested
+[2025-11-26 13:10:26.596 +05:30] [INF] Health check requested
+[2025-11-26 13:10:26.597 +05:30] [INF] Health check requested
+[2025-11-26 13:11:26.581 +05:30] [INF] Health check requested
+[2025-11-26 13:11:26.583 +05:30] [INF] Health check requested
+[2025-11-26 13:12:26.597 +05:30] [INF] Health check requested
+[2025-11-26 13:12:26.598 +05:30] [INF] Health check requested
+[2025-11-26 13:13:26.582 +05:30] [INF] Health check requested
+[2025-11-26 13:13:26.584 +05:30] [INF] Health check requested
+[2025-11-26 13:14:26.593 +05:30] [INF] Health check requested
+[2025-11-26 13:14:26.596 +05:30] [INF] Health check requested
+[2025-11-26 13:15:26.591 +05:30] [INF] Health check requested
+[2025-11-26 13:15:26.594 +05:30] [INF] Health check requested
+[2025-11-26 13:16:26.577 +05:30] [INF] Health check requested
+[2025-11-26 13:16:26.579 +05:30] [INF] Health check requested
+[2025-11-26 13:17:26.610 +05:30] [INF] Health check requested
+[2025-11-26 13:17:26.611 +05:30] [INF] Health check requested
+[2025-11-26 13:18:26.573 +05:30] [INF] Health check requested
+[2025-11-26 13:18:26.576 +05:30] [INF] Health check requested
+[2025-11-26 13:19:26.574 +05:30] [INF] Health check requested
+[2025-11-26 13:19:26.576 +05:30] [INF] Health check requested
+[2025-11-26 13:20:26.571 +05:30] [INF] Health check requested
+[2025-11-26 13:20:26.574 +05:30] [INF] Health check requested
+[2025-11-26 13:21:26.579 +05:30] [INF] Health check requested
+[2025-11-26 13:21:26.582 +05:30] [INF] Health check requested
+[2025-11-26 13:22:26.566 +05:30] [INF] Health check requested
+[2025-11-26 13:22:26.569 +05:30] [INF] Health check requested
+[2025-11-26 13:23:26.582 +05:30] [INF] Health check requested
+[2025-11-26 13:23:27.428 +05:30] [INF] Health check requested
+[2025-11-26 13:24:26.576 +05:30] [INF] Health check requested
+[2025-11-26 13:24:26.579 +05:30] [INF] Health check requested
+[2025-11-26 13:25:26.564 +05:30] [INF] Health check requested
+[2025-11-26 13:25:26.567 +05:30] [INF] Health check requested
+[2025-11-26 13:26:26.565 +05:30] [INF] Health check requested
+[2025-11-26 13:26:26.568 +05:30] [INF] Health check requested
+[2025-11-26 13:27:26.565 +05:30] [INF] Health check requested
+[2025-11-26 13:27:26.568 +05:30] [INF] Health check requested
+[2025-11-26 13:28:26.563 +05:30] [INF] Health check requested
+[2025-11-26 13:28:26.566 +05:30] [INF] Health check requested
+[2025-11-26 13:29:26.563 +05:30] [INF] Health check requested
+[2025-11-26 13:29:26.566 +05:30] [INF] Health check requested
+[2025-11-26 13:30:26.560 +05:30] [INF] Health check requested
+[2025-11-26 13:30:26.563 +05:30] [INF] Health check requested
+[2025-11-26 13:31:26.559 +05:30] [INF] Health check requested
+[2025-11-26 13:31:26.562 +05:30] [INF] Health check requested
+[2025-11-26 13:32:26.564 +05:30] [INF] Health check requested
+[2025-11-26 13:32:26.566 +05:30] [INF] Health check requested
+[2025-11-26 13:33:26.562 +05:30] [INF] Health check requested
+[2025-11-26 13:33:26.564 +05:30] [INF] Health check requested
+[2025-11-26 13:34:26.558 +05:30] [INF] Health check requested
+[2025-11-26 13:34:26.560 +05:30] [INF] Health check requested
+[2025-11-26 13:35:26.555 +05:30] [INF] Health check requested
+[2025-11-26 13:35:26.558 +05:30] [INF] Health check requested
+[2025-11-26 13:36:26.556 +05:30] [INF] Health check requested
+[2025-11-26 13:36:26.558 +05:30] [INF] Health check requested
+[2025-11-26 13:37:26.554 +05:30] [INF] Health check requested
+[2025-11-26 13:37:26.556 +05:30] [INF] Health check requested
+[2025-11-26 13:38:26.562 +05:30] [INF] Health check requested
+[2025-11-26 13:38:26.564 +05:30] [INF] Health check requested
+[2025-11-26 13:39:26.567 +05:30] [INF] Health check requested
+[2025-11-26 13:39:26.570 +05:30] [INF] Health check requested
+[2025-11-26 13:40:26.551 +05:30] [INF] Health check requested
+[2025-11-26 13:40:26.554 +05:30] [INF] Health check requested
+[2025-11-26 13:41:26.550 +05:30] [INF] Health check requested
+[2025-11-26 13:41:26.552 +05:30] [INF] Health check requested
+[2025-11-26 13:42:26.549 +05:30] [INF] Health check requested
+[2025-11-26 13:42:26.551 +05:30] [INF] Health check requested
+[2025-11-26 13:59:05.896 +05:30] [INF] Health check requested
+[2025-11-26 13:59:05.901 +05:30] [INF] Health check requested
+[2025-11-26 13:59:26.457 +05:30] [INF] Health check requested
+[2025-11-26 13:59:26.459 +05:30] [INF] Health check requested
+[2025-11-26 14:00:26.455 +05:30] [INF] Health check requested
+[2025-11-26 14:00:26.458 +05:30] [INF] Health check requested
+[2025-11-26 14:01:26.456 +05:30] [INF] Health check requested
+[2025-11-26 14:01:26.459 +05:30] [INF] Health check requested
+[2025-11-26 14:05:43.829 +05:30] [INF] Health check requested
+[2025-11-26 14:05:43.837 +05:30] [INF] Health check requested
+[2025-11-26 14:06:26.367 +05:30] [INF] Health check requested
+[2025-11-26 14:06:26.369 +05:30] [INF] Health check requested
+[2025-11-26 14:07:26.369 +05:30] [INF] Health check requested
+[2025-11-26 14:07:26.373 +05:30] [INF] Health check requested
+[2025-11-26 14:08:26.358 +05:30] [INF] Health check requested
+[2025-11-26 14:08:26.360 +05:30] [INF] Health check requested
+[2025-11-26 14:08:44.528 +05:30] [INF] Health check requested
+[2025-11-26 14:08:44.545 +05:30] [INF] Health check requested
+[2025-11-26 14:08:45.216 +05:30] [INF] Health check requested
+[2025-11-26 14:08:45.218 +05:30] [INF] Health check requested
+[2025-11-26 14:08:45.230 +05:30] [INF] Health check requested
+[2025-11-26 14:08:45.231 +05:30] [INF] Health check requested
+[2025-11-26 14:08:55.363 +05:30] [INF] Health check requested
+[2025-11-26 14:08:55.365 +05:30] [INF] Health check requested
+[2025-11-26 14:09:05.449 +05:30] [INF] Health check requested
+[2025-11-26 14:09:05.451 +05:30] [INF] Health check requested
+[2025-11-26 14:09:15.364 +05:30] [INF] Health check requested
+[2025-11-26 14:09:15.374 +05:30] [INF] Health check requested
+[2025-11-26 14:09:25.359 +05:30] [INF] Health check requested
+[2025-11-26 14:09:25.361 +05:30] [INF] Health check requested
+[2025-11-26 14:09:35.235 +05:30] [INF] Health check requested
+[2025-11-26 14:09:35.240 +05:30] [INF] Health check requested
+[2025-11-26 14:09:39.697 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:09:39.868 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:09:39.883 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:09:39.884 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:09:42.604 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:09:42.606 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:09:42.609 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:09:42.611 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:09:45.236 +05:30] [INF] Health check requested
+[2025-11-26 14:09:45.237 +05:30] [INF] Health check requested
+[2025-11-26 14:09:55.234 +05:30] [INF] Health check requested
+[2025-11-26 14:09:55.235 +05:30] [INF] Health check requested
+[2025-11-26 14:10:05.353 +05:30] [INF] Health check requested
+[2025-11-26 14:10:05.357 +05:30] [INF] Health check requested
+[2025-11-26 14:10:15.359 +05:30] [INF] Health check requested
+[2025-11-26 14:10:15.364 +05:30] [INF] Health check requested
+[2025-11-26 14:10:25.366 +05:30] [INF] Health check requested
+[2025-11-26 14:10:25.368 +05:30] [INF] Health check requested
+[2025-11-26 14:10:35.368 +05:30] [INF] Health check requested
+[2025-11-26 14:10:35.372 +05:30] [INF] Health check requested
+[2025-11-26 14:10:45.361 +05:30] [INF] Health check requested
+[2025-11-26 14:10:45.362 +05:30] [INF] Health check requested
+[2025-11-26 14:10:55.245 +05:30] [INF] Health check requested
+[2025-11-26 14:10:55.248 +05:30] [INF] Health check requested
+[2025-11-26 14:11:05.364 +05:30] [INF] Health check requested
+[2025-11-26 14:11:05.368 +05:30] [INF] Health check requested
+[2025-11-26 14:11:15.363 +05:30] [INF] Health check requested
+[2025-11-26 14:11:15.369 +05:30] [INF] Health check requested
+[2025-11-26 14:11:25.347 +05:30] [INF] Health check requested
+[2025-11-26 14:11:25.348 +05:30] [INF] Health check requested
+[2025-11-26 14:11:35.359 +05:30] [INF] Health check requested
+[2025-11-26 14:11:35.361 +05:30] [INF] Health check requested
+[2025-11-26 14:11:45.346 +05:30] [INF] Health check requested
+[2025-11-26 14:11:45.348 +05:30] [INF] Health check requested
+[2025-11-26 14:11:55.348 +05:30] [INF] Health check requested
+[2025-11-26 14:11:55.352 +05:30] [INF] Health check requested
+[2025-11-26 14:12:05.347 +05:30] [INF] Health check requested
+[2025-11-26 14:12:05.349 +05:30] [INF] Health check requested
+[2025-11-26 14:12:26.379 +05:30] [INF] Health check requested
+[2025-11-26 14:12:26.382 +05:30] [INF] Health check requested
+[2025-11-26 14:13:26.339 +05:30] [INF] Health check requested
+[2025-11-26 14:13:26.343 +05:30] [INF] Health check requested
+[2025-11-26 14:14:26.321 +05:30] [INF] Health check requested
+[2025-11-26 14:14:26.325 +05:30] [INF] Health check requested
+[2025-11-26 14:15:26.304 +05:30] [INF] Health check requested
+[2025-11-26 14:15:26.307 +05:30] [INF] Health check requested
+[2025-11-26 14:16:26.299 +05:30] [INF] Health check requested
+[2025-11-26 14:16:26.302 +05:30] [INF] Health check requested
+[2025-11-26 14:17:26.299 +05:30] [INF] Health check requested
+[2025-11-26 14:17:26.303 +05:30] [INF] Health check requested
+[2025-11-26 14:18:26.298 +05:30] [INF] Health check requested
+[2025-11-26 14:18:26.302 +05:30] [INF] Health check requested
+[2025-11-26 14:19:26.297 +05:30] [INF] Health check requested
+[2025-11-26 14:19:26.299 +05:30] [INF] Health check requested
+[2025-11-26 14:20:08.319 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:20:08.321 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:20:08.323 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:20:08.325 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:20:26.293 +05:30] [INF] Health check requested
+[2025-11-26 14:20:26.296 +05:30] [INF] Health check requested
+[2025-11-26 14:21:24.525 +05:30] [INF] Health check requested
+[2025-11-26 14:21:24.527 +05:30] [INF] Health check requested
+[2025-11-26 14:21:25.166 +05:30] [INF] Health check requested
+[2025-11-26 14:21:25.168 +05:30] [INF] Health check requested
+[2025-11-26 14:21:28.669 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:21:28.671 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:21:28.673 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:21:28.675 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:21:34.818 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:21:34.820 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:21:34.822 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:21:34.824 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:21:35.165 +05:30] [INF] Health check requested
+[2025-11-26 14:21:35.166 +05:30] [INF] Health check requested
+[2025-11-26 14:21:45.163 +05:30] [INF] Health check requested
+[2025-11-26 14:21:45.165 +05:30] [INF] Health check requested
+[2025-11-26 14:21:54.826 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:21:54.828 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:21:55.170 +05:30] [INF] Health check requested
+[2025-11-26 14:21:55.172 +05:30] [INF] Health check requested
+[2025-11-26 14:22:05.169 +05:30] [INF] Health check requested
+[2025-11-26 14:22:05.172 +05:30] [INF] Health check requested
+[2025-11-26 14:22:11.768 +05:30] [INF] SendRescheduleOtp request received for booking 2
+[2025-11-26 14:22:11.801 +05:30] [INF] Reschedule OTP generation requested for booking 2, email prabhath.galla@quixy.com
+[2025-11-26 14:22:11.804 +05:30] [INF] OTP rate limit check for booking 2: No previous requests
+[2025-11-26 14:22:11.989 +05:30] [INF] Sending reschedule OTP email to prabhath.galla@quixy.com
+[2025-11-26 14:22:12.012 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Your OTP for Trip Reschedule Verification
+[2025-11-26 14:22:12.016 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-26 14:22:12.072 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Your OTP for Trip Reschedule Verification
+[2025-11-26 14:22:12.077 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-26 14:22:15.176 +05:30] [INF] Health check requested
+[2025-11-26 14:22:15.179 +05:30] [INF] Health check requested
+[2025-11-26 14:22:15.198 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-26 14:22:15.198 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-26 14:22:15.654 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-26 14:22:15.654 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Your OTP for Trip Reschedule Verification
+[2025-11-26 14:22:17.389 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Your OTP for Trip Reschedule Verification
+[2025-11-26 14:22:17.389 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-26 14:22:17.631 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-26 14:22:17.632 +05:30] [INF] Reschedule OTP email sent successfully to prabhath.galla@quixy.com
+[2025-11-26 14:22:17.632 +05:30] [INF] Reschedule OTP email sent successfully for booking 2
+[2025-11-26 14:22:17.633 +05:30] [INF] Recorded OTP request for booking 2 at "2025-11-26T08:52:17.6332990Z"
+[2025-11-26 14:22:17.636 +05:30] [INF] Reschedule OTP sent successfully for booking 2
+[2025-11-26 14:22:25.283 +05:30] [INF] Health check requested
+[2025-11-26 14:22:25.284 +05:30] [INF] Health check requested
+[2025-11-26 14:22:35.289 +05:30] [INF] Health check requested
+[2025-11-26 14:22:35.290 +05:30] [INF] Health check requested
+[2025-11-26 14:22:45.176 +05:30] [INF] Health check requested
+[2025-11-26 14:22:45.179 +05:30] [INF] Health check requested
+[2025-11-26 14:22:49.556 +05:30] [INF] VerifyRescheduleOtp request received for booking 2
+[2025-11-26 14:22:49.558 +05:30] [INF] Reschedule OTP validation requested for booking 2
+[2025-11-26 14:22:49.562 +05:30] [INF] Reschedule OTP validation successful for booking 2
+[2025-11-26 14:22:49.565 +05:30] [INF] Rescheduling booking 2 for email prabhath.galla@quixy.com to date "2025-11-29T00:00:00.0000000"
+[2025-11-26 14:22:49.598 +05:30] [INF] Booking 2 rescheduled from "2025-11-28T00:00:00.0000000" to "2025-11-29T00:00:00.0000000"
+[2025-11-26 14:22:49.599 +05:30] [INF] Marking reschedule OTP as used for booking 2
+[2025-11-26 14:22:49.605 +05:30] [INF] Reschedule OTP marked as used for booking 2
+[2025-11-26 14:22:49.652 +05:30] [INF] Published message 1bb2ce7a4087402d856cae66a7dfa84a to travel.reschedule.
+[2025-11-26 14:22:49.652 +05:30] [INF] Reschedule confirmation message published to queue for booking 2
+[2025-11-26 14:22:49.652 +05:30] [INF] Booking rescheduled successfully for booking 2
+[2025-11-26 14:22:49.714 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Trip Rescheduled Successfully - Booking #2
+[2025-11-26 14:22:49.714 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-26 14:22:49.714 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Trip Rescheduled Successfully - Booking #2
+[2025-11-26 14:22:49.714 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-26 14:22:50.898 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-26 14:22:50.898 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-26 14:22:51.321 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-26 14:22:51.321 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Trip Rescheduled Successfully - Booking #2
+[2025-11-26 14:22:52.699 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Trip Rescheduled Successfully - Booking #2
+[2025-11-26 14:22:52.699 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-26 14:22:52.936 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-26 14:22:52.937 +05:30] [INF] Reschedule email sent to prabhath.galla@quixy.com for booking #2, message type "RescheduleConfirmation".
+[2025-11-26 14:22:52.941 +05:30] [INF] Reschedule email message processed. MessageId 1bb2ce7a4087402d856cae66a7dfa84a.
+[2025-11-26 14:22:55.163 +05:30] [INF] Health check requested
+[2025-11-26 14:22:55.165 +05:30] [INF] Health check requested
+[2025-11-26 14:23:05.294 +05:30] [INF] Health check requested
+[2025-11-26 14:23:05.296 +05:30] [INF] Health check requested
+[2025-11-26 14:23:15.301 +05:30] [INF] Health check requested
+[2025-11-26 14:23:15.305 +05:30] [INF] Health check requested
+[2025-11-26 14:23:25.286 +05:30] [INF] Health check requested
+[2025-11-26 14:23:25.289 +05:30] [INF] Health check requested
+[2025-11-26 14:23:35.296 +05:30] [INF] Health check requested
+[2025-11-26 14:23:35.299 +05:30] [INF] Health check requested
+[2025-11-26 14:23:45.291 +05:30] [INF] Health check requested
+[2025-11-26 14:23:45.295 +05:30] [INF] Health check requested
+[2025-11-26 14:23:55.293 +05:30] [INF] Health check requested
+[2025-11-26 14:23:55.297 +05:30] [INF] Health check requested
+[2025-11-26 14:24:26.290 +05:30] [INF] Health check requested
+[2025-11-26 14:24:26.292 +05:30] [INF] Health check requested
+[2025-11-26 14:25:26.281 +05:30] [INF] Health check requested
+[2025-11-26 14:25:26.283 +05:30] [INF] Health check requested
+[2025-11-26 14:26:26.283 +05:30] [INF] Health check requested
+[2025-11-26 14:26:26.285 +05:30] [INF] Health check requested
+[2025-11-26 14:27:26.278 +05:30] [INF] Health check requested
+[2025-11-26 14:27:26.280 +05:30] [INF] Health check requested
+[2025-11-26 14:28:13.344 +05:30] [INF] Health check requested
+[2025-11-26 14:28:13.346 +05:30] [INF] Health check requested
+[2025-11-26 14:28:15.040 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:28:15.041 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:28:15.043 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:28:15.045 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:28:15.149 +05:30] [INF] Health check requested
+[2025-11-26 14:28:15.150 +05:30] [INF] Health check requested
+[2025-11-26 14:28:25.146 +05:30] [INF] Health check requested
+[2025-11-26 14:28:25.147 +05:30] [INF] Health check requested
+[2025-11-26 14:28:35.151 +05:30] [INF] Health check requested
+[2025-11-26 14:28:35.154 +05:30] [INF] Health check requested
+[2025-11-26 14:28:41.545 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:28:41.547 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:28:41.549 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:28:41.550 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:28:45.147 +05:30] [INF] Health check requested
+[2025-11-26 14:28:45.151 +05:30] [INF] Health check requested
+[2025-11-26 14:28:55.153 +05:30] [INF] Health check requested
+[2025-11-26 14:28:55.157 +05:30] [INF] Health check requested
+[2025-11-26 14:29:00.808 +05:30] [INF] SendRescheduleOtp request received for booking 2
+[2025-11-26 14:29:00.808 +05:30] [INF] Reschedule OTP generation requested for booking 2, email prabhath.galla@quixy.com
+[2025-11-26 14:29:00.809 +05:30] [INF] OTP rate limit check for booking 2: Allowed (1/5 requests in 10 minutes)
+[2025-11-26 14:29:00.812 +05:30] [INF] Sending reschedule OTP email to prabhath.galla@quixy.com
+[2025-11-26 14:29:00.813 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Your OTP for Trip Reschedule Verification
+[2025-11-26 14:29:00.813 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-26 14:29:00.813 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Your OTP for Trip Reschedule Verification
+[2025-11-26 14:29:00.813 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-26 14:29:02.739 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-26 14:29:02.739 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-26 14:29:03.168 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-26 14:29:03.168 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Your OTP for Trip Reschedule Verification
+[2025-11-26 14:29:04.551 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Your OTP for Trip Reschedule Verification
+[2025-11-26 14:29:04.555 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-26 14:29:04.795 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-26 14:29:04.795 +05:30] [INF] Reschedule OTP email sent successfully to prabhath.galla@quixy.com
+[2025-11-26 14:29:04.795 +05:30] [INF] Reschedule OTP email sent successfully for booking 2
+[2025-11-26 14:29:04.795 +05:30] [INF] Recorded OTP request for booking 2 at "2025-11-26T08:59:04.7953349Z"
+[2025-11-26 14:29:04.795 +05:30] [INF] Reschedule OTP sent successfully for booking 2
+[2025-11-26 14:29:05.161 +05:30] [INF] Health check requested
+[2025-11-26 14:29:05.167 +05:30] [INF] Health check requested
+[2025-11-26 14:29:15.157 +05:30] [INF] Health check requested
+[2025-11-26 14:29:15.160 +05:30] [INF] Health check requested
+[2025-11-26 14:29:20.553 +05:30] [INF] VerifyRescheduleOtp request received for booking 2
+[2025-11-26 14:29:20.555 +05:30] [INF] Reschedule OTP validation requested for booking 2
+[2025-11-26 14:29:20.555 +05:30] [INF] Reschedule OTP validation successful for booking 2
+[2025-11-26 14:29:20.555 +05:30] [INF] Rescheduling booking 2 for email prabhath.galla@quixy.com to date "2025-12-05T00:00:00.0000000"
+[2025-11-26 14:29:20.559 +05:30] [INF] Booking 2 rescheduled from "2025-11-29T00:00:00.0000000" to "2025-12-05T00:00:00.0000000"
+[2025-11-26 14:29:20.559 +05:30] [INF] Marking reschedule OTP as used for booking 2
+[2025-11-26 14:29:20.562 +05:30] [INF] Reschedule OTP marked as used for booking 2
+[2025-11-26 14:29:20.566 +05:30] [INF] Published message 006f86e944a64ab1ad90a622bfe93ecd to travel.reschedule.
+[2025-11-26 14:29:20.566 +05:30] [INF] Reschedule confirmation message published to queue for booking 2
+[2025-11-26 14:29:20.567 +05:30] [INF] Booking rescheduled successfully for booking 2
+[2025-11-26 14:29:20.579 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Trip Rescheduled Successfully - Booking #2
+[2025-11-26 14:29:20.579 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-26 14:29:20.579 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Trip Rescheduled Successfully - Booking #2
+[2025-11-26 14:29:20.580 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-26 14:29:21.802 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-26 14:29:21.802 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-26 14:29:22.251 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-26 14:29:22.251 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Trip Rescheduled Successfully - Booking #2
+[2025-11-26 14:29:23.670 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Trip Rescheduled Successfully - Booking #2
+[2025-11-26 14:29:23.670 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-26 14:29:23.912 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-26 14:29:23.912 +05:30] [INF] Reschedule email sent to prabhath.galla@quixy.com for booking #2, message type "RescheduleConfirmation".
+[2025-11-26 14:29:23.912 +05:30] [INF] Reschedule email message processed. MessageId 006f86e944a64ab1ad90a622bfe93ecd.
+[2025-11-26 14:29:25.147 +05:30] [INF] Health check requested
+[2025-11-26 14:29:25.149 +05:30] [INF] Health check requested
+[2025-11-26 14:29:35.274 +05:30] [INF] Health check requested
+[2025-11-26 14:29:35.276 +05:30] [INF] Health check requested
+[2025-11-26 14:29:41.659 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:29:41.660 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:29:41.662 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:29:41.664 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:29:45.269 +05:30] [INF] Health check requested
+[2025-11-26 14:29:45.270 +05:30] [INF] Health check requested
+[2025-11-26 14:29:55.279 +05:30] [INF] Health check requested
+[2025-11-26 14:29:55.282 +05:30] [INF] Health check requested
+[2025-11-26 14:30:05.271 +05:30] [INF] Health check requested
+[2025-11-26 14:30:05.273 +05:30] [INF] Health check requested
+[2025-11-26 14:30:15.270 +05:30] [INF] Health check requested
+[2025-11-26 14:30:15.274 +05:30] [INF] Health check requested
+[2025-11-26 14:30:25.272 +05:30] [INF] Health check requested
+[2025-11-26 14:30:25.275 +05:30] [INF] Health check requested
+[2025-11-26 14:30:35.277 +05:30] [INF] Health check requested
+[2025-11-26 14:30:35.281 +05:30] [INF] Health check requested
+[2025-11-26 14:30:45.280 +05:30] [INF] Health check requested
+[2025-11-26 14:30:45.281 +05:30] [INF] Health check requested
+[2025-11-26 14:30:55.278 +05:30] [INF] Health check requested
+[2025-11-26 14:30:55.280 +05:30] [INF] Health check requested
+[2025-11-26 14:31:05.266 +05:30] [INF] Health check requested
+[2025-11-26 14:31:05.269 +05:30] [INF] Health check requested
+[2025-11-26 14:31:15.277 +05:30] [INF] Health check requested
+[2025-11-26 14:31:15.283 +05:30] [INF] Health check requested
+[2025-11-26 14:31:25.275 +05:30] [INF] Health check requested
+[2025-11-26 14:31:25.277 +05:30] [INF] Health check requested
+[2025-11-26 14:32:26.283 +05:30] [INF] Health check requested
+[2025-11-26 14:32:26.287 +05:30] [INF] Health check requested
+[2025-11-26 14:33:26.279 +05:30] [INF] Health check requested
+[2025-11-26 14:33:26.282 +05:30] [INF] Health check requested
+[2025-11-26 14:34:26.273 +05:30] [INF] Health check requested
+[2025-11-26 14:34:26.275 +05:30] [INF] Health check requested
+[2025-11-26 14:35:14.157 +05:30] [INF] Health check requested
+[2025-11-26 14:35:14.159 +05:30] [INF] Health check requested
+[2025-11-26 14:35:15.147 +05:30] [INF] Health check requested
+[2025-11-26 14:35:15.152 +05:30] [INF] Health check requested
+[2025-11-26 14:35:15.971 +05:30] [INF] Health check requested
+[2025-11-26 14:35:15.974 +05:30] [INF] Health check requested
+[2025-11-26 14:35:15.989 +05:30] [INF] Health check requested
+[2025-11-26 14:35:15.991 +05:30] [INF] Health check requested
+[2025-11-26 14:35:16.022 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:35:16.030 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:35:16.033 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:35:16.045 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:35:17.405 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:35:17.407 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:35:17.409 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:35:17.412 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:35:25.997 +05:30] [INF] Health check requested
+[2025-11-26 14:35:25.998 +05:30] [INF] Health check requested
+[2025-11-26 14:35:36.274 +05:30] [INF] Health check requested
+[2025-11-26 14:35:36.277 +05:30] [INF] Health check requested
+[2025-11-26 14:35:46.276 +05:30] [INF] Health check requested
+[2025-11-26 14:35:46.280 +05:30] [INF] Health check requested
+[2025-11-26 14:35:56.277 +05:30] [INF] Health check requested
+[2025-11-26 14:35:56.279 +05:30] [INF] Health check requested
+[2025-11-26 14:36:06.268 +05:30] [INF] Health check requested
+[2025-11-26 14:36:06.271 +05:30] [INF] Health check requested
+[2025-11-26 14:36:16.271 +05:30] [INF] Health check requested
+[2025-11-26 14:36:16.273 +05:30] [INF] Health check requested
+[2025-11-26 14:36:26.280 +05:30] [INF] Health check requested
+[2025-11-26 14:36:26.282 +05:30] [INF] Health check requested
+[2025-11-26 14:37:26.284 +05:30] [INF] Health check requested
+[2025-11-26 14:37:26.286 +05:30] [INF] Health check requested
+[2025-11-26 14:38:26.281 +05:30] [INF] Health check requested
+[2025-11-26 14:38:26.283 +05:30] [INF] Health check requested
+[2025-11-26 14:39:26.276 +05:30] [INF] Health check requested
+[2025-11-26 14:39:26.279 +05:30] [INF] Health check requested
+[2025-11-26 14:40:26.271 +05:30] [INF] Health check requested
+[2025-11-26 14:40:26.273 +05:30] [INF] Health check requested
+[2025-11-26 14:41:26.268 +05:30] [INF] Health check requested
+[2025-11-26 14:41:26.271 +05:30] [INF] Health check requested
+[2025-11-26 14:42:13.048 +05:30] [INF] Health check requested
+[2025-11-26 14:42:13.067 +05:30] [INF] Health check requested
+[2025-11-26 14:42:15.763 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:42:15.766 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:42:15.769 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:42:15.771 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:42:15.992 +05:30] [INF] Health check requested
+[2025-11-26 14:42:15.994 +05:30] [INF] Health check requested
+[2025-11-26 14:42:25.988 +05:30] [INF] Health check requested
+[2025-11-26 14:42:25.989 +05:30] [INF] Health check requested
+[2025-11-26 14:42:26.889 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:42:26.891 +05:30] [INF] Retrieved 1 bookings for user 3
+[2025-11-26 14:42:35.995 +05:30] [INF] Health check requested
+[2025-11-26 14:42:35.997 +05:30] [INF] Health check requested
+[2025-11-26 14:42:45.852 +05:30] [INF] SendOtp request received for booking 6
+[2025-11-26 14:42:45.918 +05:30] [INF] OTP generation requested for booking 6, email prabhath.galla@quixy.com
+[2025-11-26 14:42:45.924 +05:30] [INF] OTP rate limit check for booking 6: No previous requests
+[2025-11-26 14:42:45.948 +05:30] [INF] Generated new OTP for booking 6, expiry "2025-11-26T09:17:45.9483997Z"
+[2025-11-26 14:42:45.992 +05:30] [INF] Health check requested
+[2025-11-26 14:42:45.996 +05:30] [INF] Health check requested
+[2025-11-26 14:42:46.029 +05:30] [INF] Sending OTP email to prabhath.galla@quixy.com
+[2025-11-26 14:42:46.030 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-26 14:42:46.031 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-26 14:42:46.031 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-26 14:42:46.031 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-26 14:42:47.997 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-26 14:42:47.997 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-26 14:42:48.460 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-26 14:42:48.460 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-26 14:42:49.914 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-26 14:42:49.914 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-26 14:42:50.154 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-26 14:42:50.154 +05:30] [INF] OTP email sent successfully to prabhath.galla@quixy.com
+[2025-11-26 14:42:50.154 +05:30] [INF] OTP email sent successfully for booking 6 to prabhath.galla@quixy.com
+[2025-11-26 14:42:50.154 +05:30] [INF] Recorded OTP request for booking 6 at "2025-11-26T09:12:50.1549496Z"
+[2025-11-26 14:42:50.155 +05:30] [INF] OTP sent successfully for booking 6
+[2025-11-26 14:42:56.258 +05:30] [INF] Health check requested
+[2025-11-26 14:42:56.259 +05:30] [INF] Health check requested
+[2025-11-26 14:43:06.259 +05:30] [INF] Health check requested
+[2025-11-26 14:43:06.261 +05:30] [INF] Health check requested
+[2025-11-26 14:43:09.389 +05:30] [INF] VerifyOtp request received for booking 6
+[2025-11-26 14:43:09.392 +05:30] [INF] OTP validation requested for booking 6, email prabhath.galla@quixy.com
+[2025-11-26 14:43:09.397 +05:30] [INF] OTP validation successful for booking 6
+[2025-11-26 14:43:09.397 +05:30] [INF] OTP verified successfully for booking 6
+[2025-11-26 14:43:09.417 +05:30] [INF] ConfirmBooking request received for booking 6, email prabhath.galla@quixy.com
+[2025-11-26 14:43:09.420 +05:30] [INF] Confirming booking 6 for email prabhath.galla@quixy.com
+[2025-11-26 14:43:09.423 +05:30] [INF] Booking status updated to Confirmed for booking 6
+[2025-11-26 14:43:09.425 +05:30] [INF] Marking OTP as used for booking 6, email prabhath.galla@quixy.com
+[2025-11-26 14:43:09.433 +05:30] [INF] OTP marked as used for booking 6
+[2025-11-26 14:43:09.442 +05:30] [INF] Published message b7d597b3487a4cafb57fa0b22c68e79f to travel.bookings.
+[2025-11-26 14:43:09.442 +05:30] [INF] Booking confirmation message published to queue for booking 6
+[2025-11-26 14:43:09.442 +05:30] [INF] Booking confirmed successfully for booking 6
+[2025-11-26 14:43:16.006 +05:30] [INF] Health check requested
+[2025-11-26 14:43:16.008 +05:30] [INF] Health check requested
+[2025-11-26 14:43:25.987 +05:30] [INF] Health check requested
+[2025-11-26 14:43:25.989 +05:30] [INF] Health check requested
+[2025-11-26 14:43:33.173 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:43:33.177 +05:30] [INF] Retrieved 2 bookings for user 3
+[2025-11-26 14:43:33.180 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:43:33.182 +05:30] [INF] Retrieved 2 bookings for user 3
+[2025-11-26 14:43:34.782 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:43:34.783 +05:30] [INF] Retrieved 2 bookings for user 3
+[2025-11-26 14:43:34.786 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:43:34.788 +05:30] [INF] Retrieved 2 bookings for user 3
+[2025-11-26 14:43:35.979 +05:30] [INF] Health check requested
+[2025-11-26 14:43:35.981 +05:30] [INF] Health check requested
+[2025-11-26 14:43:45.977 +05:30] [INF] Health check requested
+[2025-11-26 14:43:45.978 +05:30] [INF] Health check requested
+[2025-11-26 14:43:55.982 +05:30] [INF] Health check requested
+[2025-11-26 14:43:55.984 +05:30] [INF] Health check requested
+[2025-11-26 14:44:05.983 +05:30] [INF] Health check requested
+[2025-11-26 14:44:05.985 +05:30] [INF] Health check requested
+[2025-11-26 14:44:15.982 +05:30] [INF] Health check requested
+[2025-11-26 14:44:15.985 +05:30] [INF] Health check requested
+[2025-11-26 14:44:26.253 +05:30] [INF] Health check requested
+[2025-11-26 14:44:26.255 +05:30] [INF] Health check requested
+[2025-11-26 14:44:36.263 +05:30] [INF] Health check requested
+[2025-11-26 14:44:36.265 +05:30] [INF] Health check requested
+[2025-11-26 14:44:46.256 +05:30] [INF] Health check requested
+[2025-11-26 14:44:46.258 +05:30] [INF] Health check requested
+[2025-11-26 14:44:56.257 +05:30] [INF] Health check requested
+[2025-11-26 14:44:56.259 +05:30] [INF] Health check requested
+[2025-11-26 14:45:06.251 +05:30] [INF] Health check requested
+[2025-11-26 14:45:06.253 +05:30] [INF] Health check requested
+[2025-11-26 14:45:16.260 +05:30] [INF] Health check requested
+[2025-11-26 14:45:16.261 +05:30] [INF] Health check requested
+[2025-11-26 14:45:26.261 +05:30] [INF] Health check requested
+[2025-11-26 14:45:26.262 +05:30] [INF] Health check requested
+[2025-11-26 14:45:36.248 +05:30] [INF] Health check requested
+[2025-11-26 14:45:36.249 +05:30] [INF] Health check requested
+[2025-11-26 14:45:46.250 +05:30] [INF] Health check requested
+[2025-11-26 14:45:46.252 +05:30] [INF] Health check requested
+[2025-11-26 14:46:26.248 +05:30] [INF] Health check requested
+[2025-11-26 14:46:26.250 +05:30] [INF] Health check requested
+[2025-11-26 14:47:26.255 +05:30] [INF] Health check requested
+[2025-11-26 14:47:26.256 +05:30] [INF] Health check requested
+[2025-11-26 14:48:26.251 +05:30] [INF] Health check requested
+[2025-11-26 14:48:26.253 +05:30] [INF] Health check requested
+[2025-11-26 14:49:26.259 +05:30] [INF] Health check requested
+[2025-11-26 14:49:26.261 +05:30] [INF] Health check requested
+[2025-11-26 14:50:07.230 +05:30] [INF] Health check requested
+[2025-11-26 14:50:07.235 +05:30] [INF] Health check requested
+[2025-11-26 14:50:15.977 +05:30] [INF] Health check requested
+[2025-11-26 14:50:15.980 +05:30] [INF] Health check requested
+[2025-11-26 14:50:26.248 +05:30] [INF] Health check requested
+[2025-11-26 14:50:26.249 +05:30] [INF] Health check requested
+[2025-11-26 14:50:36.247 +05:30] [INF] Health check requested
+[2025-11-26 14:50:36.249 +05:30] [INF] Health check requested
+[2025-11-26 14:50:46.247 +05:30] [INF] Health check requested
+[2025-11-26 14:50:46.249 +05:30] [INF] Health check requested
+[2025-11-26 14:50:55.976 +05:30] [INF] Health check requested
+[2025-11-26 14:50:55.978 +05:30] [INF] Health check requested
+[2025-11-26 14:51:06.252 +05:30] [INF] Health check requested
+[2025-11-26 14:51:06.254 +05:30] [INF] Health check requested
+[2025-11-26 14:51:15.978 +05:30] [INF] Health check requested
+[2025-11-26 14:51:15.979 +05:30] [INF] Health check requested
+[2025-11-26 14:51:25.981 +05:30] [INF] Health check requested
+[2025-11-26 14:51:25.982 +05:30] [INF] Health check requested
+[2025-11-26 14:51:35.980 +05:30] [INF] Health check requested
+[2025-11-26 14:51:35.982 +05:30] [INF] Health check requested
+[2025-11-26 14:51:45.981 +05:30] [INF] Health check requested
+[2025-11-26 14:51:45.982 +05:30] [INF] Health check requested
+[2025-11-26 14:51:55.984 +05:30] [INF] Health check requested
+[2025-11-26 14:51:55.985 +05:30] [INF] Health check requested
+[2025-11-26 14:52:05.996 +05:30] [INF] Health check requested
+[2025-11-26 14:52:05.998 +05:30] [INF] Health check requested
+[2025-11-26 14:52:15.981 +05:30] [INF] Health check requested
+[2025-11-26 14:52:15.983 +05:30] [INF] Health check requested
+[2025-11-26 14:52:25.980 +05:30] [INF] Health check requested
+[2025-11-26 14:52:25.982 +05:30] [INF] Health check requested
+[2025-11-26 14:52:35.980 +05:30] [INF] Health check requested
+[2025-11-26 14:52:35.981 +05:30] [INF] Health check requested
+[2025-11-26 14:52:38.278 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:52:38.280 +05:30] [INF] Retrieved 2 bookings for user 3
+[2025-11-26 14:52:38.283 +05:30] [INF] GetUserBookings request received
+[2025-11-26 14:52:38.285 +05:30] [INF] Retrieved 2 bookings for user 3
+[2025-11-26 14:52:45.981 +05:30] [INF] Health check requested
+[2025-11-26 14:52:45.983 +05:30] [INF] Health check requested
+[2025-11-26 14:52:55.982 +05:30] [INF] Health check requested
+[2025-11-26 14:52:55.984 +05:30] [INF] Health check requested
+[2025-11-26 14:53:05.980 +05:30] [INF] Health check requested
+[2025-11-26 14:53:05.982 +05:30] [INF] Health check requested
+[2025-11-26 14:53:15.982 +05:30] [INF] Health check requested
+[2025-11-26 14:53:15.983 +05:30] [INF] Health check requested
+[2025-11-26 14:53:25.972 +05:30] [INF] Health check requested
+[2025-11-26 14:53:25.973 +05:30] [INF] Health check requested
+[2025-11-26 14:53:35.978 +05:30] [INF] Health check requested
+[2025-11-26 14:53:35.979 +05:30] [INF] Health check requested
+[2025-11-26 14:53:45.981 +05:30] [INF] Health check requested
+[2025-11-26 14:53:45.985 +05:30] [INF] Health check requested
+[2025-11-26 14:53:55.991 +05:30] [INF] Health check requested
+[2025-11-26 14:53:55.992 +05:30] [INF] Health check requested
+[2025-11-26 14:54:05.982 +05:30] [INF] Health check requested
+[2025-11-26 14:54:05.983 +05:30] [INF] Health check requested
+[2025-11-26 14:54:15.982 +05:30] [INF] Health check requested
+[2025-11-26 14:54:15.984 +05:30] [INF] Health check requested
+[2025-11-26 14:54:25.982 +05:30] [INF] Health check requested
+[2025-11-26 14:54:25.983 +05:30] [INF] Health check requested
+[2025-11-26 14:54:35.984 +05:30] [INF] Health check requested
+[2025-11-26 14:54:35.985 +05:30] [INF] Health check requested
+[2025-11-26 14:54:45.981 +05:30] [INF] Health check requested
+[2025-11-26 14:54:45.983 +05:30] [INF] Health check requested
+[2025-11-26 14:54:55.982 +05:30] [INF] Health check requested
+[2025-11-26 14:54:55.983 +05:30] [INF] Health check requested
+[2025-11-26 14:55:05.984 +05:30] [INF] Health check requested
+[2025-11-26 14:55:05.985 +05:30] [INF] Health check requested
+[2025-11-26 14:55:15.983 +05:30] [INF] Health check requested
+[2025-11-26 14:55:15.984 +05:30] [INF] Health check requested
+[2025-11-26 14:55:25.981 +05:30] [INF] Health check requested
+[2025-11-26 14:55:25.982 +05:30] [INF] Health check requested
+[2025-11-26 14:55:35.980 +05:30] [INF] Health check requested
+[2025-11-26 14:55:35.981 +05:30] [INF] Health check requested
+[2025-11-26 14:55:45.984 +05:30] [INF] Health check requested
+[2025-11-26 14:55:45.985 +05:30] [INF] Health check requested
+[2025-11-26 14:55:55.980 +05:30] [INF] Health check requested
+[2025-11-26 14:55:55.982 +05:30] [INF] Health check requested
+[2025-11-26 14:56:05.997 +05:30] [INF] Health check requested
+[2025-11-26 14:56:05.998 +05:30] [INF] Health check requested
+[2025-11-26 14:56:15.997 +05:30] [INF] Health check requested
+[2025-11-26 14:56:15.999 +05:30] [INF] Health check requested
+[2025-11-26 14:56:25.982 +05:30] [INF] Health check requested
+[2025-11-26 14:56:25.984 +05:30] [INF] Health check requested
+[2025-11-26 14:56:35.972 +05:30] [INF] Health check requested
+[2025-11-26 14:56:35.975 +05:30] [INF] Health check requested
+[2025-11-26 14:56:46.257 +05:30] [INF] Health check requested
+[2025-11-26 14:56:46.258 +05:30] [INF] Health check requested
+[2025-11-26 14:56:56.246 +05:30] [INF] Health check requested
+[2025-11-26 14:56:56.249 +05:30] [INF] Health check requested
+[2025-11-26 14:57:06.246 +05:30] [INF] Health check requested
+[2025-11-26 14:57:06.248 +05:30] [INF] Health check requested
+[2025-11-26 14:57:16.264 +05:30] [INF] Health check requested
+[2025-11-26 14:57:16.265 +05:30] [INF] Health check requested
+[2025-11-26 14:57:26.261 +05:30] [INF] Health check requested
+[2025-11-26 14:57:26.263 +05:30] [INF] Health check requested
+[2025-11-26 14:57:36.245 +05:30] [INF] Health check requested
+[2025-11-26 14:57:36.246 +05:30] [INF] Health check requested
+[2025-11-26 14:58:26.247 +05:30] [INF] Health check requested
+[2025-11-26 14:58:26.249 +05:30] [INF] Health check requested
+[2025-11-26 14:59:26.258 +05:30] [INF] Health check requested
+[2025-11-26 14:59:26.260 +05:30] [INF] Health check requested
+[2025-11-26 15:00:26.238 +05:30] [INF] Health check requested
+[2025-11-26 15:00:26.240 +05:30] [INF] Health check requested
+[2025-11-26 15:01:18.565 +05:30] [INF] Health check requested
+[2025-11-26 15:01:18.567 +05:30] [INF] Health check requested
+[2025-11-26 15:01:25.968 +05:30] [INF] Health check requested
+[2025-11-26 15:01:25.969 +05:30] [INF] Health check requested
+[2025-11-26 15:01:35.964 +05:30] [INF] Health check requested
+[2025-11-26 15:01:35.967 +05:30] [INF] Health check requested
+[2025-11-26 15:01:46.239 +05:30] [INF] Health check requested
+[2025-11-26 15:01:46.241 +05:30] [INF] Health check requested
+[2025-11-26 15:01:56.231 +05:30] [INF] Health check requested
+[2025-11-26 15:01:56.233 +05:30] [INF] Health check requested
+[2025-11-26 15:02:06.240 +05:30] [INF] Health check requested
+[2025-11-26 15:02:06.241 +05:30] [INF] Health check requested
+[2025-11-26 15:02:16.246 +05:30] [INF] Health check requested
+[2025-11-26 15:02:16.247 +05:30] [INF] Health check requested
+[2025-11-26 15:02:26.229 +05:30] [INF] Health check requested
+[2025-11-26 15:02:26.231 +05:30] [INF] Health check requested
+[2025-11-26 15:02:36.245 +05:30] [INF] Health check requested
+[2025-11-26 15:02:36.247 +05:30] [INF] Health check requested
+[2025-11-26 15:03:26.245 +05:30] [INF] Health check requested
+[2025-11-26 15:03:26.249 +05:30] [INF] Health check requested
+[2025-11-26 15:04:26.237 +05:30] [INF] Health check requested
+[2025-11-26 15:04:26.241 +05:30] [INF] Health check requested
+[2025-11-26 15:05:26.234 +05:30] [INF] Health check requested
+[2025-11-26 15:05:26.236 +05:30] [INF] Health check requested
+[2025-11-26 15:06:26.245 +05:30] [INF] Health check requested
+[2025-11-26 15:06:26.247 +05:30] [INF] Health check requested
+[2025-11-26 15:07:26.244 +05:30] [INF] Health check requested
+[2025-11-26 15:07:26.246 +05:30] [INF] Health check requested
+[2025-11-26 15:08:26.254 +05:30] [INF] Health check requested
+[2025-11-26 15:08:26.256 +05:30] [INF] Health check requested
+[2025-11-26 15:11:47.274 +05:30] [INF] BookingReminderService started
+[2025-11-26 15:11:47.510 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-26 15:11:47.511 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-26 15:11:47.512 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-26 15:11:47.512 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-26 15:11:47.512 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-26 15:11:47.512 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-26 15:11:47.513 +05:30] [INF] Dead-letter queue 'travel.reschedule.dlq' already exists.
+[2025-11-26 15:11:47.513 +05:30] [INF] Queue 'travel.reschedule' already exists.
+[2025-11-26 15:11:47.513 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-26 15:11:47.513 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-26 15:11:47.520 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-26 15:11:47.523 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-26 15:11:47.526 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-26 15:11:47.529 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-26 15:11:47.532 +05:30] [INF] Reschedule email queue consumer subscribed to travel.reschedule.
+[2025-11-26 15:11:47.924 +05:30] [INF] Health check requested
+[2025-11-26 15:11:48.005 +05:30] [INF] Health check requested
+[2025-11-26 15:11:48.072 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:11:48.220 +05:30] [INF] Retrieved 2 bookings for user 3
+[2025-11-26 15:11:48.226 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:11:48.227 +05:30] [INF] Retrieved 2 bookings for user 3
+[2025-11-26 15:11:56.233 +05:30] [INF] Health check requested
+[2025-11-26 15:11:56.234 +05:30] [INF] Health check requested
+[2025-11-26 15:12:06.236 +05:30] [INF] Health check requested
+[2025-11-26 15:12:06.241 +05:30] [INF] Health check requested
+[2025-11-26 15:12:15.809 +05:30] [INF] Health check requested
+[2025-11-26 15:12:16.044 +05:30] [INF] Health check requested
+[2025-11-26 15:12:26.246 +05:30] [INF] Health check requested
+[2025-11-26 15:12:26.251 +05:30] [INF] Health check requested
+[2025-11-26 15:12:36.241 +05:30] [INF] Health check requested
+[2025-11-26 15:12:36.243 +05:30] [INF] Health check requested
+[2025-11-26 15:12:45.813 +05:30] [INF] Health check requested
+[2025-11-26 15:12:46.062 +05:30] [INF] Health check requested
+[2025-11-26 15:12:56.229 +05:30] [INF] Health check requested
+[2025-11-26 15:12:56.231 +05:30] [INF] Health check requested
+[2025-11-26 15:13:06.235 +05:30] [INF] Health check requested
+[2025-11-26 15:13:06.240 +05:30] [INF] Health check requested
+[2025-11-26 15:13:16.236 +05:30] [INF] Health check requested
+[2025-11-26 15:13:16.266 +05:30] [INF] Health check requested
+[2025-11-26 15:13:26.239 +05:30] [INF] Health check requested
+[2025-11-26 15:13:26.241 +05:30] [INF] Health check requested
+[2025-11-26 15:13:35.817 +05:30] [INF] Health check requested
+[2025-11-26 15:13:36.050 +05:30] [INF] Health check requested
+[2025-11-26 15:13:46.241 +05:30] [INF] Health check requested
+[2025-11-26 15:13:46.253 +05:30] [INF] Health check requested
+[2025-11-26 15:13:56.244 +05:30] [INF] Health check requested
+[2025-11-26 15:13:56.248 +05:30] [INF] Health check requested
+[2025-11-26 15:14:06.233 +05:30] [INF] Health check requested
+[2025-11-26 15:14:06.238 +05:30] [INF] Health check requested
+[2025-11-26 15:14:16.231 +05:30] [INF] Health check requested
+[2025-11-26 15:14:16.236 +05:30] [INF] Health check requested
+[2025-11-26 15:14:26.235 +05:30] [INF] Health check requested
+[2025-11-26 15:14:26.238 +05:30] [INF] Health check requested
+[2025-11-26 15:15:26.254 +05:30] [INF] Health check requested
+[2025-11-26 15:15:26.260 +05:30] [INF] Health check requested
+[2025-11-26 15:16:26.254 +05:30] [INF] Health check requested
+[2025-11-26 15:16:26.260 +05:30] [INF] Health check requested
+[2025-11-26 15:17:01.192 +05:30] [INF] Health check requested
+[2025-11-26 15:17:01.194 +05:30] [INF] Health check requested
+[2025-11-26 15:17:06.230 +05:30] [INF] Health check requested
+[2025-11-26 15:17:06.234 +05:30] [INF] Health check requested
+[2025-11-26 15:17:15.814 +05:30] [INF] Health check requested
+[2025-11-26 15:17:16.043 +05:30] [INF] Health check requested
+[2025-11-26 15:17:16.204 +05:30] [INF] SendOtp request received for booking 7
+[2025-11-26 15:17:16.293 +05:30] [INF] OTP generation requested for booking 7, email prabhath.galla@quixy.com
+[2025-11-26 15:17:16.300 +05:30] [INF] OTP rate limit check for booking 7: No previous requests
+[2025-11-26 15:17:16.324 +05:30] [INF] Generated new OTP for booking 7, expiry "2025-11-26T09:52:16.3240970Z"
+[2025-11-26 15:17:16.551 +05:30] [INF] Sending OTP email to prabhath.galla@quixy.com
+[2025-11-26 15:17:16.587 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-26 15:17:16.588 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-26 15:17:16.670 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-26 15:17:16.675 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-26 15:17:18.743 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-26 15:17:18.744 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-26 15:17:19.219 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-26 15:17:19.219 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-26 15:17:20.874 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Your OTP for Booking Verification
+[2025-11-26 15:17:20.874 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-26 15:17:21.117 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-26 15:17:21.119 +05:30] [INF] OTP email sent successfully to prabhath.galla@quixy.com
+[2025-11-26 15:17:21.120 +05:30] [INF] OTP email sent successfully for booking 7 to prabhath.galla@quixy.com
+[2025-11-26 15:17:21.124 +05:30] [INF] Recorded OTP request for booking 7 at "2025-11-26T09:47:21.1243893Z"
+[2025-11-26 15:17:21.127 +05:30] [INF] OTP sent successfully for booking 7
+[2025-11-26 15:17:26.238 +05:30] [INF] Health check requested
+[2025-11-26 15:17:26.256 +05:30] [INF] Health check requested
+[2025-11-26 15:17:33.387 +05:30] [INF] VerifyOtp request received for booking 7
+[2025-11-26 15:17:33.389 +05:30] [INF] OTP validation requested for booking 7, email prabhath.galla@quixy.com
+[2025-11-26 15:17:33.397 +05:30] [INF] OTP validation successful for booking 7
+[2025-11-26 15:17:33.397 +05:30] [INF] OTP verified successfully for booking 7
+[2025-11-26 15:17:33.409 +05:30] [INF] ConfirmBooking request received for booking 7, email prabhath.galla@quixy.com
+[2025-11-26 15:17:33.412 +05:30] [INF] Confirming booking 7 for email prabhath.galla@quixy.com
+[2025-11-26 15:17:33.440 +05:30] [INF] Booking status updated to Confirmed for booking 7
+[2025-11-26 15:17:33.443 +05:30] [INF] Marking OTP as used for booking 7, email prabhath.galla@quixy.com
+[2025-11-26 15:17:33.450 +05:30] [INF] OTP marked as used for booking 7
+[2025-11-26 15:17:33.470 +05:30] [INF] Published message 5647776ab0c8455bbe4121578e8c0067 to travel.bookings.
+[2025-11-26 15:17:33.470 +05:30] [INF] Booking confirmation message published to queue for booking 7
+[2025-11-26 15:17:33.470 +05:30] [INF] Booking confirmed successfully for booking 7
+[2025-11-26 15:17:33.490 +05:30] [INF] Email sending initiated - To: prabhath.galla@quixy.com, Subject: Booking Confirmation #7
+[2025-11-26 15:17:33.490 +05:30] [INF] SMTP Configuration loaded - Host: smtp.gmail.com:587, From: prabhathgalla@gmail.com
+[2025-11-26 15:17:33.491 +05:30] [INF] MimeMessage constructed - From: prabhathgalla@gmail.com, To: prabhath.galla@quixy.com, Subject: Booking Confirmation #7
+[2025-11-26 15:17:33.491 +05:30] [INF] Attempting SMTP connection (Attempt 1/3) - Host: smtp.gmail.com:587
+[2025-11-26 15:17:34.947 +05:30] [INF] SMTP connection established successfully - Host: smtp.gmail.com:587
+[2025-11-26 15:17:34.947 +05:30] [INF] Attempting SMTP authentication - Username: prabhathgalla@gmail.com
+[2025-11-26 15:17:35.381 +05:30] [INF] SMTP authentication succeeded - Username: prabhathgalla@gmail.com
+[2025-11-26 15:17:35.381 +05:30] [INF] Sending email message - To: prabhath.galla@quixy.com, Subject: Booking Confirmation #7
+[2025-11-26 15:17:36.231 +05:30] [INF] Health check requested
+[2025-11-26 15:17:36.233 +05:30] [INF] Health check requested
+[2025-11-26 15:17:36.742 +05:30] [INF] Email sent successfully - To: prabhath.galla@quixy.com, Subject: Booking Confirmation #7
+[2025-11-26 15:17:36.743 +05:30] [INF] Disconnecting from SMTP server - Host: smtp.gmail.com:587
+[2025-11-26 15:17:36.982 +05:30] [INF] SMTP disconnection completed gracefully
+[2025-11-26 15:17:36.983 +05:30] [INF] Booking message processed. MessageId 5647776ab0c8455bbe4121578e8c0067.
+[2025-11-26 15:17:46.233 +05:30] [INF] Health check requested
+[2025-11-26 15:17:46.236 +05:30] [INF] Health check requested
+[2025-11-26 15:17:56.234 +05:30] [INF] Health check requested
+[2025-11-26 15:17:56.236 +05:30] [INF] Health check requested
+[2025-11-26 15:18:06.224 +05:30] [INF] Health check requested
+[2025-11-26 15:18:06.227 +05:30] [INF] Health check requested
+[2025-11-26 15:18:16.222 +05:30] [INF] Health check requested
+[2025-11-26 15:18:16.223 +05:30] [INF] Health check requested
+[2025-11-26 15:18:26.228 +05:30] [INF] Health check requested
+[2025-11-26 15:18:26.229 +05:30] [INF] Health check requested
+[2025-11-26 15:18:36.227 +05:30] [INF] Health check requested
+[2025-11-26 15:18:36.229 +05:30] [INF] Health check requested
+[2025-11-26 15:19:26.221 +05:30] [INF] Health check requested
+[2025-11-26 15:19:26.223 +05:30] [INF] Health check requested
+[2025-11-26 15:20:26.222 +05:30] [INF] Health check requested
+[2025-11-26 15:20:26.224 +05:30] [INF] Health check requested
+[2025-11-26 15:21:26.234 +05:30] [INF] Health check requested
+[2025-11-26 15:21:26.238 +05:30] [INF] Health check requested
+[2025-11-26 15:22:26.223 +05:30] [INF] Health check requested
+[2025-11-26 15:22:26.227 +05:30] [INF] Health check requested
+[2025-11-26 15:23:26.229 +05:30] [INF] Health check requested
+[2025-11-26 15:23:26.233 +05:30] [INF] Health check requested
+[2025-11-26 15:24:26.230 +05:30] [INF] Health check requested
+[2025-11-26 15:24:26.232 +05:30] [INF] Health check requested
+[2025-11-26 15:25:26.230 +05:30] [INF] Health check requested
+[2025-11-26 15:25:26.234 +05:30] [INF] Health check requested
+[2025-11-26 15:26:26.224 +05:30] [INF] Health check requested
+[2025-11-26 15:26:26.226 +05:30] [INF] Health check requested
+[2025-11-26 15:27:26.222 +05:30] [INF] Health check requested
+[2025-11-26 15:27:26.225 +05:30] [INF] Health check requested
+[2025-11-26 15:28:26.235 +05:30] [INF] Health check requested
+[2025-11-26 15:28:26.239 +05:30] [INF] Health check requested
+[2025-11-26 15:28:52.571 +05:30] [INF] Health check requested
+[2025-11-26 15:28:52.574 +05:30] [INF] Health check requested
+[2025-11-26 15:28:54.601 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:28:54.603 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 15:28:54.605 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:28:54.607 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 15:28:55.799 +05:30] [INF] Health check requested
+[2025-11-26 15:28:56.033 +05:30] [INF] Health check requested
+[2025-11-26 15:28:56.458 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:28:56.460 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 15:28:56.462 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:28:56.465 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 15:29:05.809 +05:30] [INF] Health check requested
+[2025-11-26 15:29:06.042 +05:30] [INF] Health check requested
+[2025-11-26 15:29:07.678 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:29:07.680 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 15:29:07.736 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:29:07.741 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 15:29:07.745 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:29:07.748 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 15:29:16.022 +05:30] [INF] Health check requested
+[2025-11-26 15:29:16.028 +05:30] [INF] Health check requested
+[2025-11-26 15:29:26.236 +05:30] [INF] Health check requested
+[2025-11-26 15:29:26.239 +05:30] [INF] Health check requested
+[2025-11-26 15:29:36.213 +05:30] [INF] Health check requested
+[2025-11-26 15:29:36.214 +05:30] [INF] Health check requested
+[2025-11-26 15:29:46.240 +05:30] [INF] Health check requested
+[2025-11-26 15:29:46.242 +05:30] [INF] Health check requested
+[2025-11-26 15:29:56.224 +05:30] [INF] Health check requested
+[2025-11-26 15:29:56.226 +05:30] [INF] Health check requested
+[2025-11-26 15:30:06.213 +05:30] [INF] Health check requested
+[2025-11-26 15:30:06.216 +05:30] [INF] Health check requested
+[2025-11-26 15:31:58.572 +05:30] [INF] BookingReminderService started
+[2025-11-26 15:31:58.753 +05:30] [INF] Dead-letter queue 'travel.bookings.dlq' already exists.
+[2025-11-26 15:31:58.754 +05:30] [INF] Queue 'travel.bookings' already exists.
+[2025-11-26 15:31:58.755 +05:30] [INF] Dead-letter queue 'travel.admin.dlq' already exists.
+[2025-11-26 15:31:58.755 +05:30] [INF] Queue 'travel.admin' already exists.
+[2025-11-26 15:31:58.755 +05:30] [INF] Dead-letter queue 'travel.cancellations.dlq' already exists.
+[2025-11-26 15:31:58.756 +05:30] [INF] Queue 'travel.cancellations' already exists.
+[2025-11-26 15:31:58.757 +05:30] [INF] Dead-letter queue 'travel.reschedule.dlq' already exists.
+[2025-11-26 15:31:58.757 +05:30] [INF] Queue 'travel.reschedule' already exists.
+[2025-11-26 15:31:58.757 +05:30] [INF] RabbitMQ topology configured successfully.
+[2025-11-26 15:31:58.758 +05:30] [INF] RabbitMQ connection established to localhost:5672.
+[2025-11-26 15:31:58.763 +05:30] [INF] Email queue consumer subscribed to travel.admin.
+[2025-11-26 15:31:58.766 +05:30] [INF] Booking queue consumer subscribed to travel.bookings.
+[2025-11-26 15:31:58.769 +05:30] [INF] Booking email queue consumer subscribed to travel.bookings.
+[2025-11-26 15:31:58.772 +05:30] [INF] Cancellation email queue consumer subscribed to travel.cancellations.
+[2025-11-26 15:31:58.776 +05:30] [INF] Reschedule email queue consumer subscribed to travel.reschedule.
+[2025-11-26 15:32:00.532 +05:30] [INF] Health check requested
+[2025-11-26 15:32:00.606 +05:30] [INF] Health check requested
+[2025-11-26 15:32:00.678 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:32:00.787 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 15:32:00.795 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:32:00.797 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 15:32:05.809 +05:30] [INF] Health check requested
+[2025-11-26 15:32:06.041 +05:30] [INF] Health check requested
+[2025-11-26 15:32:12.043 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:32:12.046 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 15:32:12.051 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:32:12.053 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 15:32:15.803 +05:30] [INF] Health check requested
+[2025-11-26 15:32:16.042 +05:30] [INF] Health check requested
+[2025-11-26 15:32:25.793 +05:30] [INF] Health check requested
+[2025-11-26 15:32:26.032 +05:30] [INF] Health check requested
+[2025-11-26 15:32:34.695 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:32:34.697 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 15:32:34.700 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:32:34.702 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 15:32:35.792 +05:30] [INF] Health check requested
+[2025-11-26 15:32:36.034 +05:30] [INF] Health check requested
+[2025-11-26 15:32:45.792 +05:30] [INF] Health check requested
+[2025-11-26 15:32:46.042 +05:30] [INF] Health check requested
+[2025-11-26 15:32:55.798 +05:30] [INF] Health check requested
+[2025-11-26 15:32:56.032 +05:30] [INF] Health check requested
+[2025-11-26 15:33:05.791 +05:30] [INF] Health check requested
+[2025-11-26 15:33:06.036 +05:30] [INF] Health check requested
+[2025-11-26 15:33:15.788 +05:30] [INF] Health check requested
+[2025-11-26 15:33:16.037 +05:30] [INF] Health check requested
+[2025-11-26 15:33:25.790 +05:30] [INF] Health check requested
+[2025-11-26 15:33:26.034 +05:30] [INF] Health check requested
+[2025-11-26 15:33:35.792 +05:30] [INF] Health check requested
+[2025-11-26 15:33:36.052 +05:30] [INF] Health check requested
+[2025-11-26 15:33:46.222 +05:30] [INF] Health check requested
+[2025-11-26 15:33:46.223 +05:30] [INF] Health check requested
+[2025-11-26 15:33:56.219 +05:30] [INF] Health check requested
+[2025-11-26 15:33:56.223 +05:30] [INF] Health check requested
+[2025-11-26 15:34:06.217 +05:30] [INF] Health check requested
+[2025-11-26 15:34:06.221 +05:30] [INF] Health check requested
+[2025-11-26 15:34:16.211 +05:30] [INF] Health check requested
+[2025-11-26 15:34:16.213 +05:30] [INF] Health check requested
+[2025-11-26 15:34:26.223 +05:30] [INF] Health check requested
+[2025-11-26 15:34:26.225 +05:30] [INF] Health check requested
+[2025-11-26 15:34:36.209 +05:30] [INF] Health check requested
+[2025-11-26 15:34:36.213 +05:30] [INF] Health check requested
+[2025-11-26 15:35:26.224 +05:30] [INF] Health check requested
+[2025-11-26 15:35:26.237 +05:30] [INF] Health check requested
+[2025-11-26 15:36:26.220 +05:30] [INF] Health check requested
+[2025-11-26 15:36:26.223 +05:30] [INF] Health check requested
+[2025-11-26 15:37:26.219 +05:30] [INF] Health check requested
+[2025-11-26 15:37:26.221 +05:30] [INF] Health check requested
+[2025-11-26 15:38:26.223 +05:30] [INF] Health check requested
+[2025-11-26 15:38:26.227 +05:30] [INF] Health check requested
+[2025-11-26 15:39:15.212 +05:30] [INF] Health check requested
+[2025-11-26 15:39:15.213 +05:30] [INF] Health check requested
+[2025-11-26 15:39:15.215 +05:30] [INF] Health check requested
+[2025-11-26 15:39:15.221 +05:30] [INF] Health check requested
+[2025-11-26 15:39:15.227 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:39:15.230 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 15:39:15.242 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:39:15.243 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 15:39:19.241 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:39:19.243 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 15:39:22.233 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:39:22.234 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 15:39:26.210 +05:30] [INF] Health check requested
+[2025-11-26 15:39:26.212 +05:30] [INF] Health check requested
+[2025-11-26 15:39:26.214 +05:30] [INF] Health check requested
+[2025-11-26 15:39:36.216 +05:30] [INF] Health check requested
+[2025-11-26 15:39:36.220 +05:30] [INF] Health check requested
+[2025-11-26 15:39:46.207 +05:30] [INF] Health check requested
+[2025-11-26 15:39:46.209 +05:30] [INF] Health check requested
+[2025-11-26 15:39:56.209 +05:30] [INF] Health check requested
+[2025-11-26 15:39:56.210 +05:30] [INF] Health check requested
+[2025-11-26 15:40:06.213 +05:30] [INF] Health check requested
+[2025-11-26 15:40:06.216 +05:30] [INF] Health check requested
+[2025-11-26 15:40:16.211 +05:30] [INF] Health check requested
+[2025-11-26 15:40:16.214 +05:30] [INF] Health check requested
+[2025-11-26 15:40:26.206 +05:30] [INF] Health check requested
+[2025-11-26 15:40:26.208 +05:30] [INF] Health check requested
+[2025-11-26 15:40:26.210 +05:30] [INF] Health check requested
+[2025-11-26 15:40:35.384 +05:30] [INF] Health check requested
+[2025-11-26 15:40:35.385 +05:30] [INF] Health check requested
+[2025-11-26 15:40:35.779 +05:30] [INF] Health check requested
+[2025-11-26 15:40:45.232 +05:30] [INF] Health check requested
+[2025-11-26 15:40:45.234 +05:30] [INF] Health check requested
+[2025-11-26 15:40:45.778 +05:30] [INF] Health check requested
+[2025-11-26 15:40:48.171 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:40:48.172 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 15:40:48.174 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:40:48.176 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 15:40:55.218 +05:30] [INF] Health check requested
+[2025-11-26 15:40:55.224 +05:30] [INF] Health check requested
+[2025-11-26 15:40:55.793 +05:30] [INF] Health check requested
+[2025-11-26 15:41:05.225 +05:30] [INF] Health check requested
+[2025-11-26 15:41:05.231 +05:30] [INF] Health check requested
+[2025-11-26 15:41:05.776 +05:30] [INF] Health check requested
+[2025-11-26 15:41:15.247 +05:30] [INF] Health check requested
+[2025-11-26 15:41:15.250 +05:30] [INF] Health check requested
+[2025-11-26 15:41:15.790 +05:30] [INF] Health check requested
+[2025-11-26 15:41:24.493 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:41:24.495 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 15:41:24.497 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:41:24.499 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 15:41:25.216 +05:30] [INF] Health check requested
+[2025-11-26 15:41:25.225 +05:30] [INF] Health check requested
+[2025-11-26 15:41:25.780 +05:30] [INF] Health check requested
+[2025-11-26 15:41:35.230 +05:30] [INF] Health check requested
+[2025-11-26 15:41:35.231 +05:30] [INF] Health check requested
+[2025-11-26 15:41:35.776 +05:30] [INF] Health check requested
+[2025-11-26 15:41:45.216 +05:30] [INF] Health check requested
+[2025-11-26 15:41:45.220 +05:30] [INF] Health check requested
+[2025-11-26 15:41:45.779 +05:30] [INF] Health check requested
+[2025-11-26 15:41:55.214 +05:30] [INF] Health check requested
+[2025-11-26 15:41:55.221 +05:30] [INF] Health check requested
+[2025-11-26 15:41:55.485 +05:30] [INF] GetUserBookings request received
+[2025-11-26 15:41:55.487 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 15:41:55.778 +05:30] [INF] Health check requested
+[2025-11-26 15:42:06.201 +05:30] [INF] Health check requested
+[2025-11-26 15:42:06.205 +05:30] [INF] Health check requested
+[2025-11-26 15:42:06.208 +05:30] [INF] Health check requested
+[2025-11-26 15:42:15.233 +05:30] [INF] Health check requested
+[2025-11-26 15:42:15.236 +05:30] [INF] Health check requested
+[2025-11-26 15:42:16.202 +05:30] [INF] Health check requested
+[2025-11-26 15:42:26.206 +05:30] [INF] Health check requested
+[2025-11-26 15:42:26.208 +05:30] [INF] Health check requested
+[2025-11-26 15:42:26.209 +05:30] [INF] Health check requested
+[2025-11-26 15:42:36.208 +05:30] [INF] Health check requested
+[2025-11-26 15:42:36.211 +05:30] [INF] Health check requested
+[2025-11-26 15:42:36.213 +05:30] [INF] Health check requested
+[2025-11-26 15:42:46.210 +05:30] [INF] Health check requested
+[2025-11-26 15:42:46.212 +05:30] [INF] Health check requested
+[2025-11-26 15:42:46.214 +05:30] [INF] Health check requested
+[2025-11-26 15:42:56.198 +05:30] [INF] Health check requested
+[2025-11-26 15:42:56.200 +05:30] [INF] Health check requested
+[2025-11-26 15:42:56.202 +05:30] [INF] Health check requested
+[2025-11-26 15:43:26.209 +05:30] [INF] Health check requested
+[2025-11-26 15:43:26.215 +05:30] [INF] Health check requested
+[2025-11-26 15:43:26.221 +05:30] [INF] Health check requested
+[2025-11-26 15:44:26.209 +05:30] [INF] Health check requested
+[2025-11-26 15:44:26.214 +05:30] [INF] Health check requested
+[2025-11-26 15:44:26.220 +05:30] [INF] Health check requested
+[2025-11-26 15:45:26.213 +05:30] [INF] Health check requested
+[2025-11-26 15:45:26.214 +05:30] [INF] Health check requested
+[2025-11-26 15:45:26.216 +05:30] [INF] Health check requested
+[2025-11-26 15:46:26.215 +05:30] [INF] Health check requested
+[2025-11-26 15:46:26.218 +05:30] [INF] Health check requested
+[2025-11-26 15:46:26.224 +05:30] [INF] Health check requested
+[2025-11-26 15:47:26.204 +05:30] [INF] Health check requested
+[2025-11-26 15:47:26.206 +05:30] [INF] Health check requested
+[2025-11-26 15:47:26.208 +05:30] [INF] Health check requested
+[2025-11-26 15:48:26.199 +05:30] [INF] Health check requested
+[2025-11-26 15:48:26.200 +05:30] [INF] Health check requested
+[2025-11-26 15:48:26.202 +05:30] [INF] Health check requested
+[2025-11-26 15:48:35.212 +05:30] [INF] Health check requested
+[2025-11-26 15:48:35.224 +05:30] [INF] Health check requested
+[2025-11-26 15:48:35.781 +05:30] [INF] Health check requested
+[2025-11-26 15:48:45.244 +05:30] [INF] Health check requested
+[2025-11-26 15:48:45.248 +05:30] [INF] Health check requested
+[2025-11-26 15:48:45.787 +05:30] [INF] Health check requested
+[2025-11-26 15:48:55.227 +05:30] [INF] Health check requested
+[2025-11-26 15:48:55.231 +05:30] [INF] Health check requested
+[2025-11-26 15:48:55.787 +05:30] [INF] Health check requested
+[2025-11-26 15:49:05.213 +05:30] [INF] Health check requested
+[2025-11-26 15:49:05.220 +05:30] [INF] Health check requested
+[2025-11-26 15:49:05.786 +05:30] [INF] Health check requested
+[2025-11-26 15:49:15.213 +05:30] [INF] Health check requested
+[2025-11-26 15:49:15.215 +05:30] [INF] Health check requested
+[2025-11-26 15:49:15.779 +05:30] [INF] Health check requested
+[2025-11-26 15:49:26.194 +05:30] [INF] Health check requested
+[2025-11-26 15:49:26.195 +05:30] [INF] Health check requested
+[2025-11-26 15:49:26.197 +05:30] [INF] Health check requested
+[2025-11-26 15:49:36.206 +05:30] [INF] Health check requested
+[2025-11-26 15:49:36.207 +05:30] [INF] Health check requested
+[2025-11-26 15:49:36.208 +05:30] [INF] Health check requested
+[2025-11-26 15:49:46.192 +05:30] [INF] Health check requested
+[2025-11-26 15:49:46.193 +05:30] [INF] Health check requested
+[2025-11-26 15:49:46.194 +05:30] [INF] Health check requested
+[2025-11-26 15:49:55.222 +05:30] [INF] Health check requested
+[2025-11-26 15:49:55.224 +05:30] [INF] Health check requested
+[2025-11-26 15:49:56.206 +05:30] [INF] Health check requested
+[2025-11-26 15:50:05.222 +05:30] [INF] Health check requested
+[2025-11-26 15:50:05.224 +05:30] [INF] Health check requested
+[2025-11-26 15:50:06.190 +05:30] [INF] Health check requested
+[2025-11-26 15:50:16.190 +05:30] [INF] Health check requested
+[2025-11-26 15:50:16.192 +05:30] [INF] Health check requested
+[2025-11-26 15:50:16.194 +05:30] [INF] Health check requested
+[2025-11-26 15:50:26.191 +05:30] [INF] Health check requested
+[2025-11-26 15:50:26.192 +05:30] [INF] Health check requested
+[2025-11-26 15:50:26.194 +05:30] [INF] Health check requested
+[2025-11-26 15:51:26.194 +05:30] [INF] Health check requested
+[2025-11-26 15:51:26.196 +05:30] [INF] Health check requested
+[2025-11-26 15:51:26.198 +05:30] [INF] Health check requested
+[2025-11-26 15:52:26.188 +05:30] [INF] Health check requested
+[2025-11-26 15:52:26.189 +05:30] [INF] Health check requested
+[2025-11-26 15:52:26.190 +05:30] [INF] Health check requested
+[2025-11-26 15:53:26.189 +05:30] [INF] Health check requested
+[2025-11-26 15:53:26.191 +05:30] [INF] Health check requested
+[2025-11-26 15:53:26.192 +05:30] [INF] Health check requested
+[2025-11-26 15:54:26.188 +05:30] [INF] Health check requested
+[2025-11-26 15:54:26.191 +05:30] [INF] Health check requested
+[2025-11-26 15:54:26.194 +05:30] [INF] Health check requested
+[2025-11-26 15:55:26.186 +05:30] [INF] Health check requested
+[2025-11-26 15:55:26.188 +05:30] [INF] Health check requested
+[2025-11-26 15:55:26.189 +05:30] [INF] Health check requested
+[2025-11-26 15:56:26.187 +05:30] [INF] Health check requested
+[2025-11-26 15:56:26.190 +05:30] [INF] Health check requested
+[2025-11-26 15:56:26.192 +05:30] [INF] Health check requested
+[2025-11-26 15:57:01.451 +05:30] [INF] Health check requested
+[2025-11-26 15:57:01.454 +05:30] [INF] Health check requested
+[2025-11-26 15:57:01.455 +05:30] [INF] Health check requested
+[2025-11-26 15:57:05.215 +05:30] [INF] Health check requested
+[2025-11-26 15:57:05.218 +05:30] [INF] Health check requested
+[2025-11-26 15:57:05.760 +05:30] [INF] Health check requested
+[2025-11-26 15:57:15.215 +05:30] [INF] Health check requested
+[2025-11-26 15:57:15.218 +05:30] [INF] Health check requested
+[2025-11-26 15:57:15.760 +05:30] [INF] Health check requested
+[2025-11-26 15:57:25.198 +05:30] [INF] Health check requested
+[2025-11-26 15:57:25.215 +05:30] [INF] Health check requested
+[2025-11-26 15:57:25.770 +05:30] [INF] Health check requested
+[2025-11-26 15:57:35.229 +05:30] [INF] Health check requested
+[2025-11-26 15:57:35.233 +05:30] [INF] Health check requested
+[2025-11-26 15:57:35.776 +05:30] [INF] Health check requested
+[2025-11-26 15:57:45.197 +05:30] [INF] Health check requested
+[2025-11-26 15:57:45.203 +05:30] [INF] Health check requested
+[2025-11-26 15:57:45.767 +05:30] [INF] Health check requested
+[2025-11-26 15:57:55.206 +05:30] [INF] Health check requested
+[2025-11-26 15:57:55.210 +05:30] [INF] Health check requested
+[2025-11-26 15:57:55.761 +05:30] [INF] Health check requested
+[2025-11-26 15:58:05.211 +05:30] [INF] Health check requested
+[2025-11-26 15:58:05.213 +05:30] [INF] Health check requested
+[2025-11-26 15:58:05.775 +05:30] [INF] Health check requested
+[2025-11-26 15:58:15.213 +05:30] [INF] Health check requested
+[2025-11-26 15:58:15.215 +05:30] [INF] Health check requested
+[2025-11-26 15:58:15.761 +05:30] [INF] Health check requested
+[2025-11-26 15:58:25.212 +05:30] [INF] Health check requested
+[2025-11-26 15:58:25.213 +05:30] [INF] Health check requested
+[2025-11-26 15:58:25.773 +05:30] [INF] Health check requested
+[2025-11-26 15:58:35.215 +05:30] [INF] Health check requested
+[2025-11-26 15:58:35.218 +05:30] [INF] Health check requested
+[2025-11-26 15:58:35.760 +05:30] [INF] Health check requested
+[2025-11-26 15:58:45.210 +05:30] [INF] Health check requested
+[2025-11-26 15:58:45.211 +05:30] [INF] Health check requested
+[2025-11-26 15:58:45.759 +05:30] [INF] Health check requested
+[2025-11-26 15:58:55.210 +05:30] [INF] Health check requested
+[2025-11-26 15:58:55.212 +05:30] [INF] Health check requested
+[2025-11-26 15:58:55.774 +05:30] [INF] Health check requested
+[2025-11-26 15:59:05.210 +05:30] [INF] Health check requested
+[2025-11-26 15:59:05.211 +05:30] [INF] Health check requested
+[2025-11-26 15:59:05.775 +05:30] [INF] Health check requested
+[2025-11-26 15:59:15.211 +05:30] [INF] Health check requested
+[2025-11-26 15:59:15.213 +05:30] [INF] Health check requested
+[2025-11-26 15:59:15.775 +05:30] [INF] Health check requested
+[2025-11-26 15:59:25.226 +05:30] [INF] Health check requested
+[2025-11-26 15:59:25.228 +05:30] [INF] Health check requested
+[2025-11-26 15:59:25.774 +05:30] [INF] Health check requested
+[2025-11-26 15:59:35.211 +05:30] [INF] Health check requested
+[2025-11-26 15:59:35.212 +05:30] [INF] Health check requested
+[2025-11-26 15:59:35.774 +05:30] [INF] Health check requested
+[2025-11-26 15:59:45.215 +05:30] [INF] Health check requested
+[2025-11-26 15:59:45.216 +05:30] [INF] Health check requested
+[2025-11-26 15:59:45.775 +05:30] [INF] Health check requested
+[2025-11-26 15:59:55.212 +05:30] [INF] Health check requested
+[2025-11-26 15:59:55.214 +05:30] [INF] Health check requested
+[2025-11-26 15:59:55.759 +05:30] [INF] Health check requested
+[2025-11-26 16:00:05.213 +05:30] [INF] Health check requested
+[2025-11-26 16:00:05.216 +05:30] [INF] Health check requested
+[2025-11-26 16:00:05.760 +05:30] [INF] Health check requested
+[2025-11-26 16:00:15.200 +05:30] [INF] Health check requested
+[2025-11-26 16:00:15.204 +05:30] [INF] Health check requested
+[2025-11-26 16:00:15.773 +05:30] [INF] Health check requested
+[2025-11-26 16:00:25.211 +05:30] [INF] Health check requested
+[2025-11-26 16:00:25.213 +05:30] [INF] Health check requested
+[2025-11-26 16:00:25.759 +05:30] [INF] Health check requested
+[2025-11-26 16:00:35.213 +05:30] [INF] Health check requested
+[2025-11-26 16:00:35.214 +05:30] [INF] Health check requested
+[2025-11-26 16:00:35.758 +05:30] [INF] Health check requested
+[2025-11-26 16:00:45.214 +05:30] [INF] Health check requested
+[2025-11-26 16:00:45.215 +05:30] [INF] Health check requested
+[2025-11-26 16:00:45.774 +05:30] [INF] Health check requested
+[2025-11-26 16:00:55.196 +05:30] [INF] Health check requested
+[2025-11-26 16:00:55.211 +05:30] [INF] Health check requested
+[2025-11-26 16:00:55.759 +05:30] [INF] Health check requested
+[2025-11-26 16:01:05.213 +05:30] [INF] Health check requested
+[2025-11-26 16:01:05.217 +05:30] [INF] Health check requested
+[2025-11-26 16:01:05.759 +05:30] [INF] Health check requested
+[2025-11-26 16:01:15.198 +05:30] [INF] Health check requested
+[2025-11-26 16:01:15.205 +05:30] [INF] Health check requested
+[2025-11-26 16:01:15.757 +05:30] [INF] Health check requested
+[2025-11-26 16:01:25.212 +05:30] [INF] Health check requested
+[2025-11-26 16:01:25.214 +05:30] [INF] Health check requested
+[2025-11-26 16:01:25.757 +05:30] [INF] Health check requested
+[2025-11-26 16:01:35.215 +05:30] [INF] Health check requested
+[2025-11-26 16:01:35.218 +05:30] [INF] Health check requested
+[2025-11-26 16:01:35.759 +05:30] [INF] Health check requested
+[2025-11-26 16:01:45.198 +05:30] [INF] Health check requested
+[2025-11-26 16:01:45.202 +05:30] [INF] Health check requested
+[2025-11-26 16:01:45.758 +05:30] [INF] Health check requested
+[2025-11-26 16:01:55.212 +05:30] [INF] Health check requested
+[2025-11-26 16:01:55.215 +05:30] [INF] Health check requested
+[2025-11-26 16:01:55.758 +05:30] [INF] Health check requested
+[2025-11-26 16:02:05.197 +05:30] [INF] Health check requested
+[2025-11-26 16:02:05.204 +05:30] [INF] Health check requested
+[2025-11-26 16:02:05.773 +05:30] [INF] Health check requested
+[2025-11-26 16:02:15.203 +05:30] [INF] Health check requested
+[2025-11-26 16:02:15.206 +05:30] [INF] Health check requested
+[2025-11-26 16:02:15.758 +05:30] [INF] Health check requested
+[2025-11-26 16:02:25.212 +05:30] [INF] Health check requested
+[2025-11-26 16:02:25.215 +05:30] [INF] Health check requested
+[2025-11-26 16:02:25.773 +05:30] [INF] Health check requested
+[2025-11-26 16:02:35.198 +05:30] [INF] Health check requested
+[2025-11-26 16:02:35.204 +05:30] [INF] Health check requested
+[2025-11-26 16:02:35.773 +05:30] [INF] Health check requested
+[2025-11-26 16:02:45.228 +05:30] [INF] Health check requested
+[2025-11-26 16:02:45.232 +05:30] [INF] Health check requested
+[2025-11-26 16:02:45.773 +05:30] [INF] Health check requested
+[2025-11-26 16:02:55.227 +05:30] [INF] Health check requested
+[2025-11-26 16:02:55.230 +05:30] [INF] Health check requested
+[2025-11-26 16:02:55.772 +05:30] [INF] Health check requested
+[2025-11-26 16:03:05.198 +05:30] [INF] Health check requested
+[2025-11-26 16:03:05.205 +05:30] [INF] Health check requested
+[2025-11-26 16:03:05.759 +05:30] [INF] Health check requested
+[2025-11-26 16:03:15.197 +05:30] [INF] Health check requested
+[2025-11-26 16:03:15.204 +05:30] [INF] Health check requested
+[2025-11-26 16:03:15.773 +05:30] [INF] Health check requested
+[2025-11-26 16:03:25.213 +05:30] [INF] Health check requested
+[2025-11-26 16:03:25.216 +05:30] [INF] Health check requested
+[2025-11-26 16:03:25.766 +05:30] [INF] Health check requested
+[2025-11-26 16:03:35.213 +05:30] [INF] Health check requested
+[2025-11-26 16:03:35.217 +05:30] [INF] Health check requested
+[2025-11-26 16:03:35.772 +05:30] [INF] Health check requested
+[2025-11-26 16:03:45.213 +05:30] [INF] Health check requested
+[2025-11-26 16:03:45.214 +05:30] [INF] Health check requested
+[2025-11-26 16:03:45.758 +05:30] [INF] Health check requested
+[2025-11-26 16:03:55.212 +05:30] [INF] Health check requested
+[2025-11-26 16:03:55.215 +05:30] [INF] Health check requested
+[2025-11-26 16:03:55.761 +05:30] [INF] Health check requested
+[2025-11-26 16:04:05.212 +05:30] [INF] Health check requested
+[2025-11-26 16:04:05.216 +05:30] [INF] Health check requested
+[2025-11-26 16:04:05.758 +05:30] [INF] Health check requested
+[2025-11-26 16:04:15.210 +05:30] [INF] Health check requested
+[2025-11-26 16:04:15.213 +05:30] [INF] Health check requested
+[2025-11-26 16:04:15.764 +05:30] [INF] Health check requested
+[2025-11-26 16:04:25.212 +05:30] [INF] Health check requested
+[2025-11-26 16:04:25.216 +05:30] [INF] Health check requested
+[2025-11-26 16:04:25.757 +05:30] [INF] Health check requested
+[2025-11-26 16:04:35.212 +05:30] [INF] Health check requested
+[2025-11-26 16:04:35.215 +05:30] [INF] Health check requested
+[2025-11-26 16:04:35.772 +05:30] [INF] Health check requested
+[2025-11-26 16:04:45.212 +05:30] [INF] Health check requested
+[2025-11-26 16:04:45.216 +05:30] [INF] Health check requested
+[2025-11-26 16:04:45.773 +05:30] [INF] Health check requested
+[2025-11-26 16:04:55.197 +05:30] [INF] Health check requested
+[2025-11-26 16:04:55.203 +05:30] [INF] Health check requested
+[2025-11-26 16:04:55.773 +05:30] [INF] Health check requested
+[2025-11-26 16:05:05.211 +05:30] [INF] Health check requested
+[2025-11-26 16:05:05.215 +05:30] [INF] Health check requested
+[2025-11-26 16:05:05.770 +05:30] [INF] Health check requested
+[2025-11-26 16:05:15.228 +05:30] [INF] Health check requested
+[2025-11-26 16:05:15.232 +05:30] [INF] Health check requested
+[2025-11-26 16:05:15.772 +05:30] [INF] Health check requested
+[2025-11-26 16:05:25.208 +05:30] [INF] Health check requested
+[2025-11-26 16:05:25.209 +05:30] [INF] Health check requested
+[2025-11-26 16:05:25.770 +05:30] [INF] Health check requested
+[2025-11-26 16:05:35.212 +05:30] [INF] Health check requested
+[2025-11-26 16:05:35.215 +05:30] [INF] Health check requested
+[2025-11-26 16:05:35.758 +05:30] [INF] Health check requested
+[2025-11-26 16:05:45.212 +05:30] [INF] Health check requested
+[2025-11-26 16:05:45.214 +05:30] [INF] Health check requested
+[2025-11-26 16:05:45.758 +05:30] [INF] Health check requested
+[2025-11-26 16:05:55.211 +05:30] [INF] Health check requested
+[2025-11-26 16:05:55.214 +05:30] [INF] Health check requested
+[2025-11-26 16:05:55.756 +05:30] [INF] Health check requested
+[2025-11-26 16:06:05.209 +05:30] [INF] Health check requested
+[2025-11-26 16:06:05.213 +05:30] [INF] Health check requested
+[2025-11-26 16:06:05.771 +05:30] [INF] Health check requested
+[2025-11-26 16:06:15.211 +05:30] [INF] Health check requested
+[2025-11-26 16:06:15.215 +05:30] [INF] Health check requested
+[2025-11-26 16:06:15.757 +05:30] [INF] Health check requested
+[2025-11-26 16:06:25.209 +05:30] [INF] Health check requested
+[2025-11-26 16:06:25.213 +05:30] [INF] Health check requested
+[2025-11-26 16:06:25.755 +05:30] [INF] Health check requested
+[2025-11-26 16:06:35.210 +05:30] [INF] Health check requested
+[2025-11-26 16:06:35.214 +05:30] [INF] Health check requested
+[2025-11-26 16:06:35.770 +05:30] [INF] Health check requested
+[2025-11-26 16:06:45.202 +05:30] [INF] Health check requested
+[2025-11-26 16:06:45.203 +05:30] [INF] Health check requested
+[2025-11-26 16:06:45.755 +05:30] [INF] Health check requested
+[2025-11-26 16:06:55.207 +05:30] [INF] Health check requested
+[2025-11-26 16:06:55.210 +05:30] [INF] Health check requested
+[2025-11-26 16:06:55.766 +05:30] [INF] Health check requested
+[2025-11-26 16:07:05.223 +05:30] [INF] Health check requested
+[2025-11-26 16:07:05.227 +05:30] [INF] Health check requested
+[2025-11-26 16:07:05.757 +05:30] [INF] Health check requested
+[2025-11-26 16:07:15.208 +05:30] [INF] Health check requested
+[2025-11-26 16:07:15.212 +05:30] [INF] Health check requested
+[2025-11-26 16:07:15.769 +05:30] [INF] Health check requested
+[2025-11-26 16:07:25.197 +05:30] [INF] Health check requested
+[2025-11-26 16:07:25.203 +05:30] [INF] Health check requested
+[2025-11-26 16:07:25.768 +05:30] [INF] Health check requested
+[2025-11-26 16:07:35.208 +05:30] [INF] Health check requested
+[2025-11-26 16:07:35.211 +05:30] [INF] Health check requested
+[2025-11-26 16:07:35.754 +05:30] [INF] Health check requested
+[2025-11-26 16:07:45.207 +05:30] [INF] Health check requested
+[2025-11-26 16:07:45.209 +05:30] [INF] Health check requested
+[2025-11-26 16:07:45.767 +05:30] [INF] Health check requested
+[2025-11-26 16:07:55.204 +05:30] [INF] Health check requested
+[2025-11-26 16:07:55.205 +05:30] [INF] Health check requested
+[2025-11-26 16:07:55.752 +05:30] [INF] Health check requested
+[2025-11-26 16:08:05.205 +05:30] [INF] Health check requested
+[2025-11-26 16:08:05.208 +05:30] [INF] Health check requested
+[2025-11-26 16:08:05.751 +05:30] [INF] Health check requested
+[2025-11-26 16:08:15.207 +05:30] [INF] Health check requested
+[2025-11-26 16:08:15.211 +05:30] [INF] Health check requested
+[2025-11-26 16:08:15.764 +05:30] [INF] Health check requested
+[2025-11-26 16:08:25.205 +05:30] [INF] Health check requested
+[2025-11-26 16:08:25.208 +05:30] [INF] Health check requested
+[2025-11-26 16:08:25.751 +05:30] [INF] Health check requested
+[2025-11-26 16:08:35.205 +05:30] [INF] Health check requested
+[2025-11-26 16:08:35.209 +05:30] [INF] Health check requested
+[2025-11-26 16:08:35.750 +05:30] [INF] Health check requested
+[2025-11-26 16:08:45.221 +05:30] [INF] Health check requested
+[2025-11-26 16:08:45.226 +05:30] [INF] Health check requested
+[2025-11-26 16:08:45.766 +05:30] [INF] Health check requested
+[2025-11-26 16:08:55.203 +05:30] [INF] Health check requested
+[2025-11-26 16:08:55.207 +05:30] [INF] Health check requested
+[2025-11-26 16:08:55.751 +05:30] [INF] Health check requested
+[2025-11-26 16:09:05.203 +05:30] [INF] Health check requested
+[2025-11-26 16:09:05.207 +05:30] [INF] Health check requested
+[2025-11-26 16:09:05.765 +05:30] [INF] Health check requested
+[2025-11-26 16:09:15.216 +05:30] [INF] Health check requested
+[2025-11-26 16:09:15.217 +05:30] [INF] Health check requested
+[2025-11-26 16:09:15.759 +05:30] [INF] Health check requested
+[2025-11-26 16:09:25.194 +05:30] [INF] Health check requested
+[2025-11-26 16:09:25.196 +05:30] [INF] Health check requested
+[2025-11-26 16:09:25.747 +05:30] [INF] Health check requested
+[2025-11-26 16:09:35.198 +05:30] [INF] Health check requested
+[2025-11-26 16:09:35.199 +05:30] [INF] Health check requested
+[2025-11-26 16:09:35.752 +05:30] [INF] Health check requested
+[2025-11-26 16:09:45.197 +05:30] [INF] Health check requested
+[2025-11-26 16:09:45.199 +05:30] [INF] Health check requested
+[2025-11-26 16:09:45.752 +05:30] [INF] Health check requested
+[2025-11-26 16:09:55.198 +05:30] [INF] Health check requested
+[2025-11-26 16:09:55.200 +05:30] [INF] Health check requested
+[2025-11-26 16:09:55.752 +05:30] [INF] Health check requested
+[2025-11-26 16:10:05.192 +05:30] [INF] Health check requested
+[2025-11-26 16:10:05.194 +05:30] [INF] Health check requested
+[2025-11-26 16:10:05.761 +05:30] [INF] Health check requested
+[2025-11-26 16:10:15.189 +05:30] [INF] Health check requested
+[2025-11-26 16:10:15.190 +05:30] [INF] Health check requested
+[2025-11-26 16:10:15.745 +05:30] [INF] Health check requested
+[2025-11-26 16:10:25.191 +05:30] [INF] Health check requested
+[2025-11-26 16:10:25.193 +05:30] [INF] Health check requested
+[2025-11-26 16:10:25.746 +05:30] [INF] Health check requested
+[2025-11-26 16:10:35.196 +05:30] [INF] Health check requested
+[2025-11-26 16:10:35.198 +05:30] [INF] Health check requested
+[2025-11-26 16:10:35.749 +05:30] [INF] Health check requested
+[2025-11-26 16:10:45.184 +05:30] [INF] Health check requested
+[2025-11-26 16:10:45.199 +05:30] [INF] Health check requested
+[2025-11-26 16:10:45.754 +05:30] [INF] Health check requested
+[2025-11-26 16:10:55.198 +05:30] [INF] Health check requested
+[2025-11-26 16:10:55.200 +05:30] [INF] Health check requested
+[2025-11-26 16:10:55.750 +05:30] [INF] Health check requested
+[2025-11-26 16:11:05.192 +05:30] [INF] Health check requested
+[2025-11-26 16:11:05.193 +05:30] [INF] Health check requested
+[2025-11-26 16:11:05.747 +05:30] [INF] Health check requested
+[2025-11-26 16:11:15.183 +05:30] [INF] Health check requested
+[2025-11-26 16:11:15.199 +05:30] [INF] Health check requested
+[2025-11-26 16:11:15.751 +05:30] [INF] Health check requested
+[2025-11-26 16:11:25.183 +05:30] [INF] Health check requested
+[2025-11-26 16:11:25.198 +05:30] [INF] Health check requested
+[2025-11-26 16:11:25.753 +05:30] [INF] Health check requested
+[2025-11-26 16:11:35.190 +05:30] [INF] Health check requested
+[2025-11-26 16:11:35.192 +05:30] [INF] Health check requested
+[2025-11-26 16:11:35.744 +05:30] [INF] Health check requested
+[2025-11-26 16:11:45.186 +05:30] [INF] Health check requested
+[2025-11-26 16:11:45.188 +05:30] [INF] Health check requested
+[2025-11-26 16:11:45.756 +05:30] [INF] Health check requested
+[2025-11-26 16:11:55.185 +05:30] [INF] Health check requested
+[2025-11-26 16:11:55.201 +05:30] [INF] Health check requested
+[2025-11-26 16:11:55.755 +05:30] [INF] Health check requested
+[2025-11-26 16:12:05.182 +05:30] [INF] Health check requested
+[2025-11-26 16:12:05.198 +05:30] [INF] Health check requested
+[2025-11-26 16:12:05.750 +05:30] [INF] Health check requested
+[2025-11-26 16:12:15.193 +05:30] [INF] Health check requested
+[2025-11-26 16:12:15.194 +05:30] [INF] Health check requested
+[2025-11-26 16:12:15.747 +05:30] [INF] Health check requested
+[2025-11-26 16:12:25.186 +05:30] [INF] Health check requested
+[2025-11-26 16:12:25.188 +05:30] [INF] Health check requested
+[2025-11-26 16:12:25.755 +05:30] [INF] Health check requested
+[2025-11-26 16:12:35.186 +05:30] [INF] Health check requested
+[2025-11-26 16:12:35.188 +05:30] [INF] Health check requested
+[2025-11-26 16:12:35.755 +05:30] [INF] Health check requested
+[2025-11-26 16:12:45.193 +05:30] [INF] Health check requested
+[2025-11-26 16:12:45.195 +05:30] [INF] Health check requested
+[2025-11-26 16:12:45.745 +05:30] [INF] Health check requested
+[2025-11-26 16:12:55.189 +05:30] [INF] Health check requested
+[2025-11-26 16:12:55.190 +05:30] [INF] Health check requested
+[2025-11-26 16:12:55.756 +05:30] [INF] Health check requested
+[2025-11-26 16:13:05.193 +05:30] [INF] Health check requested
+[2025-11-26 16:13:05.197 +05:30] [INF] Health check requested
+[2025-11-26 16:13:05.745 +05:30] [INF] Health check requested
+[2025-11-26 16:13:15.184 +05:30] [INF] Health check requested
+[2025-11-26 16:13:15.186 +05:30] [INF] Health check requested
+[2025-11-26 16:13:15.753 +05:30] [INF] Health check requested
+[2025-11-26 16:13:25.182 +05:30] [INF] Health check requested
+[2025-11-26 16:13:25.198 +05:30] [INF] Health check requested
+[2025-11-26 16:13:25.753 +05:30] [INF] Health check requested
+[2025-11-26 16:13:35.186 +05:30] [INF] Health check requested
+[2025-11-26 16:13:35.187 +05:30] [INF] Health check requested
+[2025-11-26 16:13:35.755 +05:30] [INF] Health check requested
+[2025-11-26 16:13:45.186 +05:30] [INF] Health check requested
+[2025-11-26 16:13:45.191 +05:30] [INF] Health check requested
+[2025-11-26 16:13:45.758 +05:30] [INF] Health check requested
+[2025-11-26 16:13:55.189 +05:30] [INF] Health check requested
+[2025-11-26 16:13:55.191 +05:30] [INF] Health check requested
+[2025-11-26 16:13:55.749 +05:30] [INF] Health check requested
+[2025-11-26 16:14:05.195 +05:30] [INF] Health check requested
+[2025-11-26 16:14:05.196 +05:30] [INF] Health check requested
+[2025-11-26 16:14:05.753 +05:30] [INF] Health check requested
+[2025-11-26 16:14:15.196 +05:30] [INF] Health check requested
+[2025-11-26 16:14:15.198 +05:30] [INF] Health check requested
+[2025-11-26 16:14:15.751 +05:30] [INF] Health check requested
+[2025-11-26 16:14:25.188 +05:30] [INF] Health check requested
+[2025-11-26 16:14:25.190 +05:30] [INF] Health check requested
+[2025-11-26 16:14:25.744 +05:30] [INF] Health check requested
+[2025-11-26 16:14:35.195 +05:30] [INF] Health check requested
+[2025-11-26 16:14:35.198 +05:30] [INF] Health check requested
+[2025-11-26 16:14:35.749 +05:30] [INF] Health check requested
+[2025-11-26 16:14:45.191 +05:30] [INF] Health check requested
+[2025-11-26 16:14:45.192 +05:30] [INF] Health check requested
+[2025-11-26 16:14:45.744 +05:30] [INF] Health check requested
+[2025-11-26 16:14:55.180 +05:30] [INF] Health check requested
+[2025-11-26 16:14:55.196 +05:30] [INF] Health check requested
+[2025-11-26 16:14:55.751 +05:30] [INF] Health check requested
+[2025-11-26 16:15:05.190 +05:30] [INF] Health check requested
+[2025-11-26 16:15:05.191 +05:30] [INF] Health check requested
+[2025-11-26 16:15:05.741 +05:30] [INF] Health check requested
+[2025-11-26 16:15:15.192 +05:30] [INF] Health check requested
+[2025-11-26 16:15:15.194 +05:30] [INF] Health check requested
+[2025-11-26 16:15:15.743 +05:30] [INF] Health check requested
+[2025-11-26 16:15:25.191 +05:30] [INF] Health check requested
+[2025-11-26 16:15:25.196 +05:30] [INF] Health check requested
+[2025-11-26 16:15:25.753 +05:30] [INF] Health check requested
+[2025-11-26 16:15:35.190 +05:30] [INF] Health check requested
+[2025-11-26 16:15:35.191 +05:30] [INF] Health check requested
+[2025-11-26 16:15:35.744 +05:30] [INF] Health check requested
+[2025-11-26 16:15:45.184 +05:30] [INF] Health check requested
+[2025-11-26 16:15:45.185 +05:30] [INF] Health check requested
+[2025-11-26 16:15:45.752 +05:30] [INF] Health check requested
+[2025-11-26 16:15:55.193 +05:30] [INF] Health check requested
+[2025-11-26 16:15:55.194 +05:30] [INF] Health check requested
+[2025-11-26 16:15:55.747 +05:30] [INF] Health check requested
+[2025-11-26 16:16:05.193 +05:30] [INF] Health check requested
+[2025-11-26 16:16:05.194 +05:30] [INF] Health check requested
+[2025-11-26 16:16:05.747 +05:30] [INF] Health check requested
+[2025-11-26 16:16:15.186 +05:30] [INF] Health check requested
+[2025-11-26 16:16:15.188 +05:30] [INF] Health check requested
+[2025-11-26 16:16:15.754 +05:30] [INF] Health check requested
+[2025-11-26 16:16:25.181 +05:30] [INF] Health check requested
+[2025-11-26 16:16:25.184 +05:30] [INF] Health check requested
+[2025-11-26 16:16:25.752 +05:30] [INF] Health check requested
+[2025-11-26 16:16:35.194 +05:30] [INF] Health check requested
+[2025-11-26 16:16:35.195 +05:30] [INF] Health check requested
+[2025-11-26 16:16:35.740 +05:30] [INF] Health check requested
+[2025-11-26 16:16:45.206 +05:30] [INF] Health check requested
+[2025-11-26 16:16:45.207 +05:30] [INF] Health check requested
+[2025-11-26 16:16:45.741 +05:30] [INF] Health check requested
+[2025-11-26 16:16:55.178 +05:30] [INF] Health check requested
+[2025-11-26 16:16:55.194 +05:30] [INF] Health check requested
+[2025-11-26 16:16:55.755 +05:30] [INF] Health check requested
+[2025-11-26 16:17:05.179 +05:30] [INF] Health check requested
+[2025-11-26 16:17:05.194 +05:30] [INF] Health check requested
+[2025-11-26 16:17:05.741 +05:30] [INF] Health check requested
+[2025-11-26 16:17:15.180 +05:30] [INF] Health check requested
+[2025-11-26 16:17:15.186 +05:30] [INF] Health check requested
+[2025-11-26 16:17:15.741 +05:30] [INF] Health check requested
+[2025-11-26 16:17:25.195 +05:30] [INF] Health check requested
+[2025-11-26 16:17:25.199 +05:30] [INF] Health check requested
+[2025-11-26 16:17:25.756 +05:30] [INF] Health check requested
+[2025-11-26 16:17:35.196 +05:30] [INF] Health check requested
+[2025-11-26 16:17:35.199 +05:30] [INF] Health check requested
+[2025-11-26 16:17:35.744 +05:30] [INF] Health check requested
+[2025-11-26 16:17:45.182 +05:30] [INF] Health check requested
+[2025-11-26 16:17:45.184 +05:30] [INF] Health check requested
+[2025-11-26 16:17:45.745 +05:30] [INF] Health check requested
+[2025-11-26 16:17:55.193 +05:30] [INF] Health check requested
+[2025-11-26 16:17:55.195 +05:30] [INF] Health check requested
+[2025-11-26 16:17:55.741 +05:30] [INF] Health check requested
+[2025-11-26 16:18:05.195 +05:30] [INF] Health check requested
+[2025-11-26 16:18:05.199 +05:30] [INF] Health check requested
+[2025-11-26 16:18:05.741 +05:30] [INF] Health check requested
+[2025-11-26 16:18:15.196 +05:30] [INF] Health check requested
+[2025-11-26 16:18:15.200 +05:30] [INF] Health check requested
+[2025-11-26 16:18:15.756 +05:30] [INF] Health check requested
+[2025-11-26 16:18:25.194 +05:30] [INF] Health check requested
+[2025-11-26 16:18:25.198 +05:30] [INF] Health check requested
+[2025-11-26 16:18:25.741 +05:30] [INF] Health check requested
+[2025-11-26 16:18:35.191 +05:30] [INF] Health check requested
+[2025-11-26 16:18:35.192 +05:30] [INF] Health check requested
+[2025-11-26 16:18:35.741 +05:30] [INF] Health check requested
+[2025-11-26 16:18:45.191 +05:30] [INF] Health check requested
+[2025-11-26 16:18:45.195 +05:30] [INF] Health check requested
+[2025-11-26 16:18:45.755 +05:30] [INF] Health check requested
+[2025-11-26 16:18:55.194 +05:30] [INF] Health check requested
+[2025-11-26 16:18:55.197 +05:30] [INF] Health check requested
+[2025-11-26 16:18:55.741 +05:30] [INF] Health check requested
+[2025-11-26 16:19:05.183 +05:30] [INF] Health check requested
+[2025-11-26 16:19:05.185 +05:30] [INF] Health check requested
+[2025-11-26 16:19:05.740 +05:30] [INF] Health check requested
+[2025-11-26 16:19:15.178 +05:30] [INF] Health check requested
+[2025-11-26 16:19:15.184 +05:30] [INF] Health check requested
+[2025-11-26 16:19:15.740 +05:30] [INF] Health check requested
+[2025-11-26 16:19:25.192 +05:30] [INF] Health check requested
+[2025-11-26 16:19:25.197 +05:30] [INF] Health check requested
+[2025-11-26 16:19:25.740 +05:30] [INF] Health check requested
+[2025-11-26 16:19:35.211 +05:30] [INF] Health check requested
+[2025-11-26 16:19:35.214 +05:30] [INF] Health check requested
+[2025-11-26 16:19:35.739 +05:30] [INF] Health check requested
+[2025-11-26 16:19:45.179 +05:30] [INF] Health check requested
+[2025-11-26 16:19:45.184 +05:30] [INF] Health check requested
+[2025-11-26 16:19:45.739 +05:30] [INF] Health check requested
+[2025-11-26 16:19:55.180 +05:30] [INF] Health check requested
+[2025-11-26 16:19:55.187 +05:30] [INF] Health check requested
+[2025-11-26 16:19:55.740 +05:30] [INF] Health check requested
+[2025-11-26 16:20:05.180 +05:30] [INF] Health check requested
+[2025-11-26 16:20:05.186 +05:30] [INF] Health check requested
+[2025-11-26 16:20:05.740 +05:30] [INF] Health check requested
+[2025-11-26 16:20:15.194 +05:30] [INF] Health check requested
+[2025-11-26 16:20:15.198 +05:30] [INF] Health check requested
+[2025-11-26 16:20:15.740 +05:30] [INF] Health check requested
+[2025-11-26 16:20:25.206 +05:30] [INF] Health check requested
+[2025-11-26 16:20:25.207 +05:30] [INF] Health check requested
+[2025-11-26 16:20:25.739 +05:30] [INF] Health check requested
+[2025-11-26 16:20:35.180 +05:30] [INF] Health check requested
+[2025-11-26 16:20:35.186 +05:30] [INF] Health check requested
+[2025-11-26 16:20:35.739 +05:30] [INF] Health check requested
+[2025-11-26 16:20:45.195 +05:30] [INF] Health check requested
+[2025-11-26 16:20:45.198 +05:30] [INF] Health check requested
+[2025-11-26 16:20:45.755 +05:30] [INF] Health check requested
+[2025-11-26 16:20:55.179 +05:30] [INF] Health check requested
+[2025-11-26 16:20:55.185 +05:30] [INF] Health check requested
+[2025-11-26 16:20:55.740 +05:30] [INF] Health check requested
+[2025-11-26 16:21:05.195 +05:30] [INF] Health check requested
+[2025-11-26 16:21:05.198 +05:30] [INF] Health check requested
+[2025-11-26 16:21:05.756 +05:30] [INF] Health check requested
+[2025-11-26 16:21:15.210 +05:30] [INF] Health check requested
+[2025-11-26 16:21:15.212 +05:30] [INF] Health check requested
+[2025-11-26 16:21:15.740 +05:30] [INF] Health check requested
+[2025-11-26 16:21:25.209 +05:30] [INF] Health check requested
+[2025-11-26 16:21:25.213 +05:30] [INF] Health check requested
+[2025-11-26 16:21:25.755 +05:30] [INF] Health check requested
+[2025-11-26 16:21:35.209 +05:30] [INF] Health check requested
+[2025-11-26 16:21:35.213 +05:30] [INF] Health check requested
+[2025-11-26 16:21:35.754 +05:30] [INF] Health check requested
+[2025-11-26 16:21:45.194 +05:30] [INF] Health check requested
+[2025-11-26 16:21:45.198 +05:30] [INF] Health check requested
+[2025-11-26 16:21:45.740 +05:30] [INF] Health check requested
+[2025-11-26 16:21:55.203 +05:30] [INF] Health check requested
+[2025-11-26 16:21:55.204 +05:30] [INF] Health check requested
+[2025-11-26 16:21:55.754 +05:30] [INF] Health check requested
+[2025-11-26 16:22:05.193 +05:30] [INF] Health check requested
+[2025-11-26 16:22:05.196 +05:30] [INF] Health check requested
+[2025-11-26 16:22:05.753 +05:30] [INF] Health check requested
+[2025-11-26 16:22:15.177 +05:30] [INF] Health check requested
+[2025-11-26 16:22:15.197 +05:30] [INF] Health check requested
+[2025-11-26 16:22:15.741 +05:30] [INF] Health check requested
+[2025-11-26 16:22:25.206 +05:30] [INF] Health check requested
+[2025-11-26 16:22:25.208 +05:30] [INF] Health check requested
+[2025-11-26 16:22:25.755 +05:30] [INF] Health check requested
+[2025-11-26 16:22:35.180 +05:30] [INF] Health check requested
+[2025-11-26 16:22:35.183 +05:30] [INF] Health check requested
+[2025-11-26 16:22:35.770 +05:30] [INF] Health check requested
+[2025-11-26 16:22:42.521 +05:30] [INF] GetUserBookings request received
+[2025-11-26 16:22:42.529 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 16:22:42.532 +05:30] [INF] GetUserBookings request received
+[2025-11-26 16:22:42.533 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 16:22:45.184 +05:30] [INF] Health check requested
+[2025-11-26 16:22:45.188 +05:30] [INF] Health check requested
+[2025-11-26 16:22:45.739 +05:30] [INF] Health check requested
+[2025-11-26 16:22:55.190 +05:30] [INF] Health check requested
+[2025-11-26 16:22:55.191 +05:30] [INF] Health check requested
+[2025-11-26 16:22:55.753 +05:30] [INF] Health check requested
+[2025-11-26 16:23:05.185 +05:30] [INF] Health check requested
+[2025-11-26 16:23:05.187 +05:30] [INF] Health check requested
+[2025-11-26 16:23:05.737 +05:30] [INF] Health check requested
+[2025-11-26 16:23:15.177 +05:30] [INF] Health check requested
+[2025-11-26 16:23:15.183 +05:30] [INF] Health check requested
+[2025-11-26 16:23:15.742 +05:30] [INF] Health check requested
+[2025-11-26 16:23:25.192 +05:30] [INF] Health check requested
+[2025-11-26 16:23:25.196 +05:30] [INF] Health check requested
+[2025-11-26 16:23:25.738 +05:30] [INF] Health check requested
+[2025-11-26 16:23:35.189 +05:30] [INF] Health check requested
+[2025-11-26 16:23:35.190 +05:30] [INF] Health check requested
+[2025-11-26 16:23:35.738 +05:30] [INF] Health check requested
+[2025-11-26 16:23:45.192 +05:30] [INF] Health check requested
+[2025-11-26 16:23:45.193 +05:30] [INF] Health check requested
+[2025-11-26 16:23:45.738 +05:30] [INF] Health check requested
+[2025-11-26 16:23:55.187 +05:30] [INF] Health check requested
+[2025-11-26 16:23:55.188 +05:30] [INF] Health check requested
+[2025-11-26 16:23:55.751 +05:30] [INF] Health check requested
+[2025-11-26 16:24:05.189 +05:30] [INF] Health check requested
+[2025-11-26 16:24:05.193 +05:30] [INF] Health check requested
+[2025-11-26 16:24:05.734 +05:30] [INF] Health check requested
+[2025-11-26 16:24:15.188 +05:30] [INF] Health check requested
+[2025-11-26 16:24:15.190 +05:30] [INF] Health check requested
+[2025-11-26 16:24:15.736 +05:30] [INF] Health check requested
+[2025-11-26 16:24:25.188 +05:30] [INF] Health check requested
+[2025-11-26 16:24:25.191 +05:30] [INF] Health check requested
+[2025-11-26 16:24:25.735 +05:30] [INF] Health check requested
+[2025-11-26 16:24:36.170 +05:30] [INF] Health check requested
+[2025-11-26 16:24:36.173 +05:30] [INF] Health check requested
+[2025-11-26 16:24:36.178 +05:30] [INF] Health check requested
+[2025-11-26 16:24:46.157 +05:30] [INF] Health check requested
+[2025-11-26 16:24:46.159 +05:30] [INF] Health check requested
+[2025-11-26 16:24:46.160 +05:30] [INF] Health check requested
+[2025-11-26 16:24:56.157 +05:30] [INF] Health check requested
+[2025-11-26 16:24:56.160 +05:30] [INF] Health check requested
+[2025-11-26 16:24:56.163 +05:30] [INF] Health check requested
+[2025-11-26 16:25:05.187 +05:30] [INF] Health check requested
+[2025-11-26 16:25:05.191 +05:30] [INF] Health check requested
+[2025-11-26 16:25:06.155 +05:30] [INF] Health check requested
+[2025-11-26 16:25:16.157 +05:30] [INF] Health check requested
+[2025-11-26 16:25:16.159 +05:30] [INF] Health check requested
+[2025-11-26 16:25:16.160 +05:30] [INF] Health check requested
+[2025-11-26 16:25:26.157 +05:30] [INF] Health check requested
+[2025-11-26 16:25:26.159 +05:30] [INF] Health check requested
+[2025-11-26 16:25:26.160 +05:30] [INF] Health check requested
+[2025-11-26 16:26:26.170 +05:30] [INF] Health check requested
+[2025-11-26 16:26:26.172 +05:30] [INF] Health check requested
+[2025-11-26 16:26:26.173 +05:30] [INF] Health check requested
+[2025-11-26 16:27:00.964 +05:30] [INF] Health check requested
+[2025-11-26 16:27:00.967 +05:30] [INF] Health check requested
+[2025-11-26 16:27:00.970 +05:30] [INF] Health check requested
+[2025-11-26 16:27:05.177 +05:30] [INF] Health check requested
+[2025-11-26 16:27:05.178 +05:30] [INF] Health check requested
+[2025-11-26 16:27:05.738 +05:30] [INF] Health check requested
+[2025-11-26 16:27:15.182 +05:30] [INF] Health check requested
+[2025-11-26 16:27:15.184 +05:30] [INF] Health check requested
+[2025-11-26 16:27:15.729 +05:30] [INF] Health check requested
+[2025-11-26 16:27:25.177 +05:30] [INF] Health check requested
+[2025-11-26 16:27:25.179 +05:30] [INF] Health check requested
+[2025-11-26 16:27:25.740 +05:30] [INF] Health check requested
+[2025-11-26 16:27:35.184 +05:30] [INF] Health check requested
+[2025-11-26 16:27:35.187 +05:30] [INF] Health check requested
+[2025-11-26 16:27:35.744 +05:30] [INF] Health check requested
+[2025-11-26 16:27:45.184 +05:30] [INF] Health check requested
+[2025-11-26 16:27:45.188 +05:30] [INF] Health check requested
+[2025-11-26 16:27:45.745 +05:30] [INF] Health check requested
+[2025-11-26 16:27:52.459 +05:30] [INF] GetUserBookings request received
+[2025-11-26 16:27:52.460 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 16:27:52.462 +05:30] [INF] GetUserBookings request received
+[2025-11-26 16:27:52.463 +05:30] [INF] Retrieved 3 bookings for user 3
+[2025-11-26 16:27:55.165 +05:30] [INF] Health check requested
+[2025-11-26 16:27:55.170 +05:30] [INF] Health check requested
+[2025-11-26 16:27:55.729 +05:30] [INF] Health check requested
+[2025-11-26 16:28:05.168 +05:30] [INF] Health check requested
+[2025-11-26 16:28:05.174 +05:30] [INF] Health check requested
+[2025-11-26 16:28:05.728 +05:30] [INF] Health check requested
+[2025-11-26 16:28:15.168 +05:30] [INF] Health check requested
+[2025-11-26 16:28:15.175 +05:30] [INF] Health check requested
+[2025-11-26 16:28:15.741 +05:30] [INF] Health check requested
+[2025-11-26 16:28:25.182 +05:30] [INF] Health check requested
+[2025-11-26 16:28:25.184 +05:30] [INF] Health check requested
+[2025-11-26 16:28:25.726 +05:30] [INF] Health check requested
+[2025-11-26 16:28:35.169 +05:30] [INF] Health check requested
+[2025-11-26 16:28:35.176 +05:30] [INF] Health check requested
+[2025-11-26 16:28:35.743 +05:30] [INF] Health check requested
+[2025-11-26 16:28:45.183 +05:30] [INF] Health check requested
+[2025-11-26 16:28:45.185 +05:30] [INF] Health check requested
+[2025-11-26 16:28:45.728 +05:30] [INF] Health check requested
+[2025-11-26 16:28:55.198 +05:30] [INF] Health check requested
+[2025-11-26 16:28:55.200 +05:30] [INF] Health check requested
+[2025-11-26 16:28:55.742 +05:30] [INF] Health check requested
+[2025-11-26 16:29:05.182 +05:30] [INF] Health check requested
+[2025-11-26 16:29:05.185 +05:30] [INF] Health check requested
+[2025-11-26 16:29:05.743 +05:30] [INF] Health check requested
+[2025-11-26 16:29:15.182 +05:30] [INF] Health check requested
+[2025-11-26 16:29:15.186 +05:30] [INF] Health check requested
+[2025-11-26 16:29:15.729 +05:30] [INF] Health check requested
+[2025-11-26 16:29:25.167 +05:30] [INF] Health check requested
+[2025-11-26 16:29:25.173 +05:30] [INF] Health check requested
+[2025-11-26 16:29:25.743 +05:30] [INF] Health check requested
+[2025-11-26 16:29:35.166 +05:30] [INF] Health check requested
+[2025-11-26 16:29:35.170 +05:30] [INF] Health check requested
+[2025-11-26 16:29:35.733 +05:30] [INF] Health check requested
+[2025-11-26 16:29:45.180 +05:30] [INF] Health check requested
+[2025-11-26 16:29:45.185 +05:30] [INF] Health check requested
+[2025-11-26 16:29:45.728 +05:30] [INF] Health check requested
+[2025-11-26 16:29:55.179 +05:30] [INF] Health check requested
+[2025-11-26 16:29:55.182 +05:30] [INF] Health check requested
+[2025-11-26 16:29:55.729 +05:30] [INF] Health check requested
+[2025-11-26 16:30:05.181 +05:30] [INF] Health check requested
+[2025-11-26 16:30:05.184 +05:30] [INF] Health check requested
+[2025-11-26 16:30:05.740 +05:30] [INF] Health check requested
+[2025-11-26 16:30:15.197 +05:30] [INF] Health check requested
+[2025-11-26 16:30:15.198 +05:30] [INF] Health check requested
+[2025-11-26 16:30:15.741 +05:30] [INF] Health check requested
+[2025-11-26 16:30:25.180 +05:30] [INF] Health check requested
+[2025-11-26 16:30:25.184 +05:30] [INF] Health check requested
+[2025-11-26 16:30:25.729 +05:30] [INF] Health check requested
+[2025-11-26 16:30:35.180 +05:30] [INF] Health check requested
+[2025-11-26 16:30:35.183 +05:30] [INF] Health check requested
+[2025-11-26 16:30:35.742 +05:30] [INF] Health check requested
+[2025-11-26 16:30:45.177 +05:30] [INF] Health check requested
+[2025-11-26 16:30:45.178 +05:30] [INF] Health check requested
+[2025-11-26 16:30:45.741 +05:30] [INF] Health check requested
+[2025-11-26 16:30:55.165 +05:30] [INF] Health check requested
+[2025-11-26 16:30:55.171 +05:30] [INF] Health check requested
+[2025-11-26 16:30:55.724 +05:30] [INF] Health check requested
+[2025-11-26 16:31:05.181 +05:30] [INF] Health check requested
+[2025-11-26 16:31:05.185 +05:30] [INF] Health check requested
+[2025-11-26 16:31:05.726 +05:30] [INF] Health check requested
+[2025-11-26 16:31:15.165 +05:30] [INF] Health check requested
+[2025-11-26 16:31:15.173 +05:30] [INF] Health check requested
+[2025-11-26 16:31:15.741 +05:30] [INF] Health check requested
+[2025-11-26 16:31:25.180 +05:30] [INF] Health check requested
+[2025-11-26 16:31:25.183 +05:30] [INF] Health check requested
+[2025-11-26 16:31:25.726 +05:30] [INF] Health check requested
+[2025-11-26 16:31:35.179 +05:30] [INF] Health check requested
+[2025-11-26 16:31:35.183 +05:30] [INF] Health check requested
+[2025-11-26 16:31:35.739 +05:30] [INF] Health check requested
+[2025-11-26 16:31:45.181 +05:30] [INF] Health check requested
+[2025-11-26 16:31:45.185 +05:30] [INF] Health check requested
+[2025-11-26 16:31:45.741 +05:30] [INF] Health check requested
+[2025-11-26 16:31:55.167 +05:30] [INF] Health check requested
+[2025-11-26 16:31:55.173 +05:30] [INF] Health check requested
+[2025-11-26 16:31:55.723 +05:30] [INF] Health check requested
+[2025-11-26 16:32:05.178 +05:30] [INF] Health check requested
+[2025-11-26 16:32:05.181 +05:30] [INF] Health check requested
+[2025-11-26 16:32:05.725 +05:30] [INF] Health check requested
+[2025-11-26 16:32:15.194 +05:30] [INF] Health check requested
+[2025-11-26 16:32:15.196 +05:30] [INF] Health check requested
+[2025-11-26 16:32:15.728 +05:30] [INF] Health check requested
+[2025-11-26 16:32:25.174 +05:30] [INF] Health check requested
+[2025-11-26 16:32:25.177 +05:30] [INF] Health check requested
+[2025-11-26 16:32:25.727 +05:30] [INF] Health check requested
+[2025-11-26 16:32:35.177 +05:30] [INF] Health check requested
+[2025-11-26 16:32:35.180 +05:30] [INF] Health check requested
+[2025-11-26 16:32:35.724 +05:30] [INF] Health check requested
+[2025-11-26 16:32:46.149 +05:30] [INF] Health check requested
+[2025-11-26 16:32:46.153 +05:30] [INF] Health check requested
+[2025-11-26 16:32:46.154 +05:30] [INF] Health check requested
+[2025-11-26 16:32:56.148 +05:30] [INF] Health check requested
+[2025-11-26 16:32:56.149 +05:30] [INF] Health check requested
+[2025-11-26 16:32:56.151 +05:30] [INF] Health check requested
+[2025-11-26 16:33:06.148 +05:30] [INF] Health check requested
+[2025-11-26 16:33:06.152 +05:30] [INF] Health check requested
+[2025-11-26 16:33:06.155 +05:30] [INF] Health check requested
+[2025-11-26 16:33:16.147 +05:30] [INF] Health check requested
+[2025-11-26 16:33:16.152 +05:30] [INF] Health check requested
+[2025-11-26 16:33:16.153 +05:30] [INF] Health check requested
+[2025-11-26 16:33:26.151 +05:30] [INF] Health check requested
+[2025-11-26 16:33:26.154 +05:30] [INF] Health check requested
+[2025-11-26 16:33:26.156 +05:30] [INF] Health check requested
+[2025-11-26 16:33:36.144 +05:30] [INF] Health check requested
+[2025-11-26 16:33:36.145 +05:30] [INF] Health check requested
+[2025-11-26 16:33:36.146 +05:30] [INF] Health check requested
+[2025-11-26 16:34:26.160 +05:30] [INF] Health check requested
+[2025-11-26 16:34:26.162 +05:30] [INF] Health check requested
+[2025-11-26 16:34:26.164 +05:30] [INF] Health check requested
+[2025-11-26 16:35:26.151 +05:30] [INF] Health check requested
+[2025-11-26 16:35:26.153 +05:30] [INF] Health check requested
+[2025-11-26 16:35:26.156 +05:30] [INF] Health check requested
+[2025-11-26 16:36:26.150 +05:30] [INF] Health check requested
+[2025-11-26 16:36:26.151 +05:30] [INF] Health check requested
+[2025-11-26 16:36:26.153 +05:30] [INF] Health check requested
+[2025-11-26 16:37:26.152 +05:30] [INF] Health check requested
+[2025-11-26 16:37:26.154 +05:30] [INF] Health check requested
+[2025-11-26 16:37:26.155 +05:30] [INF] Health check requested
+[2025-11-26 16:37:38.518 +05:30] [INF] Health check requested
+[2025-11-26 16:37:38.520 +05:30] [INF] Health check requested
+[2025-11-26 16:37:38.521 +05:30] [INF] Health check requested
+[2025-11-26 16:37:46.158 +05:30] [INF] Health check requested
+[2025-11-26 16:37:46.163 +05:30] [INF] Health check requested
+[2025-11-26 16:37:46.168 +05:30] [INF] Health check requested
+[2025-11-26 16:37:56.153 +05:30] [INF] Health check requested
+[2025-11-26 16:37:56.155 +05:30] [INF] Health check requested
+[2025-11-26 16:37:56.156 +05:30] [INF] Health check requested
+[2025-11-26 16:38:06.146 +05:30] [INF] Health check requested
+[2025-11-26 16:38:06.150 +05:30] [INF] Health check requested
+[2025-11-26 16:38:06.153 +05:30] [INF] Health check requested
+[2025-11-26 16:38:16.154 +05:30] [INF] Health check requested
+[2025-11-26 16:38:16.158 +05:30] [INF] Health check requested
+[2025-11-26 16:38:16.161 +05:30] [INF] Health check requested
+[2025-11-26 16:38:26.148 +05:30] [INF] Health check requested
+[2025-11-26 16:38:26.149 +05:30] [INF] Health check requested
+[2025-11-26 16:38:26.150 +05:30] [INF] Health check requested
+[2025-11-26 16:38:36.153 +05:30] [INF] Health check requested
+[2025-11-26 16:38:36.156 +05:30] [INF] Health check requested
+[2025-11-26 16:38:36.160 +05:30] [INF] Health check requested
+[2025-11-26 16:39:26.153 +05:30] [INF] Health check requested
+[2025-11-26 16:39:26.157 +05:30] [INF] Health check requested
+[2025-11-26 16:39:26.161 +05:30] [INF] Health check requested

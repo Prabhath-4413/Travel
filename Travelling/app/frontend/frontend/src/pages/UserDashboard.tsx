@@ -30,31 +30,16 @@ import type { TravelPackage } from "../api/packages";
 import WeatherWidget from "../components/WeatherWidget";
 import { useLocation } from "../hooks/useLocation";
 
-const FALLBACK_HERO_IMAGES = [
-  "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80",
-];
-
-const NATURE_HERO_IMAGE =
-  "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80";
+const DASHBOARD_BACKGROUND_IMAGE =
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80";
 
 const SECTION_BACKGROUND_IMAGES = {
-  destinations:
-    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80",
-  metrics:
-    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80",
-  stories:
-    "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1600&q=80",
-  packages:
-    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=80",
-  planner:
-    "https://images.unsplash.com/photo-1523786040450-1efba3c496d8?auto=format&fit=crop&w=1600&q=80",
+  destinations: DASHBOARD_BACKGROUND_IMAGE,
+  metrics: DASHBOARD_BACKGROUND_IMAGE,
+  stories: DASHBOARD_BACKGROUND_IMAGE,
+  packages: DASHBOARD_BACKGROUND_IMAGE,
+  planner: DASHBOARD_BACKGROUND_IMAGE,
 } as const;
-
-const DASHBOARD_BACKGROUND_IMAGE =
-  "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1920&q=80";
 
 const FloatingParticle: React.FC<{
   delay?: number;
@@ -478,22 +463,13 @@ export default function UserDashboard(): JSX.Element {
     [filteredAvailable],
   );
 
-  const heroImages = useMemo(() => {
-    const destinationImages = destinations
-      .map((d) => d.imageUrl)
-      .filter((url): url is string => Boolean(url));
-    const unique = Array.from(
-      new Set([
-        NATURE_HERO_IMAGE,
-        ...destinationImages,
-        ...FALLBACK_HERO_IMAGES,
-      ]),
-    );
-    return unique.slice(0, 8);
-  }, [destinations]);
+  const heroImages = useMemo(
+    () => [DASHBOARD_BACKGROUND_IMAGE],
+    [],
+  );
 
   useEffect(() => {
-    if (!heroImages.length) return;
+    if (heroImages.length <= 1) return;
     const interval = window.setInterval(() => {
       setHeroIndex((i) => (i + 1) % heroImages.length);
     }, 6000);
@@ -501,7 +477,7 @@ export default function UserDashboard(): JSX.Element {
   }, [heroImages]);
 
   const activeHeroImage =
-    heroImages[heroIndex % heroImages.length] || NATURE_HERO_IMAGE;
+    heroImages[heroIndex % heroImages.length] || DASHBOARD_BACKGROUND_IMAGE;
 
   const travelStories = useMemo(() => {
     return bookings.slice(0, 3).map((booking) => {
@@ -1330,7 +1306,7 @@ export default function UserDashboard(): JSX.Element {
           className="relative max-w-6xl mx-auto px-6"
         >
           <div
-            className={`relative overflow-hidden rounded-[36px] border ${sectionBorderClass} px-6 sm:px-10 py-10 backdrop-blur-sm`}
+            className={`relative overflow-hidden rounded-[36px] border ${sectionBorderClass} px-6 sm:px-10 py-12 backdrop-blur-2xl bg-white/5`}
           >
             <div
               className="absolute inset-0 bg-cover bg-center"
@@ -1338,7 +1314,8 @@ export default function UserDashboard(): JSX.Element {
                 backgroundImage: `url(${SECTION_BACKGROUND_IMAGES.stories})`,
               }}
             />
-            <div className={`absolute inset-0 ${sectionOverlayClass}`} />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#04070c]/85 via-[#0b1a24]/75 to-[#04070c]/70" />
+            <div className={`absolute inset-0 ${sectionOverlayClass} backdrop-blur-[4px]`} />
             <div className="relative z-10 space-y-8">
               <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
                 <div>
@@ -1360,53 +1337,49 @@ export default function UserDashboard(): JSX.Element {
                 </div>
               </div>
               {travelStories.length === 0 ? (
-                <div
-                  className={`rounded-3xl border px-8 py-16 text-center text-lg ${isDark ? "border-[#2b5f49]/25 bg-[#f5f1e8]/75 text-[#f5e9d4]" : "border-[#0e1512]/10 bg-white/70 text-[#0f1a13]/70"}`}
-                >
+                <div className="rounded-3xl border border-white/15 bg-black/40 px-8 py-16 text-center text-lg text-white/80 backdrop-blur-xl">
                   Start booking to unlock your travel journal.
                 </div>
               ) : (
-                <div className="grid gap-6 sm:grid-cols-2">
+                <div className="grid gap-8 sm:grid-cols-2">
                   {travelStories.map((story) => (
                     <motion.article
                       key={story.id}
-                      whileHover={{ y: -6 }}
-                      className={`relative overflow-hidden rounded-3xl border ${isDark ? "border-white/10 bg-white/5 text-white/90" : "border-[#0e1512]/10 bg-white/85"}`}
+                      whileHover={{ y: -8, scale: 1.01 }}
+                      className="group relative overflow-hidden rounded-[28px] border border-white/15 bg-white/5 shadow-[0_25px_55px_rgba(0,0,0,0.45)] transition"
                     >
-                      <div className="relative h-56 overflow-hidden">
+                      <div className="relative h-64 w-full overflow-hidden">
                         <img
                           src={story.image}
                           alt={story.title}
-                          className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
+                          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
-                        <div className="absolute bottom-4 left-4">
-                          <div className="text-sm uppercase tracking-[0.4em] text-blue-300">
-                            {story.status}
-                          </div>
-                          <h3 className="text-2xl font-semibold mt-2">
-                            {story.title}
-                          </h3>
-                        </div>
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/25 to-black/85" />
                       </div>
-                      <div className="p-6 space-y-4">
-                        <p
-                          className={`text-sm leading-relaxed ${isDark ? "text-[#d7e7da]" : "text-[#0f1a13]/70"}`}
-                        >
-                          {story.excerpt}
-                        </p>
-                        <button
-                          onClick={() => {
-                            const booking = bookings.find(
-                              (b) => b.bookingId === story.id,
-                            );
-                            if (booking) handleExploreDestinations(booking);
-                          }}
-                          className="text-sm font-semibold text-blue-300 hover:text-[#f1a208]"
-                          type="button"
-                        >
-                          View itinerary →
-                        </button>
+                      <div className="relative -mt-12 px-6 pb-6">
+                        <div className="space-y-4 rounded-3xl border border-white/15 bg-black/60 p-6 text-white backdrop-blur-xl shadow-[0_20px_45px_rgba(0,0,0,0.55)]">
+                          <div>
+                            <p className="text-xs uppercase tracking-[0.4em] text-white/60">
+                              {story.status}
+                            </p>
+                            <h3 className="mt-2 text-2xl font-semibold">{story.title}</h3>
+                          </div>
+                          <p className="text-sm leading-relaxed text-white/80">
+                            {story.excerpt}
+                          </p>
+                          <button
+                            onClick={() => {
+                              const booking = bookings.find(
+                                (b) => b.bookingId === story.id,
+                              );
+                              if (booking) handleExploreDestinations(booking);
+                            }}
+                            className="text-sm font-semibold text-white/90 transition hover:text-[#f1a208]"
+                            type="button"
+                          >
+                            View itinerary →
+                          </button>
+                        </div>
                       </div>
                     </motion.article>
                   ))}

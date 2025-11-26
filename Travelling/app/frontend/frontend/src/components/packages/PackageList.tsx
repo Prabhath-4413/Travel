@@ -199,6 +199,7 @@ export default function PackageList({
           name={selectedPackage.name}
           description={selectedPackage.description}
           price={selectedPackage.price}
+          imageUrl={selectedPackage.imageUrl}
           destinations={selectedPackage.destinations}
           onClose={() => setSelectedPackage(null)}
           onBookNow={() => {
