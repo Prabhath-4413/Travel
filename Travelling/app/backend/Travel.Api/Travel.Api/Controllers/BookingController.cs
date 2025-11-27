@@ -269,6 +269,135 @@ public class BookingController : ControllerBase
         return Ok(new { message = "Booking rescheduled successfully", bookingId = request.BookingId });
     }
 
+    [HttpPost("packages/create")]
+    [Authorize]
+    public async Task<IActionResult> CreatePackageBooking([FromBody] CreatePackageBookingRequest request)
+    {
+        _logger.LogInformation("CreatePackageBooking request received for user {UserId}, package {PackageId}", 
+            request.UserId, request.PackageId);
+
+        var userId = int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var id) ? id : 0;
+        if (userId != request.UserId)
+        {
+            _logger.LogWarning("User ID mismatch: token user {TokenUser} vs request user {RequestUser}", userId, request.UserId);
+            return Unauthorized(new { message = "User ID mismatch" });
+        }
+
+        var packageBookingService = HttpContext.RequestServices.GetRequiredService<IPackageBookingService>();
+        
+        var (bookingId, price, message) = await packageBookingService.CreatePackageBookingAsync(
+            request.UserId,
+            request.PackageId,
+            request.Guests,
+            request.Nights,
+            request.StartDate);
+
+        if (bookingId == 0)
+        {
+            _logger.LogWarning("Failed to create package booking: {Message}", message);
+            return BadRequest(new { message });
+        }
+
+        _logger.LogInformation("Package booking created: {BookingId}", bookingId);
+        return Ok(new { bookingId, price, message });
+    }
+
+    [HttpPost("packages/generate-otp")]
+    public async Task<IActionResult> GeneratePackageOtp([FromBody] SendOtpRequest request)
+    {
+        _logger.LogInformation("GeneratePackageOtp request received for booking {BookingId}", request.BookingId);
+
+        var booking = await _context.Bookings
+            .Include(b => b.User)
+            .FirstOrDefaultAsync(b => b.BookingId == request.BookingId);
+
+        if (booking == null)
+        {
+            _logger.LogWarning("Booking not found for OTP generation: {BookingId}", request.BookingId);
+            return NotFound(new { message = "Booking not found" });
+        }
+
+        if (booking.User == null)
+        {
+            _logger.LogWarning("User information not found for booking {BookingId}", request.BookingId);
+            return BadRequest(new { message = "User information not found" });
+        }
+
+        try
+        {
+            var (otp, otpMessage, statusCode) = await _otpService.GenerateOtpAsync(booking.BookingId, booking.User.Email);
+
+            if (statusCode != 200)
+            {
+                _logger.LogWarning("OTP generation failed for booking {BookingId}: {Message} (Status: {StatusCode})",
+                    request.BookingId, otpMessage, statusCode);
+                return StatusCode(statusCode, new { message = otpMessage });
+            }
+
+            _logger.LogInformation("OTP sent successfully for package booking {BookingId}", booking.BookingId);
+            return Ok(new { message = "OTP sent successfully to your email" });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Exception occurred while generating OTP for booking {BookingId}: {Message}",
+                request.BookingId, ex.Message);
+            return StatusCode(500, new { message = $"Failed to send OTP: {ex.Message}" });
+        }
+    }
+
+    [HttpPost("packages/verify-otp")]
+    public async Task<IActionResult> VerifyPackageOtp([FromBody] VerifyOtpRequest request)
+    {
+        _logger.LogInformation("VerifyPackageOtp request received for booking {BookingId}", request.BookingId);
+
+        var booking = await _context.Bookings
+            .Include(b => b.User)
+            .FirstOrDefaultAsync(b => b.BookingId == request.BookingId);
+
+        if (booking == null)
+        {
+            _logger.LogWarning("Booking not found for OTP verification: {BookingId}", request.BookingId);
+            return NotFound(new { message = "Booking not found" });
+        }
+
+        if (booking.User == null)
+        {
+            _logger.LogWarning("User information not found for booking {BookingId}", request.BookingId);
+            return BadRequest(new { message = "User information not found" });
+        }
+
+        var isOtpValid = await _otpService.ValidateOtpAsync(booking.BookingId, booking.User.Email, request.Otp);
+        if (!isOtpValid)
+        {
+            _logger.LogWarning("OTP verification failed for booking {BookingId}: Invalid or expired OTP", request.BookingId);
+            return BadRequest(new { message = "Invalid or expired OTP" });
+        }
+
+        await _otpService.MarkOtpAsUsedAsync(booking.BookingId, booking.User.Email);
+
+        _logger.LogInformation("OTP verified successfully for package booking {BookingId}", booking.BookingId);
+        return Ok(new { message = "OTP verified successfully", bookingId = booking.BookingId, email = booking.User.Email });
+    }
+
+    [HttpPost("packages/confirm")]
+    public async Task<IActionResult> ConfirmPackageBooking([FromBody] ConfirmBookingRequest request)
+    {
+        _logger.LogInformation("ConfirmPackageBooking request received for booking {BookingId}, email {Email}",
+            request.BookingId, request.Email);
+
+        var packageBookingService = HttpContext.RequestServices.GetRequiredService<IPackageBookingService>();
+        var (success, message) = await packageBookingService.ConfirmPackageBookingWithOtpAsync(request.BookingId, request.Email);
+
+        if (!success)
+        {
+            _logger.LogWarning("Package booking confirmation failed for booking {BookingId}: {Message}", request.BookingId, message);
+            return BadRequest(new { message });
+        }
+
+        _logger.LogInformation("Package booking confirmed successfully for booking {BookingId}", request.BookingId);
+        return Ok(new { message = "Booking confirmed successfully", bookingId = request.BookingId });
+    }
+
 }
 
 public class SendOtpRequest
@@ -299,4 +428,13 @@ public class VerifyRescheduleOtpRequest
 {
     public int BookingId { get; set; }
     public string Otp { get; set; } = string.Empty;
+}
+
+public class CreatePackageBookingRequest
+{
+    public int UserId { get; set; }
+    public int PackageId { get; set; }
+    public int Guests { get; set; }
+    public int Nights { get; set; }
+    public DateTime StartDate { get; set; }
 }

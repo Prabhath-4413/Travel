@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { bookingsAPI, type UserBooking, type Destination } from "../../lib/api";
+import { bookingsAPI, type UserBooking, type Destination, type Booking } from "../../lib/api";
 
-interface RescheduleModalProps {
+export interface RescheduleModalProps {
   onClose: () => void;
   destinations: Destination[];
+  selectedBooking: Booking | null;
 }
 
 type ModalStep = "bookings" | "select-date" | "otp-verification" | "confirmation";
@@ -30,7 +31,7 @@ const stepDetails: Record<ModalStep, { label: string; description: string }> = {
   },
 };
 
-export default function RescheduleModal({ onClose, destinations }: RescheduleModalProps) {
+export default function RescheduleModal({ onClose, destinations, selectedBooking: initialSelectedBooking }: RescheduleModalProps) {
   const [step, setStep] = useState<ModalStep>("bookings");
   const [userBookings, setUserBookings] = useState<UserBooking[]>([]);
   const [selectedBooking, setSelectedBooking] = useState<UserBooking | null>(null);

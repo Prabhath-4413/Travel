@@ -171,6 +171,8 @@ builder.Services.AddSingleton<IOtpRateLimiter, OtpRateLimiter>();
 
 // Booking services
 builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<IPricingService, PricingService>();
+builder.Services.AddScoped<IPackageBookingService, PackageBookingService>();
 
 builder.Services.AddScoped<JwtHelper>();
 
@@ -716,40 +718,56 @@ app.MapPost("/email/send", async (EmailRequestDto request, IConfiguration config
 // ---------------------------
 app.MapGet("/admin/bookings", async (ApplicationDbContext db) =>
 {
-    var summary = await db.Bookings
-        .Where(b => b.CancellationStatus != CancellationStatus.Approved) // Exclude cancelled bookings
-        .GroupBy(b => 1)
-        .Select(g => new
-        {
-            TotalBookings = g.Count(),
-            TotalRevenue = g.Sum(b => b.TotalPrice),
-            AverageBookingValue = g.Average(b => b.TotalPrice)
-        })
-        .FirstOrDefaultAsync();
+    try
+    {
+        var bookingsForSummary = await db.Bookings
+            .Where(b => b.CancellationStatus != CancellationStatus.Approved)
+            .ToListAsync();
 
-    var recentBookings = await db.Bookings
-        .Where(b => b.CancellationStatus != CancellationStatus.Approved)
-        .Include(b => b.User)
-        .Include(b => b.BookingDestinations)
-        .ThenInclude(bd => bd.Destination)
-        .OrderByDescending(b => b.BookingDate)
-        .Take(10)
-        .Select(b => new
+        var summary = bookingsForSummary.Any() ? new
+        {
+            TotalBookings = bookingsForSummary.Count(),
+            TotalRevenue = bookingsForSummary.Sum(b => b.TotalPrice),
+            AverageBookingValue = bookingsForSummary.Average(b => b.TotalPrice)
+        } : null;
+
+        var bookingData = await db.Bookings
+            .Where(b => b.CancellationStatus != CancellationStatus.Approved && b.User != null)
+            .Include(b => b.User)
+            .Include(b => b.BookingDestinations)
+            .ThenInclude(bd => bd.Destination)
+            .OrderByDescending(b => b.BookingDate)
+            .Take(10)
+            .ToListAsync();
+
+        var recentBookings = bookingData.Select(b => new
         {
             b.BookingId,
-            UserName = b.User!.Name,
-            UserEmail = b.User!.Email,
+            UserName = b.User?.Name ?? "Unknown",
+            UserEmail = b.User?.Email ?? "Unknown",
             b.TotalPrice,
             b.Guests,
             b.Nights,
             b.BookingDate,
-            Destinations = b.BookingDestinations.Select(bd => bd.Destination!.Name),
-            Status = b.Status,
-            CancellationStatus = b.CancellationStatus
-        })
-        .ToListAsync();
+            Destinations = b.BookingDestinations?.Where(bd => bd.Destination != null).Select(bd => bd.Destination!.Name).ToList() ?? new List<string>(),
+            Status = b.Status.ToString(),
+            CancellationStatus = b.CancellationStatus.ToString()
+        }).ToList();
 
-    return Results.Ok(new { summary, recentBookings });
+        return Results.Ok(new { summary = summary ?? new { TotalBookings = 0, TotalRevenue = 0m, AverageBookingValue = 0m }, recentBookings });
+    }
+    catch (Exception ex)
+    {
+        var errorDetails = new
+        {
+            message = $"Error retrieving admin bookings: {ex.Message}",
+            type = ex.GetType().Name,
+            innerException = ex.InnerException?.Message,
+            stackTrace = ex.StackTrace
+        };
+        System.Console.WriteLine($"Admin bookings error: {System.Text.Json.JsonSerializer.Serialize(errorDetails)}");
+        return Results.Ok(new { summary = new { TotalBookings = 0, TotalRevenue = 0m, AverageBookingValue = 0m }, recentBookings = new List<object>(), errorDetails });
+    }
 }).RequireAuthorization(policy => policy.RequireRole("admin"));
 
 // ---------------------------

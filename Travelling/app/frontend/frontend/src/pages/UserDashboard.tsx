@@ -13,6 +13,7 @@ import {
   type Destination,
   type Booking,
   type ShortestPathResponse,
+  type CancellationStatus,
 } from "../lib/api";
 import { useDestinations } from "../contexts/DestinationsContext";
 import BookingForm from "../components/booking/BookingForm";
@@ -752,7 +753,7 @@ export default function UserDashboard(): JSX.Element {
 
   return (
     <div
-      className={`relative isolate min-h-screen overflow-hidden bg-no-repeat bg-center bg-fixed bg-cover  ${
+      className={`relative isolate min-h-screen bg-no-repeat bg-center bg-fixed bg-cover  ${
         isDark ? "text-white" : "text-[#133d2c]"
       } before:absolute before:inset-0 before:bg-black/45 before:content-[''] before:z-0 before:pointer-events-none`}
       style={{ backgroundImage: `url(${activeHeroImage})` }}

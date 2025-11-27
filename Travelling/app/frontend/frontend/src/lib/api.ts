@@ -343,6 +343,47 @@ export const bookingsAPI = {
     });
     return response.data;
   },
+
+  // Package Booking API
+  createPackageBooking: async (
+    userId: number,
+    packageId: number,
+    guests: number,
+    nights: number,
+    startDate: Date,
+  ) => {
+    const response = await api.post("/api/booking/packages/create", {
+      userId,
+      packageId,
+      guests,
+      nights,
+      startDate,
+    });
+    return response.data;
+  },
+
+  generatePackageOtp: async (bookingId: number) => {
+    const response = await api.post("/api/booking/packages/generate-otp", {
+      bookingId,
+    });
+    return response.data;
+  },
+
+  verifyPackageOtp: async (bookingId: number, otp: string) => {
+    const response = await api.post("/api/booking/packages/verify-otp", {
+      bookingId,
+      otp,
+    });
+    return response.data;
+  },
+
+  confirmPackageBooking: async (bookingId: number, email: string) => {
+    const response = await api.post("/api/booking/packages/confirm", {
+      bookingId,
+      email,
+    });
+    return response.data;
+  },
 };
 
 // Trip Cancellation API

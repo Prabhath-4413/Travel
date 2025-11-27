@@ -196,16 +196,13 @@ export default function PackageList({
 
       {selectedPackage && (
         <PackageDetailsModal
+          packageId={selectedPackage.packageId}
           name={selectedPackage.name}
           description={selectedPackage.description}
           price={selectedPackage.price}
           imageUrl={selectedPackage.imageUrl}
           destinations={selectedPackage.destinations}
           onClose={() => setSelectedPackage(null)}
-          onBookNow={() => {
-            onBookPackage?.(selectedPackage);
-            setSelectedPackage(null);
-          }}
         />
       )}
 
