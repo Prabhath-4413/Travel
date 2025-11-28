@@ -15,10 +15,7 @@ export default function Login() {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showLoginSuccess, setShowLoginSuccess] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation<{
-    redirectTo?: string;
-    redirectState?: unknown;
-  }>();
+  const location = useLocation();
   const { login, user } = useAuth();
 
   // Handle registration success state
@@ -195,7 +192,7 @@ export default function Login() {
                 <span className="ml-2 text-sm text-white/70">Remember me</span>
               </label>
               <Link
-                to="#"
+                to="/forgot-password"
                 className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
               >
                 Forgot password?

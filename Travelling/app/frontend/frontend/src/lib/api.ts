@@ -244,6 +244,20 @@ export const authAPI = {
     });
     return response.data;
   },
+
+  requestPasswordReset: async (email: string) => {
+    const response = await api.post("/auth/forgot-password", { email });
+    return response.data;
+  },
+
+  resetPassword: async (payload: {
+    token: string;
+    password: string;
+    confirmPassword: string;
+  }) => {
+    const response = await api.post("/auth/reset-password", payload);
+    return response.data;
+  },
 };
 
 // Destinations API

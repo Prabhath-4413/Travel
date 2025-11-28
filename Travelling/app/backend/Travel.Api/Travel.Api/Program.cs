@@ -1,10 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Cryptography;
 using System.Security.Claims;
 using System.Text;
+using System.Linq;
 using Travel.Api.Data;
 using Travel.Api.Models;
 using Travel.Api.Services;
@@ -19,6 +22,7 @@ using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,6 +46,9 @@ builder.Host.UseSerilog((context, configuration) =>
             outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz}] [{Level:u3}] {Message:lj}{NewLine}{Exception}"
         );
 });
+
+const string authRateLimiterPolicy = "auth-limiter";
+const string passwordResetRateLimiterPolicy = "password-reset-limiter";
 
 // ---------------------------
 // Swagger & CORS
@@ -131,8 +138,6 @@ builder.Services.AddAuthorization();
 // ---------------------------
 builder.Services.AddRateLimiter(options =>
 {
-    const string authPolicy = "auth-limiter";
-    
     options.GlobalLimiter ??= PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
         RateLimitPartition.GetFixedWindowLimiter(
             partitionKey: httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? httpContext.Connection.RemoteIpAddress?.ToString() ?? "anonymous",
@@ -142,7 +147,7 @@ builder.Services.AddRateLimiter(options =>
                 Window = TimeSpan.FromMinutes(1)
             }));
 
-    options.AddPolicy(authPolicy, httpContext =>
+    options.AddPolicy(authRateLimiterPolicy, httpContext =>
         RateLimitPartition.GetFixedWindowLimiter(
             partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "anonymous",
             factory: _ => new FixedWindowRateLimiterOptions
@@ -151,6 +156,17 @@ builder.Services.AddRateLimiter(options =>
                 Window = TimeSpan.FromMinutes(1),
                 QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
                 QueueLimit = 2
+            }));
+
+    options.AddPolicy(passwordResetRateLimiterPolicy, httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "anonymous",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 3,
+                Window = TimeSpan.FromMinutes(5),
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                QueueLimit = 1
             }));
 
     options.OnRejected = (context, _) =>
@@ -212,6 +228,7 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await db.Database.MigrateAsync();
+    await EnsurePasswordResetColumnsAsync(db);
 
     // Seed admin
     if (!await db.Users.AnyAsync(u => u.Email == "admin@example.com"))
@@ -255,6 +272,90 @@ string CreateJwt(User user)
     return new JwtSecurityTokenHandler().WriteToken(token);
 }
 
+string GenerateSecureToken()
+{
+    Span<byte> buffer = stackalloc byte[32];
+    RandomNumberGenerator.Fill(buffer);
+    return WebEncoders.Base64UrlEncode(buffer);
+}
+
+string HashResetToken(string token)
+{
+    var bytes = Encoding.UTF8.GetBytes(token);
+    var hash = SHA256.HashData(bytes);
+    return Convert.ToHexString(hash);
+}
+
+bool IsPasswordStrong(string password)
+{
+    if (string.IsNullOrWhiteSpace(password) || password.Length < 8)
+    {
+        return false;
+    }
+
+    var hasUpper = password.Any(char.IsUpper);
+    var hasLower = password.Any(char.IsLower);
+    var hasDigit = password.Any(char.IsDigit);
+    var hasSymbol = password.Any(c => !char.IsLetterOrDigit(c));
+    return hasUpper && hasLower && hasDigit && hasSymbol;
+}
+
+string GetFrontendBaseUrl()
+{
+    var raw = builder.Configuration["Frontend:BaseUrl"]
+        ?? builder.Configuration["FrontendBaseUrl"]
+        ?? builder.Configuration["FrontendUrl"]
+        ?? builder.Configuration["FrontendDomain"]
+        ?? "http://localhost:5173";
+    return raw.TrimEnd('/');
+}
+
+async Task EnsurePasswordResetColumnsAsync(ApplicationDbContext dbContext)
+{
+    if (dbContext.Database.IsSqlite())
+    {
+        await EnsureSqliteColumnAsync(dbContext, "password_reset_token_hash", "password_reset_token_hash TEXT");
+        await EnsureSqliteColumnAsync(dbContext, "password_reset_token_expiry", "password_reset_token_expiry TEXT");
+        await EnsureSqliteColumnAsync(dbContext, "password_reset_requested_at", "password_reset_requested_at TEXT");
+        return;
+    }
+
+    await dbContext.Database.ExecuteSqlRawAsync("ALTER TABLE users ADD COLUMN IF NOT EXISTS password_reset_token_hash TEXT;");
+    await dbContext.Database.ExecuteSqlRawAsync("ALTER TABLE users ADD COLUMN IF NOT EXISTS password_reset_token_expiry TIMESTAMPTZ;");
+    await dbContext.Database.ExecuteSqlRawAsync("ALTER TABLE users ADD COLUMN IF NOT EXISTS password_reset_requested_at TIMESTAMPTZ;");
+}
+
+async Task EnsureSqliteColumnAsync(ApplicationDbContext dbContext, string columnName, string columnDefinition)
+{
+    var connection = dbContext.Database.GetDbConnection();
+    var shouldClose = connection.State != ConnectionState.Open;
+
+    if (shouldClose)
+    {
+        await connection.OpenAsync();
+    }
+
+    try
+    {
+        using var checkCommand = connection.CreateCommand();
+        checkCommand.CommandText = $"SELECT 1 FROM pragma_table_info('users') WHERE name = '{columnName}';";
+        var exists = await checkCommand.ExecuteScalarAsync();
+        if (exists == null)
+        {
+            using var alterCommand = connection.CreateCommand();
+            alterCommand.CommandText = $"ALTER TABLE users ADD COLUMN {columnDefinition};";
+            await alterCommand.ExecuteNonQueryAsync();
+        }
+    }
+    finally
+    {
+        if (shouldClose)
+        {
+            await connection.CloseAsync();
+        }
+    }
+}
+
 // ---------------------------
 // Auth Endpoints
 // ---------------------------
@@ -274,7 +375,7 @@ app.MapPost("/auth/register", async (ApplicationDbContext db, RegisterDto dto) =
     await db.SaveChangesAsync();
     return Results.Ok(new { userId = user.UserId });
 }).AllowAnonymous()
-.RequireRateLimiting("auth-limiter");
+.RequireRateLimiting(authRateLimiterPolicy);
 
 app.MapPost("/auth/login", async (ApplicationDbContext db, LoginDto dto, HttpResponse http, ILogger<Program> logger) =>
 {
@@ -304,7 +405,97 @@ app.MapPost("/auth/login", async (ApplicationDbContext db, LoginDto dto, HttpRes
         return Results.Unauthorized();
     }
 }).AllowAnonymous()
-.RequireRateLimiting("auth-limiter");
+.RequireRateLimiting(authRateLimiterPolicy);
+
+app.MapPost("/auth/forgot-password", async (
+    ApplicationDbContext db,
+    ForgotPasswordRequest request,
+    IEmailService emailService,
+    IEmailTemplateBuilder templateBuilder,
+    ILogger<Program> logger) =>
+{
+    var emailValidator = new EmailAddressAttribute();
+    var genericMessage = "If an account exists for that email, you will receive a password reset link shortly.";
+    var email = request.Email?.Trim();
+
+    if (string.IsNullOrWhiteSpace(email) || !emailValidator.IsValid(email))
+    {
+        await Task.Delay(RandomNumberGenerator.GetInt32(50, 150));
+        return Results.Ok(new { message = genericMessage });
+    }
+
+    var user = await db.Users.FirstOrDefaultAsync(u => u.Email == email);
+    if (user is null)
+    {
+        await Task.Delay(RandomNumberGenerator.GetInt32(80, 200));
+        return Results.Ok(new { message = genericMessage });
+    }
+
+    var token = GenerateSecureToken();
+    var tokenHash = HashResetToken(token);
+    user.PasswordResetTokenHash = tokenHash;
+    user.PasswordResetTokenExpiryUtc = DateTime.UtcNow.AddMinutes(15);
+    user.PasswordResetRequestedAtUtc = DateTime.UtcNow;
+    await db.SaveChangesAsync();
+
+    try
+    {
+        var baseUrl = GetFrontendBaseUrl();
+        var link = $"{baseUrl}/reset-password?token={Uri.EscapeDataString(token)}";
+        var expiry = user.PasswordResetTokenExpiryUtc ?? DateTime.UtcNow.AddMinutes(15);
+        var body = templateBuilder.BuildPasswordResetBody(user.Name, link, expiry);
+        await emailService.SendAsync(new EmailMessage
+        {
+            ToEmail = user.Email,
+            ToName = user.Name,
+            Subject = "Reset your SuiteSavvy password",
+            Body = body,
+            IsHtml = true
+        });
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Failed to send password reset email for {Email}", email);
+    }
+
+    return Results.Ok(new { message = genericMessage });
+}).AllowAnonymous()
+.RequireRateLimiting(passwordResetRateLimiterPolicy);
+
+app.MapPost("/auth/reset-password", async (ApplicationDbContext db, ResetPasswordRequest request) =>
+{
+    var token = request.Token?.Trim();
+    if (string.IsNullOrWhiteSpace(token))
+    {
+        return Results.BadRequest(new { message = "Invalid or expired reset link." });
+    }
+
+    if (request.Password != request.ConfirmPassword)
+    {
+        return Results.BadRequest(new { message = "Passwords do not match." });
+    }
+
+    if (!IsPasswordStrong(request.Password))
+    {
+        return Results.BadRequest(new { message = "Password must be at least 8 characters and include uppercase, lowercase, number, and symbol." });
+    }
+
+    var hashedToken = HashResetToken(token);
+    var user = await db.Users.FirstOrDefaultAsync(u => u.PasswordResetTokenHash == hashedToken);
+    if (user is null || !user.PasswordResetTokenExpiryUtc.HasValue || user.PasswordResetTokenExpiryUtc.Value < DateTime.UtcNow)
+    {
+        return Results.BadRequest(new { message = "Invalid or expired reset link." });
+    }
+
+    user.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
+    user.PasswordResetTokenHash = null;
+    user.PasswordResetTokenExpiryUtc = null;
+    user.PasswordResetRequestedAtUtc = null;
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok(new { message = "Password updated successfully." });
+}).AllowAnonymous();
 
 // Extra Auth Endpoints (cookie session)
 // -------------------------------------
@@ -1033,6 +1224,26 @@ public class LoginDto
     [Required(ErrorMessage = "Password is required")]
     [MinLength(6, ErrorMessage = "Password must be at least 6 characters")]
     public string Password { get; set; } = string.Empty;
+}
+
+public class ForgotPasswordRequest
+{
+    [Required]
+    [EmailAddress]
+    public string Email { get; set; } = string.Empty;
+}
+
+public class ResetPasswordRequest
+{
+    [Required]
+    public string Token { get; set; } = string.Empty;
+
+    [Required]
+    [MinLength(8)]
+    public string Password { get; set; } = string.Empty;
+
+    [Compare("Password")]
+    public string ConfirmPassword { get; set; } = string.Empty;
 }
 
 public record CreateDestinationDto(string Name, string? Description, decimal Price, string? ImageUrl, decimal? Latitude, decimal? Longitude);

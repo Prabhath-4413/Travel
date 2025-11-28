@@ -6,11 +6,11 @@ import {
   CloudRain,
   Wind,
   Thermometer,
-  Loader2,
   Droplets,
 } from "lucide-react";
 import { weatherService, WeatherData } from "../api/weather";
 import { LocationData } from "../lib/location";
+import { Skeleton } from "./Skeleton";
 
 // Helper function to extract city name from descriptive destination names
 const extractCityName = (destinationName: string): string => {
@@ -284,9 +284,26 @@ export default function WeatherWidget({
         animate={{ opacity: 1, scale: 1 }}
         className={`bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6 ${className}`}
       >
-        <div className="flex items-center justify-center">
-          <Loader2 className="w-6 h-6 text-white/70 animate-spin mr-2" />
-          <span className="text-white/70">Loading...</span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Skeleton width={56} height={56} borderRadius={16} />
+            <div className="space-y-2">
+              <Skeleton width={120} height={16} />
+              <Skeleton width={160} height={14} />
+            </div>
+          </div>
+          <div className="space-y-2 text-right">
+            <Skeleton width={80} height={32} />
+            <div className="flex items-center gap-3">
+              <Skeleton width={70} height={14} />
+              <Skeleton width={70} height={14} />
+            </div>
+          </div>
+        </div>
+        <div className="mt-6 grid grid-cols-3 gap-4">
+          <Skeleton height={48} borderRadius={14} />
+          <Skeleton height={48} borderRadius={14} />
+          <Skeleton height={48} borderRadius={14} />
         </div>
       </motion.div>
     );

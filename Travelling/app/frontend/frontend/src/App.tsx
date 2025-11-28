@@ -7,6 +7,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { Toaster } from "react-hot-toast";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { DestinationsProvider } from "./contexts/DestinationsContext";
 import { initializeApiClient } from "./lib/api";
@@ -14,6 +15,8 @@ import { createHealthCheckListener } from "./lib/backendDetector";
 import LandingPage from "./pages/LandingPage";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
+import ForgotPassword from "./components/auth/ForgotPassword";
+import ResetPassword from "./components/auth/ResetPassword";
 import UserDashboard from "./pages/UserDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import PaymentPage from "./pages/PaymentPage";
@@ -101,6 +104,22 @@ function AppRoutes() {
         element={
           <PublicRoute>
             <Register />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/forgot-password"
+        element={
+          <PublicRoute>
+            <ForgotPassword />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/reset-password"
+        element={
+          <PublicRoute>
+            <ResetPassword />
           </PublicRoute>
         }
       />
@@ -217,6 +236,7 @@ function AppWithHealthCheck() {
             <div className="min-h-screen bg-[#0e1512] text-white font-display">
               <AppRoutes />
             </div>
+            <Toaster position="top-center" toastOptions={{ duration: 4000 }} />
           </Router>
         </DestinationsProvider>
       </AuthProvider>

@@ -15,6 +15,7 @@ namespace Travel.Api.Services
         string BuildCancellationDecisionUserBody(Models.Booking booking, bool approved, string? adminComment);
         string BuildCancellationDecisionAdminBody(TripCancellation cancellation, bool approved);
         string BuildRescheduleConfirmationUserBody(Models.Booking booking);
+        string BuildPasswordResetBody(string userName, string resetLink, DateTime expiresAtUtc);
     }
 
     public class EmailTemplateBuilder : IEmailTemplateBuilder
@@ -87,6 +88,58 @@ namespace Travel.Api.Services
             </td>
           </tr>
 
+          <tr>
+            <td style=""padding:14px 20px;background:#0b1412;color:#e2e8f0;text-align:center;font-size:13px;"">
+              SuiteSavvy Travel App • All Rights Reserved • support@suitesavvy.com
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>";
+        }
+
+        public string BuildPasswordResetBody(string userName, string resetLink, DateTime expiresAtUtc)
+        {
+            var safeName = string.IsNullOrWhiteSpace(userName) ? "there" : userName;
+            var encodedUserName = WebUtility.HtmlEncode(safeName);
+            var encodedLink = WebUtility.HtmlEncode(resetLink);
+            var expiryText = WebUtility.HtmlEncode(expiresAtUtc.ToUniversalTime().ToString("MMM dd, yyyy HH:mm 'UTC'"));
+
+            return $@"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+  <meta charset=""utf-8""/>
+  <meta name=""viewport"" content=""width=device-width, initial-scale=1.0""/>
+  <title>Password Reset</title>
+</head>
+<body style=""margin:0;padding:0;background:#0b1412;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;color:#0b1412;"">
+  <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""100%"" style=""padding:28px 12px;background:linear-gradient(180deg,rgba(11,20,18,0.9),rgba(11,20,18,1));"">
+    <tr>
+      <td align=""center"">
+        <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" width=""600"" style=""max-width:600px;width:100%;background:#f8fafc;border-radius:12px;overflow:hidden;"">
+          <tr>
+            <td style=""padding:18px 20px;background:#07231f;color:#f8fafc;"">
+              <div style=""font-weight:700;font-size:18px;"">SuiteSavvy ✈️</div>
+            </td>
+          </tr>
+          <tr>
+            <td style=""padding:22px 24px;background:#f8fafc;color:#0b1412;"">
+              <div style=""font-size:13px;color:#68d391;text-transform:uppercase;margin-bottom:8px;"">Reset your password</div>
+              <h2 style=""margin:6px 0 10px;font-size:18px;"">Hello {encodedUserName},</h2>
+              <p style=""margin:0 0 12px;color:#475569;font-size:14px;line-height:1.4;"">
+                A request was made to reset the password for your SuiteSavvy account. If this was you, tap the button below to choose a new password. This link expires on {expiryText}.
+              </p>
+              <div style=""text-align:center;margin:24px 0;"">
+                <a href=""{encodedLink}"" style=""display:inline-block;padding:12px 28px;background:#0b1412;color:#f8fafc;text-decoration:none;border-radius:999px;font-weight:600;"">Reset Password</a>
+              </div>
+              <p style=""margin:0;color:#475569;font-size:14px;line-height:1.4;"">
+                If you did not request a password reset, you can safely ignore this email. Your password will remain unchanged.
+              </p>
+            </td>
+          </tr>
           <tr>
             <td style=""padding:14px 20px;background:#0b1412;color:#e2e8f0;text-align:center;font-size:13px;"">
               SuiteSavvy Travel App • All Rights Reserved • support@suitesavvy.com

@@ -30,6 +30,12 @@ import PackageList from "../components/packages/PackageList";
 import type { TravelPackage } from "../api/packages";
 import WeatherWidget from "../components/WeatherWidget";
 import { useLocation } from "../hooks/useLocation";
+import {
+  BookingRowSkeleton,
+  DestinationCardSkeleton,
+  Skeleton,
+  UserProfileSkeleton,
+} from "../components/Skeleton";
 
 const DASHBOARD_BACKGROUND_IMAGE =
   "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80";
@@ -341,7 +347,11 @@ const FAB: React.FC<{
 export default function UserDashboard(): JSX.Element {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const { destinations, refresh: refreshDestinations } = useDestinations();
+  const {
+    destinations,
+    refresh: refreshDestinations,
+    isLoading: destinationsLoading,
+  } = useDestinations();
   const { location: userLocation } = useLocation();
 
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -744,9 +754,47 @@ export default function UserDashboard(): JSX.Element {
   if (loading) {
     return (
       <div
-        className={`min-h-screen flex items-center justify-center ${isDark ? "bg-[#0e1512] text-white" : "bg-[#f2f4f1] text-[#0f1a13]"}`}
+        className={`relative isolate min-h-screen bg-no-repeat bg-center bg-fixed bg-cover ${isDark ? "text-white" : "text-[#133d2c]"} before:absolute before:inset-0 before:bg-black/45 before:content-[''] before:z-0 before:pointer-events-none`}
+        style={{ backgroundImage: `url(${activeHeroImage})` }}
       >
-        Loading...
+        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-blue-900/40 via-purple-900/30 to-transparent" />
+        <main className="relative z-10 pt-28 md:pt-36 pb-28 space-y-20">
+          <section className="max-w-7xl mx-auto px-6">
+            <UserProfileSkeleton />
+          </section>
+
+          <section className="relative max-w-7xl mx-auto px-6">
+            <div
+              className={`rounded-[40px] border ${sectionBorderClass} px-6 sm:px-10 py-10 backdrop-blur-sm`}
+            >
+              <div className="space-y-4">
+                <Skeleton width={260} height={40} />
+                <Skeleton width="70%" height={18} />
+              </div>
+              <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <DestinationCardSkeleton key={index} />
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="relative max-w-7xl mx-auto px-6">
+            <div
+              className={`rounded-[40px] border ${sectionBorderClass} px-6 sm:px-10 py-10 backdrop-blur-sm`}
+            >
+              <div className="space-y-4">
+                <Skeleton width={220} height={36} />
+                <Skeleton width="60%" height={16} />
+              </div>
+              <div className="mt-8 space-y-6">
+                {Array.from({ length: 4 }).map((_, index) => (
+                  <BookingRowSkeleton key={index} />
+                ))}
+              </div>
+            </div>
+          </section>
+        </main>
       </div>
     );
   }
@@ -1134,7 +1182,13 @@ export default function UserDashboard(): JSX.Element {
                 </div>
               )}
 
-              {highlightedDestinations.length === 0 ? (
+              {destinationsLoading ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {Array.from({ length: 6 }).map((_, index) => (
+                    <DestinationCardSkeleton key={index} />
+                  ))}
+                </div>
+              ) : highlightedDestinations.length === 0 ? (
                 <div
                   className={`rounded-3xl border px-8 py-16 text-center text-lg ${isDark ? "border-[#2b5f49]/25 bg-[#f5f1e8]/75 text-[#f5e9d4]" : "border-[#0e1512]/10 bg-white/70 text-[#0f1a13]/70"}`}
                 >
@@ -1167,7 +1221,6 @@ export default function UserDashboard(): JSX.Element {
                           );
                         }}
                       >
-                        {/* Selection checkbox */}
                         <div className="absolute top-3 right-3 z-10">
                           <div
                             className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-colors ${

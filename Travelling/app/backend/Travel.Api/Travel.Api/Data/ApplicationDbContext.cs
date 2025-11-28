@@ -41,6 +41,9 @@ namespace Travel.Api.Data
                 b.Property(u => u.Role).HasColumnName("role").HasMaxLength(50).IsRequired().HasDefaultValue("user");
                 b.Property(u => u.GoogleId).HasColumnName("google_id").HasMaxLength(255);
                 b.Property(u => u.Picture).HasColumnName("picture").HasMaxLength(500);
+                b.Property(u => u.PasswordResetTokenHash).HasColumnName("password_reset_token_hash").HasMaxLength(256);
+                b.Property(u => u.PasswordResetTokenExpiryUtc).HasColumnName("password_reset_token_expiry");
+                b.Property(u => u.PasswordResetRequestedAtUtc).HasColumnName("password_reset_requested_at");
                 b.Property(u => u.CreatedAt).HasColumnName("created_at").HasDefaultValueSql("NOW()");
             });
 

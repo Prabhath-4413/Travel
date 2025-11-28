@@ -26,6 +26,7 @@ import { useAuth } from "../contexts/AuthContext";
 import React from "react";
 import PackageList from "../components/packages/PackageList";
 import WeatherWidget from "../components/WeatherWidget";
+import { DestinationCardSkeleton } from "../components/Skeleton";
 import { useLocation as useUserLocation } from "../hooks/useLocation";
 
 interface NavLink {
@@ -728,17 +729,6 @@ const StepsSection = () => {
   );
 };
 
-const DestinationSkeleton = () => (
-  <div className="group relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 animate-pulse">
-    <div className="aspect-[4/3] bg-white/10" />
-    <div className="p-6">
-      <div className="h-6 bg-white/10 rounded mb-2 w-3/4" />
-      <div className="h-4 bg-white/10 rounded mb-2 w-full" />
-      <div className="h-4 bg-white/10 rounded mb-4 w-2/3" />
-    </div>
-  </div>
-);
-
 const DestinationCard = ({ destination, onCardClick, index }: any) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const cardRef = useRef(null);
@@ -911,7 +901,7 @@ const FeaturedDestinationsPreview: React.FC<{ onViewAll: () => void }> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {loading ? (
             Array.from({ length: 6 }).map((_, i) => (
-              <DestinationSkeleton key={i} />
+              <DestinationCardSkeleton key={i} />
             ))
           ) : destinations.length > 0 ? (
             destinations.map((dest, index) => (
@@ -1097,7 +1087,7 @@ const DestinationsSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {loading ? (
             Array.from({ length: 6 }).map((_, i) => (
-              <DestinationSkeleton key={i} />
+              <DestinationCardSkeleton key={i} />
             ))
           ) : filteredDestinations.length > 0 ? (
             filteredDestinations.map((destination, index) => (

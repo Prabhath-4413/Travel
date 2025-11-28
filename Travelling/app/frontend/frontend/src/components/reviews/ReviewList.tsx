@@ -4,6 +4,7 @@ import { MessageCircle, User } from "lucide-react";
 import { toast } from "react-hot-toast";
 import StarRating from "./StarRating";
 import { reviewAPI, type Review } from "../../lib/api";
+import { Skeleton } from "../Skeleton";
 
 interface ReviewListProps {
   destinationId: number;
@@ -49,10 +50,22 @@ export default function ReviewList({
     return (
       <div className={`space-y-4 ${className}`}>
         {[1, 2, 3].map((i) => (
-          <div key={i} className="animate-pulse">
-            <div className="bg-gray-200 h-4 rounded w-1/4 mb-2"></div>
-            <div className="bg-gray-200 h-3 rounded w-full mb-1"></div>
-            <div className="bg-gray-200 h-3 rounded w-3/4"></div>
+          <div
+            key={i}
+            className="rounded-xl border border-gray-200/60 bg-white/80 p-4 shadow-sm"
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <Skeleton width={40} height={40} borderRadius={999} />
+              <div className="flex-1 space-y-2">
+                <Skeleton width="40%" height={14} />
+                <Skeleton width="30%" height={12} />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Skeleton width="100%" height={12} />
+              <Skeleton width="85%" height={12} />
+              <Skeleton width="65%" height={12} />
+            </div>
           </div>
         ))}
       </div>

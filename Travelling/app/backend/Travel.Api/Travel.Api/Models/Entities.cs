@@ -58,6 +58,13 @@ public class User
     [MaxLength(500)]
     public string? Picture { get; set; }
 
+    [MaxLength(256)]
+    public string? PasswordResetTokenHash { get; set; }
+
+    public DateTime? PasswordResetTokenExpiryUtc { get; set; }
+
+    public DateTime? PasswordResetRequestedAtUtc { get; set; }
+
     [Column("created_at")]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

@@ -3,6 +3,7 @@ import { getPackages, TravelPackage } from "../../api/packages";
 import PackageCard from "./PackageCard";
 import PackageDetailsModal from "./PackageDetailsModal";
 import RouteModal from "../booking/RouteModal";
+import { Skeleton } from "../Skeleton";
 
 type RawDestination = TravelPackage["destinations"][number] & {
   Latitude?: unknown;
@@ -33,6 +34,19 @@ const normalizeDestinations = (destinations: TravelPackage["destinations"]) =>
       longitude,
     };
   });
+
+const PackageCardSkeleton = () => (
+  <div className="rounded-3xl border border-white/10 bg-white/5 p-6 space-y-4">
+    <Skeleton height={200} borderRadius={24} />
+    <Skeleton width="75%" height={22} />
+    <Skeleton width="90%" height={14} />
+    <Skeleton width="60%" height={14} />
+    <div className="flex items-center justify-between pt-4 border-t border-white/10">
+      <Skeleton width={100} height={32} />
+      <Skeleton width={120} height={36} />
+    </div>
+  </div>
+);
 
 interface RouteDestination {
   destinationId: number;
@@ -140,8 +154,10 @@ export default function PackageList({
       </div>
 
       {loading && (
-        <div className="flex justify-center rounded-2xl border border-white/5 bg-white/5 p-10 text-white/70">
-          Loading travel packages...
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {Array.from({ length: readOnly ? 3 : 6 }).map((_, index) => (
+            <PackageCardSkeleton key={index} />
+          ))}
         </div>
       )}
 
