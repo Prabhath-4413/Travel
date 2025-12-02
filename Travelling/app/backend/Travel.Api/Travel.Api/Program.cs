@@ -79,16 +79,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(o =>
     var cs = builder.Configuration.GetConnectionString("DefaultConnection")
              ?? throw new InvalidOperationException("Connection string not found.");
 
-    if (builder.Environment.IsDevelopment())
-    {
-        // Use SQLite for development
-        o.UseSqlite(cs);
-    }
-    else
-    {
-        // Use PostgreSQL for production
-        o.UseNpgsql(cs);
-    }
+    o.UseNpgsql(cs);
 });
 
 // ---------------------------
@@ -227,7 +218,8 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    await db.Database.MigrateAsync();
+    await db.Database.EnsureDeletedAsync();
+    await db.Database.EnsureCreatedAsync();
     await EnsurePasswordResetColumnsAsync(db);
 
     // Seed admin
