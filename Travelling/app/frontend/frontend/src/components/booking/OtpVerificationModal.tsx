@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { bookingsAPI } from "../../lib/api";
 
@@ -15,6 +16,7 @@ export default function OtpVerificationModal({
   onClose,
   onSuccess,
 }: OtpVerificationModalProps) {
+  const navigate = useNavigate();
   const [otp, setOtp] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSendingOtp, setIsSendingOtp] = useState(false);
@@ -91,10 +93,10 @@ export default function OtpVerificationModal({
       );
 
       setSuccessMessage(
-        "🎉 Booking Confirmed! Check your email for confirmation.",
+        "🎉 Booking Confirmed! Redirecting to QR Summary...",
       );
       setTimeout(() => {
-        onSuccess();
+        navigate(`/booking/qr/${bookingId}`);
       }, 2000);
     } catch (err: any) {
       setError(

@@ -398,6 +398,252 @@ public class BookingController : ControllerBase
         return Ok(new { message = "Booking confirmed successfully", bookingId = request.BookingId });
     }
 
+    [HttpGet("download-ticket/{bookingId}")]
+    [Authorize]
+    public async Task<IActionResult> DownloadTicket(int bookingId)
+    {
+        _logger.LogInformation("DownloadTicket request received for booking {BookingId}", bookingId);
+
+        try
+        {
+            var userId = int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var id) ? id : 0;
+            if (userId == 0)
+            {
+                _logger.LogWarning("Unable to extract user ID from claims for ticket download");
+                return Unauthorized(new { message = "User ID not found in token" });
+            }
+
+            var booking = await _context.Bookings
+                .Include(b => b.User)
+                .Include(b => b.BookingDestinations)
+                .ThenInclude(bd => bd.Destination)
+                .FirstOrDefaultAsync(b => b.BookingId == bookingId && b.UserId == userId);
+
+            if (booking == null)
+            {
+                _logger.LogWarning("Booking not found or user not authorized for booking {BookingId}", bookingId);
+                return StatusCode(403, new { message = "Booking not found or you are not authorized to access this booking" });
+            }
+
+            if (booking.User == null)
+            {
+                _logger.LogWarning("User information not found for booking {BookingId}", bookingId);
+                return BadRequest(new { message = "User information not found" });
+            }
+
+            if (booking.Status != BookingStatus.Paid && booking.Status != BookingStatus.Confirmed)
+            {
+                _logger.LogWarning("Booking {BookingId} has invalid payment status: {Status}", bookingId, booking.Status);
+                return BadRequest(new { message = "Ticket can only be downloaded for paid bookings" });
+            }
+
+            var destinationNames = booking.BookingDestinations?.Any() == true
+                ? string.Join(", ", booking.BookingDestinations.Select(bd => bd.Destination?.Name ?? "Unknown"))
+                : "Unknown";
+
+            var destinations = booking.BookingDestinations?.Select(bd => bd.Destination?.DestinationId).FirstOrDefault() ?? 0;
+            if (destinations == 0)
+            {
+                _logger.LogWarning("No destination found for booking {BookingId}", bookingId);
+                return BadRequest(new { message = "Destination information not found" });
+            }
+
+            const decimal gstRate = 0.18m;
+            var subTotal = booking.TotalPrice / (1 + gstRate);
+            var gstAmount = booking.TotalPrice - subTotal;
+
+            var ticketDetails = new TicketDetailsDto
+            {
+                BookingId = booking.BookingId,
+                UserName = booking.User.Name,
+                UserEmail = booking.User.Email,
+                UserPhone = "Contact Support",
+                Destinations = destinationNames,
+                StartDate = booking.StartDate,
+                Guests = booking.Guests,
+                Nights = booking.Nights,
+                SubTotal = Math.Round(subTotal, 2),
+                GstAmount = Math.Round(gstAmount, 2),
+                TotalAmount = booking.TotalPrice,
+                PaymentStatus = "Paid",
+                TicketNumber = $"TKT-{DateTime.UtcNow:yyyyMMdd}-{bookingId:D6}"
+            };
+
+            var ticketPdfService = HttpContext.RequestServices.GetRequiredService<ITicketPdfService>();
+            var pdfBytes = await ticketPdfService.GenerateTicketPdfAsync(ticketDetails);
+
+            var fileName = $"Ticket-{bookingId}-{DateTime.UtcNow:yyyyMMddHHmmss}.pdf";
+
+            _logger.LogInformation("Successfully generated ticket PDF for booking {BookingId}", bookingId);
+            return File(pdfBytes, "application/pdf", fileName);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error generating ticket for booking {BookingId}: {Message}", bookingId, ex.Message);
+            return StatusCode(500, new { message = "Error generating ticket", error = ex.Message });
+        }
+    }
+
+    [HttpPost("verify-booking")]
+    public async Task<IActionResult> VerifyBooking([FromBody] VerifyBookingQrDto request)
+    {
+        _logger.LogInformation("VerifyBooking request received");
+
+        try
+        {
+            if (string.IsNullOrWhiteSpace(request.QrData))
+            {
+                _logger.LogWarning("QR data is empty or null");
+                return BadRequest(new VerifyBookingResponseDto
+                {
+                    IsValid = false,
+                    Message = "QR data cannot be empty"
+                });
+            }
+
+            var qrData = System.Text.Json.JsonSerializer.Deserialize<TicketQrData>(request.QrData);
+
+            if (qrData == null)
+            {
+                _logger.LogWarning("Failed to deserialize QR data");
+                return BadRequest(new VerifyBookingResponseDto
+                {
+                    IsValid = false,
+                    Message = "Invalid QR data format"
+                });
+            }
+
+            var booking = await _context.Bookings
+                .Include(b => b.User)
+                .FirstOrDefaultAsync(b => b.BookingId == qrData.BookingId && b.User!.Email == qrData.UserEmail);
+
+            if (booking == null)
+            {
+                _logger.LogWarning("Booking verification failed: Booking {BookingId} with email {Email} not found", 
+                    qrData.BookingId, qrData.UserEmail);
+                return Ok(new VerifyBookingResponseDto
+                {
+                    IsValid = false,
+                    Message = "Booking not found or email mismatch"
+                });
+            }
+
+            if (booking.Status != BookingStatus.Paid && booking.Status != BookingStatus.Confirmed)
+            {
+                _logger.LogWarning("Booking {BookingId} verification failed: Invalid payment status {Status}", 
+                    booking.BookingId, booking.Status);
+                return Ok(new VerifyBookingResponseDto
+                {
+                    IsValid = false,
+                    Message = "Booking payment not confirmed"
+                });
+            }
+
+            if (booking.StartDate.Date != qrData.TravelDate.Date)
+            {
+                _logger.LogWarning("Booking {BookingId} verification failed: Travel date mismatch", booking.BookingId);
+                return Ok(new VerifyBookingResponseDto
+                {
+                    IsValid = false,
+                    Message = "Travel date mismatch"
+                });
+            }
+
+            _logger.LogInformation("Booking {BookingId} verified successfully", booking.BookingId);
+            return Ok(new VerifyBookingResponseDto
+            {
+                IsValid = true,
+                BookingId = booking.BookingId,
+                UserEmail = booking.User?.Email,
+                TravelDate = booking.StartDate,
+                Message = "Booking verified successfully"
+            });
+        }
+        catch (System.Text.Json.JsonException ex)
+        {
+            _logger.LogError(ex, "JSON deserialization error while verifying booking: {Message}", ex.Message);
+            return BadRequest(new VerifyBookingResponseDto
+            {
+                IsValid = false,
+                Message = "Invalid JSON format in QR data"
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error verifying booking: {Message}", ex.Message);
+            return StatusCode(500, new VerifyBookingResponseDto
+            {
+                IsValid = false,
+                Message = "Error verifying booking"
+            });
+        }
+    }
+
+    [HttpGet("{bookingId}")]
+    public async Task<IActionResult> GetBookingDetails(int bookingId)
+    {
+        _logger.LogInformation("GetBookingDetails request received for booking {BookingId}", bookingId);
+
+        try
+        {
+            var booking = await _context.Bookings
+                .Include(b => b.User)
+                .Include(b => b.BookingDestinations)
+                .ThenInclude(bd => bd.Destination)
+                .FirstOrDefaultAsync(b => b.BookingId == bookingId);
+
+            if (booking == null)
+            {
+                _logger.LogWarning("Booking not found for booking {BookingId}", bookingId);
+                return NotFound(new { message = "Booking not found" });
+            }
+
+            if (booking.User == null)
+            {
+                _logger.LogWarning("User information not found for booking {BookingId}", bookingId);
+                return BadRequest(new { message = "User information not found" });
+            }
+
+            var destinationNames = booking.BookingDestinations?.Any() == true
+                ? string.Join(", ", booking.BookingDestinations.Select(bd => bd.Destination?.Name ?? "Unknown"))
+                : "Unknown";
+
+            const decimal gstRate = 0.18m;
+            var subTotal = booking.TotalPrice / (1 + gstRate);
+            var gstAmount = booking.TotalPrice - subTotal;
+
+            var paymentStatus = booking.Status switch
+            {
+                BookingStatus.Paid => "Paid",
+                BookingStatus.PendingPayment => "Pending",
+                BookingStatus.Confirmed => "Paid",
+                _ => "Pending"
+            };
+
+            var bookingDetails = new BookingDetailsDto
+            {
+                BookingId = booking.BookingId,
+                UserName = booking.User.Name,
+                Email = booking.User.Email,
+                PackageName = destinationNames,
+                Date = booking.StartDate,
+                Persons = booking.Guests,
+                TotalAmount = booking.TotalPrice,
+                GstAmount = Math.Round(gstAmount, 2),
+                SubTotal = Math.Round(subTotal, 2),
+                PaymentStatus = paymentStatus
+            };
+
+            _logger.LogInformation("Retrieved booking details for booking {BookingId}", bookingId);
+            return Ok(bookingDetails);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving booking details for booking {BookingId}: {Message}", bookingId, ex.Message);
+            return StatusCode(500, new { message = "Error retrieving booking details", error = ex.Message });
+        }
+    }
+
 }
 
 public class SendOtpRequest

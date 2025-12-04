@@ -21,6 +21,7 @@ import UserDashboard from "./pages/UserDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import PaymentPage from "./pages/PaymentPage";
 import StartBookingPage from "./pages/StartBookingPage";
+import BookingQRPage from "./pages/BookingQRPage";
 import MultiDestinationSelector from "./components/booking/MultiDestinationSelector";
 import BackendConnectionError from "./components/BackendConnectionError";
 
@@ -145,6 +146,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <MultiDestinationSelector />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/booking/qr/:bookingId"
+        element={
+          <ProtectedRoute>
+            <BookingQRPage />
           </ProtectedRoute>
         }
       />

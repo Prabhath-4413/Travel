@@ -5,10 +5,18 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "VITE_");
 
   return {
-    plugins: [react()],
+    plugins: [react({ jsxImportSource: "react" })],
     server: {
       port: 5173,
-      open: true,
+      open: false,
+      middlewareMode: false,
+    },
+    optimizeDeps: {
+      exclude: ["html5-qrcode"],
+      include: ["react", "react-dom"],
+    },
+    resolve: {
+      alias: {},
     },
   };
 });

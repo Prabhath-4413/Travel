@@ -181,6 +181,9 @@ builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IPricingService, PricingService>();
 builder.Services.AddScoped<IPackageBookingService, PackageBookingService>();
 
+// PDF and Ticket services
+builder.Services.AddScoped<ITicketPdfService, TicketPdfService>();
+
 builder.Services.AddScoped<JwtHelper>();
 
 // Review services

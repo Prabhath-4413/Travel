@@ -1,13 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Travel.Api.Data;
 using Travel.Api.Models;
+using Travel.Api.Services;
 using Google.Apis.Auth;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.Extensions.Configuration;
 
 namespace Travel.Api.Controllers;
 
@@ -16,12 +13,60 @@ namespace Travel.Api.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly ApplicationDbContext _db;
-    private readonly IConfiguration _configuration;
+    private readonly IAuthTokenService _tokenService;
 
-    public AuthController(ApplicationDbContext db, IConfiguration configuration)
+    public AuthController(ApplicationDbContext db, IAuthTokenService tokenService)
     {
         _db = db;
-        _configuration = configuration;
+        _tokenService = tokenService;
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] LoginDto dto)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(dto.Email) || string.IsNullOrEmpty(dto.Password))
+            {
+                return BadRequest(new { message = "Email and password are required" });
+            }
+
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+
+            if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
+            {
+                return Unauthorized(new { message = "Invalid email or password" });
+            }
+
+            var tokenResponse = _tokenService.GenerateTokenResponse(user);
+
+            await _tokenService.StoreRefreshTokenAsync(user.UserId, tokenResponse.RefreshToken);
+
+            Response.Cookies.Append("refreshToken", tokenResponse.RefreshToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTimeOffset.UtcNow.AddDays(7)
+            });
+
+            return Ok(new
+            {
+                accessToken = tokenResponse.AccessToken,
+                refreshToken = tokenResponse.RefreshToken,
+                expiresIn = tokenResponse.ExpiresIn,
+                tokenType = tokenResponse.TokenType,
+                userId = user.UserId,
+                name = user.Name,
+                email = user.Email,
+                role = user.Role,
+                picture = user.Picture
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+        }
     }
 
     [HttpPost("google")]
@@ -29,23 +74,22 @@ public class AuthController : ControllerBase
     {
         try
         {
-            // Validate Google JWT token
+            var configuration = HttpContext.RequestServices.GetRequiredService<IConfiguration>();
+
             var payload = await GoogleJsonWebSignature.ValidateAsync(dto.Credential, new GoogleJsonWebSignature.ValidationSettings
             {
-                Audience = new[] { _configuration["Google:ClientId"] ?? throw new InvalidOperationException("Google ClientId not configured") }
+                Audience = new[] { configuration["Google:ClientId"] ?? throw new InvalidOperationException("Google ClientId not configured") }
             });
 
-            // Check if user exists by GoogleId or Email
             var user = await _db.Users.FirstOrDefaultAsync(u => u.GoogleId == payload.Subject || u.Email == payload.Email);
 
             if (user == null)
             {
-                // Create new user
                 user = new User
                 {
                     Name = payload.Name,
                     Email = payload.Email,
-                    Password = BCrypt.Net.BCrypt.HashPassword(Guid.NewGuid().ToString()), // Random password for Google users
+                    Password = BCrypt.Net.BCrypt.HashPassword(Guid.NewGuid().ToString()),
                     Role = "user",
                     GoogleId = payload.Subject,
                     Picture = payload.Picture
@@ -55,7 +99,6 @@ public class AuthController : ControllerBase
             }
             else
             {
-                // Update existing user with Google info if not already set
                 if (string.IsNullOrEmpty(user.GoogleId))
                 {
                     user.GoogleId = payload.Subject;
@@ -67,12 +110,24 @@ public class AuthController : ControllerBase
                 await _db.SaveChangesAsync();
             }
 
-            // Generate JWT token
-            var token = CreateJwt(user);
+            var tokenResponse = _tokenService.GenerateTokenResponse(user);
+
+            await _tokenService.StoreRefreshTokenAsync(user.UserId, tokenResponse.RefreshToken);
+
+            Response.Cookies.Append("refreshToken", tokenResponse.RefreshToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTimeOffset.UtcNow.AddDays(7)
+            });
 
             return Ok(new
             {
-                token = token,
+                accessToken = tokenResponse.AccessToken,
+                refreshToken = tokenResponse.RefreshToken,
+                expiresIn = tokenResponse.ExpiresIn,
+                tokenType = tokenResponse.TokenType,
                 userId = user.UserId,
                 name = user.Name,
                 email = user.Email,
@@ -90,29 +145,68 @@ public class AuthController : ControllerBase
         }
     }
 
-    private string CreateJwt(User user)
+    [HttpPost("refresh-token")]
+    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest dto)
     {
-        var jwtKey = _configuration["JWT:Key"] ?? "dev_secret_key_change_me";
-        var jwtIssuer = _configuration["JWT:Issuer"] ?? "travel-api";
-        var jwtAudience = _configuration["JWT:Audience"] ?? "travel-client";
-
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        var claims = new List<Claim>
+        try
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim(ClaimTypes.Name, user.Name),
-            new Claim(ClaimTypes.Role, user.Role)
-        };
-        var token = new JwtSecurityToken(
-            issuer: jwtIssuer,
-            audience: jwtAudience,
-            claims: claims,
-            expires: DateTime.UtcNow.AddHours(12),
-            signingCredentials: creds
-        );
-        return new JwtSecurityTokenHandler().WriteToken(token);
+            if (string.IsNullOrEmpty(dto.RefreshToken))
+            {
+                return BadRequest(new { message = "Refresh token is required" });
+            }
+
+            var result = await _tokenService.RefreshTokenAsync(dto.RefreshToken);
+
+            if (result == null)
+            {
+                return Unauthorized(new { message = "Invalid or expired refresh token" });
+            }
+
+            var (newAccessToken, newRefreshToken) = result.Value;
+
+            var accessTokenExpireMinutes = int.Parse(HttpContext.RequestServices.GetRequiredService<IConfiguration>()["JWT:AccessTokenExpireMinutes"] ?? "15");
+
+            Response.Cookies.Append("refreshToken", newRefreshToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTimeOffset.UtcNow.AddDays(7)
+            });
+
+            return Ok(new
+            {
+                accessToken = newAccessToken,
+                refreshToken = newRefreshToken,
+                expiresIn = accessTokenExpireMinutes * 60,
+                tokenType = "Bearer"
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+        }
+    }
+
+    [Authorize]
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout([FromBody] RefreshTokenRequest dto)
+    {
+        try
+        {
+            if (!string.IsNullOrEmpty(dto.RefreshToken))
+            {
+                await _tokenService.RevokeRefreshTokenAsync(dto.RefreshToken);
+            }
+
+            Response.Cookies.Delete("refreshToken");
+
+            return Ok(new { message = "Logged out successfully" });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+        }
     }
 }
 

@@ -280,6 +280,20 @@ public class UserBookingDto
     public string Status { get; set; } = string.Empty;
 }
 
+public class BookingDetailsDto
+{
+    public int BookingId { get; set; }
+    public string UserName { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string PackageName { get; set; } = string.Empty;
+    public DateTime Date { get; set; }
+    public int Persons { get; set; }
+    public decimal TotalAmount { get; set; }
+    public decimal GstAmount { get; set; }
+    public decimal SubTotal { get; set; }
+    public string PaymentStatus { get; set; } = "Pending";
+}
+
 public class SendRescheduleOtpRequest
 {
     public int BookingId { get; set; }
@@ -325,5 +339,49 @@ public class RescheduleOtp
 
     [Column("created_at")]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+}
+
+public class TicketQrData
+{
+    public int BookingId { get; set; }
+    public string UserEmail { get; set; } = string.Empty;
+    public DateTime TravelDate { get; set; }
+    public string TicketGeneratedAt { get; set; } = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
+}
+
+public class TicketPdfRequestDto
+{
+    public int BookingId { get; set; }
+}
+
+public class VerifyBookingQrDto
+{
+    public string QrData { get; set; } = string.Empty;
+}
+
+public class VerifyBookingResponseDto
+{
+    public bool IsValid { get; set; }
+    public int? BookingId { get; set; }
+    public string? UserEmail { get; set; }
+    public DateTime? TravelDate { get; set; }
+    public string? Message { get; set; }
+}
+
+public class TicketDetailsDto
+{
+    public int BookingId { get; set; }
+    public string UserName { get; set; } = string.Empty;
+    public string UserEmail { get; set; } = string.Empty;
+    public string UserPhone { get; set; } = string.Empty;
+    public string Destinations { get; set; } = string.Empty;
+    public DateTime StartDate { get; set; }
+    public int Guests { get; set; }
+    public int Nights { get; set; }
+    public decimal SubTotal { get; set; }
+    public decimal GstAmount { get; set; }
+    public decimal TotalAmount { get; set; }
+    public string PaymentStatus { get; set; } = "Paid";
+    public string TicketNumber { get; set; } = string.Empty;
 }
 

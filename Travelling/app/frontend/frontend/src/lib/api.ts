@@ -116,6 +116,19 @@ export interface UserBooking {
   status: string;
 }
 
+export interface BookingDetails {
+  bookingId: number;
+  userName: string;
+  email: string;
+  packageName: string;
+  date: string;
+  persons: number;
+  totalAmount: number;
+  gstAmount: number;
+  subTotal: number;
+  paymentStatus: string;
+}
+
 export interface TripCancellationDetail {
   tripCancellationId: number;
   status: TripCancellationStatus;
@@ -396,6 +409,11 @@ export const bookingsAPI = {
       bookingId,
       email,
     });
+    return response.data;
+  },
+
+  getBookingDetails: async (bookingId: number): Promise<BookingDetails> => {
+    const response = await api.get(`/api/booking/${bookingId}`);
     return response.data;
   },
 };

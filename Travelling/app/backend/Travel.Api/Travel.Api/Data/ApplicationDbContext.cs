@@ -19,6 +19,7 @@ namespace Travel.Api.Data
         public DbSet<Review> Reviews => Set<Review>();
         public DbSet<BookingOtp> BookingOtps => Set<BookingOtp>();
         public DbSet<RescheduleOtp> RescheduleOtps => Set<RescheduleOtp>();
+        public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
