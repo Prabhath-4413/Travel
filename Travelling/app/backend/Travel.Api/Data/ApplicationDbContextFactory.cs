@@ -43,7 +43,7 @@ namespace Travel.Api.Data
             : base(options)
         {
         }
-
+        
         // Add DbSet<TEntity> properties here as needed, for example:
         // public DbSet<MyEntity> MyEntities { get; set; }
     }
