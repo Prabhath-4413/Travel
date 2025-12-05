@@ -69,10 +69,10 @@ public class TicketPdfService : ITicketPdfService
     {
         container.Row(row =>
         {
-            row.RelativeItem(1).Border(1).Padding(5).Background("#F5F5F5").AlignCenter().AlignMiddle().Text("✈ TRAVELLING");
+            row.RelativeItem(1).Border(1).Padding(5).Background("#F5F5F5").AlignCenter().AlignMiddle().Text("✈ SUITESAVVY");
             row.RelativeItem(2).PaddingLeft(10).Column(col =>
             {
-                col.Item().Text("Travelling - Your Journey Awaits").FontSize(18).Bold().FontColor("#1e40af");
+                col.Item().Text("SuiteSavvy - Your Journey Awaits").FontSize(18).Bold().FontColor("#1e40af");
                 col.Item().Text("Premium Travel Booking Services").FontSize(10).FontColor("#666");
             });
         });
@@ -271,11 +271,11 @@ public class TicketPdfService : ITicketPdfService
         container.PaddingTop(5);
         container.Row(row =>
         {
-            row.RelativeItem().Text("Thank you for choosing Travelling! Have a wonderful journey!").FontSize(9).FontColor("#1e40af").Bold().AlignCenter();
+            row.RelativeItem().Text("Thank you for choosing SuiteSavvy! Have a wonderful journey!").FontSize(9).FontColor("#1e40af").Bold().AlignCenter();
         });
         container.Row(row =>
         {
-            row.RelativeItem().Text("For support, contact: support@travelling.com | Phone: +91-9876543210").FontSize(8).FontColor("#666").AlignCenter();
+            row.RelativeItem().Text("For support, contact: support@suitesavvy.com | Phone: +91-9876543210").FontSize(8).FontColor("#666").AlignCenter();
         });
         container.Row(row =>
         {

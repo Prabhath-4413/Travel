@@ -42,6 +42,16 @@ public class AuthController : ControllerBase
 
             await _tokenService.StoreRefreshTokenAsync(user.UserId, tokenResponse.RefreshToken);
 
+            var accessTokenExpireMinutes = int.Parse(HttpContext.RequestServices.GetRequiredService<IConfiguration>()["JWT:AccessTokenExpireMinutes"] ?? "15");
+
+            Response.Cookies.Append("AuthToken", tokenResponse.AccessToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTimeOffset.UtcNow.AddMinutes(accessTokenExpireMinutes)
+            });
+
             Response.Cookies.Append("refreshToken", tokenResponse.RefreshToken, new CookieOptions
             {
                 HttpOnly = true,
@@ -113,6 +123,16 @@ public class AuthController : ControllerBase
             var tokenResponse = _tokenService.GenerateTokenResponse(user);
 
             await _tokenService.StoreRefreshTokenAsync(user.UserId, tokenResponse.RefreshToken);
+
+            var accessTokenExpireMinutes = int.Parse(HttpContext.RequestServices.GetRequiredService<IConfiguration>()["JWT:AccessTokenExpireMinutes"] ?? "15");
+
+            Response.Cookies.Append("AuthToken", tokenResponse.AccessToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTimeOffset.UtcNow.AddMinutes(accessTokenExpireMinutes)
+            });
 
             Response.Cookies.Append("refreshToken", tokenResponse.RefreshToken, new CookieOptions
             {
@@ -213,4 +233,9 @@ public class AuthController : ControllerBase
 public class GoogleLoginDto
 {
     public string Credential { get; set; } = string.Empty;
+}
+
+public class RefreshTokenRequest
+{
+    public string RefreshToken { get; set; } = string.Empty;
 }

@@ -4,11 +4,11 @@ import QRCode from "qrcode";
 import { TicketBookingData, CompanyDetails, TicketPdfOptions } from "../types/ticketPdf";
 
 const DEFAULT_COMPANY_DETAILS: CompanyDetails = {
-  name: "Travelling",
+  name: "SuiteSavvy",
   address: "123 Travel Street, India",
   phone: "+91-9876543210",
-  email: "info@travelling.com",
-  website: "www.travelling.com",
+  email: "info@suitesavvy.com",
+  website: "www.suitesavvy.com",
   gstNumber: "18AABCU9603R1Z0",
 };
 
@@ -51,8 +51,6 @@ export async function generateTicketPDF(
       unit: "mm",
       format: "a4",
     });
-
-    autoTable(doc);
 
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();

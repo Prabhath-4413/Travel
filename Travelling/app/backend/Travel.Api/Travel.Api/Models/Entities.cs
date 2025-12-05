@@ -385,3 +385,33 @@ public class TicketDetailsDto
     public string TicketNumber { get; set; } = string.Empty;
 }
 
+public class RefreshToken
+{
+    [Key]
+    [Column("refresh_token_id")]
+    public int RefreshTokenId { get; set; }
+
+    [ForeignKey(nameof(User))]
+    [Column("user_id")]
+    public int UserId { get; set; }
+    public User? User { get; set; }
+
+    [Required]
+    [MaxLength(500)]
+    [Column("token")]
+    public string Token { get; set; } = string.Empty;
+
+    [Column("expiry_date")]
+    public DateTime ExpiryDate { get; set; }
+
+    [Column("created_at")]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    [Column("revoked_at")]
+    public DateTime? RevokedAt { get; set; }
+
+    public bool IsRevoked => RevokedAt.HasValue;
+
+    public bool IsExpired => DateTime.UtcNow > ExpiryDate;
+}
+

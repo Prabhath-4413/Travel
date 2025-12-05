@@ -7,6 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
 using System.Security.Claims;
 using System.Text;
+using System.IdentityModel.Tokens;
 using System.Linq;
 using Travel.Api.Data;
 using Travel.Api.Models;
@@ -39,7 +40,7 @@ builder.Host.UseSerilog((context, configuration) =>
         .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
         .MinimumLevel.Override("System", LogEventLevel.Warning)
         .Enrich.FromLogContext()
-        .Enrich.WithProperty("Application", "TravelBooking")
+        .Enrich.WithProperty("Application", "SuiteSavvy")
         .WriteTo.File(
             path: Path.Combine("logs", "otp-security-.txt"),
             rollingInterval: RollingInterval.Day,
@@ -106,7 +107,8 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = jwtAudience,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
         RoleClaimType = ClaimTypes.Role,
-        NameClaimType = ClaimTypes.NameIdentifier
+        NameClaimType = ClaimTypes.NameIdentifier,
+        ClockSkew = TimeSpan.FromSeconds(60)
     };
     options.Events = new JwtBearerEvents
     {
@@ -117,6 +119,25 @@ builder.Services.AddAuthentication(options =>
             {
                 context.Token = token;
             }
+            return Task.CompletedTask;
+        },
+        OnAuthenticationFailed = context =>
+        {
+            var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+            logger.LogError($"JWT Authentication failed: {context.Exception.Message}");
+            logger.LogError($"Exception type: {context.Exception.GetType().Name}");
+            if (context.Exception is SecurityTokenExpiredException)
+            {
+                logger.LogWarning("Token has expired");
+            }
+            return Task.CompletedTask;
+        },
+        OnTokenValidated = context =>
+        {
+            var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+            var userId = context.Principal?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var userEmail = context.Principal?.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Email)?.Value;
+            logger.LogInformation($"JWT validated successfully for user: {userId} ({userEmail})");
             return Task.CompletedTask;
         }
     };
@@ -185,6 +206,9 @@ builder.Services.AddScoped<IPackageBookingService, PackageBookingService>();
 builder.Services.AddScoped<ITicketPdfService, TicketPdfService>();
 
 builder.Services.AddScoped<JwtHelper>();
+
+// Auth Token services
+builder.Services.AddScoped<IAuthTokenService, AuthTokenService>();
 
 // Review services
 builder.Services.AddScoped<ReviewService>();
@@ -1138,9 +1162,9 @@ app.MapPost("/admin/test-email", async (ApplicationDbContext db, ClaimsPrincipal
         }
 
         var message = new MimeMessage();
-        message.From.Add(new MailboxAddress("Travel App", fromEmail));
+        message.From.Add(new MailboxAddress("SuiteSavvy", fromEmail));
         message.To.Add(new MailboxAddress(user.Name, user.Email));
-        message.Subject = "Test Email - Travel App Configuration";
+        message.Subject = "Test Email - SuiteSavvy Configuration";
 
         var body = $@"
 Hello {user.Name},
@@ -1158,7 +1182,7 @@ Configuration Details:
 You can now receive booking confirmation emails.
 
 Best regards,
-Travel App Team
+SuiteSavvy Team
 ";
 
         message.Body = new TextPart("plain") { Text = body };

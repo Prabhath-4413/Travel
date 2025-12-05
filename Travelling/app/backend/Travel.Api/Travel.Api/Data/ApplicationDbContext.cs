@@ -267,7 +267,7 @@ namespace Travel.Api.Data
                         PackageId = 1,
                         Name = "Beach Escape",
                         Description = "Five-day coastal escape featuring sunrise yoga, local seafood tastings, and resort-style beach villas.",
-                        Price = 499.99m,
+                        Price = 123499.99m,
                         ImageUrl = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
                         CreatedAt = packageSeedTimestamp
                     },
@@ -276,7 +276,7 @@ namespace Travel.Api.Data
                         PackageId = 2,
                         Name = "Mountain Adventure",
                         Description = "Week-long alpine expedition with guided summit treks, riverside camping, and stargazing under clear skies.",
-                        Price = 899.99m,
+                        Price = 123899.99m,
                         ImageUrl = "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
                         CreatedAt = packageSeedTimestamp
                     },
@@ -285,7 +285,7 @@ namespace Travel.Api.Data
                         PackageId = 3,
                         Name = "Cultural Journey",
                         Description = "Curated heritage trail showcasing palace walkthroughs, artisan workshops, and immersive food tours.",
-                        Price = 699.99m,
+                        Price = 123699.99m,
                         ImageUrl = "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=1200&q=80",
                         CreatedAt = packageSeedTimestamp
                     },
@@ -294,7 +294,7 @@ namespace Travel.Api.Data
                         PackageId = 4,
                         Name = "Urban Explorer",
                         Description = "Modern city vibes with cutting-edge technology, vibrant nightlife, and cultural landmarks.",
-                        Price = 799.99m,
+                        Price = 123799.99m,
                         ImageUrl = "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=1200&auto=format&fit=crop",
                         CreatedAt = packageSeedTimestamp
                     },
@@ -303,7 +303,7 @@ namespace Travel.Api.Data
                         PackageId = 5,
                         Name = "Luxury Worldwide",
                         Description = "Premium destinations featuring world-class accommodations, exclusive experiences, and personalized service.",
-                        Price = 1499.99m,
+                        Price = 121499.99m,
                         ImageUrl = "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1200&auto=format&fit=crop",
                         CreatedAt = packageSeedTimestamp
                     },
@@ -312,7 +312,7 @@ namespace Travel.Api.Data
                         PackageId = 6,
                         Name = "Adventure Seeker",
                         Description = "Thrilling outdoor activities, breathtaking landscapes, and unforgettable natural wonders.",
-                        Price = 1099.99m,
+                        Price = 121099.99m,
                         ImageUrl = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1200&auto=format&fit=crop",
                         CreatedAt = packageSeedTimestamp
                     },
@@ -321,7 +321,7 @@ namespace Travel.Api.Data
                         PackageId = 7,
                         Name = "European Heritage Tour",
                         Description = "Rich history, architectural marvels, and culinary traditions across Europe's most iconic cities.",
-                        Price = 1199.99m,
+                        Price = 121199.99m,
                         ImageUrl = "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=1200&auto=format&fit=crop",
                         CreatedAt = packageSeedTimestamp
                     },
@@ -330,7 +330,7 @@ namespace Travel.Api.Data
                         PackageId = 8,
                         Name = "Iconic Horizons",
                         Description = "From Maldivian lagoons to Swiss summits and Dubai's desert skyline, experience three signatures in one itinerary.",
-                        Price = 1599.99m,
+                        Price = 123245.99m,
                         ImageUrl = "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1600&q=80",
                         CreatedAt = packageSeedTimestamp
                     });
@@ -455,7 +455,7 @@ namespace Travel.Api.Data
                 r.Property(x => x.Rating).HasColumnName("rating").IsRequired();
                 r.Property(x => x.Comment).HasColumnName("comment").HasMaxLength(1000);
                 r.Property(x => x.CreatedAt).HasColumnName("created_at").HasDefaultValueSql("NOW()");
-
+                    
                 r.HasOne(x => x.User)
                     .WithMany()
                     .HasForeignKey(x => x.UserId)
@@ -493,7 +493,7 @@ namespace Travel.Api.Data
             modelBuilder.Entity<Review>()
                 .HasIndex(r => r.DestinationId)
                 .HasDatabaseName("idx_reviews_destination_id");
-
+                                                
             modelBuilder.Entity<Review>()
                 .HasIndex(r => r.UserId)
                 .HasDatabaseName("idx_reviews_user_id");
@@ -518,14 +518,41 @@ namespace Travel.Api.Data
                     .HasForeignKey(x => x.BookingId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
-
+                
             modelBuilder.Entity<BookingOtp>()
-                .HasIndex(bo => bo.Email)
+                .HasIndex(bo => bo.Email)  
                 .HasDatabaseName("idx_booking_otps_email");
-
             modelBuilder.Entity<BookingOtp>()
                 .HasIndex(bo => bo.BookingId)
                 .HasDatabaseName("idx_booking_otps_booking_id");
+
+            //
+            // REFRESH TOKENS
+            //
+            modelBuilder.Entity<RefreshToken>(rt =>
+            {
+                rt.ToTable("refresh_tokens");
+                rt.HasKey(x => x.RefreshTokenId);
+                rt.Property(x => x.RefreshTokenId).HasColumnName("refresh_token_id");
+                rt.Property(x => x.UserId).HasColumnName("user_id").IsRequired();
+                rt.Property(x => x.Token).HasColumnName("token").HasMaxLength(500).IsRequired();
+                rt.Property(x => x.ExpiryDate).HasColumnName("expiry_date").IsRequired();
+                rt.Property(x => x.CreatedAt).HasColumnName("created_at").HasDefaultValueSql("NOW()");
+                rt.Property(x => x.RevokedAt).HasColumnName("revoked_at");
+
+                rt.HasOne(x => x.User)
+                    .WithMany()
+                    .HasForeignKey(x => x.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<RefreshToken>()
+                .HasIndex(rt => rt.UserId)
+                .HasDatabaseName("idx_refresh_tokens_user_id");
+
+            modelBuilder.Entity<RefreshToken>()
+                .HasIndex(rt => rt.Token)
+                .HasDatabaseName("idx_refresh_tokens_token");
         }
     }
 }

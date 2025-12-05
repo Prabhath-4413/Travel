@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { detectBackendPort } from "./backendDetector";
 
 // Provide minimal typing for Vite's import.meta.env so TS doesn't error when a global
@@ -14,6 +14,84 @@ declare global {
 }
 
 let API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+let isRefreshing = false;
+let failedQueue: Array<{
+  onSuccess: (token: string) => void;
+  onFailure: (error: Error) => void;
+}> = [];
+
+const processQueue = (
+  error: Error | null,
+  token: string | null = null
+) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.onFailure(error);
+    } else {
+      prom.onSuccess(token!);
+    }
+  });
+
+  failedQueue = [];
+};
+
+function parseJwt(token: string): { exp?: number } | null {
+  try {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+        .join("")
+    );
+    return JSON.parse(jsonPayload);
+  } catch {
+    return null;
+  }
+}
+
+function isTokenExpiringSoon(token: string, thresholdMinutes = 5): boolean {
+  const decoded = parseJwt(token);
+  if (!decoded || !decoded.exp) return false;
+
+  const expirationTime = decoded.exp * 1000;
+  const currentTime = Date.now();
+  const thresholdMs = thresholdMinutes * 60 * 1000;
+
+  return expirationTime - currentTime < thresholdMs;
+}
+
+async function refreshAccessToken(): Promise<string | null> {
+  try {
+    const refreshToken = localStorage.getItem("refreshToken");
+    if (!refreshToken) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "/login";
+      return null;
+    }
+
+    const response = await axios.post(`${API_BASE_URL}/api/auth/refresh-token`, {
+      refreshToken,
+    });
+
+    const { accessToken, refreshToken: newRefreshToken } = response.data;
+
+    localStorage.setItem("token", accessToken);
+    if (newRefreshToken) {
+      localStorage.setItem("refreshToken", newRefreshToken);
+    }
+
+    return accessToken;
+  } catch {
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("user");
+    window.location.href = "/login";
+    return null;
+  }
+}
 
 // Create axios instance with default config
 const api = axios.create({
@@ -49,11 +127,19 @@ export function updateApiBaseUrl(newUrl: string): void {
   api.defaults.baseURL = newUrl;
 }
 
-// Add auth token to requests
-api.interceptors.request.use((config) => {
+// Add auth token to requests and refresh if expiring soon
+api.interceptors.request.use(async (config) => {
   const token = localStorage.getItem("token");
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+    // Check if token is expiring soon and refresh proactively
+    if (isTokenExpiringSoon(token, 5)) {
+      const newToken = await refreshAccessToken();
+      if (newToken) {
+        config.headers.Authorization = `Bearer ${newToken}`;
+      }
+    } else {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
   }
   return config;
 });
@@ -61,11 +147,44 @@ api.interceptors.request.use((config) => {
 // Handle errors (auth errors and connection errors)
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      window.location.href = "/login";
+  async (error: AxiosError) => {
+    const originalRequest = error.config as any;
+
+    // Handle 401 errors with token refresh retry
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({
+            onSuccess: (token: string) => {
+              originalRequest.headers.Authorization = `Bearer ${token}`;
+              resolve(api(originalRequest));
+            },
+            onFailure: (err: Error) => {
+              reject(err);
+            },
+          });
+        });
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      try {
+        const newToken = await refreshAccessToken();
+        if (newToken) {
+          originalRequest.headers.Authorization = `Bearer ${newToken}`;
+          processQueue(null, newToken);
+          return api(originalRequest);
+        }
+      } catch (err) {
+        processQueue(err as Error);
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("user");
+        window.location.href = "/login";
+      } finally {
+        isRefreshing = false;
+      }
     }
 
     if (error.code === "ERR_NETWORK" || error.message === "Network Error") {

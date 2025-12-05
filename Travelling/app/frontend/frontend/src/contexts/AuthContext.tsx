@@ -76,6 +76,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           console.error("Invalid user data in localStorage, clearing");
           localStorage.removeItem("token");
           localStorage.removeItem("user");
+          localStorage.removeItem("refreshToken");
           setUser(null);
           setToken(null);
         }
@@ -83,6 +84,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         console.error("Error validating stored user data:", error);
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        localStorage.removeItem("refreshToken");
         setUser(null);
         setToken(null);
       }
@@ -111,9 +113,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       const data = await response.json();
 
-      if (!data.token) {
+      if (!data.accessToken && !data.token) {
         throw new Error("Invalid response from server");
       }
+
+      const accessToken = data.accessToken || data.token;
+      const refreshToken = data.refreshToken;
 
       const userData: User = {
         userId: data.userId,
@@ -124,11 +129,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       console.log("Login successful, user data:", userData);
 
-      setToken(data.token);
+      setToken(accessToken);
       setUser(userData);
 
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("token", accessToken);
       localStorage.setItem("user", JSON.stringify(userData));
+      if (refreshToken) {
+        localStorage.setItem("refreshToken", refreshToken);
+      }
 
       console.log("User data saved to localStorage");
     } catch (error) {
@@ -162,9 +170,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       const data = await response.json();
 
-      if (!data.token) {
+      if (!data.accessToken && !data.token) {
         throw new Error("Invalid response from server");
       }
+
+      const accessToken = data.accessToken || data.token;
+      const refreshToken = data.refreshToken;
 
       const userData: User = {
         userId: data.userId,
@@ -176,11 +187,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       console.log("Google login successful, user data:", userData);
 
-      setToken(data.token);
+      setToken(accessToken);
       setUser(userData);
 
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("token", accessToken);
       localStorage.setItem("user", JSON.stringify(userData));
+      if (refreshToken) {
+        localStorage.setItem("refreshToken", refreshToken);
+      }
 
       console.log("User data saved to localStorage");
     } catch (error) {
@@ -222,6 +236,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setToken(null);
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("refreshToken");
   };
 
   const value: AuthContextType = {
